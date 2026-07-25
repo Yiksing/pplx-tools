@@ -1,0 +1,32 @@
+{
+ "web_uuid": "1b44a09d-08e6-4dae-bdda-aba5acaefacb",
+ "psc_uuid": "5c526d8c-c09f-42e1-b10a-cc946fe94573",
+ "url": "https://example.com/search/1b44a09d-08e6-4dae-bdda-aba5acaefacb",
+ "title": "示例学习提问（合成）：请由浅入深讲解演示概念。",
+ "mode": "study",
+ "author": "alice",
+ "export_via": "alice",
+ "space": null,
+ "lastUpdated": "2035-12-26 00:00 UTC",
+ "threadAccess": null,
+ "n_turns": 1,
+ "n_sources": 15,
+ "metadata": {
+  "created_at": "2035-12-26T00:00:00.000000",
+  "crons": null,
+  "local_workspace_directories": null,
+  "locked_reason": null,
+  "mode": "2",
+  "sensitive_claims_visibility": null,
+  "subscribe_entry_uuids": null,
+  "thread_status": "completed",
+  "thread_status_summary": null,
+  "thread_status_summary_enum": null,
+  "title": "示例学习提问（合成）：请由浅入深讲解演示概念。",
+  "updated_at": "2035-12-26T00:00:22.398400",
+  "wake_at": null,
+  "workflow_snapshots": null
+ },
+ "report_info": null,
+ "exported_at": "2035-12-26T00:43:25Z"
+}

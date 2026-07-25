@@ -1,0 +1,421 @@
+{
+ "web_uuid": "3bf9d465-e621-4493-8fba-7b90b7d69fff",
+ "psc_uuid": "878f60da-260e-4d55-b605-630ffa05ea6a",
+ "url": "https://www.perplexity.ai/computer/tasks/3bf9d465-e621-4493-8fba-7b90b7d69fff",
+ "title": "报告分析与代码优化",
+ "mode": "computer",
+ "author": "bob",
+ "export_via": "bob",
+ "space": null,
+ "lastUpdated": "2035-12-26T00:16:36.876496Z",
+ "threadAccess": null,
+ "n_turns": 24,
+ "n_sources": 1,
+ "metadata": {
+  "created_at": "2035-12-25T00:09:19.003064",
+  "crons": null,
+  "local_workspace_directories": null,
+  "locked_reason": null,
+  "mode": "4",
+  "sensitive_claims_visibility": null,
+  "subscribe_entry_uuids": null,
+  "thread_status": "completed",
+  "thread_status_summary": null,
+  "thread_status_summary_enum": null,
+  "title": "报告分析与代码优化",
+  "updated_at": "2035-12-26T00:16:36.876496",
+  "wake_at": null,
+  "workflow_snapshots": {
+   "SHARED_FILES": {
+    "type": "SHARED_FILES",
+    "shared_files": {
+     "items": [
+      {
+       "uuid": "caafb570-c231-45c6-af55-d0f219e1bf59",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "示例报告_附录甲",
+        "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/059525fc-c092-4d48-af79-dc375d6ef601/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf",
+        "file_size": 655502,
+        "filename": "示例报告_附录甲.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "示例报告_附录甲.pdf",
+         "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/059525fc-c092-4d48-af79-dc375d6ef601/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf",
+         "size": 655502,
+         "is_exportable": true,
+         "status_id": "share_371a45d349fd"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/059525fc-c092-4d48-af79-dc375d6ef601/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 565,
+         "height": 800
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://example.com/preview/878f60da-260e-4d55-b605-630ffa05ea6a/059525fc-c092-4d48-af79-dc375d6ef601/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 452,
+         "height": 640
+        }
+       ],
+       "fallback_info": {
+        "name": "示例报告_附录甲.pdf",
+        "webview_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/059525fc-c092-4d48-af79-dc375d6ef601/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "caafb570-c231-45c6-af55-d0f219e1bf59",
+       "parent_asset_id": "bb558cc8-0c5c-4f3a-a8a0-bcbd52e9de38",
+       "root_asset_id": "a7870fb7-56f9-4651-beb4-571ea8acac32",
+       "created_at": "2082207936"
+      },
+      {
+       "uuid": "2d399586-3735-4049-b932-c6ac17bd21c0",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "示例报告",
+        "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/78f66b39-0a53-472f-9703-8d1f7ffdd142/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A.pdf",
+        "file_size": 758688,
+        "filename": "示例报告.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "示例报告.pdf",
+         "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/78f66b39-0a53-472f-9703-8d1f7ffdd142/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A.pdf",
+         "size": 758688,
+         "is_exportable": true,
+         "status_id": "share_38b67c9c08a2"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/78f66b39-0a53-472f-9703-8d1f7ffdd142/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 565,
+         "height": 800
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://example.com/preview/878f60da-260e-4d55-b605-630ffa05ea6a/78f66b39-0a53-472f-9703-8d1f7ffdd142/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 452,
+         "height": 640
+        }
+       ],
+       "fallback_info": {
+        "name": "示例报告.pdf",
+        "webview_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/78f66b39-0a53-472f-9703-8d1f7ffdd142/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "2d399586-3735-4049-b932-c6ac17bd21c0",
+       "parent_asset_id": "a6ffa9fa-42ef-4aa9-ab99-13232c2b780d",
+       "root_asset_id": "0cfdf0f3-ce25-47ce-b469-e808db16b236",
+       "created_at": "2082207936"
+      },
+      {
+       "uuid": "49d09c7d-8a5c-4a9b-adbe-053bb4ce9cd5",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "示例报告_完整版",
+        "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/c2c96ab3-4533-4acb-8db7-41cebf20a885/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E5%AE%8C%E6%95%B4%E7%89%88.pdf",
+        "file_size": 758683,
+        "filename": "示例报告_完整版.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "示例报告_完整版.pdf",
+         "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/c2c96ab3-4533-4acb-8db7-41cebf20a885/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E5%AE%8C%E6%95%B4%E7%89%88.pdf",
+         "size": 758683,
+         "is_exportable": true,
+         "status_id": "share_b04e9af40616"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/c2c96ab3-4533-4acb-8db7-41cebf20a885/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E5%AE%8C%E6%95%B4%E7%89%88.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 565,
+         "height": 800
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://example.com/preview/878f60da-260e-4d55-b605-630ffa05ea6a/c2c96ab3-4533-4acb-8db7-41cebf20a885/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E5%AE%8C%E6%95%B4%E7%89%88.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 452,
+         "height": 640
+        }
+       ],
+       "fallback_info": {
+        "name": "示例报告_完整版.pdf",
+        "webview_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/c2c96ab3-4533-4acb-8db7-41cebf20a885/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E5%AE%8C%E6%95%B4%E7%89%88.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "49d09c7d-8a5c-4a9b-adbe-053bb4ce9cd5",
+       "root_asset_id": "49d09c7d-8a5c-4a9b-adbe-053bb4ce9cd5",
+       "created_at": "2082208860"
+      },
+      {
+       "uuid": "9110633c-17d9-490d-a605-121750672536",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "示例报告_附录乙",
+        "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/c7fdbd60-06b2-46c7-b472-783451b761a9/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E4%B9%99.pdf",
+        "file_size": 775391,
+        "filename": "示例报告_附录乙.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "示例报告_附录乙.pdf",
+         "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/c7fdbd60-06b2-46c7-b472-783451b761a9/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E4%B9%99.pdf",
+         "size": 775391,
+         "is_exportable": true,
+         "status_id": "share_51e23b6dca8e"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/c7fdbd60-06b2-46c7-b472-783451b761a9/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E4%B9%99.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 565,
+         "height": 800
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://example.com/preview/878f60da-260e-4d55-b605-630ffa05ea6a/c7fdbd60-06b2-46c7-b472-783451b761a9/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E4%B9%99.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 452,
+         "height": 640
+        }
+       ],
+       "fallback_info": {
+        "name": "示例报告_附录乙.pdf",
+        "webview_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/c7fdbd60-06b2-46c7-b472-783451b761a9/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E4%B9%99.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "9110633c-17d9-490d-a605-121750672536",
+       "root_asset_id": "9110633c-17d9-490d-a605-121750672536",
+       "created_at": "2082208860"
+      },
+      {
+       "uuid": "1ac4b1a6-92dd-49f3-8b69-c2d1525c4014",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "示例报告_附录甲",
+        "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/443f3703-bf09-4254-9b3e-8aa912920b9a/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf",
+        "file_size": 655643,
+        "filename": "示例报告_附录甲.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "示例报告_附录甲.pdf",
+         "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/443f3703-bf09-4254-9b3e-8aa912920b9a/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf",
+         "size": 655643,
+         "is_exportable": true,
+         "status_id": "share_07946a90c39e"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/443f3703-bf09-4254-9b3e-8aa912920b9a/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 565,
+         "height": 800
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://example.com/preview/878f60da-260e-4d55-b605-630ffa05ea6a/443f3703-bf09-4254-9b3e-8aa912920b9a/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 452,
+         "height": 640
+        }
+       ],
+       "fallback_info": {
+        "name": "示例报告_附录甲.pdf",
+        "webview_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/443f3703-bf09-4254-9b3e-8aa912920b9a/%E7%A4%BA%E4%BE%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "1ac4b1a6-92dd-49f3-8b69-c2d1525c4014",
+       "root_asset_id": "1ac4b1a6-92dd-49f3-8b69-c2d1525c4014",
+       "created_at": "2082208860"
+      },
+      {
+       "uuid": "69b3a9a6-440a-4c0c-bf90-4c73d18883bb",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "示例课程报告_附录甲",
+        "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/b176eb77-8a65-4bca-afa2-d3ef148ae1d1/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf",
+        "file_size": 680019,
+        "filename": "示例课程报告_附录甲.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "示例课程报告_附录甲.pdf",
+         "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/b176eb77-8a65-4bca-afa2-d3ef148ae1d1/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf",
+         "size": 680019,
+         "is_exportable": true,
+         "status_id": "share_9b14493b4e50"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/b176eb77-8a65-4bca-afa2-d3ef148ae1d1/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 565,
+         "height": 800
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://example.com/preview/878f60da-260e-4d55-b605-630ffa05ea6a/b176eb77-8a65-4bca-afa2-d3ef148ae1d1/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 452,
+         "height": 640
+        }
+       ],
+       "fallback_info": {
+        "name": "示例课程报告_附录甲.pdf",
+        "webview_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/b176eb77-8a65-4bca-afa2-d3ef148ae1d1/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A_%E9%99%84%E5%BD%95%E7%94%B2.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "69b3a9a6-440a-4c0c-bf90-4c73d18883bb",
+       "root_asset_id": "69b3a9a6-440a-4c0c-bf90-4c73d18883bb",
+       "created_at": "2082233469"
+      },
+      {
+       "uuid": "c8492185-21ab-4d5d-a0da-149a6de0c9d0",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "示例课程报告_完整版",
+        "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/48e9174e-5b90-44d0-8e99-885998756e53/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A_%E5%AE%8C%E6%95%B4%E7%89%88.pdf",
+        "file_size": 808098,
+        "filename": "示例课程报告_完整版.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "示例课程报告_完整版.pdf",
+         "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/48e9174e-5b90-44d0-8e99-885998756e53/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A_%E5%AE%8C%E6%95%B4%E7%89%88.pdf",
+         "size": 808098,
+         "is_exportable": true,
+         "status_id": "share_271fa8881ba7"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/48e9174e-5b90-44d0-8e99-885998756e53/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A_%E5%AE%8C%E6%95%B4%E7%89%88.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 565,
+         "height": 800
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://example.com/preview/878f60da-260e-4d55-b605-630ffa05ea6a/48e9174e-5b90-44d0-8e99-885998756e53/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A_%E5%AE%8C%E6%95%B4%E7%89%88.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 452,
+         "height": 640
+        }
+       ],
+       "fallback_info": {
+        "name": "示例课程报告_完整版.pdf",
+        "webview_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/48e9174e-5b90-44d0-8e99-885998756e53/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A_%E5%AE%8C%E6%95%B4%E7%89%88.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "c8492185-21ab-4d5d-a0da-149a6de0c9d0",
+       "root_asset_id": "c8492185-21ab-4d5d-a0da-149a6de0c9d0",
+       "created_at": "2082233469"
+      },
+      {
+       "uuid": "toolu_5crub0OZt74cnMCDfu3Bqb7r",
+       "asset_type": "CODE_FILE",
+       "code_file": {
+        "filename": "example_compile.sh",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "application/x-sh",
+         "is_streaming": false,
+         "file_handle": "file:final/示例分析/example_compile.sh"
+        }
+       ],
+       "created_at": "2082208689"
+      },
+      {
+       "uuid": "c4a4211e-1189-459d-88d5-4f2ce34338db",
+       "asset_type": "CODE_FILE",
+       "code_file": {
+        "name": "example_compile",
+        "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/4d7ddb1a-e7bd-4f61-a2fe-7c20283e062c/example_compile.sh",
+        "file_size": 6009,
+        "filename": "example_compile.sh"
+       },
+       "download_info": [
+        {
+         "filename": "example_compile.sh",
+         "url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/4d7ddb1a-e7bd-4f61-a2fe-7c20283e062c/example_compile.sh",
+         "size": 6009,
+         "is_exportable": true,
+         "status_id": "share_3ad21a30e36b"
+        }
+       ],
+       "fallback_info": {
+        "name": "example_compile.sh",
+        "webview_url": "https://example.com/878f60da-260e-4d55-b605-630ffa05ea6a/4d7ddb1a-e7bd-4f61-a2fe-7c20283e062c/example_compile.sh"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "c4a4211e-1189-459d-88d5-4f2ce34338db",
+       "root_asset_id": "c4a4211e-1189-459d-88d5-4f2ce34338db",
+       "created_at": "2082208859"
+      },
+      {
+       "uuid": "toolu_5crub0AMBUEOmHy62znrbe1c",
+       "asset_type": "CODE_FILE",
+       "code_file": {
+        "filename": ".gitignore",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "application/octet-stream",
+         "is_streaming": false,
+         "file_handle": "file:final/.gitignore"
+        }
+       ],
+       "created_at": "2082213026"
+      },
+      {
+       "uuid": "toolu_5crub005fPXvwvgOVZhRKere",
+       "asset_type": "CODE_FILE",
+       "code_file": {
+        "filename": "example_recompute.py",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/x-python",
+         "is_streaming": false,
+         "file_handle": "file:example_recompute.py"
+        }
+       ],
+       "created_at": "2082232709"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "report_info": null,
+ "exported_at": "2036-02-01T23:07:48Z"
+}

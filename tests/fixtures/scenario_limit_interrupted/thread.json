@@ -1,0 +1,159 @@
+{
+ "web_uuid": "5cbeef00-94e1-5525-824f-f1882519dea4",
+ "psc_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+ "url": "https://www.perplexity.ai/computer/tasks/5cbeef00-94e1-5525-824f-f1882519dea4",
+ "title": "章节提纲规划",
+ "mode": "computer",
+ "author": "bob",
+ "export_via": "bob",
+ "space": null,
+ "lastUpdated": "2035-12-26T02:12:19.927523Z",
+ "threadAccess": null,
+ "n_turns": 24,
+ "n_sources": 0,
+ "metadata": {
+  "created_at": "2035-12-26T00:00:00",
+  "crons": null,
+  "local_workspace_directories": null,
+  "locked_reason": "spending_limit_exceeded",
+  "mode": "4",
+  "sensitive_claims_visibility": null,
+  "subscribe_entry_uuids": [],
+  "thread_status": "blocked",
+  "thread_status_summary": "Add credits to continue",
+  "thread_status_summary_enum": "add_credits",
+  "title": "章节提纲规划",
+  "updated_at": "2035-12-26T02:12:19.927523",
+  "wake_at": null,
+  "workflow_snapshots": {
+   "SHARED_FILES": {
+    "shared_files": {
+     "items": [
+      {
+       "uuid": "toolu_5crub02P53JjEGkUX846HLaU",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "outline_v1.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:outline_v1.md"
+        }
+       ],
+       "created_at": "1782190058"
+      },
+      {
+       "uuid": "toolu_5crub0h8zhfEa8zBZRFqf3bz",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "01_提纲_示例主题.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/01_提纲_示例主题.md"
+        }
+       ],
+       "created_at": "1782192283"
+      },
+      {
+       "uuid": "toolu_5crub05tfjTCwsHLgsF5RKX3",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "示例文档（其一）.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/示例文档（其一）.md"
+        }
+       ],
+       "created_at": "1782192325"
+      },
+      {
+       "uuid": "toolu_5crub0C1R5lYvsVcjISmhL54",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "示例文档（其二）.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/示例文档（其二）.md"
+        }
+       ],
+       "created_at": "1782192380"
+      },
+      {
+       "uuid": "toolu_5crub05wtY6z7iuJrd1d7eBR",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "AGENTS.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/AGENTS.md"
+        }
+       ],
+       "created_at": "1782192433"
+      },
+      {
+       "uuid": "toolu_5crub0dLhgURTb1vm1DIvqWz",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "README.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/README.md"
+        }
+       ],
+       "created_at": "1782192446"
+      },
+      {
+       "uuid": "toolu_5crub0v5VIdPzLYyMI34vxrx",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "WRITING_SPEC.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:draft_sources/WRITING_SPEC.md"
+        }
+       ],
+       "created_at": "1782194079"
+      }
+     ]
+    },
+    "type": "SHARED_FILES"
+   }
+  }
+ },
+ "report_info": null,
+ "exported_at": "2036-01-21T12:45:36Z"
+}

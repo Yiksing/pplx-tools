@@ -1,0 +1,32 @@
+{
+ "web_uuid": "5cbeef00-e1a2-5b90-b22f-ca7af5c90eda",
+ "psc_uuid": "d3a98462-fd79-48cd-b5ca-8b13f69465fb",
+ "url": "https://example.com/search/5cbeef00-e1a2-5b90-b22f-ca7af5c90eda",
+ "title": "示例提问（合成文本）：请演示模型委员会导出流程，比较三个示例模型在同一示例任务上的回答，并给出选择建议与理由。",
+ "mode": "council",
+ "author": "alice",
+ "export_via": "alice",
+ "space": null,
+ "lastUpdated": "2035-12-26 00:03 UTC",
+ "threadAccess": null,
+ "n_turns": 1,
+ "n_sources": 136,
+ "metadata": {
+  "created_at": "2035-12-26T00:00:00.000000",
+  "crons": null,
+  "local_workspace_directories": null,
+  "locked_reason": null,
+  "mode": "2",
+  "sensitive_claims_visibility": null,
+  "subscribe_entry_uuids": null,
+  "thread_status": "completed",
+  "thread_status_summary": null,
+  "thread_status_summary_enum": null,
+  "title": "示例提问（合成文本）：请演示模型委员会导出流程，比较三个示例模型在同一示例任务上的回答，并给出选择建议与理由。",
+  "updated_at": "2035-12-26T00:04:10.965673",
+  "wake_at": null,
+  "workflow_snapshots": null
+ },
+ "report_info": null,
+ "exported_at": "2035-12-26T02:03:33Z"
+}

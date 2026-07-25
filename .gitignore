@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+
+# User-level real config and local override pairs (private, never committed)
+# 用户级真实配置与本地覆盖对（含个人隐私，绝不入库）
+scrub_pairs.local.json
+tests/scrub_pairs.local.json
+
+# cookie 缓存与日志（含会话凭证 / 签名 URL）
+.cookies.json
+**/index/.cookies.json
+logs/
+
+# MkDocs build output
+# MkDocs 构建产物
+site/
+
+# 默认归档输出（本仓库只发布工具，不发布归档内容）
+web_archive/
+
+# macOS
+.DS_Store

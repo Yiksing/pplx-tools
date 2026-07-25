@@ -1,0 +1,25 @@
+{
+  "Computer mode": {
+    "preserve": false,
+    "note": "Perplexity product mode; translate mode but preserve the product relationship."
+  },
+  "Deep Research": {
+    "preserve": false,
+    "note": "Perplexity product mode."
+  },
+  "Perplexity": {
+    "preserve": true
+  },
+  "Perplexity Computer": {
+    "preserve": true
+  },
+  "pplx": {
+    "preserve": true
+  },
+  "pplx-ask": {
+    "preserve": true
+  },
+  "pplx-export": {
+    "preserve": true
+  }
+}

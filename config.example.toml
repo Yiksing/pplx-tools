@@ -1,0 +1,51 @@
+# pplx-export user-level configuration (template)
+# pplx-export 用户级配置（模板）
+#
+# Copy to ~/.config/pplx-export/config.toml and fill in real values (recommended
+# permission 0o600 — it contains personal data such as account email/user_id;
+# never commit it to any git repository).
+# 复制为 ~/.config/pplx-export/config.toml 并填入真实值（建议权限 0o600——
+# 含账户 email/user_id 等个人隐私，切勿提交进任何 git 仓库）。
+#
+# Load priority: --config PATH > PPLX_EXPORT_CONFIG env var > default path.
+# 加载优先级：--config PATH > 环境变量 PPLX_EXPORT_CONFIG > 默认路径。
+#
+# When the config file is missing: commands without --account run in a degraded
+# mode (email ownership check is skipped with a warning); an explicit --account
+# raises an error pointing at this template.
+# 配置文件缺失时：未指定 --account 的命令以降级模式运行（email 校验跳过并
+# warning）；显式 --account 会报错并指向本模板。
+
+# Default account used when --account is not given (a key of [accounts.<name>] below)
+# --account 未给出时使用的默认账户（对应下方 [accounts.<名>] 的键）
+default_account = "alice"
+
+# Account registry: key = account username (the username in thread URLs / library)
+# 账户注册表：键 = 账户用户名（thread URL / library 中的 username）
+[accounts.alice]
+# Full display name: used for archive directory naming (web_archive/<display name>/…);
+# falls back to the username when omitted
+# 完整显示名：用于归档目录命名（web_archive/<显示名>/…）；缺省回退用户名
+display_name = "Alice Example"
+# Login email: verifies cookie ownership, preventing "an export for account B
+# carrying account A's session"; on mismatch, account session tokens in the
+# browser are enumerated and switched automatically
+# 登录 email：校验 cookie 归属，防止「账户 B 的导出带着账户 A 的会话」；
+# 不匹配时自动枚举浏览器中的账户会话令牌切换
+email = "alice@example.com"
+# Account uid (required for thread-viewed telemetry; visible via the platform's
+# linked-accounts endpoint)
+# 账户 uid（thread viewed 遥测需要；可在平台 linked-accounts 接口查看）
+user_id = "00000000-0000-4000-8000-0000000000aa"
+
+[accounts.bob]
+display_name = "Bob Example"
+email = "bob@example.com"
+user_id = "00000000-0000-4000-8000-0000000000bb"
+
+# BOT space: where threads created by pplx-ask are collected after completion
+# (can be created for real via pplx-ask space-create)
+# BOT 空间：pplx-ask 发问完成后线程的集中收纳处（可经 pplx-ask space-create 实建）
+[bot_space]
+uuid = "00000000-0000-4000-8000-0000000000b0"
+slug = "bot-EXAMPLE"

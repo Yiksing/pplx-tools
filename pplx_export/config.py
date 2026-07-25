@@ -1,0 +1,179 @@
+"""Centralized configuration: site constants and default paths (single source of truth)
+plus user-level account/space configuration loading (externalized).
+
+Site constants and default paths live only in this file; every module imports them
+from here instead of hard-coding its own copies.
+
+The account registry (display names / email / user_id) and the BOT space are personal
+privacy data and are NOT committed to the repository; they live in an external
+user-level TOML config file, loaded with this precedence:
+  1. CLI `--config PATH`
+  2. Environment variable `PPLX_EXPORT_CONFIG`
+  3. Default `~/.config/pplx-export/config.toml`
+See `config.example.toml` in the repository for a template (placeholders). When the
+config file is missing, the module-level registries stay empty: commands that do not
+explicitly pass an account run in degraded mode (email validation is skipped with a
+warning); an explicit `--account` gets a clear error pointing at the example file from
+commands/common.resolve_cli_account.
+
+Note: the three ACCOUNT_* tables are mutable dicts updated IN PLACE (a binding created
+by `from ..config import ACCOUNT_EMAIL` stays valid after configure() reloads);
+BOT_SPACE_UUID / BOT_SPACE_SLUG / DEFAULT_ACCOUNT are strings, which are REBOUND on
+reload — consumers must use `from .. import config` and read attributes.
+
+集中配置：站点常量、默认路径（单一来源）+ 用户级账户/空间配置加载（外置）。
+
+站点常量与默认路径以本文件为唯一来源，各模块一律 import，不再各自硬编码。
+
+账户注册表（显示名/email/user_id）与 BOT 空间属**个人隐私，不入库**，
+外置到用户级 TOML 配置，加载优先级：
+  1. CLI `--config PATH`
+  2. 环境变量 `PPLX_EXPORT_CONFIG`
+  3. 默认 `~/.config/pplx-export/config.toml`
+模板见仓库内 `config.example.toml`（占位符）。配置文件缺失时模块级注册表为空：
+未显式指定账户的命令降级运行（email 校验跳过并 warning）；显式 `--account`
+由 commands/common.resolve_cli_account 给出指向 example 的清晰报错。
+
+注意：ACCOUNT_* 三张表为**就地更新**的可变 dict（`from ..config import ACCOUNT_EMAIL`
+的绑定在 configure() 重载后仍有效）；BOT_SPACE_UUID/BOT_SPACE_SLUG/DEFAULT_ACCOUNT
+是字符串，重载会重新绑定——使用方一律 `from .. import config` 后取属性。
+"""
+
+from __future__ import annotations
+
+import os
+import tomllib
+from pathlib import Path
+
+# ── Site (Perplexity) ─────────────────────────────────────
+# ── 站点（Perplexity）─────────────────────────────────────
+PPLX_DOMAIN = "perplexity.ai"
+PPLX_DOMAINS = ("perplexity.ai", ".perplexity.ai", "www.perplexity.ai")
+SESSION_URL = "https://www.perplexity.ai/api/auth/session"
+
+# ── Default paths ─────────────────────────────────────────
+# Default archive root (relative to CWD; overridable via --out)
+# ── 默认路径 ─────────────────────────────────────────────
+# 默认归档根（相对 CWD；--out 可覆盖）
+DEFAULT_ARCHIVE_ROOT = Path("web_archive")
+
+# ── User-level config (account registry + BOT space; externalized, not committed) ──
+# ── 用户级配置（账户注册表 + BOT 空间；外置，不入库）────────
+ENV_CONFIG_VAR = "PPLX_EXPORT_CONFIG"
+DEFAULT_CONFIG_PATH = Path.home() / ".config" / "pplx-export" / "config.toml"
+
+# Account username -> full display name (used for archive directory naming;
+# falls back to the username itself when not registered)
+# 账户用户名 → 完整显示名（用于归档目录命名；未收录时回退用户名本身）
+ACCOUNT_DISPLAY_NAMES: dict[str, str] = {}
+# Login email per account: used to verify cookie ownership, preventing
+# "account B's export carrying account A's session"
+# 各账户的登录 email：用于校验 cookie 归属，防止「账户 B 的导出带着账户 A 的会话」
+ACCOUNT_EMAIL: dict[str, str] = {}
+# Account uid (required by the thread-viewed telemetry)
+# 账户 uid（thread viewed 遥测需要）
+ACCOUNT_UID: dict[str, str] = {}
+# BOT space (the collection point for threads created by pplx-ask)
+# BOT 空间（pplx-ask 完成后线程的集中收纳处）
+BOT_SPACE_UUID = ""
+BOT_SPACE_SLUG = ""
+# Default account from the config (used when --account is not given; empty = degraded)
+# 配置中的默认账户（--account 未给时取用；空则降级）
+DEFAULT_ACCOUNT = ""
+# Path of the config file actually loaded (None = not loaded, degraded mode)
+# 实际加载的配置文件路径（None=未加载，降级模式）
+LOADED_CONFIG_PATH: Path | None = None
+
+
+class ConfigError(Exception):
+    """An explicitly specified user-level config is missing / unreadable / unparseable.
+
+    用户级配置显式指定但缺失/不可读/解析失败。
+    """
+
+
+def _candidate_path(cli_path: str | os.PathLike | None) -> tuple[Path, bool]:
+    """Resolve the candidate config path by precedence; returns (path, is_explicit).
+
+    Explicit means the --config argument or the PPLX_EXPORT_CONFIG environment
+    variable; the default path does not count as explicit.
+
+    按优先级解析候选配置路径，返回 (路径, 是否显式指定)。
+
+    显式 = --config 参数或 PPLX_EXPORT_CONFIG 环境变量；默认路径不算显式。
+    """
+    if cli_path:
+        return Path(cli_path).expanduser(), True
+    env = os.environ.get(ENV_CONFIG_VAR)
+    if env:
+        return Path(env).expanduser(), True
+    return DEFAULT_CONFIG_PATH, False
+
+
+def configure(cli_path: str | os.PathLike | None = None,
+              *, strict_explicit: bool = True) -> Path | None:
+    """(Re)load the user-level config into the module-level registries (dicts are
+    updated in place; idempotent).
+
+    Returns the config path actually loaded; None when nothing was loaded.
+    - Default path missing: normal degradation (empty registries), returns None, no error;
+    - Explicitly specified (--config / env var) but missing: raises ConfigError when
+      strict_explicit is set;
+    - File exists but fails to parse: always raises ConfigError (a corrupt config must
+      not silently degrade).
+
+    （重）加载用户级配置到模块级注册表（dict 就地更新，幂等）。
+
+    返回实际加载的配置路径；未加载返回 None。
+    - 默认路径缺失：正常降级（空注册表），返回 None，不抛错；
+    - 显式指定（--config/环境变量）但文件缺失：strict_explicit 时抛 ConfigError；
+    - 文件存在但解析失败：一律抛 ConfigError（配置损坏不应静默降级）。
+    """
+    global BOT_SPACE_UUID, BOT_SPACE_SLUG, DEFAULT_ACCOUNT, LOADED_CONFIG_PATH
+    ACCOUNT_DISPLAY_NAMES.clear()
+    ACCOUNT_EMAIL.clear()
+    ACCOUNT_UID.clear()
+    BOT_SPACE_UUID = BOT_SPACE_SLUG = DEFAULT_ACCOUNT = ""
+    LOADED_CONFIG_PATH = None
+
+    path, explicit = _candidate_path(cli_path)
+    if not path.is_file():
+        if explicit and strict_explicit:
+            raise ConfigError(
+                f"显式指定的配置文件不存在: {path}\n"
+                f"  请参照仓库内 config.example.toml 创建该文件，"
+                f"或不指定 --config/{ENV_CONFIG_VAR} 使用默认路径 {DEFAULT_CONFIG_PATH}。")
+        return None
+    try:
+        data = tomllib.loads(path.read_text(encoding="utf-8"))
+    except (OSError, tomllib.TOMLDecodeError) as e:
+        raise ConfigError(f"配置文件解析失败: {path}: {e}") from e
+
+    accounts = data.get("accounts") or {}
+    if not isinstance(accounts, dict):
+        raise ConfigError(f"配置文件 [accounts] 必须是表: {path}")
+    for name, tbl in accounts.items():
+        if not isinstance(tbl, dict):
+            continue
+        if tbl.get("display_name"):
+            ACCOUNT_DISPLAY_NAMES[str(name)] = str(tbl["display_name"])
+        if tbl.get("email"):
+            ACCOUNT_EMAIL[str(name)] = str(tbl["email"])
+        if tbl.get("user_id"):
+            ACCOUNT_UID[str(name)] = str(tbl["user_id"])
+    bot = data.get("bot_space") or {}
+    if not isinstance(bot, dict):
+        raise ConfigError(f"配置文件 [bot_space] 必须是表: {path}")
+    BOT_SPACE_UUID = str(bot.get("uuid") or "")
+    BOT_SPACE_SLUG = str(bot.get("slug") or "")
+    DEFAULT_ACCOUNT = str(data.get("default_account") or "")
+    LOADED_CONFIG_PATH = path
+    return path
+
+
+# Fault-tolerant load at import time (default path / env var; a missing file means
+# empty registries in degraded mode, no error).
+# The CLI reloads in strict mode per --config after parse_args.
+# import 期容错加载（默认路径/环境变量；缺失即空注册表降级，不抛错）。
+# CLI 在 parse_args 后会以 strict 模式按 --config 重新加载。
+configure(strict_explicit=False)

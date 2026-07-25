@@ -1,0 +1,4589 @@
+{
+  "documents": {
+    "architecture/ask-and-accounts.ar.md": [
+      {
+        "heading_index": 1,
+        "id": "8-تسلسل-pplx-ask-بالتفصيل",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 2,
+        "id": "9-تدفق-تبديل-ملفات-تعريف-الارتباط-متعددة-الحسابات",
+        "level": 2,
+        "prefix": "9."
+      }
+    ],
+    "architecture/ask-and-accounts.de.md": [
+      {
+        "heading_index": 1,
+        "id": "8-pplx-ask-ablauf-im-detail",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 2,
+        "id": "9-multi-account-cookie-wechselablauf",
+        "level": 2,
+        "prefix": "9."
+      }
+    ],
+    "architecture/ask-and-accounts.es.md": [
+      {
+        "heading_index": 1,
+        "id": "8-secuencia-de-pplx-ask-en-detalle",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 2,
+        "id": "9-flujo-de-cambio-de-cookies-entre-cuentas-múltiples",
+        "level": 2,
+        "prefix": "9."
+      }
+    ],
+    "architecture/ask-and-accounts.fr.md": [
+      {
+        "heading_index": 1,
+        "id": "8-séquence-pplx-ask-en-détail",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 2,
+        "id": "9-flux-de-changement-de-cookie-multi-compte",
+        "level": 2,
+        "prefix": "9."
+      }
+    ],
+    "architecture/ask-and-accounts.it.md": [
+      {
+        "heading_index": 1,
+        "id": "8-sequenza-pplx-ask-in-dettaglio",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 2,
+        "id": "9-flusso-di-cambio-cookie-multi-account",
+        "level": 2,
+        "prefix": "9."
+      }
+    ],
+    "architecture/ask-and-accounts.ja.md": [
+      {
+        "heading_index": 1,
+        "id": "8-pplx-ask-シーケンス詳細図",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 2,
+        "id": "9-マルチアカウントの-cookie-切り替えフロー",
+        "level": 2,
+        "prefix": "9."
+      }
+    ],
+    "architecture/ask-and-accounts.ko.md": [
+      {
+        "heading_index": 1,
+        "id": "8-pplx-ask-시퀀스-상세",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 2,
+        "id": "9-다중-계정-쿠키-전환-흐름",
+        "level": 2,
+        "prefix": "9."
+      }
+    ],
+    "architecture/ask-and-accounts.md": [
+      {
+        "heading_index": 1,
+        "id": "8-pplx-ask-sequence-in-detail",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 2,
+        "id": "9-multi-account-cookie-switching-flow",
+        "level": 2,
+        "prefix": "9."
+      }
+    ],
+    "architecture/ask-and-accounts.pt.md": [
+      {
+        "heading_index": 1,
+        "id": "8-sequência-pplx-ask-em-detalhe",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 2,
+        "id": "9-fluxo-de-troca-de-cookies-de-múltiplas-contas",
+        "level": 2,
+        "prefix": "9."
+      }
+    ],
+    "architecture/ask-and-accounts.ru.md": [
+      {
+        "heading_index": 1,
+        "id": "8-последовательность-pplx-ask-в-деталях",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 2,
+        "id": "9-поток-переключения-cookie-для-нескольких-аккаунтов",
+        "level": 2,
+        "prefix": "9."
+      }
+    ],
+    "architecture/ask-and-accounts.zh-CN.md": [
+      {
+        "heading_index": 1,
+        "id": "8-pplx-ask-时序详图",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 2,
+        "id": "9-多账户-cookie-切换流程",
+        "level": 2,
+        "prefix": "9."
+      }
+    ],
+    "architecture/ask-and-accounts.zh-Hant.md": [
+      {
+        "heading_index": 1,
+        "id": "8-pplx-ask-時序詳圖",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 2,
+        "id": "9-多帳戶-cookie-切換流程",
+        "level": 2,
+        "prefix": "9."
+      }
+    ],
+    "architecture/data-model.ar.md": [
+      {
+        "heading_index": 1,
+        "id": "10-نموذج-البيانات-coremodelspy",
+        "level": 2,
+        "prefix": "10."
+      },
+      {
+        "heading_index": 2,
+        "id": "14-حدود-الكتابة-وعقد-الدليل",
+        "level": 2,
+        "prefix": "14."
+      },
+      {
+        "heading_index": 3,
+        "id": "141-أرشيف-موضوع-web_archive-منشأ-بالأداة-ملفات-المحتوى-غير-محررة-يدويا",
+        "level": 3,
+        "prefix": "14.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "142-ملفات-حالة-web_archiveindex-مدارة-بالأداة-لا-تحرر-يدويا",
+        "level": 3,
+        "prefix": "14.2"
+      },
+      {
+        "heading_index": 5,
+        "id": "143-طبقة-فهرس-المساحات-جذر-المستودع-منشأ-بالأداة",
+        "level": 3,
+        "prefix": "14.3"
+      },
+      {
+        "heading_index": 6,
+        "id": "144-قابل-للتحرير-يدويا-مقابل-مدار-بالأداة",
+        "level": 3,
+        "prefix": "14.4"
+      }
+    ],
+    "architecture/data-model.de.md": [
+      {
+        "heading_index": 1,
+        "id": "10-datenmodell-coremodelspy",
+        "level": 2,
+        "prefix": "10."
+      },
+      {
+        "heading_index": 2,
+        "id": "14-schreibgrenzen-und-verzeichnisvertrag",
+        "level": 2,
+        "prefix": "14."
+      },
+      {
+        "heading_index": 3,
+        "id": "141-das-web_archive-thread-archiv-toolgeneriert-inhaltsdateien-nicht-manuell-bearbeitet",
+        "level": 3,
+        "prefix": "14.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "142-web_archiveindex-zustandsdateien-toolverwaltet-nicht-manuell-bearbeiten",
+        "level": 3,
+        "prefix": "14.2"
+      },
+      {
+        "heading_index": 5,
+        "id": "143-die-spaces-index-ebene-repository-stamm-toolgeneriert",
+        "level": 3,
+        "prefix": "14.3"
+      },
+      {
+        "heading_index": 6,
+        "id": "144-manuell-bearbeitbar-vs-toolverwaltet",
+        "level": 3,
+        "prefix": "14.4"
+      }
+    ],
+    "architecture/data-model.es.md": [
+      {
+        "heading_index": 1,
+        "id": "10-modelo-de-datos-coremodelspy",
+        "level": 2,
+        "prefix": "10."
+      },
+      {
+        "heading_index": 2,
+        "id": "14-límites-de-escritura-y-contrato-de-directorio",
+        "level": 2,
+        "prefix": "14."
+      },
+      {
+        "heading_index": 3,
+        "id": "141-el-archivo-de-hilos-web_archive-generado-por-herramientas-archivos-de-contenido-no-editados-manualmente",
+        "level": 3,
+        "prefix": "14.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "142-archivos-de-estado-de-web_archiveindex-gestionados-por-herramientas-no-editar-manualmente",
+        "level": 3,
+        "prefix": "14.2"
+      },
+      {
+        "heading_index": 5,
+        "id": "143-la-capa-de-índice-spaces-raíz-del-repositorio-generada-por-herramientas",
+        "level": 3,
+        "prefix": "14.3"
+      },
+      {
+        "heading_index": 6,
+        "id": "144-editable-manualmente-vs-gestionado-por-herramientas",
+        "level": 3,
+        "prefix": "14.4"
+      }
+    ],
+    "architecture/data-model.fr.md": [
+      {
+        "heading_index": 1,
+        "id": "10-modèle-de-données-coremodelspy",
+        "level": 2,
+        "prefix": "10."
+      },
+      {
+        "heading_index": 2,
+        "id": "14-limites-décriture-et-contrat-de-répertoire",
+        "level": 2,
+        "prefix": "14."
+      },
+      {
+        "heading_index": 3,
+        "id": "141-larchive-de-threads-web_archive-générée-par-loutil-fichiers-de-contenu-non-modifiés-à-la-main",
+        "level": 3,
+        "prefix": "14.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "142-fichiers-détat-web_archiveindex-gérés-par-loutil-ne-pas-modifier-à-la-main",
+        "level": 3,
+        "prefix": "14.2"
+      },
+      {
+        "heading_index": 5,
+        "id": "143-la-couche-dindex-spaces-racine-du-dépôt-générée-par-loutil",
+        "level": 3,
+        "prefix": "14.3"
+      },
+      {
+        "heading_index": 6,
+        "id": "144-modifiable-à-la-main-vs-géré-par-loutil",
+        "level": 3,
+        "prefix": "14.4"
+      }
+    ],
+    "architecture/data-model.it.md": [
+      {
+        "heading_index": 1,
+        "id": "10-modello-dati-coremodelspy",
+        "level": 2,
+        "prefix": "10."
+      },
+      {
+        "heading_index": 2,
+        "id": "14-confini-di-scrittura-e-contratto-di-directory",
+        "level": 2,
+        "prefix": "14."
+      },
+      {
+        "heading_index": 3,
+        "id": "141-larchivio-thread-di-web_archive-generato-da-strumenti-file-di-contenuto-non-modificati-a-mano",
+        "level": 3,
+        "prefix": "14.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "142-file-di-stato-web_archiveindex-gestiti-da-strumenti-non-modificare-a-mano",
+        "level": 3,
+        "prefix": "14.2"
+      },
+      {
+        "heading_index": 5,
+        "id": "143-il-livello-indice-spaces-radice-del-repository-generato-da-strumenti",
+        "level": 3,
+        "prefix": "14.3"
+      },
+      {
+        "heading_index": 6,
+        "id": "144-modificabile-a-mano-vs-gestito-da-strumenti",
+        "level": 3,
+        "prefix": "14.4"
+      }
+    ],
+    "architecture/data-model.ja.md": [
+      {
+        "heading_index": 1,
+        "id": "10-データモデルcoremodelspy",
+        "level": 2,
+        "prefix": "10."
+      },
+      {
+        "heading_index": 2,
+        "id": "14-書き込み境界とディレクトリ契約",
+        "level": 2,
+        "prefix": "14."
+      },
+      {
+        "heading_index": 3,
+        "id": "141-web_archive-スレッドアーカイブツール生成内容ファイルは手動編集不可",
+        "level": 3,
+        "prefix": "14.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "142-web_archiveindex-状態ファイルツール管理手動変更不可",
+        "level": 3,
+        "prefix": "14.2"
+      },
+      {
+        "heading_index": 5,
+        "id": "143-spaces-インデックスレイヤーリポジトリルートツール生成",
+        "level": 3,
+        "prefix": "14.3"
+      },
+      {
+        "heading_index": 6,
+        "id": "144-手動編集可能-vs-ツール管理",
+        "level": 3,
+        "prefix": "14.4"
+      }
+    ],
+    "architecture/data-model.ko.md": [
+      {
+        "heading_index": 1,
+        "id": "10-데이터-모델-coremodelspy",
+        "level": 2,
+        "prefix": "10."
+      },
+      {
+        "heading_index": 2,
+        "id": "14-쓰기-경계-및-디렉터리-계약",
+        "level": 2,
+        "prefix": "14."
+      },
+      {
+        "heading_index": 3,
+        "id": "141-web_archive-스레드-아카이브도구-생성-콘텐츠-파일-수동-편집-금지",
+        "level": 3,
+        "prefix": "14.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "142-web_archiveindex-상태-파일도구-관리-수동-수정-금지",
+        "level": 3,
+        "prefix": "14.2"
+      },
+      {
+        "heading_index": 5,
+        "id": "143-spaces-인덱스-계층리포지토리-루트-도구-생성",
+        "level": 3,
+        "prefix": "14.3"
+      },
+      {
+        "heading_index": 6,
+        "id": "144-수동-수정-가능-vs-도구-관리",
+        "level": 3,
+        "prefix": "14.4"
+      }
+    ],
+    "architecture/data-model.md": [
+      {
+        "heading_index": 1,
+        "id": "10-data-model-coremodelspy",
+        "level": 2,
+        "prefix": "10."
+      },
+      {
+        "heading_index": 2,
+        "id": "14-write-boundaries-and-directory-contract",
+        "level": 2,
+        "prefix": "14."
+      },
+      {
+        "heading_index": 3,
+        "id": "141-the-web_archive-thread-archive-tool-generated-content-files-not-hand-edited",
+        "level": 3,
+        "prefix": "14.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "142-web_archiveindex-state-files-tool-managed-do-not-hand-edit",
+        "level": 3,
+        "prefix": "14.2"
+      },
+      {
+        "heading_index": 5,
+        "id": "143-the-spaces-index-layer-repository-root-tool-generated",
+        "level": 3,
+        "prefix": "14.3"
+      },
+      {
+        "heading_index": 6,
+        "id": "144-hand-editable-vs-tool-managed",
+        "level": 3,
+        "prefix": "14.4"
+      }
+    ],
+    "architecture/data-model.pt.md": [
+      {
+        "heading_index": 1,
+        "id": "10-modelo-de-dados-coremodelspy",
+        "level": 2,
+        "prefix": "10."
+      },
+      {
+        "heading_index": 2,
+        "id": "14-limites-de-escrita-e-contrato-de-diretório",
+        "level": 2,
+        "prefix": "14."
+      },
+      {
+        "heading_index": 3,
+        "id": "141-o-arquivo-de-thread-web_archive-gerado-por-ferramenta-arquivos-de-conteúdo-não-editados-manualmente",
+        "level": 3,
+        "prefix": "14.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "142-arquivos-de-estado-do-índice-web_archive-gerenciados-por-ferramenta-não-editar-manualmente",
+        "level": 3,
+        "prefix": "14.2"
+      },
+      {
+        "heading_index": 5,
+        "id": "143-a-camada-de-índice-spaces-raiz-do-repositório-gerada-por-ferramenta",
+        "level": 3,
+        "prefix": "14.3"
+      },
+      {
+        "heading_index": 6,
+        "id": "144-editável-manualmente-vs-gerenciado-por-ferramenta",
+        "level": 3,
+        "prefix": "14.4"
+      }
+    ],
+    "architecture/data-model.ru.md": [
+      {
+        "heading_index": 1,
+        "id": "10-модель-данных-coremodelspy",
+        "level": 2,
+        "prefix": "10."
+      },
+      {
+        "heading_index": 2,
+        "id": "14-границы-записи-и-контракт-каталога",
+        "level": 2,
+        "prefix": "14."
+      },
+      {
+        "heading_index": 3,
+        "id": "141-архив-тредов-web_archive-создан-инструментом-файлы-контента-не-редактируются-вручную",
+        "level": 3,
+        "prefix": "14.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "142-файлы-состояния-web_archiveindex-управляются-инструментом-не-редактировать-вручную",
+        "level": 3,
+        "prefix": "14.2"
+      },
+      {
+        "heading_index": 5,
+        "id": "143-слой-индекса-spaces-корень-репозитория-создан-инструментом",
+        "level": 3,
+        "prefix": "14.3"
+      },
+      {
+        "heading_index": 6,
+        "id": "144-редактируемое-вручную-vs-управляемое-инструментом",
+        "level": 3,
+        "prefix": "14.4"
+      }
+    ],
+    "architecture/data-model.zh-CN.md": [
+      {
+        "heading_index": 1,
+        "id": "10-数据模型coremodelspy",
+        "level": 2,
+        "prefix": "10."
+      },
+      {
+        "heading_index": 2,
+        "id": "14-写边界与目录契约",
+        "level": 2,
+        "prefix": "14."
+      },
+      {
+        "heading_index": 3,
+        "id": "141-web_archive-线程归档工具生成不手工编辑内容文件",
+        "level": 3,
+        "prefix": "14.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "142-web_archiveindex-状态文件工具托管勿手改",
+        "level": 3,
+        "prefix": "14.2"
+      },
+      {
+        "heading_index": 5,
+        "id": "143-spaces-索引层仓库根工具生成",
+        "level": 3,
+        "prefix": "14.3"
+      },
+      {
+        "heading_index": 6,
+        "id": "144-可手改-vs-工具托管",
+        "level": 3,
+        "prefix": "14.4"
+      }
+    ],
+    "architecture/data-model.zh-Hant.md": [
+      {
+        "heading_index": 1,
+        "id": "10-資料模型coremodelspy",
+        "level": 2,
+        "prefix": "10."
+      },
+      {
+        "heading_index": 2,
+        "id": "14-寫邊界與目錄契約",
+        "level": 2,
+        "prefix": "14."
+      },
+      {
+        "heading_index": 3,
+        "id": "141-web_archive-執行緒歸檔工具生成不手工編輯內容檔案",
+        "level": 3,
+        "prefix": "14.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "142-web_archiveindex-狀態檔案工具託管勿手改",
+        "level": 3,
+        "prefix": "14.2"
+      },
+      {
+        "heading_index": 5,
+        "id": "143-spaces-索引層倉庫根工具生成",
+        "level": 3,
+        "prefix": "14.3"
+      },
+      {
+        "heading_index": 6,
+        "id": "144-可手改-vs-工具託管",
+        "level": 3,
+        "prefix": "14.4"
+      }
+    ],
+    "architecture/export-pipeline.ar.md": [
+      {
+        "heading_index": 1,
+        "id": "3-خط-أنابيب-التصدير-بالتفصيل",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "4-شجرة-قرار-اكتشاف-الوضع-detect_mode",
+        "level": 2,
+        "prefix": "4."
+      }
+    ],
+    "architecture/export-pipeline.de.md": [
+      {
+        "heading_index": 1,
+        "id": "3-export-pipeline-im-detail",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "4-entscheidungsbaum-zur-moduserkennung-detect_mode",
+        "level": 2,
+        "prefix": "4."
+      }
+    ],
+    "architecture/export-pipeline.es.md": [
+      {
+        "heading_index": 1,
+        "id": "3-pipeline-de-exportación-en-detalle",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "4-árbol-de-decisión-de-detección-de-modo-detect_mode",
+        "level": 2,
+        "prefix": "4."
+      }
+    ],
+    "architecture/export-pipeline.fr.md": [
+      {
+        "heading_index": 1,
+        "id": "3-pipeline-dexportation-en-détail",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "4-arbre-de-décision-de-détection-de-mode-detect_mode",
+        "level": 2,
+        "prefix": "4."
+      }
+    ],
+    "architecture/export-pipeline.it.md": [
+      {
+        "heading_index": 1,
+        "id": "3-pipeline-di-esportazione-in-dettaglio",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "4-albero-decisionale-di-rilevamento-modalità-detect_mode",
+        "level": 2,
+        "prefix": "4."
+      }
+    ],
+    "architecture/export-pipeline.ja.md": [
+      {
+        "heading_index": 1,
+        "id": "3-エクスポートパイプライン詳細図",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "4-モード判定決定木detect_mode",
+        "level": 2,
+        "prefix": "4."
+      }
+    ],
+    "architecture/export-pipeline.ko.md": [
+      {
+        "heading_index": 1,
+        "id": "3-내보내기-파이프라인-상세",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "4-모드-판별-결정-트리detect_mode",
+        "level": 2,
+        "prefix": "4."
+      }
+    ],
+    "architecture/export-pipeline.md": [
+      {
+        "heading_index": 1,
+        "id": "3-export-pipeline-in-detail",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "4-mode-detection-decision-tree-detect_mode",
+        "level": 2,
+        "prefix": "4."
+      }
+    ],
+    "architecture/export-pipeline.pt.md": [
+      {
+        "heading_index": 1,
+        "id": "3-pipeline-de-exportação-em-detalhes",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "4-árvore-de-decisão-de-detecção-de-modo-detect_mode",
+        "level": 2,
+        "prefix": "4."
+      }
+    ],
+    "architecture/export-pipeline.ru.md": [
+      {
+        "heading_index": 1,
+        "id": "3-экспортный-конвейер-в-деталях",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "4-дерево-решений-определения-режима-detect_mode",
+        "level": 2,
+        "prefix": "4."
+      }
+    ],
+    "architecture/export-pipeline.zh-CN.md": [
+      {
+        "heading_index": 1,
+        "id": "3-导出管线详图",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "4-模式判别决策树detect_mode",
+        "level": 2,
+        "prefix": "4."
+      }
+    ],
+    "architecture/export-pipeline.zh-Hant.md": [
+      {
+        "heading_index": 1,
+        "id": "3-匯出管線詳圖",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "4-模式判別決策樹detect_mode",
+        "level": 2,
+        "prefix": "4."
+      }
+    ],
+    "architecture/offline-operations.ar.md": [
+      {
+        "heading_index": 1,
+        "id": "12-إعادة-التوليد-غير-المتصلة-إعادة-العرض",
+        "level": 2,
+        "prefix": "12."
+      },
+      {
+        "heading_index": 2,
+        "id": "15-خط-أنابيب-إعادة-بناء-العلاقات-غير-المتصلة",
+        "level": 2,
+        "prefix": "15."
+      },
+      {
+        "heading_index": 3,
+        "id": "16-تعبئة-وضع-البحث-الخلفي-تخصيب-search_mode-للفهرس",
+        "level": 2,
+        "prefix": "16."
+      },
+      {
+        "heading_index": 4,
+        "id": "17-آلة-الحالة-للحذف-عن-بعد-sync-deleted",
+        "level": 2,
+        "prefix": "17."
+      },
+      {
+        "heading_index": 5,
+        "id": "18-سلسلة-كشف-answer_variants-لإعادة-كتابة-الإجابة",
+        "level": 2,
+        "prefix": "18."
+      }
+    ],
+    "architecture/offline-operations.de.md": [
+      {
+        "heading_index": 1,
+        "id": "12-offline-regenerierung-neu-rendering",
+        "level": 2,
+        "prefix": "12."
+      },
+      {
+        "heading_index": 2,
+        "id": "15-relations-offline-neuaufbaupipeline",
+        "level": 2,
+        "prefix": "15."
+      },
+      {
+        "heading_index": 3,
+        "id": "16-search-mode-backfill-index-search_mode-anreicherung",
+        "level": 2,
+        "prefix": "16."
+      },
+      {
+        "heading_index": 4,
+        "id": "17-sync-deleted-remote-löschungs-zustandsmaschine",
+        "level": 2,
+        "prefix": "17."
+      },
+      {
+        "heading_index": 5,
+        "id": "18-die-answer_variants-erkennungskette-für-antwort-umschreibungsvarianten",
+        "level": 2,
+        "prefix": "18."
+      }
+    ],
+    "architecture/offline-operations.es.md": [
+      {
+        "heading_index": 1,
+        "id": "12-regeneración-sin-conexión-re-render",
+        "level": 2,
+        "prefix": "12."
+      },
+      {
+        "heading_index": 2,
+        "id": "15-pipeline-de-reconstrucción-de-relaciones-sin-conexión",
+        "level": 2,
+        "prefix": "15."
+      },
+      {
+        "heading_index": 3,
+        "id": "16-relleno-de-modo-de-búsqueda-enriquecimiento-search_mode-del-índice",
+        "level": 2,
+        "prefix": "16."
+      },
+      {
+        "heading_index": 4,
+        "id": "17-máquina-de-estados-de-eliminación-remota-sync-deleted",
+        "level": 2,
+        "prefix": "17."
+      },
+      {
+        "heading_index": 5,
+        "id": "18-la-cadena-de-detección-de-variantes-de-respuesta-answer_variants",
+        "level": 2,
+        "prefix": "18."
+      }
+    ],
+    "architecture/offline-operations.fr.md": [
+      {
+        "heading_index": 1,
+        "id": "12-régénération-hors-ligne-re-render",
+        "level": 2,
+        "prefix": "12."
+      },
+      {
+        "heading_index": 2,
+        "id": "15-pipeline-de-reconstruction-hors-ligne-des-relations",
+        "level": 2,
+        "prefix": "15."
+      },
+      {
+        "heading_index": 3,
+        "id": "16-search-mode-backfill-enrichissement-search_mode-de-lindex",
+        "level": 2,
+        "prefix": "16."
+      },
+      {
+        "heading_index": 4,
+        "id": "17-sync-deleted-machine-détat-de-suppression-à-distance",
+        "level": 2,
+        "prefix": "17."
+      },
+      {
+        "heading_index": 5,
+        "id": "18-la-chaîne-de-détection-des-variantes-answer_variants-réécriture-de-réponse",
+        "level": 2,
+        "prefix": "18."
+      }
+    ],
+    "architecture/offline-operations.it.md": [
+      {
+        "heading_index": 1,
+        "id": "12-rigenerazione-offline-re-render",
+        "level": 2,
+        "prefix": "12."
+      },
+      {
+        "heading_index": 2,
+        "id": "15-pipeline-offline-di-ricostruzione-delle-relazioni",
+        "level": 2,
+        "prefix": "15."
+      },
+      {
+        "heading_index": 3,
+        "id": "16-search-mode-backfill-arricchimento-search_mode-dellindice",
+        "level": 2,
+        "prefix": "16."
+      },
+      {
+        "heading_index": 4,
+        "id": "17-sync-deleted-macchina-a-stati-per-leliminazione-remota",
+        "level": 2,
+        "prefix": "17."
+      },
+      {
+        "heading_index": 5,
+        "id": "18-catena-di-rilevamento-delle-varianti-di-risposta-answer_variants",
+        "level": 2,
+        "prefix": "18."
+      }
+    ],
+    "architecture/offline-operations.ja.md": [
+      {
+        "heading_index": 1,
+        "id": "12-オフライン再生成re-render",
+        "level": 2,
+        "prefix": "12."
+      },
+      {
+        "heading_index": 2,
+        "id": "15-relations-オフライン再構築パイプライン",
+        "level": 2,
+        "prefix": "15."
+      },
+      {
+        "heading_index": 3,
+        "id": "16-search-mode-backfillインデックス-search_mode-リッチ化",
+        "level": 2,
+        "prefix": "16."
+      },
+      {
+        "heading_index": 4,
+        "id": "17-sync-deleted-リモート削除ステートマシン",
+        "level": 2,
+        "prefix": "17."
+      },
+      {
+        "heading_index": 5,
+        "id": "18-answer_variants-回答書き換えバリアント検出チェーン",
+        "level": 2,
+        "prefix": "18."
+      }
+    ],
+    "architecture/offline-operations.ko.md": [
+      {
+        "heading_index": 1,
+        "id": "12-오프라인-재생성re-render",
+        "level": 2,
+        "prefix": "12."
+      },
+      {
+        "heading_index": 2,
+        "id": "15-relations-오프라인-재구축-파이프라인",
+        "level": 2,
+        "prefix": "15."
+      },
+      {
+        "heading_index": 3,
+        "id": "16-search-mode-backfill인덱스-search_mode-강화",
+        "level": 2,
+        "prefix": "16."
+      },
+      {
+        "heading_index": 4,
+        "id": "17-sync-deleted-원격-삭제-상태-머신",
+        "level": 2,
+        "prefix": "17."
+      },
+      {
+        "heading_index": 5,
+        "id": "18-answer_variants-답변-재작성-변형-감지-체인",
+        "level": 2,
+        "prefix": "18."
+      }
+    ],
+    "architecture/offline-operations.md": [
+      {
+        "heading_index": 1,
+        "id": "12-offline-regeneration-re-render",
+        "level": 2,
+        "prefix": "12."
+      },
+      {
+        "heading_index": 2,
+        "id": "15-relations-offline-rebuild-pipeline",
+        "level": 2,
+        "prefix": "15."
+      },
+      {
+        "heading_index": 3,
+        "id": "16-search-mode-backfill-index-search_mode-enrichment",
+        "level": 2,
+        "prefix": "16."
+      },
+      {
+        "heading_index": 4,
+        "id": "17-sync-deleted-remote-deletion-state-machine",
+        "level": 2,
+        "prefix": "17."
+      },
+      {
+        "heading_index": 5,
+        "id": "18-the-answer_variants-answer-rewrite-variant-detection-chain",
+        "level": 2,
+        "prefix": "18."
+      }
+    ],
+    "architecture/offline-operations.pt.md": [
+      {
+        "heading_index": 1,
+        "id": "12-regeneração-offline-re-render",
+        "level": 2,
+        "prefix": "12."
+      },
+      {
+        "heading_index": 2,
+        "id": "15-pipeline-de-reconstrução-offline-de-relações",
+        "level": 2,
+        "prefix": "15."
+      },
+      {
+        "heading_index": 3,
+        "id": "16-search-mode-backfill-enriquecimento-search_mode-do-índice",
+        "level": 2,
+        "prefix": "16."
+      },
+      {
+        "heading_index": 4,
+        "id": "17-sync-deleted-máquina-de-estado-de-exclusão-remota",
+        "level": 2,
+        "prefix": "17."
+      },
+      {
+        "heading_index": 5,
+        "id": "18-a-cadeia-de-detecção-de-variantes-de-reescrita-de-resposta-answer_variants",
+        "level": 2,
+        "prefix": "18."
+      }
+    ],
+    "architecture/offline-operations.ru.md": [
+      {
+        "heading_index": 1,
+        "id": "12-офлайн-регенерация-перерендеринг",
+        "level": 2,
+        "prefix": "12."
+      },
+      {
+        "heading_index": 2,
+        "id": "15-конвейер-офлайн-перестроения-связей",
+        "level": 2,
+        "prefix": "15."
+      },
+      {
+        "heading_index": 3,
+        "id": "16-search-mode-backfill-обогащение-search_mode-индекса",
+        "level": 2,
+        "prefix": "16."
+      },
+      {
+        "heading_index": 4,
+        "id": "17-sync-deleted-конечный-автомат-удалённых-записей",
+        "level": 2,
+        "prefix": "17."
+      },
+      {
+        "heading_index": 5,
+        "id": "18-цепочка-обнаружения-вариантов-answer_variants-перезапись-ответов",
+        "level": 2,
+        "prefix": "18."
+      }
+    ],
+    "architecture/offline-operations.zh-CN.md": [
+      {
+        "heading_index": 1,
+        "id": "12-离线再生re-render",
+        "level": 2,
+        "prefix": "12."
+      },
+      {
+        "heading_index": 2,
+        "id": "15-relations-离线重建管线",
+        "level": 2,
+        "prefix": "15."
+      },
+      {
+        "heading_index": 3,
+        "id": "16-search-mode-backfill索引-search_mode-富化",
+        "level": 2,
+        "prefix": "16."
+      },
+      {
+        "heading_index": 4,
+        "id": "17-sync-deleted-远端删除状态机",
+        "level": 2,
+        "prefix": "17."
+      },
+      {
+        "heading_index": 5,
+        "id": "18-answer_variants-答案重写变体检测链",
+        "level": 2,
+        "prefix": "18."
+      }
+    ],
+    "architecture/offline-operations.zh-Hant.md": [
+      {
+        "heading_index": 1,
+        "id": "12-離線再生re-render",
+        "level": 2,
+        "prefix": "12."
+      },
+      {
+        "heading_index": 2,
+        "id": "15-relations-離線重建管線",
+        "level": 2,
+        "prefix": "15."
+      },
+      {
+        "heading_index": 3,
+        "id": "16-search-mode-backfill索引-search_mode-富化",
+        "level": 2,
+        "prefix": "16."
+      },
+      {
+        "heading_index": 4,
+        "id": "17-sync-deleted-遠端刪除狀態機",
+        "level": 2,
+        "prefix": "17."
+      },
+      {
+        "heading_index": 5,
+        "id": "18-answer_variants-答案改寫變體檢測鏈",
+        "level": 2,
+        "prefix": "18."
+      }
+    ],
+    "architecture/overview.ar.md": [
+      {
+        "heading_index": 1,
+        "id": "1-نظرة-عامة-على-البنية-الطبقية",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "2-رسم-بياني-لتبعية-الوحدات-علاقات-الاستيراد-الفعلية",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 3,
+        "id": "19-ملخص-مبادئ-التصميم",
+        "level": 2,
+        "prefix": "19."
+      }
+    ],
+    "architecture/overview.de.md": [
+      {
+        "heading_index": 1,
+        "id": "1-überblick-über-die-schichtenarchitektur",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "2-modulabhängigkeitsgraph-reale-importbeziehungen",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 3,
+        "id": "19-zusammenfassung-der-designprinzipien",
+        "level": 2,
+        "prefix": "19."
+      }
+    ],
+    "architecture/overview.es.md": [
+      {
+        "heading_index": 1,
+        "id": "1-resumen-de-la-arquitectura-en-capas",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "2-grafo-de-dependencias-de-módulos-relaciones-de-importación-reales",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 3,
+        "id": "19-resumen-de-principios-de-diseño",
+        "level": 2,
+        "prefix": "19."
+      }
+    ],
+    "architecture/overview.fr.md": [
+      {
+        "heading_index": 1,
+        "id": "1-aperçu-de-larchitecture-en-couches",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "2-graphe-de-dépendances-des-modules-relations-dimportation-réelles",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 3,
+        "id": "19-résumé-des-principes-de-conception",
+        "level": 2,
+        "prefix": "19."
+      }
+    ],
+    "architecture/overview.it.md": [
+      {
+        "heading_index": 1,
+        "id": "1-panoramica-dellarchitettura-a-livelli",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "2-grafo-delle-dipendenze-dei-moduli-relazioni-di-importazione-reali",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 3,
+        "id": "19-riepilogo-dei-principi-di-progettazione",
+        "level": 2,
+        "prefix": "19."
+      }
+    ],
+    "architecture/overview.ja.md": [
+      {
+        "heading_index": 1,
+        "id": "1-階層アーキテクチャ概要",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "2-モジュール依存グラフ実際の-import-関係",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 3,
+        "id": "19-設計原則のまとめ",
+        "level": 2,
+        "prefix": "19."
+      }
+    ],
+    "architecture/overview.ko.md": [
+      {
+        "heading_index": 1,
+        "id": "1-계층형-아키텍처-개요",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "2-모듈-의존성-그래프실제-import-관계",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 3,
+        "id": "19-설계-원칙-요약",
+        "level": 2,
+        "prefix": "19."
+      }
+    ],
+    "architecture/overview.md": [
+      {
+        "heading_index": 1,
+        "id": "1-layered-architecture-overview",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "2-module-dependency-graph-real-import-relations",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 3,
+        "id": "19-design-principles-summary",
+        "level": 2,
+        "prefix": "19."
+      }
+    ],
+    "architecture/overview.pt.md": [
+      {
+        "heading_index": 1,
+        "id": "1-visão-geral-da-arquitetura-em-camadas",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "2-grafo-de-dependência-de-módulos-relações-reais-de-importação",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 3,
+        "id": "19-resumo-dos-princípios-de-design",
+        "level": 2,
+        "prefix": "19."
+      }
+    ],
+    "architecture/overview.ru.md": [
+      {
+        "heading_index": 1,
+        "id": "1-обзор-многоуровневой-архитектуры",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "2-граф-зависимостей-модулей-реальные-отношения-импорта",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 3,
+        "id": "19-сводка-принципов-проектирования",
+        "level": 2,
+        "prefix": "19."
+      }
+    ],
+    "architecture/overview.zh-CN.md": [
+      {
+        "heading_index": 1,
+        "id": "1-分层架构总览",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "2-模块依赖图真实-import-关系",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 3,
+        "id": "19-设计原则总结",
+        "level": 2,
+        "prefix": "19."
+      }
+    ],
+    "architecture/overview.zh-Hant.md": [
+      {
+        "heading_index": 1,
+        "id": "1-分層架構總覽",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "2-模組依賴圖真實-import-關係",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 3,
+        "id": "19-設計原則總結",
+        "level": 2,
+        "prefix": "19."
+      }
+    ],
+    "architecture/rate-limiting-errors.ar.md": [
+      {
+        "heading_index": 1,
+        "id": "11-تحديد-المعدل-ومعالجة-الأخطاء",
+        "level": 2,
+        "prefix": "11."
+      }
+    ],
+    "architecture/rate-limiting-errors.de.md": [
+      {
+        "heading_index": 1,
+        "id": "11-ratenbegrenzung-und-fehlerbehandlung",
+        "level": 2,
+        "prefix": "11."
+      }
+    ],
+    "architecture/rate-limiting-errors.es.md": [
+      {
+        "heading_index": 1,
+        "id": "11-limitación-de-velocidad-y-manejo-de-errores",
+        "level": 2,
+        "prefix": "11."
+      }
+    ],
+    "architecture/rate-limiting-errors.fr.md": [
+      {
+        "heading_index": 1,
+        "id": "11-limitation-de-débit-et-gestion-des-erreurs",
+        "level": 2,
+        "prefix": "11."
+      }
+    ],
+    "architecture/rate-limiting-errors.it.md": [
+      {
+        "heading_index": 1,
+        "id": "11-limitazione-della-velocità-e-gestione-degli-errori",
+        "level": 2,
+        "prefix": "11."
+      }
+    ],
+    "architecture/rate-limiting-errors.ja.md": [
+      {
+        "heading_index": 1,
+        "id": "11-レート制限とエラー処理",
+        "level": 2,
+        "prefix": "11."
+      }
+    ],
+    "architecture/rate-limiting-errors.ko.md": [
+      {
+        "heading_index": 1,
+        "id": "11-속도-제한-및-오류-처리",
+        "level": 2,
+        "prefix": "11."
+      }
+    ],
+    "architecture/rate-limiting-errors.md": [
+      {
+        "heading_index": 1,
+        "id": "11-rate-limiting-and-error-handling",
+        "level": 2,
+        "prefix": "11."
+      }
+    ],
+    "architecture/rate-limiting-errors.pt.md": [
+      {
+        "heading_index": 1,
+        "id": "11-limitação-de-taxa-e-tratamento-de-erros",
+        "level": 2,
+        "prefix": "11."
+      }
+    ],
+    "architecture/rate-limiting-errors.ru.md": [
+      {
+        "heading_index": 1,
+        "id": "11-ограничение-скорости-и-обработка-ошибок",
+        "level": 2,
+        "prefix": "11."
+      }
+    ],
+    "architecture/rate-limiting-errors.zh-CN.md": [
+      {
+        "heading_index": 1,
+        "id": "11-限频与错误处理",
+        "level": 2,
+        "prefix": "11."
+      }
+    ],
+    "architecture/rate-limiting-errors.zh-Hant.md": [
+      {
+        "heading_index": 1,
+        "id": "11-限頻與錯誤處理",
+        "level": 2,
+        "prefix": "11."
+      }
+    ],
+    "architecture/subagents-interruptions.ar.md": [
+      {
+        "heading_index": 1,
+        "id": "5-شلال-الإسناد-الإسناد-الحتمي-لحمولات-الوكلاء-الفرعيين-الخلفية",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 2,
+        "id": "6-مخطط-حالة-دلالات-المقاطعة",
+        "level": 2,
+        "prefix": "6."
+      }
+    ],
+    "architecture/subagents-interruptions.de.md": [
+      {
+        "heading_index": 1,
+        "id": "5-attributions-wasserfall-deterministische-attribution-von-hintergrund-subagent-payloads",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 2,
+        "id": "6-zustandsdiagramm-der-unterbrechungssemantik",
+        "level": 2,
+        "prefix": "6."
+      }
+    ],
+    "architecture/subagents-interruptions.es.md": [
+      {
+        "heading_index": 1,
+        "id": "5-cascada-de-atribución-atribución-determinista-de-cargas-de-subagentes-en-segundo-plano",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 2,
+        "id": "6-diagrama-de-estados-de-semántica-de-interrupción",
+        "level": 2,
+        "prefix": "6."
+      }
+    ],
+    "architecture/subagents-interruptions.fr.md": [
+      {
+        "heading_index": 1,
+        "id": "5-cascade-dattribution-attribution-déterministe-des-charges-utiles-des-sous-agents-en-arrière-plan",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 2,
+        "id": "6-diagramme-détat-de-la-sémantique-dinterruption",
+        "level": 2,
+        "prefix": "6."
+      }
+    ],
+    "architecture/subagents-interruptions.it.md": [
+      {
+        "heading_index": 1,
+        "id": "5-cascata-di-attribuzione-attribuzione-deterministica-dei-payload-dei-sottoagenti-in-background",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 2,
+        "id": "6-diagramma-degli-stati-della-semantica-di-interruzione",
+        "level": 2,
+        "prefix": "6."
+      }
+    ],
+    "architecture/subagents-interruptions.ja.md": [
+      {
+        "heading_index": 1,
+        "id": "5-帰属ウォーターフォール図バックグラウンドサブエージェント負荷の決定論的帰属",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 2,
+        "id": "6-中断セマンティクス状態図",
+        "level": 2,
+        "prefix": "6."
+      }
+    ],
+    "architecture/subagents-interruptions.ko.md": [
+      {
+        "heading_index": 1,
+        "id": "5-귀속-폭포수-차트-백그라운드-하위-에이전트-부하의-결정적-귀속",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 2,
+        "id": "6-인터럽션-의미-상태-다이어그램",
+        "level": 2,
+        "prefix": "6."
+      }
+    ],
+    "architecture/subagents-interruptions.md": [
+      {
+        "heading_index": 1,
+        "id": "5-attribution-waterfall-deterministic-attribution-of-background-subagent-payloads",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 2,
+        "id": "6-interruption-semantics-state-diagram",
+        "level": 2,
+        "prefix": "6."
+      }
+    ],
+    "architecture/subagents-interruptions.pt.md": [
+      {
+        "heading_index": 1,
+        "id": "5-cascata-de-atribuição-atribuição-determinística-de-cargas-de-subagentes-em-segundo-plano",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 2,
+        "id": "6-diagrama-de-estados-da-semântica-de-interrupção",
+        "level": 2,
+        "prefix": "6."
+      }
+    ],
+    "architecture/subagents-interruptions.ru.md": [
+      {
+        "heading_index": 1,
+        "id": "5-водопад-атрибуции-детерминированная-атрибуция-полезных-нагрузок-фоновых-саб-агентов",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 2,
+        "id": "6-диаграмма-состояний-семантики-прерываний",
+        "level": 2,
+        "prefix": "6."
+      }
+    ],
+    "architecture/subagents-interruptions.zh-CN.md": [
+      {
+        "heading_index": 1,
+        "id": "5-归属瀑布图后台子代理负载的确定性归属",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 2,
+        "id": "6-中断语义状态图",
+        "level": 2,
+        "prefix": "6."
+      }
+    ],
+    "architecture/subagents-interruptions.zh-Hant.md": [
+      {
+        "heading_index": 1,
+        "id": "5-歸屬瀑布圖後台子代理負載的確定性歸屬",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 2,
+        "id": "6-中斷語義狀態圖",
+        "level": 2,
+        "prefix": "6."
+      }
+    ],
+    "development/testing-architecture.ar.md": [
+      {
+        "heading_index": 1,
+        "id": "13-نظام-الاختبار",
+        "level": 2,
+        "prefix": "13."
+      },
+      {
+        "heading_index": 2,
+        "id": "131-الطبقات",
+        "level": 3,
+        "prefix": "13.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "132-تدفق-بيانات-اللقطة",
+        "level": 3,
+        "prefix": "13.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "133-العزلة-وحدود-الثقة",
+        "level": 3,
+        "prefix": "13.3"
+      }
+    ],
+    "development/testing-architecture.de.md": [
+      {
+        "heading_index": 1,
+        "id": "13-testsystem",
+        "level": 2,
+        "prefix": "13."
+      },
+      {
+        "heading_index": 2,
+        "id": "131-ebenen",
+        "level": 3,
+        "prefix": "13.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "132-snapshot-datenfluss",
+        "level": 3,
+        "prefix": "13.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "133-isolation-und-vertrauensgrenzen",
+        "level": 3,
+        "prefix": "13.3"
+      }
+    ],
+    "development/testing-architecture.es.md": [
+      {
+        "heading_index": 1,
+        "id": "13-sistema-de-pruebas",
+        "level": 2,
+        "prefix": "13."
+      },
+      {
+        "heading_index": 2,
+        "id": "131-capas",
+        "level": 3,
+        "prefix": "13.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "132-flujo-de-datos-de-instantáneas",
+        "level": 3,
+        "prefix": "13.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "133-límites-de-aislamiento-y-confianza",
+        "level": 3,
+        "prefix": "13.3"
+      }
+    ],
+    "development/testing-architecture.fr.md": [
+      {
+        "heading_index": 1,
+        "id": "13-système-de-test",
+        "level": 2,
+        "prefix": "13."
+      },
+      {
+        "heading_index": 2,
+        "id": "131-couches",
+        "level": 3,
+        "prefix": "13.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "132-flux-de-données-des-instantanés",
+        "level": 3,
+        "prefix": "13.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "133-isolation-et-limites-de-confiance",
+        "level": 3,
+        "prefix": "13.3"
+      }
+    ],
+    "development/testing-architecture.it.md": [
+      {
+        "heading_index": 1,
+        "id": "13-sistema-di-test",
+        "level": 2,
+        "prefix": "13."
+      },
+      {
+        "heading_index": 2,
+        "id": "131-livelli",
+        "level": 3,
+        "prefix": "13.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "132-flusso-dei-dati-degli-snapshot",
+        "level": 3,
+        "prefix": "13.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "133-isolamento-e-confini-di-fiducia",
+        "level": 3,
+        "prefix": "13.3"
+      }
+    ],
+    "development/testing-architecture.ja.md": [
+      {
+        "heading_index": 1,
+        "id": "13-テストシステム",
+        "level": 2,
+        "prefix": "13."
+      },
+      {
+        "heading_index": 2,
+        "id": "131-階層",
+        "level": 3,
+        "prefix": "13.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "132-スナップショットデータフロー",
+        "level": 3,
+        "prefix": "13.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "133-分離と信頼境界",
+        "level": 3,
+        "prefix": "13.3"
+      }
+    ],
+    "development/testing-architecture.ko.md": [
+      {
+        "heading_index": 1,
+        "id": "13-테스트-시스템",
+        "level": 2,
+        "prefix": "13."
+      },
+      {
+        "heading_index": 2,
+        "id": "131-계층",
+        "level": 3,
+        "prefix": "13.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "132-스냅샷-데이터-흐름",
+        "level": 3,
+        "prefix": "13.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "133-격리-및-신뢰-경계",
+        "level": 3,
+        "prefix": "13.3"
+      }
+    ],
+    "development/testing-architecture.md": [
+      {
+        "heading_index": 1,
+        "id": "13-test-system",
+        "level": 2,
+        "prefix": "13."
+      },
+      {
+        "heading_index": 2,
+        "id": "131-layers",
+        "level": 3,
+        "prefix": "13.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "132-snapshot-data-flow",
+        "level": 3,
+        "prefix": "13.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "133-isolation-and-trust-boundaries",
+        "level": 3,
+        "prefix": "13.3"
+      }
+    ],
+    "development/testing-architecture.pt.md": [
+      {
+        "heading_index": 1,
+        "id": "13-sistema-de-teste",
+        "level": 2,
+        "prefix": "13."
+      },
+      {
+        "heading_index": 2,
+        "id": "131-camadas",
+        "level": 3,
+        "prefix": "13.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "132-fluxo-de-dados-de-snapshot",
+        "level": 3,
+        "prefix": "13.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "133-isolamento-e-limites-de-confiança",
+        "level": 3,
+        "prefix": "13.3"
+      }
+    ],
+    "development/testing-architecture.ru.md": [
+      {
+        "heading_index": 1,
+        "id": "13-тестовая-система",
+        "level": 2,
+        "prefix": "13."
+      },
+      {
+        "heading_index": 2,
+        "id": "131-уровни",
+        "level": 3,
+        "prefix": "13.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "132-поток-данных-снимков",
+        "level": 3,
+        "prefix": "13.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "133-изоляция-и-границы-доверия",
+        "level": 3,
+        "prefix": "13.3"
+      }
+    ],
+    "development/testing-architecture.zh-CN.md": [
+      {
+        "heading_index": 1,
+        "id": "13-测试体系",
+        "level": 2,
+        "prefix": "13."
+      },
+      {
+        "heading_index": 2,
+        "id": "131-层次",
+        "level": 3,
+        "prefix": "13.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "132-快照数据流",
+        "level": 3,
+        "prefix": "13.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "133-隔离与信任边界",
+        "level": 3,
+        "prefix": "13.3"
+      }
+    ],
+    "development/testing-architecture.zh-Hant.md": [
+      {
+        "heading_index": 1,
+        "id": "13-測試體系",
+        "level": 2,
+        "prefix": "13."
+      },
+      {
+        "heading_index": 2,
+        "id": "131-層次",
+        "level": 3,
+        "prefix": "13.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "132-快照資料流",
+        "level": 3,
+        "prefix": "13.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "133-隔離與信任邊界",
+        "level": 3,
+        "prefix": "13.3"
+      }
+    ],
+    "guide/getting-started.ar.md": [
+      {
+        "heading_index": 2,
+        "id": "1-التثبيت",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 3,
+        "id": "2-إنشاء-التكوين-على-مستوى-المستخدم",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 4,
+        "id": "3-اختر-قناة-ملفات-تعريف-الارتباط",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 5,
+        "id": "4-التشغيل-الأول",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 6,
+        "id": "5-أين-تهبط-الأرشيفات",
+        "level": 2,
+        "prefix": "5."
+      }
+    ],
+    "guide/getting-started.de.md": [
+      {
+        "heading_index": 2,
+        "id": "1-installation",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 3,
+        "id": "2-benutzerspezifische-konfiguration-erstellen",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 4,
+        "id": "3-cookie-kanal-auswählen",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 5,
+        "id": "4-erster-durchlauf",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 6,
+        "id": "5-wo-archive-landen",
+        "level": 2,
+        "prefix": "5."
+      }
+    ],
+    "guide/getting-started.es.md": [
+      {
+        "heading_index": 2,
+        "id": "1-instalar",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 3,
+        "id": "2-crear-la-configuración-a-nivel-de-usuario",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 4,
+        "id": "3-elegir-un-canal-de-cookies",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 5,
+        "id": "4-primera-ejecución",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 6,
+        "id": "5-dónde-se-almacenan-los-archivos",
+        "level": 2,
+        "prefix": "5."
+      }
+    ],
+    "guide/getting-started.fr.md": [
+      {
+        "heading_index": 2,
+        "id": "1-installation",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 3,
+        "id": "2-créer-la-configuration-utilisateur",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 4,
+        "id": "3-choisir-un-canal-de-cookies",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 5,
+        "id": "4-première-exécution",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 6,
+        "id": "5-où-les-archives-atterrissent",
+        "level": 2,
+        "prefix": "5."
+      }
+    ],
+    "guide/getting-started.it.md": [
+      {
+        "heading_index": 2,
+        "id": "1-installa",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 3,
+        "id": "2-crea-la-configurazione-a-livello-utente",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 4,
+        "id": "3-scegli-un-canale-di-cookie",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 5,
+        "id": "4-prima-esecuzione",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 6,
+        "id": "5-dove-finiscono-gli-archivi",
+        "level": 2,
+        "prefix": "5."
+      }
+    ],
+    "guide/getting-started.ja.md": [
+      {
+        "heading_index": 2,
+        "id": "1-インストール",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 3,
+        "id": "2-ユーザーレベルの設定を作成",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 4,
+        "id": "3-cookie-チャンネルを選択",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 5,
+        "id": "4-初回実行",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 6,
+        "id": "5-アーカイブの保存場所",
+        "level": 2,
+        "prefix": "5."
+      }
+    ],
+    "guide/getting-started.ko.md": [
+      {
+        "heading_index": 2,
+        "id": "1-설치",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 3,
+        "id": "2-사용자-수준-구성-생성",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 4,
+        "id": "3-쿠키-채널-선택",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 5,
+        "id": "4-첫-번째-실행",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 6,
+        "id": "5-아카이브-저장-위치",
+        "level": 2,
+        "prefix": "5."
+      }
+    ],
+    "guide/getting-started.md": [
+      {
+        "heading_index": 2,
+        "id": "1-install",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 3,
+        "id": "2-create-the-user-level-config",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 4,
+        "id": "3-choose-a-cookie-channel",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 5,
+        "id": "4-first-run",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 6,
+        "id": "5-where-archives-land",
+        "level": 2,
+        "prefix": "5."
+      }
+    ],
+    "guide/getting-started.pt.md": [
+      {
+        "heading_index": 2,
+        "id": "1-instalar",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 3,
+        "id": "2-criar-a-configuração-de-nível-de-usuário",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 4,
+        "id": "3-escolher-um-canal-de-cookies",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 5,
+        "id": "4-primeira-execução",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 6,
+        "id": "5-onde-os-arquivos-são-salvos",
+        "level": 2,
+        "prefix": "5."
+      }
+    ],
+    "guide/getting-started.ru.md": [
+      {
+        "heading_index": 2,
+        "id": "1-установка",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 3,
+        "id": "2-создание-пользовательской-конфигурации",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 4,
+        "id": "3-выбор-канала-cookie",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 5,
+        "id": "4-первый-запуск",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 6,
+        "id": "5-куда-попадают-архивы",
+        "level": 2,
+        "prefix": "5."
+      }
+    ],
+    "guide/getting-started.zh-CN.md": [
+      {
+        "heading_index": 2,
+        "id": "1-安装",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 3,
+        "id": "2-创建用户级配置",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 4,
+        "id": "3-选择-cookie-通道",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 5,
+        "id": "4-首次运行",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 6,
+        "id": "5-归档落盘位置",
+        "level": 2,
+        "prefix": "5."
+      }
+    ],
+    "guide/getting-started.zh-Hant.md": [
+      {
+        "heading_index": 2,
+        "id": "1-安裝",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 3,
+        "id": "2-建立使用者層級設定",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 4,
+        "id": "3-選擇-cookie-通道",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 5,
+        "id": "4-首次執行",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 6,
+        "id": "5-歸檔落盤位置",
+        "level": 2,
+        "prefix": "5."
+      }
+    ],
+    "reference/api/api-authentication.ar.md": [
+      {
+        "heading_index": 1,
+        "id": "1-نموذج-المصادقة",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "11-جلسة-ملفات-تعريف-الارتباط",
+        "level": 3,
+        "prefix": "1.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "12-حسابات-متعددة-اكتشفت-في-2026-07-20",
+        "level": 3,
+        "prefix": "1.2"
+      }
+    ],
+    "reference/api/api-authentication.de.md": [
+      {
+        "heading_index": 1,
+        "id": "1-authentifizierungsmodell",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "11-cookie-sitzung",
+        "level": 3,
+        "prefix": "1.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "12-mehrere-konten-entdeckt-am-2026-07-20",
+        "level": 3,
+        "prefix": "1.2"
+      }
+    ],
+    "reference/api/api-authentication.es.md": [
+      {
+        "heading_index": 1,
+        "id": "1-modelo-de-autenticación",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "11-sesión-de-cookie",
+        "level": 3,
+        "prefix": "1.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "12-multi-cuenta-descubierto-2026-07-20",
+        "level": 3,
+        "prefix": "1.2"
+      }
+    ],
+    "reference/api/api-authentication.fr.md": [
+      {
+        "heading_index": 1,
+        "id": "1-modèle-dauthentification",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "11-session-par-cookie",
+        "level": 3,
+        "prefix": "1.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "12-multi-comptes-découvert-le-2026-07-20",
+        "level": 3,
+        "prefix": "1.2"
+      }
+    ],
+    "reference/api/api-authentication.it.md": [
+      {
+        "heading_index": 1,
+        "id": "1-modello-di-autenticazione",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "11-sessione-basata-su-cookie",
+        "level": 3,
+        "prefix": "1.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "12-multi-account-scoperto-il-2026-07-20",
+        "level": 3,
+        "prefix": "1.2"
+      }
+    ],
+    "reference/api/api-authentication.ja.md": [
+      {
+        "heading_index": 1,
+        "id": "1-認証モデル",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "11-cookieセッション",
+        "level": 3,
+        "prefix": "1.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "12-マルチアカウント2026-07-20-確認",
+        "level": 3,
+        "prefix": "1.2"
+      }
+    ],
+    "reference/api/api-authentication.ko.md": [
+      {
+        "heading_index": 1,
+        "id": "1-인증-모델",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "11-쿠키-세션",
+        "level": 3,
+        "prefix": "1.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "12-다중-계정2026-07-20-확인",
+        "level": 3,
+        "prefix": "1.2"
+      }
+    ],
+    "reference/api/api-authentication.md": [
+      {
+        "heading_index": 1,
+        "id": "1-authentication-model",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "11-cookie-session",
+        "level": 3,
+        "prefix": "1.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "12-multi-account-discovered-2026-07-20",
+        "level": 3,
+        "prefix": "1.2"
+      }
+    ],
+    "reference/api/api-authentication.pt.md": [
+      {
+        "heading_index": 1,
+        "id": "1-modelo-de-autenticação",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "11-sessão-por-cookie",
+        "level": 3,
+        "prefix": "1.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "12-multi-contas-descoberto-em-2026-07-20",
+        "level": 3,
+        "prefix": "1.2"
+      }
+    ],
+    "reference/api/api-authentication.ru.md": [
+      {
+        "heading_index": 1,
+        "id": "1-модель-аутентификации",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "11-cookie-сессия",
+        "level": 3,
+        "prefix": "1.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "12-несколько-учётных-записей-обнаружено-2026-07-20",
+        "level": 3,
+        "prefix": "1.2"
+      }
+    ],
+    "reference/api/api-authentication.zh-CN.md": [
+      {
+        "heading_index": 1,
+        "id": "1-认证模型",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "11-cookie-会话",
+        "level": 3,
+        "prefix": "1.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "12-多账户2026-07-20-探明",
+        "level": 3,
+        "prefix": "1.2"
+      }
+    ],
+    "reference/api/api-authentication.zh-Hant.md": [
+      {
+        "heading_index": 1,
+        "id": "1-認證模型",
+        "level": 2,
+        "prefix": "1."
+      },
+      {
+        "heading_index": 2,
+        "id": "11-cookie-會話",
+        "level": 3,
+        "prefix": "1.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "12-多帳戶2026-07-20-探明",
+        "level": 3,
+        "prefix": "1.2"
+      }
+    ],
+    "reference/api/api-discovery-roadmap.ar.md": [
+      {
+        "heading_index": 1,
+        "id": "6-العناصر-المعروفة-غير-المستكشفة-المقرر-تحديدها-لاحقا",
+        "level": 2,
+        "prefix": "6."
+      },
+      {
+        "heading_index": 2,
+        "id": "7-طريقة-اكتشاف-نقطة-النهاية-التحليل-الثابت-لحزمة-الواجهة-الأمامية-بتكلفة-api-صفرية-تم-إنشاؤها-في-2026-07-20",
+        "level": 2,
+        "prefix": "7."
+      },
+      {
+        "heading_index": 4,
+        "id": "8-حالة-قدرة-نقطة-النهاية-الأداة-وخريطة-الطريق",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 5,
+        "id": "81-مصفوفة-حالة-القدرة",
+        "level": 3,
+        "prefix": "8.1"
+      },
+      {
+        "heading_index": 6,
+        "id": "82-خريطة-الطريق-النشطة",
+        "level": 3,
+        "prefix": "8.2"
+      },
+      {
+        "heading_index": 11,
+        "id": "83-القرارات-المغلقة-غير-المعتمدة",
+        "level": 3,
+        "prefix": "8.3"
+      }
+    ],
+    "reference/api/api-discovery-roadmap.de.md": [
+      {
+        "heading_index": 1,
+        "id": "6-bekannte-unerforschte-tbd-punkte",
+        "level": 2,
+        "prefix": "6."
+      },
+      {
+        "heading_index": 2,
+        "id": "7-endpunkt-erkennungsmethode-statische-analyse-des-frontend-bundles-null-api-kosten-etabliert-2026-07-20",
+        "level": 2,
+        "prefix": "7."
+      },
+      {
+        "heading_index": 4,
+        "id": "8-endpunkt-tool-fähigkeitsstatus-und-roadmap",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 5,
+        "id": "81-fähigkeitsstatus-matrix",
+        "level": 3,
+        "prefix": "8.1"
+      },
+      {
+        "heading_index": 6,
+        "id": "82-aktive-roadmap",
+        "level": 3,
+        "prefix": "8.2"
+      },
+      {
+        "heading_index": 11,
+        "id": "83-geschlossene-entscheidungen-nicht-übernommen",
+        "level": 3,
+        "prefix": "8.3"
+      }
+    ],
+    "reference/api/api-discovery-roadmap.es.md": [
+      {
+        "heading_index": 1,
+        "id": "6-elementos-conocidos-no-explorados-por-determinar",
+        "level": 2,
+        "prefix": "6."
+      },
+      {
+        "heading_index": 2,
+        "id": "7-método-de-descubrimiento-de-endpoints-análisis-estático-del-bundle-del-frontend-costo-de-api-cero-establecido-el-20-de-julio-de-2026",
+        "level": 2,
+        "prefix": "7."
+      },
+      {
+        "heading_index": 4,
+        "id": "8-estado-de-la-capacidad-de-endpoint-a-herramienta-y-hoja-de-ruta",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 5,
+        "id": "81-matriz-de-estado-de-capacidad",
+        "level": 3,
+        "prefix": "8.1"
+      },
+      {
+        "heading_index": 6,
+        "id": "82-hoja-de-ruta-activa",
+        "level": 3,
+        "prefix": "8.2"
+      },
+      {
+        "heading_index": 11,
+        "id": "83-decisiones-cerradas-no-adoptadas",
+        "level": 3,
+        "prefix": "8.3"
+      }
+    ],
+    "reference/api/api-discovery-roadmap.fr.md": [
+      {
+        "heading_index": 1,
+        "id": "6-éléments-connus-non-explorés-à-déterminer",
+        "level": 2,
+        "prefix": "6."
+      },
+      {
+        "heading_index": 2,
+        "id": "7-méthode-de-découverte-des-points-daccès-analyse-statique-du-bundle-frontend-coût-api-nul-établie-le-2026-07-20",
+        "level": 2,
+        "prefix": "7."
+      },
+      {
+        "heading_index": 4,
+        "id": "8-statut-de-la-capacité-point-daccès-outil-et-feuille-de-route",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 5,
+        "id": "81-matrice-des-statuts-de-capacité",
+        "level": 3,
+        "prefix": "8.1"
+      },
+      {
+        "heading_index": 6,
+        "id": "82-feuille-de-route-active",
+        "level": 3,
+        "prefix": "8.2"
+      },
+      {
+        "heading_index": 11,
+        "id": "83-décisions-fermées-non-adoptées",
+        "level": 3,
+        "prefix": "8.3"
+      }
+    ],
+    "reference/api/api-discovery-roadmap.it.md": [
+      {
+        "heading_index": 1,
+        "id": "6-elementi-noti-non-esplorati-da-definire",
+        "level": 2,
+        "prefix": "6."
+      },
+      {
+        "heading_index": 2,
+        "id": "7-metodo-di-scoperta-degli-endpoint-analisi-statica-del-bundle-frontend-costo-api-zero-stabilito-2026-07-20",
+        "level": 2,
+        "prefix": "7."
+      },
+      {
+        "heading_index": 4,
+        "id": "8-stato-e-roadmap-delle-capacità-endpoint-strumento",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 5,
+        "id": "81-matrice-dello-stato-delle-capacità",
+        "level": 3,
+        "prefix": "8.1"
+      },
+      {
+        "heading_index": 6,
+        "id": "82-roadmap-attiva",
+        "level": 3,
+        "prefix": "8.2"
+      },
+      {
+        "heading_index": 11,
+        "id": "83-decisioni-chiuse-non-adottate",
+        "level": 3,
+        "prefix": "8.3"
+      }
+    ],
+    "reference/api/api-discovery-roadmap.ja.md": [
+      {
+        "heading_index": 1,
+        "id": "6-既知の未探索未確認項目",
+        "level": 2,
+        "prefix": "6."
+      },
+      {
+        "heading_index": 2,
+        "id": "7-エンドポイント発見方法フロントエンドバンドル静的解析api-コストゼロ2026-07-20-確立",
+        "level": 2,
+        "prefix": "7."
+      },
+      {
+        "heading_index": 4,
+        "id": "8-エンドポイント-ツール機能ステータスとロードマップ",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 5,
+        "id": "81-機能ステータスマトリックス",
+        "level": 3,
+        "prefix": "8.1"
+      },
+      {
+        "heading_index": 6,
+        "id": "82-アクティブロードマップ",
+        "level": 3,
+        "prefix": "8.2"
+      },
+      {
+        "heading_index": 11,
+        "id": "83-クローズ決定-不採用",
+        "level": 3,
+        "prefix": "8.3"
+      }
+    ],
+    "reference/api/api-discovery-roadmap.ko.md": [
+      {
+        "heading_index": 1,
+        "id": "6-알려진-미탐색확인-대기-항목",
+        "level": 2,
+        "prefix": "6."
+      },
+      {
+        "heading_index": 2,
+        "id": "7-엔드포인트-발견-방법-프론트엔드-번들-정적-분석-api-비용-제로-2026-07-20-구축",
+        "level": 2,
+        "prefix": "7."
+      },
+      {
+        "heading_index": 4,
+        "id": "8-엔드포인트-도구-기능-상태-및-로드맵",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 5,
+        "id": "81-기능-상태-매트릭스",
+        "level": 3,
+        "prefix": "8.1"
+      },
+      {
+        "heading_index": 6,
+        "id": "82-활성-경로",
+        "level": 3,
+        "prefix": "8.2"
+      },
+      {
+        "heading_index": 11,
+        "id": "83-종료된-결정-채택하지-않음",
+        "level": 3,
+        "prefix": "8.3"
+      }
+    ],
+    "reference/api/api-discovery-roadmap.md": [
+      {
+        "heading_index": 1,
+        "id": "6-known-unexplored-tbd-items",
+        "level": 2,
+        "prefix": "6."
+      },
+      {
+        "heading_index": 2,
+        "id": "7-endpoint-discovery-method-frontend-bundle-static-analysis-zero-api-cost-established-2026-07-20",
+        "level": 2,
+        "prefix": "7."
+      },
+      {
+        "heading_index": 4,
+        "id": "8-endpoint-tool-capability-status-and-roadmap",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 5,
+        "id": "81-capability-status-matrix",
+        "level": 3,
+        "prefix": "8.1"
+      },
+      {
+        "heading_index": 6,
+        "id": "82-active-roadmap",
+        "level": 3,
+        "prefix": "8.2"
+      },
+      {
+        "heading_index": 11,
+        "id": "83-closed-decisions-not-adopted",
+        "level": 3,
+        "prefix": "8.3"
+      }
+    ],
+    "reference/api/api-discovery-roadmap.pt.md": [
+      {
+        "heading_index": 1,
+        "id": "6-itens-conhecidos-não-explorados-tbd",
+        "level": 2,
+        "prefix": "6."
+      },
+      {
+        "heading_index": 2,
+        "id": "7-método-de-descoberta-de-endpoints-análise-estática-do-bundle-frontend-custo-zero-de-api-estabelecido-em-20072026",
+        "level": 2,
+        "prefix": "7."
+      },
+      {
+        "heading_index": 4,
+        "id": "8-status-de-capacidade-do-endpoint-ferramenta-e-roteiro",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 5,
+        "id": "81-matriz-de-status-de-capacidade",
+        "level": 3,
+        "prefix": "8.1"
+      },
+      {
+        "heading_index": 6,
+        "id": "82-roteiro-ativo",
+        "level": 3,
+        "prefix": "8.2"
+      },
+      {
+        "heading_index": 11,
+        "id": "83-decisões-fechadas-não-adotadas",
+        "level": 3,
+        "prefix": "8.3"
+      }
+    ],
+    "reference/api/api-discovery-roadmap.ru.md": [
+      {
+        "heading_index": 1,
+        "id": "6-известные-неисследованные-неопределённые-пункты",
+        "level": 2,
+        "prefix": "6."
+      },
+      {
+        "heading_index": 2,
+        "id": "7-метод-обнаружения-конечных-точек-статический-анализ-фронтенд-бандла-нулевая-стоимость-api-установлен-2026-07-20",
+        "level": 2,
+        "prefix": "7."
+      },
+      {
+        "heading_index": 4,
+        "id": "8-статус-возможностей-конечных-точек-и-дорожная-карта",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 5,
+        "id": "81-матрица-статуса-возможностей",
+        "level": 3,
+        "prefix": "8.1"
+      },
+      {
+        "heading_index": 6,
+        "id": "82-активная-дорожная-карта",
+        "level": 3,
+        "prefix": "8.2"
+      },
+      {
+        "heading_index": 11,
+        "id": "83-закрытые-решения-не-приняты",
+        "level": 3,
+        "prefix": "8.3"
+      }
+    ],
+    "reference/api/api-discovery-roadmap.zh-CN.md": [
+      {
+        "heading_index": 1,
+        "id": "6-已知未探索待确认项",
+        "level": 2,
+        "prefix": "6."
+      },
+      {
+        "heading_index": 2,
+        "id": "7-端点发现方法前端-bundle-静态分析零-api-成本2026-07-20-建立",
+        "level": 2,
+        "prefix": "7."
+      },
+      {
+        "heading_index": 4,
+        "id": "8-端点-工具能力状态与路线图",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 5,
+        "id": "81-能力状态矩阵",
+        "level": 3,
+        "prefix": "8.1"
+      },
+      {
+        "heading_index": 6,
+        "id": "82-活跃路线",
+        "level": 3,
+        "prefix": "8.2"
+      },
+      {
+        "heading_index": 11,
+        "id": "83-已关闭决定-不采用",
+        "level": 3,
+        "prefix": "8.3"
+      }
+    ],
+    "reference/api/api-discovery-roadmap.zh-Hant.md": [
+      {
+        "heading_index": 1,
+        "id": "6-已知未探索待確認項",
+        "level": 2,
+        "prefix": "6."
+      },
+      {
+        "heading_index": 2,
+        "id": "7-端點發現方法前端-bundle-靜態分析零-api-成本2026-07-20-建立",
+        "level": 2,
+        "prefix": "7."
+      },
+      {
+        "heading_index": 4,
+        "id": "8-端點-工具能力狀態與路線圖",
+        "level": 2,
+        "prefix": "8."
+      },
+      {
+        "heading_index": 5,
+        "id": "81-能力狀態矩陣",
+        "level": 3,
+        "prefix": "8.1"
+      },
+      {
+        "heading_index": 6,
+        "id": "82-活躍路線",
+        "level": 3,
+        "prefix": "8.2"
+      },
+      {
+        "heading_index": 11,
+        "id": "83-已關閉決定-不採用",
+        "level": 3,
+        "prefix": "8.3"
+      }
+    ],
+    "reference/api/api-graphql.ar.md": [
+      {
+        "heading_index": 1,
+        "id": "2-graphql-الاستعلامات-المستمرة-apq",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 2,
+        "id": "21-librarythreadsrelayquery-سرد-الصفحة-الأولى",
+        "level": 3,
+        "prefix": "2.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "22-libraryrecentthreadspaginationquery-التصفح",
+        "level": 3,
+        "prefix": "2.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "23-مجموعة-عمليات-لوحة-معلومات-computer-مستخرجة-من-جزء-المسار-2026-07-20-غير-مسجلة-على-الخادم",
+        "level": 3,
+        "prefix": "2.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "24-ملاحظات",
+        "level": 3,
+        "prefix": "2.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "25-مفاتيح-اتصال-لوحة-المعلومات-المستخرجة-مفاتيح-ذاكرة-التخزين-المؤقت-relay-لتصحيح-الأخطاء",
+        "level": 3,
+        "prefix": "2.5"
+      }
+    ],
+    "reference/api/api-graphql.de.md": [
+      {
+        "heading_index": 1,
+        "id": "2-graphql-persistierte-abfragen-apq",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 2,
+        "id": "21-librarythreadsrelayquery-erste-seite-auflisten",
+        "level": 3,
+        "prefix": "2.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "22-libraryrecentthreadspaginationquery-paginierung",
+        "level": 3,
+        "prefix": "2.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "23-computer-dashboard-operationsgruppe-extrahiert-aus-routen-chunk-2026-07-20-nicht-auf-dem-server-registriert",
+        "level": 3,
+        "prefix": "2.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "24-hinweise",
+        "level": 3,
+        "prefix": "2.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "25-extrahierte-dashboard-verbindungsschlüssel-relay-cache-schlüssel-zum-debuggen",
+        "level": 3,
+        "prefix": "2.5"
+      }
+    ],
+    "reference/api/api-graphql.es.md": [
+      {
+        "heading_index": 1,
+        "id": "2-graphql-consultas-persistentes-apq",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 2,
+        "id": "21-librarythreadsrelayquery-listar-primera-página",
+        "level": 3,
+        "prefix": "2.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "22-libraryrecentthreadspaginationquery-paginación",
+        "level": 3,
+        "prefix": "2.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "23-grupo-de-operaciones-del-panel-de-computer-extraído-del-chunk-de-ruta-2026-07-20-no-registrado-en-el-servidor",
+        "level": 3,
+        "prefix": "2.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "24-notas",
+        "level": 3,
+        "prefix": "2.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "25-claves-de-conexión-del-panel-extraídas-claves-de-caché-de-relay-para-depuración",
+        "level": 3,
+        "prefix": "2.5"
+      }
+    ],
+    "reference/api/api-graphql.fr.md": [
+      {
+        "heading_index": 1,
+        "id": "2-graphql-requêtes-persistées-apq",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 2,
+        "id": "21-librarythreadsrelayquery-liste-de-la-première-page",
+        "level": 3,
+        "prefix": "2.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "22-libraryrecentthreadspaginationquery-pagination",
+        "level": 3,
+        "prefix": "2.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "23-groupe-dopérations-du-tableau-de-bord-computer-extrait-du-chunk-de-route-2026-07-20-non-enregistré-sur-le-serveur",
+        "level": 3,
+        "prefix": "2.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "24-remarques",
+        "level": 3,
+        "prefix": "2.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "25-clés-de-connexion-du-tableau-de-bord-extraites-clés-de-cache-relay-pour-le-débogage",
+        "level": 3,
+        "prefix": "2.5"
+      }
+    ],
+    "reference/api/api-graphql.it.md": [
+      {
+        "heading_index": 1,
+        "id": "2-graphql-query-persistenti-apq",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 2,
+        "id": "21-librarythreadsrelayquery-elenco-prima-pagina",
+        "level": 3,
+        "prefix": "2.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "22-libraryrecentthreadspaginationquery-paginazione",
+        "level": 3,
+        "prefix": "2.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "23-gruppo-di-operazioni-dashboard-computer-estratto-dal-chunk-route-2026-07-20-non-registrato-sul-server",
+        "level": 3,
+        "prefix": "2.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "24-note",
+        "level": 3,
+        "prefix": "2.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "25-chiavi-di-connessione-dashboard-estratte-chiavi-cache-relay-per-debug",
+        "level": 3,
+        "prefix": "2.5"
+      }
+    ],
+    "reference/api/api-graphql.ja.md": [
+      {
+        "heading_index": 1,
+        "id": "2-graphql永続化クエリ-apq",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 2,
+        "id": "21-librarythreadsrelayqueryリストトップページ",
+        "level": 3,
+        "prefix": "2.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "22-libraryrecentthreadspaginationqueryページネーション",
+        "level": 3,
+        "prefix": "2.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "23-computer-ダッシュボード操作グループ2026-07-20-に-route-chunk-から抽出サーバー未登録",
+        "level": 3,
+        "prefix": "2.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "24-注意事項",
+        "level": 3,
+        "prefix": "2.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "25-抽出済みダッシュボード-connection-keysrelay-キャッシュキーデバッグ用",
+        "level": 3,
+        "prefix": "2.5"
+      }
+    ],
+    "reference/api/api-graphql.ko.md": [
+      {
+        "heading_index": 1,
+        "id": "2-graphql-지속적-쿼리-apq",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 2,
+        "id": "21-librarythreadsrelayquery-목록-첫-페이지",
+        "level": 3,
+        "prefix": "2.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "22-libraryrecentthreadspaginationquery-페이지-매김",
+        "level": 3,
+        "prefix": "2.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "23-computer-대시보드-작업-그룹-2026-07-20-route-chunk에서-추출-서버에-미등록",
+        "level": 3,
+        "prefix": "2.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "24-주의-사항",
+        "level": 3,
+        "prefix": "2.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "25-추출된-대시보드-connection-keys-relay-캐시-키-디버깅용",
+        "level": 3,
+        "prefix": "2.5"
+      }
+    ],
+    "reference/api/api-graphql.md": [
+      {
+        "heading_index": 1,
+        "id": "2-graphql-persisted-queries-apq",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 2,
+        "id": "21-librarythreadsrelayquery-list-first-page",
+        "level": 3,
+        "prefix": "2.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "22-libraryrecentthreadspaginationquery-pagination",
+        "level": 3,
+        "prefix": "2.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "23-computer-dashboard-operation-group-extracted-from-route-chunk-2026-07-20-not-registered-on-the-server",
+        "level": 3,
+        "prefix": "2.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "24-notes",
+        "level": 3,
+        "prefix": "2.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "25-extracted-dashboard-connection-keys-relay-cache-keys-for-debugging",
+        "level": 3,
+        "prefix": "2.5"
+      }
+    ],
+    "reference/api/api-graphql.pt.md": [
+      {
+        "heading_index": 1,
+        "id": "2-graphql-consultas-persistidas-apq",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 2,
+        "id": "21-librarythreadsrelayquery-listar-primeira-página",
+        "level": 3,
+        "prefix": "2.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "22-libraryrecentthreadspaginationquery-paginação",
+        "level": 3,
+        "prefix": "2.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "23-grupo-de-operações-do-painel-do-computer-extraído-do-chunk-de-rota-2026-07-20-não-registrado-no-servidor",
+        "level": 3,
+        "prefix": "2.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "24-notas",
+        "level": 3,
+        "prefix": "2.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "25-chaves-de-conexão-do-painel-extraídas-chaves-de-cache-relay-para-depuração",
+        "level": 3,
+        "prefix": "2.5"
+      }
+    ],
+    "reference/api/api-graphql.ru.md": [
+      {
+        "heading_index": 1,
+        "id": "2-graphql-persisted-queries-apq",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 2,
+        "id": "21-librarythreadsrelayquery-список-первой-страницы",
+        "level": 3,
+        "prefix": "2.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "22-libraryrecentthreadspaginationquery-пагинация",
+        "level": 3,
+        "prefix": "2.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "23-группа-операций-панели-управления-computer-извлечена-из-чанка-маршрута-2026-07-20-не-зарегистрирована-на-сервере",
+        "level": 3,
+        "prefix": "2.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "24-примечания",
+        "level": 3,
+        "prefix": "2.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "25-извлечённые-ключи-соединений-панели-управления-ключи-кэша-relay-для-отладки",
+        "level": 3,
+        "prefix": "2.5"
+      }
+    ],
+    "reference/api/api-graphql.zh-CN.md": [
+      {
+        "heading_index": 1,
+        "id": "2-graphql持久化查询-apq",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 2,
+        "id": "21-librarythreadsrelayquery列表首页",
+        "level": 3,
+        "prefix": "2.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "22-libraryrecentthreadspaginationquery翻页",
+        "level": 3,
+        "prefix": "2.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "23-computer-仪表盘操作组2026-07-20-从-route-chunk-提取服务器未注册",
+        "level": 3,
+        "prefix": "2.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "24-注意事项",
+        "level": 3,
+        "prefix": "2.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "25-已提取的仪表盘-connection-keysrelay-缓存键调试用",
+        "level": 3,
+        "prefix": "2.5"
+      }
+    ],
+    "reference/api/api-graphql.zh-Hant.md": [
+      {
+        "heading_index": 1,
+        "id": "2-graphql持久化查詢-apq",
+        "level": 2,
+        "prefix": "2."
+      },
+      {
+        "heading_index": 2,
+        "id": "21-librarythreadsrelayquery列表首頁",
+        "level": 3,
+        "prefix": "2.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "22-libraryrecentthreadspaginationquery翻頁",
+        "level": 3,
+        "prefix": "2.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "23-computer-儀表板操作組2026-07-20-從-route-chunk-提取伺服器未註冊",
+        "level": 3,
+        "prefix": "2.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "24-注意事項",
+        "level": 3,
+        "prefix": "2.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "25-已提取的儀表板-connection-keysrelay-快取鍵除錯用",
+        "level": 3,
+        "prefix": "2.5"
+      }
+    ],
+    "reference/api/api-responses-errors.ar.md": [
+      {
+        "heading_index": 1,
+        "id": "4-أساسيات-هيكل-الاستجابة-انضباط-التحليل",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 2,
+        "id": "5-دلالات-الخطأ-والتحكم-في-المخاطر",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 3,
+        "id": "51-دلالات-المقاطعة-القيم-المرصودة-2026-07-22-مصدر-تصنيف-الحقيقة-parsersclassify_wf_status",
+        "level": 3,
+        "prefix": "5.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "52-side_by_side_metadata-إشارة-متغير-إعادة-كتابة-الإجابة-تم-البت-فيه-2026-07-23",
+        "level": 3,
+        "prefix": "5.2"
+      }
+    ],
+    "reference/api/api-responses-errors.de.md": [
+      {
+        "heading_index": 1,
+        "id": "4-grundlagen-der-antwortstruktur-parsing-disziplin",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 2,
+        "id": "5-fehler-und-risikokontrollsemantik",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 3,
+        "id": "51-unterbrechungssemantik-beobachtete-werte-22072026-klassifikationsquelle-der-wahrheit-parsersclassify_wf_status",
+        "level": 3,
+        "prefix": "5.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "52-side_by_side_metadata-antwort-neuschreibungs-variantensignal-geklärt-am-23072026",
+        "level": 3,
+        "prefix": "5.2"
+      }
+    ],
+    "reference/api/api-responses-errors.es.md": [
+      {
+        "heading_index": 1,
+        "id": "4-elementos-esenciales-de-la-estructura-de-la-respuesta-disciplina-de-análisis",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 2,
+        "id": "5-semántica-de-errores-y-control-de-riesgos",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 3,
+        "id": "51-semántica-de-interrupción-valores-observados-2026-07-22-fuente-de-verdad-de-clasificación-parsersclassify_wf_status",
+        "level": 3,
+        "prefix": "5.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "52-side_by_side_metadata-señal-de-variante-de-reescritura-de-respuesta-resuelto-el-2026-07-23",
+        "level": 3,
+        "prefix": "5.2"
+      }
+    ],
+    "reference/api/api-responses-errors.fr.md": [
+      {
+        "heading_index": 1,
+        "id": "4-éléments-essentiels-de-la-structure-des-réponses-discipline-danalyse",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 2,
+        "id": "5-sémantique-des-erreurs-et-du-contrôle-des-risques",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 3,
+        "id": "51-sémantique-dinterruption-valeurs-observées-2026-07-22-source-de-vérité-de-classification-parsersclassify_wf_status",
+        "level": 3,
+        "prefix": "5.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "52-side_by_side_metadata-signal-de-variante-de-réécriture-de-réponse-résolu-le-2026-07-23",
+        "level": 3,
+        "prefix": "5.2"
+      }
+    ],
+    "reference/api/api-responses-errors.it.md": [
+      {
+        "heading_index": 1,
+        "id": "4-elementi-essenziali-della-struttura-delle-risposte-disciplina-di-parsing",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 2,
+        "id": "5-semantica-degli-errori-e-del-controllo-del-rischio",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 3,
+        "id": "51-semantica-di-interruzione-valori-osservati-22-07-2026-fonte-di-verità-della-classificazione-parsersclassify_wf_status",
+        "level": 3,
+        "prefix": "5.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "52-side_by_side_metadata-segnale-di-variante-di-riscrittura-della-risposta-risolto-il-23-07-2026",
+        "level": 3,
+        "prefix": "5.2"
+      }
+    ],
+    "reference/api/api-responses-errors.ja.md": [
+      {
+        "heading_index": 1,
+        "id": "4-応答構造の要点解析の規律",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 2,
+        "id": "5-エラーとリスク管理セマンティクス",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 3,
+        "id": "51-中断セマンティクスの実測値2026-07-22分類真ソース-parsersclassify_wf_status",
+        "level": 3,
+        "prefix": "5.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "52-side_by_side_metadata回答書き換えバリアントシグナル2026-07-23-確定",
+        "level": 3,
+        "prefix": "5.2"
+      }
+    ],
+    "reference/api/api-responses-errors.ko.md": [
+      {
+        "heading_index": 1,
+        "id": "4-응답-구조-핵심-사항-파싱-규칙",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 2,
+        "id": "5-오류-및-리스크-관리-의미",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 3,
+        "id": "51-중단-의미-실측-값2026-07-22-분류-진실-소스-parsersclassify_wf_status",
+        "level": 3,
+        "prefix": "5.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "52-side_by_side_metadata-답변-재작성-변형-신호2026-07-23-확정",
+        "level": 3,
+        "prefix": "5.2"
+      }
+    ],
+    "reference/api/api-responses-errors.md": [
+      {
+        "heading_index": 1,
+        "id": "4-response-structure-essentials-parsing-discipline",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 2,
+        "id": "5-error-and-risk-control-semantics",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 3,
+        "id": "51-interruption-semantics-observed-values-2026-07-22-classification-source-of-truth-parsersclassify_wf_status",
+        "level": 3,
+        "prefix": "5.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "52-side_by_side_metadata-answer-rewrite-variant-signal-settled-2026-07-23",
+        "level": 3,
+        "prefix": "5.2"
+      }
+    ],
+    "reference/api/api-responses-errors.pt.md": [
+      {
+        "heading_index": 1,
+        "id": "4-fundamentos-da-estrutura-de-resposta-disciplina-de-análise",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 2,
+        "id": "5-semântica-de-erro-e-controle-de-risco",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 3,
+        "id": "51-semântica-de-interrupção-valores-observados-2026-07-22-fonte-da-verdade-de-classificação-parsersclassify_wf_status",
+        "level": 3,
+        "prefix": "5.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "52-side_by_side_metadata-sinal-de-variante-de-reescrita-de-resposta-resolvido-em-2026-07-23",
+        "level": 3,
+        "prefix": "5.2"
+      }
+    ],
+    "reference/api/api-responses-errors.ru.md": [
+      {
+        "heading_index": 1,
+        "id": "4-основы-структуры-ответа-дисциплина-разбора",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 2,
+        "id": "5-семантика-ошибок-и-контроля-рисков",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 3,
+        "id": "51-семантика-прерываний-наблюдаемые-значения-2026-07-22-источник-истины-классификации-parsersclassify_wf_status",
+        "level": 3,
+        "prefix": "5.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "52-side_by_side_metadata-сигнал-варианта-перезаписи-ответа-установлено-2026-07-23",
+        "level": 3,
+        "prefix": "5.2"
+      }
+    ],
+    "reference/api/api-responses-errors.zh-CN.md": [
+      {
+        "heading_index": 1,
+        "id": "4-响应结构要点解析纪律",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 2,
+        "id": "5-错误与风控语义",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 3,
+        "id": "51-中断语义实测取值2026-07-22分类真源-parsersclassify_wf_status",
+        "level": 3,
+        "prefix": "5.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "52-side_by_side_metadata答案重写变体信号2026-07-23-定案",
+        "level": 3,
+        "prefix": "5.2"
+      }
+    ],
+    "reference/api/api-responses-errors.zh-Hant.md": [
+      {
+        "heading_index": 1,
+        "id": "4-響應結構要點解析紀律",
+        "level": 2,
+        "prefix": "4."
+      },
+      {
+        "heading_index": 2,
+        "id": "5-錯誤與風控語義",
+        "level": 2,
+        "prefix": "5."
+      },
+      {
+        "heading_index": 3,
+        "id": "51-中斷語義實測取值2026-07-22分類真源-parsersclassify_wf_status",
+        "level": 3,
+        "prefix": "5.1"
+      },
+      {
+        "heading_index": 4,
+        "id": "52-side_by_side_metadata答案重寫變體信號2026-07-23-定案",
+        "level": 3,
+        "prefix": "5.2"
+      }
+    ],
+    "reference/api/api-rest-endpoints.ar.md": [
+      {
+        "heading_index": 1,
+        "id": "3-نقاط-نهاية-rest-مجمعة-حسب-الغرض",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "31-محتوى-المحادثة-مسار-التصدير-الرئيسي",
+        "level": 3,
+        "prefix": "3.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "32-بيانات-الأصول-الوصفية-تم-اكتشافها-في-2026-07-20-منقذ-للحياة-للأصول-منتهية-الصلاحية",
+        "level": 3,
+        "prefix": "3.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "33-المساحات-المجموعات",
+        "level": 3,
+        "prefix": "3.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "34-الحساب-الجلسة",
+        "level": 3,
+        "prefix": "3.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "35-استخدام-الرصيد-تم-اكتشافه-في-2026-07-20",
+        "level": 3,
+        "prefix": "3.5"
+      },
+      {
+        "heading_index": 7,
+        "id": "36-التصدير-الرسمي-الواجهة-الخلفية-لزر-تصدير-في-الصفحة-تم-اكتشافه-في-2026-07-20",
+        "level": 3,
+        "prefix": "3.6"
+      },
+      {
+        "heading_index": 8,
+        "id": "37-تنزيل-الأصول-التقارير",
+        "level": 3,
+        "prefix": "3.7"
+      },
+      {
+        "heading_index": 9,
+        "id": "38-نقاط-نهاية-أخرى-ملاحظة-تحميل-الصفحة-لم-يتم-استكشافها",
+        "level": 3,
+        "prefix": "3.8"
+      },
+      {
+        "heading_index": 10,
+        "id": "39-إرسال-الرسائل-والقياس-عن-بعد-2026-07-20-webbridge-cdp",
+        "level": 3,
+        "prefix": "3.9"
+      }
+    ],
+    "reference/api/api-rest-endpoints.de.md": [
+      {
+        "heading_index": 1,
+        "id": "3-rest-endpunkte-nach-zweck-gruppiert",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "31-thread-inhalt-hauptexportpfad",
+        "level": 3,
+        "prefix": "3.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "32-asset-metadaten-entdeckt-2026-07-20-lebensretter-für-abgelaufene-assets",
+        "level": 3,
+        "prefix": "3.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "33-spaces-sammlungen",
+        "level": 3,
+        "prefix": "3.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "34-konto-sitzung",
+        "level": 3,
+        "prefix": "3.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "35-guthabennutzung-entdeckt-2026-07-20",
+        "level": 3,
+        "prefix": "3.5"
+      },
+      {
+        "heading_index": 7,
+        "id": "36-offizieller-export-backend-des-exportieren-buttons-auf-der-seite-entdeckt-2026-07-20",
+        "level": 3,
+        "prefix": "3.6"
+      },
+      {
+        "heading_index": 8,
+        "id": "37-asset-bericht-download",
+        "level": 3,
+        "prefix": "3.7"
+      },
+      {
+        "heading_index": 9,
+        "id": "38-weitere-beobachtete-endpunkte-seitenladen-nicht-erkundet",
+        "level": 3,
+        "prefix": "3.8"
+      },
+      {
+        "heading_index": 10,
+        "id": "39-nachrichtenübermittlung-und-telemetrie-2026-07-20-webbridge-cdp",
+        "level": 3,
+        "prefix": "3.9"
+      }
+    ],
+    "reference/api/api-rest-endpoints.es.md": [
+      {
+        "heading_index": 1,
+        "id": "3-puntos-finales-rest-agrupados-por-propósito",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "31-contenido-del-hilo-ruta-de-exportación-principal",
+        "level": 3,
+        "prefix": "3.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "32-metadatos-de-activos-descubierto-2026-07-20-salvavidas-para-activos-caducados",
+        "level": 3,
+        "prefix": "3.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "33-espacios-colecciones",
+        "level": 3,
+        "prefix": "3.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "34-cuenta-sesión",
+        "level": 3,
+        "prefix": "3.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "35-uso-de-crédito-descubierto-2026-07-20",
+        "level": 3,
+        "prefix": "3.5"
+      },
+      {
+        "heading_index": 7,
+        "id": "36-exportación-oficial-backend-del-botón-exportar-de-la-página-descubierto-2026-07-20",
+        "level": 3,
+        "prefix": "3.6"
+      },
+      {
+        "heading_index": 8,
+        "id": "37-descarga-de-activos-informes",
+        "level": 3,
+        "prefix": "3.7"
+      },
+      {
+        "heading_index": 9,
+        "id": "38-otros-puntos-finales-observados-carga-de-página-no-explorado",
+        "level": 3,
+        "prefix": "3.8"
+      },
+      {
+        "heading_index": 10,
+        "id": "39-envío-de-mensajes-y-telemetría-2026-07-20-webbridge-cdp",
+        "level": 3,
+        "prefix": "3.9"
+      }
+    ],
+    "reference/api/api-rest-endpoints.fr.md": [
+      {
+        "heading_index": 1,
+        "id": "3-points-daccès-rest-regroupés-par-objectif",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "31-contenu-des-fils-de-discussion-chemin-dexportation-principal",
+        "level": 3,
+        "prefix": "3.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "32-métadonnées-des-ressources-découvert-le-20072026-salvateur-pour-les-ressources-expirées",
+        "level": 3,
+        "prefix": "3.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "33-espaces-collections",
+        "level": 3,
+        "prefix": "3.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "34-compte-session",
+        "level": 3,
+        "prefix": "3.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "35-utilisation-du-crédit-découvert-le-20072026",
+        "level": 3,
+        "prefix": "3.5"
+      },
+      {
+        "heading_index": 7,
+        "id": "36-exportation-officielle-backend-du-bouton-exporter-de-la-page-découvert-le-20072026",
+        "level": 3,
+        "prefix": "3.6"
+      },
+      {
+        "heading_index": 8,
+        "id": "37-téléchargement-de-ressources-rapports",
+        "level": 3,
+        "prefix": "3.7"
+      },
+      {
+        "heading_index": 9,
+        "id": "38-autres-points-daccès-observés-chargement-de-page-non-exploré",
+        "level": 3,
+        "prefix": "3.8"
+      },
+      {
+        "heading_index": 10,
+        "id": "39-soumission-de-message-et-télémétrie-webbridge-cdp-du-20072026",
+        "level": 3,
+        "prefix": "3.9"
+      }
+    ],
+    "reference/api/api-rest-endpoints.it.md": [
+      {
+        "heading_index": 1,
+        "id": "3-endpoint-rest-raggruppati-per-scopo",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "31-contenuto-thread-percorso-di-esportazione-principale",
+        "level": 3,
+        "prefix": "3.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "32-metadati-degli-asset-scoperti-2026-07-20-salvavita-per-asset-scaduti",
+        "level": 3,
+        "prefix": "3.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "33-spazi-raccolte",
+        "level": 3,
+        "prefix": "3.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "34-account-sessione",
+        "level": 3,
+        "prefix": "3.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "35-utilizzo-crediti-scoperto-2026-07-20",
+        "level": 3,
+        "prefix": "3.5"
+      },
+      {
+        "heading_index": 7,
+        "id": "36-esportazione-ufficiale-backend-del-pulsante-esporta-della-pagina-scoperto-2026-07-20",
+        "level": 3,
+        "prefix": "3.6"
+      },
+      {
+        "heading_index": 8,
+        "id": "37-download-asset-report",
+        "level": 3,
+        "prefix": "3.7"
+      },
+      {
+        "heading_index": 9,
+        "id": "38-altri-endpoint-osservati-caricamento-pagina-non-esplorati",
+        "level": 3,
+        "prefix": "3.8"
+      },
+      {
+        "heading_index": 10,
+        "id": "39-invio-messaggi-e-telemetria-2026-07-20-webbridge-cdp",
+        "level": 3,
+        "prefix": "3.9"
+      }
+    ],
+    "reference/api/api-rest-endpoints.ja.md": [
+      {
+        "heading_index": 1,
+        "id": "3-rest-エンドポイント用途別グループ",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "31-スレッドコンテンツエクスポートのメインパス",
+        "level": 3,
+        "prefix": "3.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "32-アセットメタデータ2026-07-20-解明期限切れアセットの救世主",
+        "level": 3,
+        "prefix": "3.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "33-スペースコレクション",
+        "level": 3,
+        "prefix": "3.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "34-アカウントセッション",
+        "level": 3,
+        "prefix": "3.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "35-クレジット使用量2026-07-20-解明",
+        "level": 3,
+        "prefix": "3.5"
+      },
+      {
+        "heading_index": 7,
+        "id": "36-公式エクスポートページのエクスポートボタンのバックエンド2026-07-20-解明",
+        "level": 3,
+        "prefix": "3.6"
+      },
+      {
+        "heading_index": 8,
+        "id": "37-アセットレポートダウンロード",
+        "level": 3,
+        "prefix": "3.7"
+      },
+      {
+        "heading_index": 9,
+        "id": "38-その他観測されたエンドポイントページ読み込み未詳細",
+        "level": 3,
+        "prefix": "3.8"
+      },
+      {
+        "heading_index": 10,
+        "id": "39-メッセージ送信とテレメトリー2026-07-20-webbridge-cdp-解明",
+        "level": 3,
+        "prefix": "3.9"
+      }
+    ],
+    "reference/api/api-rest-endpoints.ko.md": [
+      {
+        "heading_index": 1,
+        "id": "3-rest-엔드포인트-용도별-그룹",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "31-스레드-콘텐츠-내보내기-기본-경로",
+        "level": 3,
+        "prefix": "3.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "32-자산-메타데이터-2026-07-20-확인-만료된-자산-구제책",
+        "level": 3,
+        "prefix": "3.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "33-공간컬렉션",
+        "level": 3,
+        "prefix": "3.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "34-계정세션",
+        "level": 3,
+        "prefix": "3.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "35-포인트-사용량2026-07-20-확인",
+        "level": 3,
+        "prefix": "3.5"
+      },
+      {
+        "heading_index": 7,
+        "id": "36-공식-내보내기페이지-내보내기-버튼의-백엔드-2026-07-20-확인",
+        "level": 3,
+        "prefix": "3.6"
+      },
+      {
+        "heading_index": 8,
+        "id": "37-자산보고서-다운로드",
+        "level": 3,
+        "prefix": "3.7"
+      },
+      {
+        "heading_index": 9,
+        "id": "38-기타-관측된-엔드포인트페이지-로드-깊게-들어가지-않음",
+        "level": 3,
+        "prefix": "3.8"
+      },
+      {
+        "heading_index": 10,
+        "id": "39-메시지-제출-및-원격-측정2026-07-20-webbridge-cdp-확인",
+        "level": 3,
+        "prefix": "3.9"
+      }
+    ],
+    "reference/api/api-rest-endpoints.md": [
+      {
+        "heading_index": 1,
+        "id": "3-rest-endpoints-grouped-by-purpose",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "31-thread-content-main-export-path",
+        "level": 3,
+        "prefix": "3.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "32-asset-metadata-discovered-2026-07-20-lifesaver-for-expired-assets",
+        "level": 3,
+        "prefix": "3.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "33-spaces-collections",
+        "level": 3,
+        "prefix": "3.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "34-account-session",
+        "level": 3,
+        "prefix": "3.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "35-credit-usage-discovered-2026-07-20",
+        "level": 3,
+        "prefix": "3.5"
+      },
+      {
+        "heading_index": 7,
+        "id": "36-official-export-backend-of-the-page-export-button-discovered-2026-07-20",
+        "level": 3,
+        "prefix": "3.6"
+      },
+      {
+        "heading_index": 8,
+        "id": "37-asset-report-download",
+        "level": 3,
+        "prefix": "3.7"
+      },
+      {
+        "heading_index": 9,
+        "id": "38-other-observed-endpoints-page-load-not-explored",
+        "level": 3,
+        "prefix": "3.8"
+      },
+      {
+        "heading_index": 10,
+        "id": "39-message-submission-and-telemetry-2026-07-20-webbridge-cdp",
+        "level": 3,
+        "prefix": "3.9"
+      }
+    ],
+    "reference/api/api-rest-endpoints.pt.md": [
+      {
+        "heading_index": 1,
+        "id": "3-endpoints-rest-agrupados-por-finalidade",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "31-conteúdo-da-thread-caminho-de-exportação-principal",
+        "level": 3,
+        "prefix": "3.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "32-metadados-de-assets-descoberto-em-2026-07-20-salva-vidas-para-assets-expirados",
+        "level": 3,
+        "prefix": "3.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "33-espaços-coleções",
+        "level": 3,
+        "prefix": "3.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "34-conta-sessão",
+        "level": 3,
+        "prefix": "3.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "35-uso-de-crédito-descoberto-em-2026-07-20",
+        "level": 3,
+        "prefix": "3.5"
+      },
+      {
+        "heading_index": 7,
+        "id": "36-exportação-oficial-backend-do-botão-exportar-da-página-descoberto-em-2026-07-20",
+        "level": 3,
+        "prefix": "3.6"
+      },
+      {
+        "heading_index": 8,
+        "id": "37-download-de-asset-relatório",
+        "level": 3,
+        "prefix": "3.7"
+      },
+      {
+        "heading_index": 9,
+        "id": "38-outros-endpoints-observados-carregamento-de-página-não-explorado",
+        "level": 3,
+        "prefix": "3.8"
+      },
+      {
+        "heading_index": 10,
+        "id": "39-envio-de-mensagem-e-telemetria-2026-07-20-webbridge-cdp",
+        "level": 3,
+        "prefix": "3.9"
+      }
+    ],
+    "reference/api/api-rest-endpoints.ru.md": [
+      {
+        "heading_index": 1,
+        "id": "3-rest-конечные-точки-сгруппированы-по-назначению",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "31-содержимое-обсуждений-основной-путь-экспорта",
+        "level": 3,
+        "prefix": "3.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "32-метаданные-ресурсов-обнаружено-2026-07-20-спасение-для-просроченных-ресурсов",
+        "level": 3,
+        "prefix": "3.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "33-пространства-коллекции",
+        "level": 3,
+        "prefix": "3.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "34-учетная-запись-сессия",
+        "level": 3,
+        "prefix": "3.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "35-использование-кредитов-обнаружено-2026-07-20",
+        "level": 3,
+        "prefix": "3.5"
+      },
+      {
+        "heading_index": 7,
+        "id": "36-официальный-экспорт-бэкенд-кнопки-экспорт-на-странице-обнаружено-2026-07-20",
+        "level": 3,
+        "prefix": "3.6"
+      },
+      {
+        "heading_index": 8,
+        "id": "37-загрузка-ресурсов-отчетов",
+        "level": 3,
+        "prefix": "3.7"
+      },
+      {
+        "heading_index": 9,
+        "id": "38-другие-наблюдаемые-конечные-точки-загрузка-страницы-не-исследованы",
+        "level": 3,
+        "prefix": "3.8"
+      },
+      {
+        "heading_index": 10,
+        "id": "39-отправка-сообщений-и-телеметрия-2026-07-20-webbridge-cdp",
+        "level": 3,
+        "prefix": "3.9"
+      }
+    ],
+    "reference/api/api-rest-endpoints.zh-CN.md": [
+      {
+        "heading_index": 1,
+        "id": "3-rest-端点按用途分组",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "31-线程内容导出主路径",
+        "level": 3,
+        "prefix": "3.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "32-资产元数据2026-07-20-探明过期资产救星",
+        "level": 3,
+        "prefix": "3.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "33-空间collections",
+        "level": 3,
+        "prefix": "3.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "34-账户会话",
+        "level": 3,
+        "prefix": "3.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "35-积分用量2026-07-20-探明",
+        "level": 3,
+        "prefix": "3.5"
+      },
+      {
+        "heading_index": 7,
+        "id": "36-官方导出页面导出按钮的后端2026-07-20-探明",
+        "level": 3,
+        "prefix": "3.6"
+      },
+      {
+        "heading_index": 8,
+        "id": "37-资产报告下载",
+        "level": 3,
+        "prefix": "3.7"
+      },
+      {
+        "heading_index": 9,
+        "id": "38-其他观测到的端点页面加载未深入",
+        "level": 3,
+        "prefix": "3.8"
+      },
+      {
+        "heading_index": 10,
+        "id": "39-消息提交与遥测2026-07-20-webbridge-cdp-探明",
+        "level": 3,
+        "prefix": "3.9"
+      }
+    ],
+    "reference/api/api-rest-endpoints.zh-Hant.md": [
+      {
+        "heading_index": 1,
+        "id": "3-rest-端點按用途分組",
+        "level": 2,
+        "prefix": "3."
+      },
+      {
+        "heading_index": 2,
+        "id": "31-執行緒內容匯出主路徑",
+        "level": 3,
+        "prefix": "3.1"
+      },
+      {
+        "heading_index": 3,
+        "id": "32-資產元資料2026-07-20-探明過期資產救星",
+        "level": 3,
+        "prefix": "3.2"
+      },
+      {
+        "heading_index": 4,
+        "id": "33-空間collections",
+        "level": 3,
+        "prefix": "3.3"
+      },
+      {
+        "heading_index": 5,
+        "id": "34-帳戶工作階段",
+        "level": 3,
+        "prefix": "3.4"
+      },
+      {
+        "heading_index": 6,
+        "id": "35-積分用量2026-07-20-探明",
+        "level": 3,
+        "prefix": "3.5"
+      },
+      {
+        "heading_index": 7,
+        "id": "36-官方匯出頁面匯出按鈕的後端2026-07-20-探明",
+        "level": 3,
+        "prefix": "3.6"
+      },
+      {
+        "heading_index": 8,
+        "id": "37-資產報告下載",
+        "level": 3,
+        "prefix": "3.7"
+      },
+      {
+        "heading_index": 9,
+        "id": "38-其他觀測到的端點頁面載入未深入",
+        "level": 3,
+        "prefix": "3.8"
+      },
+      {
+        "heading_index": 10,
+        "id": "39-訊息提交與遙測2026-07-20-webbridge-cdp-探明",
+        "level": 3,
+        "prefix": "3.9"
+      }
+    ]
+  },
+  "schema_version": 1
+}

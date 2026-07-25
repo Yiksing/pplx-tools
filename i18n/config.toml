@@ -1,0 +1,76 @@
+schema_version = 1
+default_locale = "en"
+canonical_locales = ["en", "zh-CN"]
+docs_dir = "docs"
+manifest_path = "i18n/manifest.json"
+generated_catalog_dir = "i18n/generated"
+excluded_docs = ["README.md"]
+
+[canonical_catalogs]
+en = "i18n/catalog.en.json"
+zh-CN = "i18n/catalog.zh-CN.json"
+
+[translation]
+provider = "deepseek"
+base_url = "https://api.deepseek.com"
+model = "deepseek-v4-flash"
+api_key_env = "DEEKSEEK_API_KEY"
+prompt_path = "i18n/prompts/translate-markdown-v1.md"
+catalog_prompt_path = "i18n/prompts/translate-catalog-v1.md"
+prompt_version = "v1"
+temperature = 0.1
+thinking = "disabled"
+max_tokens = 131072
+max_concurrency = 8
+max_retries = 3
+request_timeout_seconds = 600
+
+[locales.en]
+name = "English"
+theme_language = "en"
+machine = false
+
+[locales.zh-CN]
+name = "简体中文"
+theme_language = "zh"
+machine = false
+
+[locales.ar]
+name = "العربية"
+source = "en"
+
+[locales.de]
+name = "Deutsch"
+source = "en"
+
+[locales.es]
+name = "español"
+source = "en"
+
+[locales.fr]
+name = "français"
+source = "en"
+
+[locales.it]
+name = "italiano"
+source = "en"
+
+[locales.ja]
+name = "日本語"
+source = "zh-CN"
+
+[locales.ko]
+name = "한국어"
+source = "zh-CN"
+
+[locales.pt]
+name = "português"
+source = "en"
+
+[locales.ru]
+name = "русский"
+source = "en"
+
+[locales."zh-Hant"]
+name = "繁體中文"
+source = "zh-CN"

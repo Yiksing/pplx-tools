@@ -1,0 +1,4760 @@
+{
+ "thread_metadata": {
+  "created_at": "2035-12-26T00:00:00",
+  "crons": null,
+  "local_workspace_directories": null,
+  "locked_reason": "spending_limit_exceeded",
+  "mode": "4",
+  "sensitive_claims_visibility": null,
+  "subscribe_entry_uuids": [],
+  "thread_status": "blocked",
+  "thread_status_summary": "Add credits to continue",
+  "thread_status_summary_enum": "add_credits",
+  "title": "章节提纲规划",
+  "updated_at": "2035-12-26T02:12:19.927523",
+  "wake_at": null,
+  "workflow_snapshots": {
+   "SHARED_FILES": {
+    "type": "SHARED_FILES",
+    "shared_files": {
+     "items": [
+      {
+       "uuid": "toolu_5crub02P53JjEGkUX846HLaU",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "outline_v1.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:outline_v1.md"
+        }
+       ],
+       "created_at": "1782190058"
+      },
+      {
+       "uuid": "toolu_5crub0h8zhfEa8zBZRFqf3bz",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "01_提纲_示例主题.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/01_提纲_示例主题.md"
+        }
+       ],
+       "created_at": "1782192283"
+      },
+      {
+       "uuid": "toolu_5crub05tfjTCwsHLgsF5RKX3",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "示例文档（其一）.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/示例文档（其一）.md"
+        }
+       ],
+       "created_at": "1782192325"
+      },
+      {
+       "uuid": "toolu_5crub0C1R5lYvsVcjISmhL54",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "示例文档（其二）.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/示例文档（其二）.md"
+        }
+       ],
+       "created_at": "1782192380"
+      },
+      {
+       "uuid": "toolu_5crub05wtY6z7iuJrd1d7eBR",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "AGENTS.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/AGENTS.md"
+        }
+       ],
+       "created_at": "1782192433"
+      },
+      {
+       "uuid": "toolu_5crub0dLhgURTb1vm1DIvqWz",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "README.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/README.md"
+        }
+       ],
+       "created_at": "1782192446"
+      },
+      {
+       "uuid": "toolu_5crub0v5VIdPzLYyMI34vxrx",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "WRITING_SPEC.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:draft_sources/WRITING_SPEC.md"
+        }
+       ],
+       "created_at": "1782194079"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "entries": [
+  {
+   "backend_uuid": "5cbeef00-1398-5d74-a7b7-b35e74cc8419",
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "uuid": "5cbeef00-6128-5ede-a0af-25654b2a7015",
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "frontend_uuid": "5cbeef00-6128-5ede-a0af-25654b2a7015",
+   "status": "BLOCKED",
+   "thread_title": "章节提纲规划",
+   "related_queries": [],
+   "display_model": "pplx_asi",
+   "user_selected_model": "pplx_asi",
+   "personalized": false,
+   "mode": "ASI",
+   "query_str": "请先用子代理按大纲结合已有文字完成初稿",
+   "search_focus": "internet",
+   "source": "default",
+   "attachments": [],
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "step_type": "FINAL",
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "query_source": "default",
+   "privacy_state": "NONE",
+   "gpt4": false,
+   "sources": {
+    "sources": [
+     "web"
+    ]
+   },
+   "entry_created_datetime": "2035-12-26T01:20:30.297206+00:00",
+   "entry_updated_datetime": "2035-12-26T01:22:26.997136+00:00",
+   "blocks": [
+    {
+     "intended_usage": "plan",
+     "plan_block": {
+      "progress": "DONE",
+      "goals": [
+       {
+        "id": "0",
+        "description": "示例计划段落（其一）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE"
+       },
+       {
+        "id": "1",
+        "description": "示例计划段落（其二）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE"
+       },
+       {
+        "id": "2",
+        "description": "示例计划段落（其三）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE"
+       },
+       {
+        "id": "3",
+        "description": "示例计划段落（其四）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE"
+       },
+       {
+        "id": "4",
+        "description": "示例回答段落（其一）：演示导出格式。本段为合成占位回答，用于演示长回答的提取与渲染流程；全部内容为说明性示例文本，不对应任何真实信息，仅保持原有的结构形态与排版格式。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE"
+       },
+       {
+        "id": "5",
+        "description": "示例计划段落（其五）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE"
+       },
+       {
+        "id": "6",
+        "description": "示例计划段落（其六）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE"
+       },
+       {
+        "id": "7",
+        "description": "示例计划段落（其七）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "expect_child_goals": true
+       },
+       {
+        "id": "8",
+        "description": "示例计划段落（其八）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "expect_child_goals": true
+       },
+       {
+        "id": "9",
+        "description": "示例计划段落（其九）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "expect_child_goals": true
+       }
+      ],
+      "final": true
+     }
+    },
+    {
+     "intended_usage": "workflow_root",
+     "workflow_block": {
+      "version": "1.0",
+      "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+      "headline": "",
+      "started_at": "2035-12-26T01:20:37.369794+00:00",
+      "completed_at": "",
+      "predicted_completion_at": "",
+      "steps": [
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "",
+        "items": [
+         {
+          "id": "5cbeef00-cc64-5358-a18c-0a779ed538ce",
+          "type": "WORKFLOW_ITEM_TEXT",
+          "payload": {
+           "text_payload": {
+            "text": "示例计划段落（其一）：演示计划步骤导出。",
+            "chunks": [
+             "示例计",
+             "划段落",
+             "（其一",
+             "）：演",
+             "示计",
+             "划步",
+             "骤导",
+             "出。"
+            ],
+            "variant": "thought",
+            "is_streaming": false
+           }
+          }
+         }
+        ],
+        "started_at": "2035-12-26T01:20:37.369794+00:00",
+        "completed_at": "2035-12-26T01:20:37.369794+00:00",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "5cbeef00-cc64-5358-a18c-0a779ed538ce"
+       },
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "示例计划段落（其二）：演示计划步骤导出。",
+        "items": [
+         {
+          "id": "_0",
+          "type": "WORKFLOW_ITEM_TODO_LIST",
+          "payload": {
+           "todo_list_payload": {
+            "title": "示例待办清单标题（其一）",
+            "items": [
+             {
+              "status": "IN_PROGRESS",
+              "description": "示例待办事项（其一）：演示待办内容导出。"
+             },
+             {
+              "status": "PENDING",
+              "description": "示例待办事项（其二）：演示待办内容导出。"
+             },
+             {
+              "status": "PENDING",
+              "description": "示例待办事项（其三）：演示待办内容导出。"
+             },
+             {
+              "status": "PENDING",
+              "description": "示例待办事项（其四）：演示待办内容导出。"
+             },
+             {
+              "status": "PENDING",
+              "description": "示例待办事项（其五）：演示待办内容导出。"
+             },
+             {
+              "status": "PENDING",
+              "description": "示例待办事项（其六）：演示待办内容导出。"
+             },
+             {
+              "status": "PENDING",
+              "description": "示例待办事项（其七）：演示待办内容导出。"
+             },
+             {
+              "status": "PENDING",
+              "description": "示例待办事项（其八）：演示待办内容导出。"
+             },
+             {
+              "status": "PENDING",
+              "description": "示例待办事项（其九）：演示待办内容导出。"
+             }
+            ],
+            "diff": {
+             "items": [
+              {
+               "action": "TODO_DIFF_ADDED",
+               "description": "示例待办事项（其一）：演示待办内容导出。",
+               "new_status": "IN_PROGRESS"
+              },
+              {
+               "action": "TODO_DIFF_ADDED",
+               "description": "示例待办事项（其二）：演示待办内容导出。",
+               "new_status": "PENDING"
+              },
+              {
+               "action": "TODO_DIFF_ADDED",
+               "description": "示例待办事项（其三）：演示待办内容导出。",
+               "new_status": "PENDING"
+              },
+              {
+               "action": "TODO_DIFF_ADDED",
+               "description": "示例待办事项（其四）：演示待办内容导出。",
+               "new_status": "PENDING"
+              },
+              {
+               "action": "TODO_DIFF_ADDED",
+               "description": "示例待办事项（其五）：演示待办内容导出。",
+               "new_status": "PENDING"
+              },
+              {
+               "action": "TODO_DIFF_ADDED",
+               "description": "示例待办事项（其六）：演示待办内容导出。",
+               "new_status": "PENDING"
+              },
+              {
+               "action": "TODO_DIFF_ADDED",
+               "description": "示例待办事项（其七）：演示待办内容导出。",
+               "new_status": "PENDING"
+              },
+              {
+               "action": "TODO_DIFF_ADDED",
+               "description": "示例待办事项（其八）：演示待办内容导出。",
+               "new_status": "PENDING"
+              },
+              {
+               "action": "TODO_DIFF_ADDED",
+               "description": "示例待办事项（其九）：演示待办内容导出。",
+               "new_status": "PENDING"
+              }
+             ]
+            }
+           }
+          }
+         }
+        ],
+        "started_at": "2035-12-26T01:20:55.071568+00:00",
+        "completed_at": "2035-12-26T01:20:55.073041+00:00",
+        "icon": "plan",
+        "tool_name": "update_todo_list",
+        "batch_step_id": "5cbeef00-458b-511b-8723-2c3fa9d1b0e7",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0dwdwFejpFpJURUXoEA"
+       },
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "",
+        "items": [
+         {
+          "id": "5cbeef00-b1d6-5810-8c68-6cb1bb22dc68",
+          "type": "WORKFLOW_ITEM_TEXT",
+          "payload": {
+           "text_payload": {
+            "text": "示例计划段落（其三）：演示计划步骤导出。",
+            "chunks": [
+             "示例计划段落（",
+             "其三）：演示计",
+             "划步骤导出。"
+            ],
+            "variant": "thought",
+            "is_streaming": false
+           }
+          }
+         }
+        ],
+        "started_at": "2035-12-26T01:20:57.155987+00:00",
+        "completed_at": "2035-12-26T01:20:57.155987+00:00",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "5cbeef00-b1d6-5810-8c68-6cb1bb22dc68"
+       },
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "示例计划段落（其四）：演示计划步骤导出。",
+        "items": [
+         {
+          "id": "_0",
+          "type": "WORKFLOW_ITEM_TEXT",
+          "payload": {
+           "text_payload": {
+            "chunks": [
+             "示例命令段落（其一）：演示工具调用导出。"
+            ],
+            "is_mono": true
+           }
+          }
+         },
+         {
+          "id": "_0",
+          "type": "WORKFLOW_ITEM_TEXT",
+          "payload": {
+           "text_payload": {
+            "chunks": [
+             "示例输出段落（其一）：演示工具输出导出。"
+            ],
+            "is_mono": true,
+            "header": "Output"
+           }
+          }
+         }
+        ],
+        "started_at": "2035-12-26T01:20:59.075670+00:00",
+        "completed_at": "2035-12-26T01:21:05.502848+00:00",
+        "icon": "extract",
+        "tool_name": "bash",
+        "batch_step_id": "5cbeef00-847e-50a1-a412-7598001f8785",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0nuKmAbQr1hXbwCOuhv"
+       },
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "",
+        "items": [
+         {
+          "id": "5cbeef00-70a9-515d-94b0-7c412e07da49",
+          "type": "WORKFLOW_ITEM_TEXT",
+          "payload": {
+           "text_payload": {
+            "text": "示例回答段落（其一）：演示导出格式。本段为合成占位回答，用于演示长回答的提取与渲染流程；全部内容为说明性示例文本，不对应任何真实信息，仅保持原有的结构形态与排版格式。",
+            "chunks": [
+             "示例回答段落（其一）：演示导",
+             "出格式。本段为合成占位回答，",
+             "用于演示长回答的提取与渲染流",
+             "程；全部内容为说明性示例文本",
+             "，不对应任何真实信息，仅保持",
+             "原有的结构形态与排版格式。"
+            ],
+            "variant": "thought",
+            "is_streaming": false
+           }
+          }
+         }
+        ],
+        "started_at": "2035-12-26T01:21:07.592355+00:00",
+        "completed_at": "2035-12-26T01:21:07.592355+00:00",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "5cbeef00-70a9-515d-94b0-7c412e07da49"
+       },
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "示例计划段落（其五）：演示计划步骤导出。",
+        "items": [
+         {
+          "id": "_0",
+          "type": "WORKFLOW_ITEM_SOURCES",
+          "payload": {
+           "sources_payload": {
+            "asset_uuids": [
+             "toolu_5crub0v5VIdPzLYyMI34vxrx"
+            ]
+           }
+          }
+         }
+        ],
+        "started_at": "2035-12-26T01:21:10.958097+00:00",
+        "completed_at": "2035-12-26T01:21:27.185166+00:00",
+        "icon": "store",
+        "tool_name": "write",
+        "batch_step_id": "5cbeef00-b1dd-59e3-8423-47cf0fed84f5",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0v5VIdPzLYyMI34vxrx"
+       },
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "示例计划段落（其六）：演示计划步骤导出。",
+        "items": [
+         {
+          "id": "_0",
+          "type": "WORKFLOW_ITEM_TODO_LIST",
+          "payload": {
+           "todo_list_payload": {
+            "title": "示例待办清单标题（其一）",
+            "items": [
+             {
+              "status": "COMPLETED",
+              "description": "示例待办事项（其一）：演示待办内容导出。"
+             },
+             {
+              "status": "IN_PROGRESS",
+              "description": "示例待办事项（其二）：演示待办内容导出。"
+             },
+             {
+              "status": "IN_PROGRESS",
+              "description": "示例待办事项（其三）：演示待办内容导出。"
+             },
+             {
+              "status": "IN_PROGRESS",
+              "description": "示例待办事项（其四）：演示待办内容导出。"
+             },
+             {
+              "status": "PENDING",
+              "description": "示例待办事项（其五）：演示待办内容导出。"
+             },
+             {
+              "status": "PENDING",
+              "description": "示例待办事项（其六）：演示待办内容导出。"
+             },
+             {
+              "status": "PENDING",
+              "description": "示例待办事项（其七）：演示待办内容导出。"
+             },
+             {
+              "status": "PENDING",
+              "description": "示例待办事项（其八）：演示待办内容导出。"
+             },
+             {
+              "status": "PENDING",
+              "description": "示例待办事项（其九）：演示待办内容导出。"
+             }
+            ],
+            "diff": {
+             "items": [
+              {
+               "action": "TODO_DIFF_STATUS_CHANGED",
+               "description": "示例待办事项（其一）：演示待办内容导出。",
+               "old_status": "IN_PROGRESS",
+               "new_status": "COMPLETED"
+              },
+              {
+               "action": "TODO_DIFF_STATUS_CHANGED",
+               "description": "示例待办事项（其二）：演示待办内容导出。",
+               "old_status": "PENDING",
+               "new_status": "IN_PROGRESS"
+              },
+              {
+               "action": "TODO_DIFF_STATUS_CHANGED",
+               "description": "示例待办事项（其三）：演示待办内容导出。",
+               "old_status": "PENDING",
+               "new_status": "IN_PROGRESS"
+              },
+              {
+               "action": "TODO_DIFF_STATUS_CHANGED",
+               "description": "示例待办事项（其四）：演示待办内容导出。",
+               "old_status": "PENDING",
+               "new_status": "IN_PROGRESS"
+              }
+             ]
+            }
+           }
+          }
+         }
+        ],
+        "started_at": "2035-12-26T01:21:30.767543+00:00",
+        "completed_at": "2035-12-26T01:21:30.768437+00:00",
+        "icon": "plan",
+        "tool_name": "update_todo_status",
+        "batch_step_id": "5cbeef00-1a92-51cf-899d-31404223fe62",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0AhZVLL10h2tA4Fhd99"
+       },
+       {
+        "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+        "title": "",
+        "items": [
+         {
+          "id": "toolu_5crub0H7uq91KDQzuHtUZ1Pn",
+          "type": "WORKFLOW_ITEM_WORKFLOW",
+          "payload": {
+           "workflow_payload": {
+            "version": "1.0",
+            "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+            "headline": "撰写2.1示例主题A",
+            "started_at": "2035-12-26T01:21:34.533595+00:00",
+            "completed_at": "",
+            "predicted_completion_at": "",
+            "steps": [],
+            "snapshots": [],
+            "id": "toolu_5crub0H7uq91KDQzuHtUZ1Pn",
+            "is_background_anchor": true,
+            "objective_chunks": [
+             "示例",
+             "子",
+             "代",
+             "理",
+             "任",
+             "务",
+             "段",
+             "落",
+             "（",
+             "其",
+             "一",
+             "）",
+             "：",
+             "演",
+             "示",
+             "子",
+             "代",
+             "理",
+             "指",
+             "令",
+             "导",
+             "出",
+             "。"
+            ],
+            "icon": "subagent"
+           }
+          }
+         }
+        ],
+        "started_at": "",
+        "completed_at": "",
+        "unnest_items": true,
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0H7uq91KDQzuHtUZ1Pn:workflow"
+       },
+       {
+        "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+        "title": "",
+        "items": [
+         {
+          "id": "toolu_5crub0ZZE6pvYGSrqnk3vaI6",
+          "type": "WORKFLOW_ITEM_WORKFLOW",
+          "payload": {
+           "workflow_payload": {
+            "version": "1.0",
+            "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+            "headline": "撰写2.2示例主题B",
+            "started_at": "2035-12-26T01:21:50.928497+00:00",
+            "completed_at": "",
+            "predicted_completion_at": "",
+            "steps": [],
+            "snapshots": [],
+            "id": "toolu_5crub0ZZE6pvYGSrqnk3vaI6",
+            "is_background_anchor": true,
+            "objective_chunks": [
+             "示例",
+             "子代",
+             "理任",
+             "务",
+             "段",
+             "落",
+             "（",
+             "其",
+             "二",
+             "）",
+             "：",
+             "演",
+             "示",
+             "子",
+             "代",
+             "理",
+             "指",
+             "令",
+             "导",
+             "出",
+             "。"
+            ],
+            "icon": "subagent"
+           }
+          }
+         }
+        ],
+        "started_at": "",
+        "completed_at": "",
+        "unnest_items": true,
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0ZZE6pvYGSrqnk3vaI6:workflow"
+       },
+       {
+        "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+        "title": "",
+        "items": [
+         {
+          "id": "toolu_5crub0xWWSUQu5TdkaNa6Zs7",
+          "type": "WORKFLOW_ITEM_WORKFLOW",
+          "payload": {
+           "workflow_payload": {
+            "version": "1.0",
+            "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+            "headline": "撰写2.3示例主题C",
+            "started_at": "2035-12-26T01:22:10.871381+00:00",
+            "completed_at": "",
+            "predicted_completion_at": "",
+            "steps": [],
+            "snapshots": [],
+            "id": "toolu_5crub0xWWSUQu5TdkaNa6Zs7",
+            "is_background_anchor": true,
+            "objective_chunks": [
+             "示",
+             "例",
+             "子",
+             "代",
+             "理",
+             "任",
+             "务",
+             "段",
+             "落",
+             "（",
+             "其",
+             "三",
+             "）",
+             "：",
+             "演",
+             "示",
+             "子",
+             "代",
+             "理",
+             "指",
+             "令",
+             "导",
+             "出",
+             "。",
+             "",
+             "",
+             "",
+             "",
+             "",
+             "",
+             ""
+            ],
+            "icon": "subagent"
+           }
+          }
+         }
+        ],
+        "started_at": "",
+        "completed_at": "",
+        "unnest_items": true,
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0xWWSUQu5TdkaNa6Zs7:workflow"
+       }
+      ],
+      "snapshots": [
+       {
+        "type": "TODO_LIST",
+        "todo_list": {
+         "title": "示例待办清单标题（其一）",
+         "items": [
+          {
+           "status": "COMPLETED",
+           "description": "示例待办事项（其一）：演示待办内容导出。"
+          },
+          {
+           "status": "IN_PROGRESS",
+           "description": "示例待办事项（其二）：演示待办内容导出。"
+          },
+          {
+           "status": "IN_PROGRESS",
+           "description": "示例待办事项（其三）：演示待办内容导出。"
+          },
+          {
+           "status": "IN_PROGRESS",
+           "description": "示例待办事项（其四）：演示待办内容导出。"
+          },
+          {
+           "status": "PENDING",
+           "description": "示例待办事项（其五）：演示待办内容导出。"
+          },
+          {
+           "status": "PENDING",
+           "description": "示例待办事项（其六）：演示待办内容导出。"
+          },
+          {
+           "status": "PENDING",
+           "description": "示例待办事项（其七）：演示待办内容导出。"
+          },
+          {
+           "status": "PENDING",
+           "description": "示例待办事项（其八）：演示待办内容导出。"
+          },
+          {
+           "status": "PENDING",
+           "description": "示例待办事项（其九）：演示待办内容导出。"
+          }
+         ]
+        }
+       },
+       {
+        "type": "USAGE_TOTAL",
+        "usage_total": {
+         "compute_time_s": 946.1883852323517
+        }
+       },
+       {
+        "type": "SKILLS_LOADED",
+        "skills_loaded": {
+         "skills": [
+          {
+           "name": "design-foundations"
+          },
+          {
+           "name": "office/docx"
+          }
+         ]
+        }
+       }
+      ]
+     }
+    },
+    {
+     "intended_usage": "unified_assets",
+     "unified_assets_block": {
+      "assets": [
+       {
+        "uuid": "toolu_5crub0v5VIdPzLYyMI34vxrx",
+        "asset_type": "DOC_FILE",
+        "doc_file": {
+         "filename": "WRITING_SPEC.md",
+         "final": true
+        },
+        "preview_info": [
+         {
+          "type": "text",
+          "media_type": "text/markdown",
+          "is_streaming": false,
+          "file_handle": "file:draft_sources/WRITING_SPEC.md"
+         }
+        ],
+        "created_at": "1782194079"
+       }
+      ]
+     }
+    }
+   ],
+   "access_level": "PUBLIC_READ",
+   "answer_modes": [],
+   "structured_answer_block_usages": [
+    "workflow_root"
+   ],
+   "reconnectable": false,
+   "classifier_results": {
+    "personal_search": true,
+    "skip_search": false,
+    "widget_type": null,
+    "hide_nav": false,
+    "hide_sources": false,
+    "image_generation": false,
+    "time_widget": false,
+    "mhe_predictions": {
+     "skip_search": false,
+     "image_generation_intent": false,
+     "time_widget": false,
+     "places_search_intent": false,
+     "shopping_intent": false,
+     "image_preview": false,
+     "video_preview": false,
+     "nav_intent": false,
+     "study_intent": null,
+     "personal_search": true,
+     "weather_widget": false,
+     "finance_widget_gating": false,
+     "calculator_widget": false,
+     "comet_nav_widget_combined_target": false,
+     "finance_agent_gating": false
+    },
+    "mhe_predictions_full": {
+     "skip_search": {
+      "is_true": false,
+      "probability": null,
+      "threshold": null
+     },
+     "image_generation_intent": {
+      "is_true": false,
+      "probability": 0.07080078,
+      "threshold": 0.98
+     },
+     "time_widget": {
+      "is_true": false,
+      "probability": 0.014038086,
+      "threshold": 0.8
+     },
+     "places_search_intent": {
+      "is_true": false,
+      "probability": 0.18261719,
+      "threshold": 0.85
+     },
+     "shopping_intent": {
+      "is_true": false,
+      "probability": 0.009399414,
+      "threshold": 0.8
+     },
+     "image_preview": {
+      "is_true": false,
+      "probability": 0.0071105957,
+      "threshold": 0.42
+     },
+     "video_preview": {
+      "is_true": false,
+      "probability": 0.03955078,
+      "threshold": 0.5
+     },
+     "nav_intent": {
+      "is_true": false,
+      "probability": 0.04736328,
+      "threshold": 0.5
+     },
+     "study_intent": null,
+     "personal_search": {
+      "is_true": true,
+      "probability": null,
+      "threshold": null
+     },
+     "skip_personal_search": {
+      "is_true": false,
+      "probability": 0.23339844,
+      "threshold": 0.95
+     },
+     "weather_widget": {
+      "is_true": false,
+      "probability": 0.0068969727,
+      "threshold": 0.4
+     },
+     "finance_widget_gating": {
+      "is_true": false,
+      "probability": 0.0018692017,
+      "threshold": 0.53
+     },
+     "calculator_widget": {
+      "is_true": false,
+      "probability": 0.014953613,
+      "threshold": 0.3
+     },
+     "comet_nav_widget_combined_target": {
+      "is_true": false,
+      "probability": 0.35351562,
+      "threshold": 0.5
+     },
+     "domain_subdomain": {
+      "label": "WRITING/TECHNICAL_WRITING",
+      "probability": 0.19140625
+     },
+     "finance_agent_gating": {
+      "is_true": false,
+      "probability": 0.01977539,
+      "threshold": 0.7
+     }
+    }
+   },
+   "search_implementation_mode": "multi_step",
+   "query_language": "zh",
+   "search_mode": "ASI",
+   "locked_reason": "spending_limit_exceeded"
+  },
+  {
+   "backend_uuid": "5cbeef00-dea0-58d5-ab08-b873cfc63a5c",
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "uuid": "5cbeef00-dea0-58d5-ab08-b873cfc63a5c",
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "status": "COMPLETED",
+   "thread_title": "章节提纲规划",
+   "related_queries": [],
+   "display_model": "pplx_asi_opus",
+   "user_selected_model": "pplx_asi_opus",
+   "personalized": false,
+   "mode": "ASI",
+   "query_str": "",
+   "search_focus": "internet",
+   "source": "default",
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "step_type": "FINAL",
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "query_source": "default",
+   "privacy_state": "NONE",
+   "gpt4": false,
+   "entry_created_datetime": "2035-12-26T01:24:13.555258+00:00",
+   "entry_updated_datetime": "2035-12-26T01:24:42.936586+00:00",
+   "blocks": [],
+   "access_level": "PUBLIC_READ",
+   "answer_modes": [],
+   "structured_answer_block_usages": [],
+   "reconnectable": false,
+   "classifier_results": {},
+   "search_implementation_mode": "multi_step",
+   "query_language": "zh",
+   "search_mode": "ASI",
+   "locked_reason": "spending_limit_exceeded",
+   "trigger": "subagent_result",
+   "is_background": false
+  },
+  {
+   "backend_uuid": "5cbeef00-d869-5bc6-813e-eb04cabba060",
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "uuid": "5cbeef00-d869-5bc6-813e-eb04cabba060",
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "status": "BLOCKED",
+   "thread_title": "章节提纲规划",
+   "related_queries": [],
+   "display_model": "pplx_asi_opus",
+   "user_selected_model": "pplx_asi_opus",
+   "personalized": false,
+   "mode": "ASI",
+   "query_str": "",
+   "search_focus": "internet",
+   "source": "default",
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "step_type": "FINAL",
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "query_source": "default",
+   "privacy_state": "NONE",
+   "gpt4": false,
+   "entry_created_datetime": "2035-12-26T02:12:19.468494+00:00",
+   "entry_updated_datetime": "2035-12-26T02:12:19.852468+00:00",
+   "blocks": [],
+   "access_level": "PUBLIC_READ",
+   "answer_modes": [],
+   "structured_answer_block_usages": [],
+   "reconnectable": false,
+   "classifier_results": {},
+   "search_implementation_mode": "multi_step",
+   "query_language": "zh",
+   "search_mode": "ASI",
+   "locked_reason": "spending_limit_exceeded",
+   "trigger": "subagent_result",
+   "is_background": false
+  }
+ ],
+ "background_entries": [
+  {
+   "backend_uuid": "5cbeef00-9eb5-5c39-b6c6-b53aa7147741",
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "uuid": "5cbeef00-9eb5-5c39-b6c6-b53aa7147741",
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "status": "BLOCKED",
+   "thread_title": "章节提纲规划",
+   "related_queries": [],
+   "display_model": "pplx_asi_opus",
+   "user_selected_model": "pplx_asi_opus",
+   "personalized": false,
+   "mode": "ASI",
+   "query_str": "",
+   "search_focus": "internet",
+   "source": "default",
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "step_type": "FINAL",
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "query_source": "scheduled",
+   "privacy_state": "NONE",
+   "gpt4": false,
+   "entry_created_datetime": "2035-12-26T01:22:05.906936+00:00",
+   "entry_updated_datetime": "2035-12-26T01:22:31.813683+00:00",
+   "blocks": [
+    {
+     "intended_usage": "plan",
+     "plan_block": {
+      "progress": "DONE",
+      "goals": [
+       {
+        "id": "0",
+        "description": "示例计划段落（其十）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "expect_child_goals": true
+       },
+       {
+        "id": "1",
+        "description": "示例计划段落（其十一）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "2",
+        "description": "示例计划段落（其十二）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "3",
+        "description": "示例计划段落（其十三）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "4",
+        "description": "示例计划段落（其十四）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "5",
+        "description": "示例计划段落（其十五）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "6",
+        "description": "示例计划段落（其十六）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "7",
+        "description": "示例计划段落（其十七）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "8",
+        "description": "示例子代理结论段落（其一）：演示结论导出。本段为合成占位结论，用于演示子代理结论的提取、归并与渲染流程；全部内容为说明性示例文本，不对应任何真实信息与任何实际记录。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "9",
+        "description": "示例计划段落（其十八）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "10",
+        "description": "示例计划段落（其十九）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "11",
+        "description": "示例计划段落（其二十）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "12",
+        "description": "示例计划段落（其二十一）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       }
+      ],
+      "final": true
+     }
+    },
+    {
+     "intended_usage": "workflow_root",
+     "workflow_block": {
+      "version": "1.0",
+      "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+      "headline": "",
+      "started_at": "2035-12-26T01:22:05.853413+00:00",
+      "completed_at": "",
+      "predicted_completion_at": "",
+      "steps": [
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "示例计划段落（其十）：演示计划步骤导出。",
+        "items": [],
+        "started_at": "2035-12-26T01:22:05.853413+00:00",
+        "completed_at": "2035-12-26T01:22:31.650322+00:00",
+        "tool_name": "run_subagent",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0ZZE6pvYGSrqnk3vaI6"
+       },
+       {
+        "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+        "title": "",
+        "items": [
+         {
+          "id": "toolu_5crub0ZZE6pvYGSrqnk3vaI6",
+          "type": "WORKFLOW_ITEM_WORKFLOW",
+          "payload": {
+           "workflow_payload": {
+            "version": "1.0",
+            "model": "claude48opus",
+            "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+            "headline": "撰写2.2示例主题B",
+            "started_at": "2035-12-26T01:22:05.853413+00:00",
+            "completed_at": "",
+            "predicted_completion_at": "",
+            "steps": [
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-c7ae-5b64-a652-9fb2a1e294ca",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其十一）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落（",
+                   "其十一）：演示",
+                   "计划步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:22:07.486989+00:00",
+              "completed_at": "2035-12-26T01:22:07.486989+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-c7ae-5b64-a652-9fb2a1e294ca"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其十二）：演示计划步骤导出。",
+              "items": [],
+              "started_at": "2035-12-26T01:22:10.193065+00:00",
+              "completed_at": "2035-12-26T01:22:10.198922+00:00",
+              "icon": "extract",
+              "tool_name": "read",
+              "batch_step_id": "5cbeef00-61ee-5ea4-ae04-3ca1d45fb9af",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0JshUWHBUvDIp70ZQEL"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其十三）：演示计划步骤导出。",
+              "items": [],
+              "started_at": "2035-12-26T01:22:10.193959+00:00",
+              "completed_at": "2035-12-26T01:22:10.551970+00:00",
+              "icon": "extract",
+              "tool_name": "read",
+              "batch_step_id": "5cbeef00-61ee-5ea4-ae04-3ca1d45fb9af",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0P1mJKXjx4ATQbtnXHZ"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-db96-5137-b2ec-5f80c07a6946",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其十四）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落（其十四）",
+                   "：演示计划步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:22:12.251166+00:00",
+              "completed_at": "2035-12-26T01:22:12.251166+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-db96-5137-b2ec-5f80c07a6946"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其十五）：演示计划步骤导出。",
+              "items": [],
+              "started_at": "2035-12-26T01:22:13.210343+00:00",
+              "completed_at": "2035-12-26T01:22:13.481072+00:00",
+              "icon": "extract",
+              "tool_name": "read",
+              "batch_step_id": "5cbeef00-f17d-5248-8998-5ba357545ce2",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0ibU7IEbJyy3uYMEyEO"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-a718-5305-aed6-cdc2f729305e",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其十六）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落（其十六）",
+                   "：演示计划步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:22:17.171340+00:00",
+              "completed_at": "2035-12-26T01:22:17.171340+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-a718-5305-aed6-cdc2f729305e"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其十七）：演示计划步骤导出。",
+              "items": [],
+              "started_at": "2035-12-26T01:22:17.970653+00:00",
+              "completed_at": "2035-12-26T01:22:18.312629+00:00",
+              "icon": "extract",
+              "tool_name": "read",
+              "batch_step_id": "5cbeef00-c03d-5034-9a88-5707210dc874",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0EGtkEVXsXN8dRfUFWj"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-bbd4-587e-aa18-b05bc21455e7",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例子代理结论段落（其一）：演示结论导出。本段为合成占位结论，用于演示子代理结论的提取、归并与渲染流程；全部内容为说明性示例文本，不对应任何真实信息与任何实际记录。",
+                  "chunks": [
+                   "示例子代理结论段落（其一）：演示结论导出。本段为合成占位",
+                   "结论，用于演示子代理结论的提取、归并与渲染流程；全部内",
+                   "容为说明性示例文本，不对应任何真实信息与任何实际记录。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:22:22.287481+00:00",
+              "completed_at": "2035-12-26T01:22:22.287481+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-bbd4-587e-aa18-b05bc21455e7"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其十八）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例命令段落（其二）：演示工具调用导出。"
+                  ],
+                  "is_mono": true
+                 }
+                }
+               },
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例输出段落（其二）：演示工具输出导出。"
+                  ],
+                  "is_mono": true,
+                  "header": "Output"
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:22:25.825274+00:00",
+              "completed_at": "2035-12-26T01:22:26.319609+00:00",
+              "icon": "extract",
+              "tool_name": "bash",
+              "batch_step_id": "5cbeef00-2951-5706-872b-35bb857ae3dc",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0Hzasbux1MBxOQY8IPp"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-7aa3-540d-abc9-28cad4ace56b",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其十九）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落（其十九）",
+                   "：演示计划步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:22:28.600771+00:00",
+              "completed_at": "2035-12-26T01:22:28.600771+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-7aa3-540d-abc9-28cad4ace56b"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其二十）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_QUERIES",
+                "payload": {
+                 "queries_payload": {
+                  "queries": [
+                   "示例检索词（其一）",
+                   "示例检索词（其二）"
+                  ]
+                 }
+                }
+               },
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例思考段落（其五）：演示工作过程文本导出。"
+                  ]
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:22:31.037005+00:00",
+              "completed_at": "2035-12-26T01:22:31.038380+00:00",
+              "icon": "search",
+              "tool_name": "grep",
+              "batch_step_id": "5cbeef00-9415-5e11-a23c-fe4b4277f54e",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0qfkuwKpiec6BREpKvN"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其二十一）：演示计划步骤导出。",
+              "items": [],
+              "started_at": "2035-12-26T01:22:31.037931+00:00",
+              "completed_at": "2035-12-26T01:22:31.294937+00:00",
+              "icon": "extract",
+              "tool_name": "read",
+              "batch_step_id": "5cbeef00-9415-5e11-a23c-fe4b4277f54e",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0euCDvLbVTvDaj7EDu9"
+             }
+            ],
+            "snapshots": [
+             {
+              "type": "USAGE_TOTAL",
+              "usage_total": {
+               "compute_time_s": 24.883070705458522
+              }
+             }
+            ],
+            "id": "toolu_5crub0ZZE6pvYGSrqnk3vaI6",
+            "objective_chunks": [
+             "示例子代理任务段落（其二）：演示子代理指令导出。"
+            ]
+           }
+          }
+         }
+        ],
+        "started_at": "",
+        "completed_at": "",
+        "unnest_items": true,
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0ZZE6pvYGSrqnk3vaI6:workflow"
+       }
+      ],
+      "snapshots": []
+     }
+    }
+   ],
+   "access_level": "PUBLIC_READ",
+   "answer_modes": [],
+   "structured_answer_block_usages": [
+    "workflow_root"
+   ],
+   "reconnectable": false,
+   "classifier_results": {},
+   "search_implementation_mode": "multi_step",
+   "query_language": "zh",
+   "search_mode": "ASI",
+   "locked_reason": "spending_limit_exceeded",
+   "is_background": true
+  },
+  {
+   "backend_uuid": "5cbeef00-da9a-5824-a715-0447c84f94f0",
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "uuid": "5cbeef00-da9a-5824-a715-0447c84f94f0",
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "status": "COMPLETED",
+   "thread_title": "章节提纲规划",
+   "related_queries": [],
+   "display_model": "pplx_asi_opus",
+   "user_selected_model": "pplx_asi_opus",
+   "personalized": false,
+   "mode": "ASI",
+   "query_str": "",
+   "search_focus": "internet",
+   "source": "default",
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "step_type": "FINAL",
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "query_source": "scheduled",
+   "privacy_state": "NONE",
+   "gpt4": false,
+   "entry_created_datetime": "2035-12-26T01:22:26.889970+00:00",
+   "entry_updated_datetime": "2035-12-26T01:22:27.809571+00:00",
+   "blocks": [
+    {
+     "intended_usage": "plan",
+     "plan_block": {
+      "progress": "IN_PROGRESS",
+      "goals": [
+       {
+        "id": "0",
+        "description": "示例计划段落（其十）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "expect_child_goals": true
+       }
+      ],
+      "final": false
+     }
+    },
+    {
+     "intended_usage": "workflow_root",
+     "workflow_block": {
+      "version": "1.0",
+      "status": "WORKFLOW_COMPLETED",
+      "headline": "",
+      "started_at": "2035-12-26T01:22:26.848883+00:00",
+      "completed_at": "",
+      "predicted_completion_at": "",
+      "steps": [
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "示例计划段落（其十）：演示计划步骤导出。",
+        "items": [],
+        "started_at": "2035-12-26T01:22:26.848883+00:00",
+        "completed_at": "2035-12-26T01:22:27.017588+00:00",
+        "tool_name": "run_subagent",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0xWWSUQu5TdkaNa6Zs7"
+       },
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "",
+        "items": [
+         {
+          "id": "toolu_5crub0xWWSUQu5TdkaNa6Zs7",
+          "type": "WORKFLOW_ITEM_WORKFLOW",
+          "payload": {
+           "workflow_payload": {
+            "version": "1.0",
+            "model": "claude48opus",
+            "status": "WORKFLOW_COMPLETED",
+            "headline": "撰写2.3示例主题C",
+            "started_at": "2035-12-26T01:22:26.848883+00:00",
+            "completed_at": "2035-12-26T01:22:27.017588+00:00",
+            "predicted_completion_at": "",
+            "steps": [],
+            "snapshots": [],
+            "id": "toolu_5crub0xWWSUQu5TdkaNa6Zs7",
+            "objective_chunks": [
+             "示例子代理任务段落（其三）：演示子代理指令导出。"
+            ]
+           }
+          }
+         }
+        ],
+        "started_at": "",
+        "completed_at": "",
+        "unnest_items": true,
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0xWWSUQu5TdkaNa6Zs7:workflow"
+       }
+      ],
+      "snapshots": []
+     }
+    }
+   ],
+   "access_level": "PUBLIC_READ",
+   "answer_modes": [],
+   "structured_answer_block_usages": [
+    "workflow_root"
+   ],
+   "reconnectable": false,
+   "classifier_results": {},
+   "search_implementation_mode": "multi_step",
+   "query_language": "zh",
+   "search_mode": "ASI",
+   "locked_reason": "spending_limit_exceeded",
+   "is_background": true
+  },
+  {
+   "backend_uuid": "5cbeef00-7de3-5674-a8ad-e2da3362deaf",
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "uuid": "5cbeef00-7de3-5674-a8ad-e2da3362deaf",
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "status": "BLOCKED",
+   "thread_title": "章节提纲规划",
+   "related_queries": [],
+   "display_model": "pplx_asi_opus",
+   "user_selected_model": "pplx_asi_opus",
+   "personalized": false,
+   "mode": "ASI",
+   "query_str": "",
+   "search_focus": "internet",
+   "source": "default",
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "step_type": "FINAL",
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "query_source": "scheduled",
+   "privacy_state": "NONE",
+   "gpt4": false,
+   "entry_created_datetime": "2035-12-26T01:24:08.262421+00:00",
+   "entry_updated_datetime": "2035-12-26T01:24:14.168043+00:00",
+   "blocks": [
+    {
+     "intended_usage": "plan",
+     "plan_block": {
+      "progress": "DONE",
+      "goals": [
+       {
+        "id": "0",
+        "description": "示例计划段落（其十）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "expect_child_goals": true
+       },
+       {
+        "id": "1",
+        "description": "示例计划段落（其二十二）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "2",
+        "description": "示例计划段落（其二十三）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       }
+      ],
+      "final": true
+     }
+    },
+    {
+     "intended_usage": "workflow_root",
+     "workflow_block": {
+      "version": "1.0",
+      "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+      "headline": "",
+      "started_at": "2035-12-26T01:24:08.159134+00:00",
+      "completed_at": "",
+      "predicted_completion_at": "",
+      "steps": [
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "示例计划段落（其十）：演示计划步骤导出。",
+        "items": [],
+        "started_at": "2035-12-26T01:24:08.159134+00:00",
+        "completed_at": "2035-12-26T01:24:13.989801+00:00",
+        "tool_name": "run_subagent",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0zKpUi2WDCFweFiffTl"
+       },
+       {
+        "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+        "title": "",
+        "items": [
+         {
+          "id": "toolu_5crub0zKpUi2WDCFweFiffTl",
+          "type": "WORKFLOW_ITEM_WORKFLOW",
+          "payload": {
+           "workflow_payload": {
+            "version": "1.0",
+            "model": "claude48opus",
+            "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+            "headline": "撰写2.2示例主题B",
+            "started_at": "2035-12-26T01:24:08.159134+00:00",
+            "completed_at": "",
+            "predicted_completion_at": "",
+            "steps": [
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-6b89-533e-9e6b-9c8d19672d6d",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其二十二）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落（其二十二",
+                   "）：演示计划步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:24:11.288926+00:00",
+              "completed_at": "2035-12-26T01:24:11.288926+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-6b89-533e-9e6b-9c8d19672d6d"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其二十三）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例命令段落（其三）：演示工具调用导出。"
+                  ],
+                  "is_mono": true
+                 }
+                }
+               },
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例输出段落（其三）：演示工具输出导出。"
+                  ],
+                  "is_mono": true,
+                  "header": "Output"
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:24:13.691506+00:00",
+              "completed_at": "2035-12-26T01:24:13.806819+00:00",
+              "icon": "extract",
+              "tool_name": "bash",
+              "batch_step_id": "5cbeef00-0cbf-5f93-a293-7d80c76d31a8",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0tfg1tL7bLlFWpbCSvc"
+             }
+            ],
+            "snapshots": [
+             {
+              "type": "USAGE_TOTAL",
+              "usage_total": {
+               "compute_time_s": 30.56481657549739
+              }
+             }
+            ],
+            "id": "toolu_5crub0zKpUi2WDCFweFiffTl"
+           }
+          }
+         }
+        ],
+        "started_at": "",
+        "completed_at": "",
+        "unnest_items": true,
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0zKpUi2WDCFweFiffTl:workflow"
+       }
+      ],
+      "snapshots": []
+     }
+    }
+   ],
+   "access_level": "PUBLIC_READ",
+   "answer_modes": [],
+   "structured_answer_block_usages": [
+    "workflow_root"
+   ],
+   "reconnectable": false,
+   "classifier_results": {},
+   "search_implementation_mode": "multi_step",
+   "query_language": "zh",
+   "search_mode": "ASI",
+   "locked_reason": "spending_limit_exceeded",
+   "is_background": true
+  },
+  {
+   "backend_uuid": "5cbeef00-cff4-5565-b851-14cc425eb365",
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "uuid": "5cbeef00-cff4-5565-b851-14cc425eb365",
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "status": "COMPLETED",
+   "thread_title": "章节提纲规划",
+   "related_queries": [],
+   "display_model": "pplx_asi_opus",
+   "user_selected_model": "pplx_asi_opus",
+   "personalized": false,
+   "mode": "ASI",
+   "query_str": "",
+   "search_focus": "internet",
+   "source": "default",
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "step_type": "FINAL",
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "query_source": "scheduled",
+   "privacy_state": "NONE",
+   "gpt4": false,
+   "entry_created_datetime": "2035-12-26T01:24:12.801818+00:00",
+   "entry_updated_datetime": "2035-12-26T01:24:13.544377+00:00",
+   "blocks": [
+    {
+     "intended_usage": "plan",
+     "plan_block": {
+      "progress": "IN_PROGRESS",
+      "goals": [
+       {
+        "id": "0",
+        "description": "示例计划段落（其十）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "expect_child_goals": true
+       }
+      ],
+      "final": false
+     }
+    },
+    {
+     "intended_usage": "workflow_root",
+     "workflow_block": {
+      "version": "1.0",
+      "status": "WORKFLOW_COMPLETED",
+      "headline": "",
+      "started_at": "2035-12-26T01:24:12.744922+00:00",
+      "completed_at": "",
+      "predicted_completion_at": "",
+      "steps": [
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "示例计划段落（其十）：演示计划步骤导出。",
+        "items": [],
+        "started_at": "2035-12-26T01:24:12.744922+00:00",
+        "completed_at": "2035-12-26T01:24:12.931259+00:00",
+        "tool_name": "run_subagent",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0XhlbwnCJJKapRnE4BB"
+       },
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "",
+        "items": [
+         {
+          "id": "toolu_5crub0XhlbwnCJJKapRnE4BB",
+          "type": "WORKFLOW_ITEM_WORKFLOW",
+          "payload": {
+           "workflow_payload": {
+            "version": "1.0",
+            "model": "claude48opus",
+            "status": "WORKFLOW_COMPLETED",
+            "headline": "撰写2.3示例主题C",
+            "started_at": "2035-12-26T01:24:12.744922+00:00",
+            "completed_at": "2035-12-26T01:24:12.931259+00:00",
+            "predicted_completion_at": "",
+            "steps": [],
+            "snapshots": [],
+            "id": "toolu_5crub0XhlbwnCJJKapRnE4BB"
+           }
+          }
+         }
+        ],
+        "started_at": "",
+        "completed_at": "",
+        "unnest_items": true,
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0XhlbwnCJJKapRnE4BB:workflow"
+       }
+      ],
+      "snapshots": []
+     }
+    }
+   ],
+   "access_level": "PUBLIC_READ",
+   "answer_modes": [],
+   "structured_answer_block_usages": [
+    "workflow_root"
+   ],
+   "reconnectable": false,
+   "classifier_results": {},
+   "search_implementation_mode": "multi_step",
+   "query_language": "zh",
+   "search_mode": "ASI",
+   "locked_reason": "spending_limit_exceeded",
+   "is_background": true
+  },
+  {
+   "backend_uuid": "5cbeef00-507d-5466-af63-a52708eda91c",
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "uuid": "5cbeef00-507d-5466-af63-a52708eda91c",
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "status": "BLOCKED",
+   "thread_title": "章节提纲规划",
+   "related_queries": [],
+   "display_model": "pplx_asi_opus",
+   "user_selected_model": "pplx_asi_opus",
+   "personalized": false,
+   "mode": "ASI",
+   "query_str": "",
+   "search_focus": "internet",
+   "source": "default",
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "step_type": "FINAL",
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "query_source": "scheduled",
+   "privacy_state": "NONE",
+   "gpt4": false,
+   "entry_created_datetime": "2035-12-26T01:24:56.278584+00:00",
+   "entry_updated_datetime": "2035-12-26T01:38:37.732157+00:00",
+   "blocks": [
+    {
+     "intended_usage": "plan",
+     "plan_block": {
+      "progress": "DONE",
+      "goals": [
+       {
+        "id": "0",
+        "description": "示例计划段落（其十）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "expect_child_goals": true
+       },
+       {
+        "id": "1",
+        "description": "示例计划段落（其二十四）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "2",
+        "description": "示例计划段落（其二十五）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "3",
+        "description": "示例计划段落（其二十六）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "4",
+        "description": "示例计划段落（其二十七）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "5",
+        "description": "示例计划段落（其二十八）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "6",
+        "description": "示例计划段落（其二十九）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "7",
+        "description": "示例计划段落（其三十）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "8",
+        "description": "示例计划段落（其三十一）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "9",
+        "description": "示例计划段落（其三十二）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "10",
+        "description": "示例计划段落（其三十三）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "11",
+        "description": "示例计划段落（其三十四）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "12",
+        "description": "示例计划段落（其三十三）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "13",
+        "description": "示例计划段落（其三十五）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "14",
+        "description": "示例计划段落（其三十六）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "15",
+        "description": "示例计划段落（其三十七）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "16",
+        "description": "示例计划段落（其三十八）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "17",
+        "description": "示例计划段落（其三十九）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "18",
+        "description": "示例计划段落（其三十三）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "19",
+        "description": "示例计划段落（其四十）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "20",
+        "description": "示例计划段落（其四十一）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "21",
+        "description": "示例计划段落（其四十二）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "22",
+        "description": "示例计划段落（其三十三）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "23",
+        "description": "示例计划段落（其四十三）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "24",
+        "description": "示例计划段落（其四十四）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "25",
+        "description": "示例计划段落（其四十五）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "26",
+        "description": "示例计划段落（其三十八）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "27",
+        "description": "示例计划段落（其四十六）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "28",
+        "description": "示例计划段落（其十二）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "29",
+        "description": "示例计划段落（其十五）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "30",
+        "description": "示例计划段落（其四十七）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "31",
+        "description": "示例计划段落（其三十三）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "32",
+        "description": "示例计划段落（其四十八）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "33",
+        "description": "示例计划段落（其四十九）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "34",
+        "description": "示例计划段落（其五十）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "35",
+        "description": "示例计划段落（其三十三）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "36",
+        "description": "示例计划段落（其三十三）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "37",
+        "description": "示例计划段落（其五十一）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "38",
+        "description": "示例计划段落（其五十二）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       }
+      ],
+      "final": true
+     }
+    },
+    {
+     "intended_usage": "workflow_root",
+     "workflow_block": {
+      "version": "1.0",
+      "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+      "headline": "",
+      "started_at": "2035-12-26T01:24:56.232192+00:00",
+      "completed_at": "",
+      "predicted_completion_at": "",
+      "steps": [
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "示例计划段落（其十）：演示计划步骤导出。",
+        "items": [],
+        "started_at": "2035-12-26T01:24:56.232192+00:00",
+        "completed_at": "2035-12-26T01:38:37.399366+00:00",
+        "tool_name": "run_subagent",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0nxoGpTlNxRdjIJuir9"
+       },
+       {
+        "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+        "title": "",
+        "items": [
+         {
+          "id": "toolu_5crub0nxoGpTlNxRdjIJuir9",
+          "type": "WORKFLOW_ITEM_WORKFLOW",
+          "payload": {
+           "workflow_payload": {
+            "version": "1.0",
+            "model": "claude48opus",
+            "status": "WORKFLOW_AWAITING_NEXT_STEPS",
+            "headline": "撰写2.2示例主题B",
+            "started_at": "2035-12-26T01:24:56.232192+00:00",
+            "completed_at": "",
+            "predicted_completion_at": "",
+            "steps": [
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-3494-5d8c-8842-4a51487a4182",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其二十四）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落（其二十四",
+                   "）：演示计划步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:24:57.949759+00:00",
+              "completed_at": "2035-12-26T01:24:57.949759+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-3494-5d8c-8842-4a51487a4182"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其二十五）：演示计划步骤导出。",
+              "items": [],
+              "started_at": "2035-12-26T01:24:59.594386+00:00",
+              "completed_at": "2035-12-26T01:24:59.876711+00:00",
+              "icon": "extract",
+              "tool_name": "read",
+              "batch_step_id": "5cbeef00-1d83-5635-8259-7b57278c0ef2",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0cSHg2LBbXLLw1S2vuq"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-9f72-5301-8f74-80ee4c57b594",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其二十六）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落",
+                   "（其二十六）",
+                   "：演示计划",
+                   "步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:25:01.509622+00:00",
+              "completed_at": "2035-12-26T01:25:01.509622+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-9f72-5301-8f74-80ee4c57b594"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其二十七）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TODO_LIST",
+                "payload": {
+                 "todo_list_payload": {
+                  "title": "示例待办清单标题（其二）",
+                  "items": [
+                   {
+                    "status": "COMPLETED",
+                    "description": "示例待办事项（其十）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "IN_PROGRESS",
+                    "description": "示例待办事项（其十一）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "PENDING",
+                    "description": "示例待办事项（其十二）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "PENDING",
+                    "description": "示例待办事项（其十三）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "PENDING",
+                    "description": "示例待办事项（其十四）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "PENDING",
+                    "description": "示例待办事项（其十五）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "PENDING",
+                    "description": "示例待办事项（其十六）：演示待办内容导出。"
+                   }
+                  ],
+                  "diff": {
+                   "items": [
+                    {
+                     "action": "TODO_DIFF_ADDED",
+                     "description": "示例待办事项（其十）：演示待办内容导出。",
+                     "new_status": "COMPLETED"
+                    },
+                    {
+                     "action": "TODO_DIFF_ADDED",
+                     "description": "示例待办事项（其十一）：演示待办内容导出。",
+                     "new_status": "IN_PROGRESS"
+                    },
+                    {
+                     "action": "TODO_DIFF_ADDED",
+                     "description": "示例待办事项（其十二）：演示待办内容导出。",
+                     "new_status": "PENDING"
+                    },
+                    {
+                     "action": "TODO_DIFF_ADDED",
+                     "description": "示例待办事项（其十三）：演示待办内容导出。",
+                     "new_status": "PENDING"
+                    },
+                    {
+                     "action": "TODO_DIFF_ADDED",
+                     "description": "示例待办事项（其十四）：演示待办内容导出。",
+                     "new_status": "PENDING"
+                    },
+                    {
+                     "action": "TODO_DIFF_ADDED",
+                     "description": "示例待办事项（其十五）：演示待办内容导出。",
+                     "new_status": "PENDING"
+                    },
+                    {
+                     "action": "TODO_DIFF_ADDED",
+                     "description": "示例待办事项（其十六）：演示待办内容导出。",
+                     "new_status": "PENDING"
+                    }
+                   ]
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:25:07.777221+00:00",
+              "completed_at": "2035-12-26T01:25:07.777675+00:00",
+              "icon": "plan",
+              "tool_name": "update_todo_list",
+              "batch_step_id": "5cbeef00-7590-5788-86ae-aa8d255d2f9d",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0jr5wGSOwbvA6jqQPLk"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-6976-519f-ab92-629215c35299",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其二十八）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落（其二十八",
+                   "）：演示计划步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:25:09.479221+00:00",
+              "completed_at": "2035-12-26T01:25:09.479221+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-6976-519f-ab92-629215c35299"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其二十九）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_SOURCES",
+                "payload": {
+                 "sources_payload": {
+                  "asset_uuids": [
+                   "toolu_5crub0n7lyPfzrRKuRZDWHUT"
+                  ]
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:25:10.910697+00:00",
+              "completed_at": "2035-12-26T01:29:27.500948+00:00",
+              "icon": "store",
+              "tool_name": "write",
+              "batch_step_id": "5cbeef00-7f73-54ab-856d-585f7ef52b6b",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0n7lyPfzrRKuRZDWHUT"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-906d-5d4c-822b-05115b3988fe",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其三十）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落（其三十）",
+                   "：演示计划步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:29:31.045942+00:00",
+              "completed_at": "2035-12-26T01:29:31.045942+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-906d-5d4c-822b-05115b3988fe"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其三十一）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例命令段落（其四）：演示工具调用导出。"
+                  ],
+                  "is_mono": true
+                 }
+                }
+               },
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例输出段落（其四）：演示工具输出导出。"
+                  ],
+                  "is_mono": true,
+                  "header": "Output"
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:29:33.045125+00:00",
+              "completed_at": "2035-12-26T01:29:33.114385+00:00",
+              "icon": "code_execute",
+              "tool_name": "bash",
+              "batch_step_id": "5cbeef00-f389-5c83-8ddd-4832af5bc5d2",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0p8isCvhCBNPItSDQ2d"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-d1fd-59ae-b7f8-d64f61206c79",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其三十二）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计",
+                   "划段落",
+                   "（其三",
+                   "十二）",
+                   "：演示",
+                   "计划步",
+                   "骤导",
+                   "出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:29:59.744113+00:00",
+              "completed_at": "2035-12-26T01:29:59.744113+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-d1fd-59ae-b7f8-d64f61206c79"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其三十三）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_SOURCES",
+                "payload": {
+                 "sources_payload": {
+                  "asset_uuids": [
+                   "5cbeef00-ee98-5491-8fcc-d46d9e3a032c"
+                  ]
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:30:37.267116+00:00",
+              "completed_at": "2035-12-26T01:30:37.267705+00:00",
+              "icon": "store",
+              "tool_name": "edit",
+              "batch_step_id": "5cbeef00-2346-500a-881a-b19f880d3cca",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0RXq41v3rhw0GVm8Hsp"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-a313-50df-999a-1f55ce18546b",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其三十四）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划",
+                   "段落（其",
+                   "三十四）",
+                   "：演示计",
+                   "划步骤",
+                   "导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:30:40.212172+00:00",
+              "completed_at": "2035-12-26T01:30:40.212172+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-a313-50df-999a-1f55ce18546b"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其三十三）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_SOURCES",
+                "payload": {
+                 "sources_payload": {
+                  "asset_uuids": [
+                   "5cbeef00-1df6-5dc7-8b43-806ab7ce54d6"
+                  ]
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:32:04.496133+00:00",
+              "completed_at": "2035-12-26T01:32:04.580850+00:00",
+              "icon": "store",
+              "tool_name": "edit",
+              "batch_step_id": "5cbeef00-a786-5963-ad93-60bc0f17f928",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0sE2v231Nk2T3cN7mwj"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-1a49-5ee3-be55-bd7991f8ed71",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其三十五）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落",
+                   "（其三十五）",
+                   "：演示计划",
+                   "步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:32:06.395221+00:00",
+              "completed_at": "2035-12-26T01:32:06.395221+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-1a49-5ee3-be55-bd7991f8ed71"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其三十六）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例命令段落（其五）：演示工具调用导出。"
+                  ],
+                  "is_mono": true
+                 }
+                }
+               },
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例输出段落（其五）：演示工具输出导出。"
+                  ],
+                  "is_mono": true,
+                  "header": "Output"
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:32:09.145316+00:00",
+              "completed_at": "2035-12-26T01:32:09.202447+00:00",
+              "icon": "extract",
+              "tool_name": "bash",
+              "batch_step_id": "5cbeef00-fb15-57c6-8a6f-32411518e4a6",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0QgeWiwT2DI1G5V0zd5"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-78cb-5173-a77e-dacc32d67bb9",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其三十七）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划",
+                   "段落（其",
+                   "三十七）",
+                   "：演示计",
+                   "划步骤",
+                   "导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:32:13.318575+00:00",
+              "completed_at": "2035-12-26T01:32:13.318575+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-78cb-5173-a77e-dacc32d67bb9"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其三十八）：演示计划步骤导出。",
+              "items": [],
+              "started_at": "2035-12-26T01:32:16.657212+00:00",
+              "completed_at": "2035-12-26T01:32:16.913106+00:00",
+              "icon": "extract",
+              "tool_name": "read",
+              "batch_step_id": "5cbeef00-c9c2-5b14-8d2d-60de66c2cb17",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0iPJBLzdM5JhvLnv9Ut"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-c149-5a0b-b3fa-84cc4c67b0d5",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其三十九）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落",
+                   "（其三十九）",
+                   "：演示计划",
+                   "步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:32:45.305607+00:00",
+              "completed_at": "2035-12-26T01:32:45.305607+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-c149-5a0b-b3fa-84cc4c67b0d5"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其三十三）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_SOURCES",
+                "payload": {
+                 "sources_payload": {
+                  "asset_uuids": [
+                   "5cbeef00-08f0-5531-99b9-a1dc68776edf"
+                  ]
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:34:47.434102+00:00",
+              "completed_at": "2035-12-26T01:34:47.543621+00:00",
+              "icon": "store",
+              "tool_name": "edit",
+              "batch_step_id": "5cbeef00-de2d-5b4f-b80f-158bf996570f",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0LNnUYbZHANkQvT5kc6"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-dcef-5b84-8af2-8037816db6a6",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其四十）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落（",
+                   "其四十）：演示",
+                   "计划步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:34:53.150538+00:00",
+              "completed_at": "2035-12-26T01:34:53.150538+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-dcef-5b84-8af2-8037816db6a6"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其四十一）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例命令段落（其六）：演示工具调用导出。"
+                  ],
+                  "is_mono": true
+                 }
+                }
+               },
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例输出段落（其六）：演示工具输出导出。"
+                  ],
+                  "is_mono": true,
+                  "header": "Output"
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:34:56.328365+00:00",
+              "completed_at": "2035-12-26T01:34:56.376208+00:00",
+              "icon": "extract",
+              "tool_name": "bash",
+              "batch_step_id": "5cbeef00-f141-5b7e-b31d-2f6f724b47ad",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0QGZIDkmCFXgKSKkB2l"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-e115-5812-8912-221c3c919100",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其四十二）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划",
+                   "段落（",
+                   "其四十",
+                   "二）：",
+                   "演示计",
+                   "划步骤",
+                   "导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:34:58.082447+00:00",
+              "completed_at": "2035-12-26T01:34:58.082447+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-e115-5812-8912-221c3c919100"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其三十三）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_SOURCES",
+                "payload": {
+                 "sources_payload": {
+                  "asset_uuids": [
+                   "5cbeef00-a1fe-5494-b0a0-11f8c09f07f7"
+                  ]
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:36:16.457297+00:00",
+              "completed_at": "2035-12-26T01:36:16.467038+00:00",
+              "icon": "store",
+              "tool_name": "edit",
+              "batch_step_id": "5cbeef00-161a-5d26-a77b-5b07506c9095",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0xyXxJxfZjnBcBNTsZg"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其四十三）：演示计划步骤导出。",
+              "items": [],
+              "started_at": "2035-12-26T01:36:16.470932+00:00",
+              "completed_at": "2035-12-26T01:37:24.264837+00:00",
+              "icon": "compact_context",
+              "tool_name": "compact_context",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-5777-595e-807d-6c3911e98524"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-9e9d-5e39-9055-2d68a0b3b1ef",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其四十四）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落（其四十四",
+                   "）：演示计划步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:37:27.574741+00:00",
+              "completed_at": "2035-12-26T01:37:27.574741+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-9e9d-5e39-9055-2d68a0b3b1ef"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其四十五）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例命令段落（其七）：演示工具调用导出。"
+                  ],
+                  "is_mono": true
+                 }
+                }
+               },
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例输出段落（其七）：演示工具输出导出。"
+                  ],
+                  "is_mono": true,
+                  "header": "Output"
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:37:30.427948+00:00",
+              "completed_at": "2035-12-26T01:37:30.429350+00:00",
+              "icon": "code_execute",
+              "tool_name": "bash",
+              "batch_step_id": "5cbeef00-5dcd-541d-9dcb-05d2b2ef2cb1",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0EX7tkH2Ykp36nJdT92"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其三十八）：演示计划步骤导出。",
+              "items": [],
+              "started_at": "2035-12-26T01:37:30.429014+00:00",
+              "completed_at": "2035-12-26T01:37:30.699036+00:00",
+              "icon": "extract",
+              "tool_name": "read",
+              "batch_step_id": "5cbeef00-5dcd-541d-9dcb-05d2b2ef2cb1",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0hqbMmagruyS0JAes0V"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-b6ff-5e13-8cb1-9b2ad721a6ad",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其四十六）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落",
+                   "（其四十六）",
+                   "：演示计划",
+                   "步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:37:38.610958+00:00",
+              "completed_at": "2035-12-26T01:37:38.610958+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-b6ff-5e13-8cb1-9b2ad721a6ad"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其十二）：演示计划步骤导出。",
+              "items": [],
+              "started_at": "2035-12-26T01:37:41.147334+00:00",
+              "completed_at": "2035-12-26T01:37:41.176154+00:00",
+              "icon": "extract",
+              "tool_name": "read",
+              "batch_step_id": "5cbeef00-466f-5c9a-8664-d8019d116508",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub08qcHfINLGejx4UuhIr"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其十五）：演示计划步骤导出。",
+              "items": [],
+              "started_at": "2035-12-26T01:37:41.148286+00:00",
+              "completed_at": "2035-12-26T01:37:41.384005+00:00",
+              "icon": "extract",
+              "tool_name": "read",
+              "batch_step_id": "5cbeef00-466f-5c9a-8664-d8019d116508",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0kVeZvvBG8BQ1YmBcSG"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-970a-51e8-90c8-3bc271574910",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其四十七）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例",
+                   "计划",
+                   "段落",
+                   "（其",
+                   "四十",
+                   "七）",
+                   "：演",
+                   "示",
+                   "计",
+                   "划",
+                   "步",
+                   "骤",
+                   "导",
+                   "出",
+                   "。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:37:45.919617+00:00",
+              "completed_at": "2035-12-26T01:37:45.919617+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-970a-51e8-90c8-3bc271574910"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其三十三）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_SOURCES",
+                "payload": {
+                 "sources_payload": {
+                  "asset_uuids": [
+                   "5cbeef00-2d1d-53a2-b352-250fcbe66064"
+                  ]
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:38:01.156674+00:00",
+              "completed_at": "2035-12-26T01:38:01.209725+00:00",
+              "icon": "store",
+              "tool_name": "edit",
+              "batch_step_id": "5cbeef00-a7be-5b40-abca-e574f0e28bf1",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0Q613vqS4EjmZM9Fxqg"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-d093-5cf3-a9c3-3ffa17022445",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其四十八）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落",
+                   "（其四十八）",
+                   "：演示计划",
+                   "步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:38:05.759026+00:00",
+              "completed_at": "2035-12-26T01:38:05.759026+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-d093-5cf3-a9c3-3ffa17022445"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其四十九）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例命令段落（其八）：演示工具调用导出。"
+                  ],
+                  "is_mono": true
+                 }
+                }
+               },
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例输出段落（其八）：演示工具输出导出。"
+                  ],
+                  "is_mono": true,
+                  "header": "Output"
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:38:08.196756+00:00",
+              "completed_at": "2035-12-26T01:38:08.197721+00:00",
+              "icon": "extract",
+              "tool_name": "bash",
+              "batch_step_id": "5cbeef00-6711-5c9a-a637-67b7ca13d624",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0HfrTjcHTVS8JxZEhK1"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-ef58-5ab2-89aa-84095472c782",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其五十）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划",
+                   "段落（其",
+                   "五十）：",
+                   "演示计",
+                   "划步骤",
+                   "导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:38:11.533506+00:00",
+              "completed_at": "2035-12-26T01:38:11.533506+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-ef58-5ab2-89aa-84095472c782"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其三十三）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_SOURCES",
+                "payload": {
+                 "sources_payload": {
+                  "asset_uuids": [
+                   "5cbeef00-05a2-5a1b-a79d-87217afdd534"
+                  ]
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:38:31.311620+00:00",
+              "completed_at": "2035-12-26T01:38:31.313326+00:00",
+              "icon": "store",
+              "tool_name": "edit",
+              "batch_step_id": "5cbeef00-1336-555c-b1af-9ad3de6d4e70",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0itHmG5dpkxQhQq0Vsb"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其三十三）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_SOURCES",
+                "payload": {
+                 "sources_payload": {
+                  "asset_uuids": [
+                   "5cbeef00-604a-505b-a330-05640674c36a"
+                  ]
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:38:31.312983+00:00",
+              "completed_at": "2035-12-26T01:38:31.372190+00:00",
+              "icon": "store",
+              "tool_name": "edit",
+              "batch_step_id": "5cbeef00-1336-555c-b1af-9ad3de6d4e70",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0vZpM9X7PsJ1GahN51F"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-6ab3-546e-9ea4-8f5e1aac2f2d",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其五十一）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段",
+                   "落（其五十",
+                   "一）：演",
+                   "示计划步",
+                   "骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:38:33.111524+00:00",
+              "completed_at": "2035-12-26T01:38:33.111524+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-6ab3-546e-9ea4-8f5e1aac2f2d"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其五十二）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例命令段落（其九）：演示工具调用导出。"
+                  ],
+                  "is_mono": true
+                 }
+                }
+               },
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例输出段落（其九）：演示工具输出导出。"
+                  ],
+                  "is_mono": true,
+                  "header": "Output"
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T01:38:37.132718+00:00",
+              "completed_at": "2035-12-26T01:38:37.133223+00:00",
+              "icon": "code_execute",
+              "tool_name": "bash",
+              "batch_step_id": "5cbeef00-bbf8-5caa-aaaa-b28ac6e1cd4a",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0T01c3M5KaZKpIPldpv"
+             }
+            ],
+            "snapshots": [
+             {
+              "type": "USAGE_TOTAL",
+              "usage_total": {
+               "compute_time_s": 848.633777635172
+              }
+             },
+             {
+              "type": "TODO_LIST",
+              "todo_list": {
+               "title": "示例待办清单标题（其二）",
+               "items": [
+                {
+                 "status": "COMPLETED",
+                 "description": "示例待办事项（其十）：演示待办内容导出。"
+                },
+                {
+                 "status": "IN_PROGRESS",
+                 "description": "示例待办事项（其十一）：演示待办内容导出。"
+                },
+                {
+                 "status": "PENDING",
+                 "description": "示例待办事项（其十二）：演示待办内容导出。"
+                },
+                {
+                 "status": "PENDING",
+                 "description": "示例待办事项（其十三）：演示待办内容导出。"
+                },
+                {
+                 "status": "PENDING",
+                 "description": "示例待办事项（其十四）：演示待办内容导出。"
+                },
+                {
+                 "status": "PENDING",
+                 "description": "示例待办事项（其十五）：演示待办内容导出。"
+                },
+                {
+                 "status": "PENDING",
+                 "description": "示例待办事项（其十六）：演示待办内容导出。"
+                }
+               ]
+              }
+             }
+            ],
+            "id": "toolu_5crub0nxoGpTlNxRdjIJuir9"
+           }
+          }
+         }
+        ],
+        "started_at": "",
+        "completed_at": "",
+        "unnest_items": true,
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0nxoGpTlNxRdjIJuir9:workflow"
+       }
+      ],
+      "snapshots": []
+     }
+    },
+    {
+     "intended_usage": "unified_assets",
+     "unified_assets_block": {
+      "assets": [
+       {
+        "uuid": "toolu_5crub0n7lyPfzrRKuRZDWHUT",
+        "asset_type": "DOC_FILE",
+        "doc_file": {
+         "filename": "sec_2.2.md",
+         "final": true
+        },
+        "preview_info": [
+         {
+          "type": "text",
+          "media_type": "text/markdown",
+          "is_streaming": false,
+          "file_handle": "file:draft_out/sec_2.2.md"
+         }
+        ],
+        "created_at": "1782194559"
+       },
+       {
+        "uuid": "5cbeef00-ee98-5491-8fcc-d46d9e3a032c",
+        "asset_type": "ASSET_DIFF",
+        "asset_diff": {
+         "title": "示例步骤标题（其一）",
+         "files": [
+          {
+           "filename": "sec_2.2.md",
+           "display_path": "draft_out/sec_2.2.md",
+           "lines": [
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 14,
+             "new_line": 14
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其一）：演示文件内容导出。",
+             "old_line": 15,
+             "new_line": 15
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 16,
+             "new_line": 16
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其二）：演示文件内容导出。",
+             "old_line": 17
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其三）：演示文件内容导出。",
+             "new_line": 17
+            },
+            {
+             "kind": "ADD",
+             "text": "",
+             "new_line": 18
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其四）：演示文件内容导出。",
+             "new_line": 19
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 18,
+             "new_line": 20
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "### 示例小节标题（其一）",
+             "old_line": 19,
+             "new_line": 21
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 20,
+             "new_line": 22
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 22,
+             "new_line": 24
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其五）：演示文件内容导出。",
+             "old_line": 23,
+             "new_line": 25
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 24,
+             "new_line": 26
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其六）：演示文件内容导出。",
+             "old_line": 25
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其七）：演示文件内容导出。",
+             "new_line": 27
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 26,
+             "new_line": 28
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "### 示例小节标题（其二）",
+             "old_line": 27,
+             "new_line": 29
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 28,
+             "new_line": 30
+            }
+           ]
+          }
+         ],
+         "final": true
+        },
+        "backend_uuid_slug": "5cbeef00-ee98-5491-8fcc-d46d9e3a032c"
+       },
+       {
+        "uuid": "5cbeef00-1df6-5dc7-8b43-806ab7ce54d6",
+        "asset_type": "ASSET_DIFF",
+        "asset_diff": {
+         "title": "示例步骤标题（其一）",
+         "files": [
+          {
+           "filename": "sec_2.2.md",
+           "display_path": "draft_out/sec_2.2.md",
+           "lines": [
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 126,
+             "new_line": 126
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其八）：演示文件内容导出。",
+             "old_line": 127,
+             "new_line": 127
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 128,
+             "new_line": 128
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其九）：演示文件内容导出。",
+             "old_line": 129
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其十）：演示文件内容导出。",
+             "new_line": 129
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 130,
+             "new_line": 130
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其十一）：演示文件内容导出。",
+             "old_line": 131,
+             "new_line": 131
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 132,
+             "new_line": 132
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 136,
+             "new_line": 136
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其十二）：演示文件内容导出。",
+             "old_line": 137,
+             "new_line": 137
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 138,
+             "new_line": 138
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其十三）：演示文件内容导出。",
+             "old_line": 139
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其十四）：演示文件内容导出。",
+             "new_line": 139
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 140,
+             "new_line": 140
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其十五）：演示文件内容导出。",
+             "old_line": 141
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其十六）：演示文件内容导出。",
+             "new_line": 141
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 142,
+             "new_line": 142
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其十七）：演示文件内容导出。",
+             "old_line": 143,
+             "new_line": 143
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 144,
+             "new_line": 144
+            }
+           ]
+          }
+         ],
+         "final": true
+        },
+        "backend_uuid_slug": "5cbeef00-1df6-5dc7-8b43-806ab7ce54d6"
+       },
+       {
+        "uuid": "5cbeef00-08f0-5531-99b9-a1dc68776edf",
+        "asset_type": "ASSET_DIFF",
+        "asset_diff": {
+         "title": "示例步骤标题（其一）",
+         "files": [
+          {
+           "filename": "sec_2.2.md",
+           "display_path": "draft_out/sec_2.2.md",
+           "lines": [
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 146,
+             "new_line": 146
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其十八）：演示文件内容导出。",
+             "old_line": 147,
+             "new_line": 147
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 148,
+             "new_line": 148
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其十九）：演示文件内容导出。",
+             "old_line": 149
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其二十）：演示文件内容导出。",
+             "new_line": 149
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 150,
+             "new_line": 150
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其二十一）：演示文件内容导出。",
+             "old_line": 151,
+             "new_line": 151
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 152,
+             "new_line": 152
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其二十二）：演示文件内容导出。",
+             "old_line": 153
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其二十三）：演示文件内容导出。",
+             "new_line": 153
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 154,
+             "new_line": 154
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "### 示例小节标题（其三）",
+             "old_line": 155,
+             "new_line": 155
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 156,
+             "new_line": 156
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其二十四）：演示文件内容导出。",
+             "old_line": 157,
+             "new_line": 157
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 158,
+             "new_line": 158
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其二十五）：演示文件内容导出。",
+             "old_line": 159
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其二十六）：演示文件内容导出。",
+             "new_line": 159
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 160,
+             "new_line": 160
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "### 示例小节标题（其四）",
+             "old_line": 161,
+             "new_line": 161
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 162,
+             "new_line": 162
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 174,
+             "new_line": 174
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其二十七）：演示文件内容导出。",
+             "old_line": 175,
+             "new_line": 175
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 176,
+             "new_line": 176
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其二十八）：演示文件内容导出。",
+             "old_line": 177
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其二十九）：演示文件内容导出。",
+             "new_line": 177
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 178,
+             "new_line": 178
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其三十）：演示文件内容导出。",
+             "old_line": 179,
+             "new_line": 179
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 180,
+             "new_line": 180
+            }
+           ]
+          }
+         ],
+         "final": true
+        },
+        "backend_uuid_slug": "5cbeef00-08f0-5531-99b9-a1dc68776edf"
+       },
+       {
+        "uuid": "5cbeef00-a1fe-5494-b0a0-11f8c09f07f7",
+        "asset_type": "ASSET_DIFF",
+        "asset_diff": {
+         "title": "示例步骤标题（其一）",
+         "files": [
+          {
+           "filename": "sec_2.2.md",
+           "display_path": "draft_out/sec_2.2.md",
+           "lines": [
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 58,
+             "new_line": 58
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其三十一）：演示文件内容导出。",
+             "old_line": 59,
+             "new_line": 59
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 60,
+             "new_line": 60
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其三十二）：演示文件内容导出。",
+             "old_line": 61
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其三十三）：演示文件内容导出。",
+             "new_line": 61
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 62,
+             "new_line": 62
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其三十四）：演示文件内容导出。",
+             "old_line": 63,
+             "new_line": 63
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 64,
+             "new_line": 64
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 68,
+             "new_line": 68
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其三十五）：演示文件内容导出。",
+             "old_line": 69,
+             "new_line": 69
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 70,
+             "new_line": 70
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其三十六）：演示文件内容导出。",
+             "old_line": 71
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其三十七）：演示文件内容导出。",
+             "new_line": 71
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 72,
+             "new_line": 72
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "### 示例小节标题（其五）",
+             "old_line": 73,
+             "new_line": 73
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 74,
+             "new_line": 74
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其三十八）：演示文件内容导出。",
+             "old_line": 75,
+             "new_line": 75
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 76,
+             "new_line": 76
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其三十九）：演示文件内容导出。",
+             "old_line": 77
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其四十）：演示文件内容导出。",
+             "new_line": 77
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 78,
+             "new_line": 78
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其四十一）：演示文件内容导出。",
+             "old_line": 79,
+             "new_line": 79
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 80,
+             "new_line": 80
+            }
+           ]
+          }
+         ],
+         "final": true
+        },
+        "backend_uuid_slug": "5cbeef00-a1fe-5494-b0a0-11f8c09f07f7"
+       },
+       {
+        "uuid": "5cbeef00-2d1d-53a2-b352-250fcbe66064",
+        "asset_type": "ASSET_DIFF",
+        "asset_diff": {
+         "title": "示例步骤标题（其一）",
+         "files": [
+          {
+           "filename": "sec_2.2.md",
+           "display_path": "draft_out/sec_2.2.md",
+           "lines": [
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 32,
+             "new_line": 32
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其四十二）：演示文件内容导出。",
+             "old_line": 33,
+             "new_line": 33
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 34,
+             "new_line": 34
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其四十三）：演示文件内容导出。",
+             "old_line": 35
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其四十四）：演示文件内容导出。",
+             "new_line": 35
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 36,
+             "new_line": 36
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "### 示例小节标题（其六）",
+             "old_line": 37,
+             "new_line": 37
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 38,
+             "new_line": 38
+            }
+           ]
+          }
+         ],
+         "final": true
+        },
+        "backend_uuid_slug": "5cbeef00-2d1d-53a2-b352-250fcbe66064"
+       },
+       {
+        "uuid": "5cbeef00-05a2-5a1b-a79d-87217afdd534",
+        "asset_type": "ASSET_DIFF",
+        "asset_diff": {
+         "title": "示例步骤标题（其一）",
+         "files": [
+          {
+           "filename": "sec_2.2.md",
+           "display_path": "draft_out/sec_2.2.md",
+           "lines": [
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 188,
+             "new_line": 188
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其四十五）：演示文件内容导出。",
+             "old_line": 189,
+             "new_line": 189
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 190,
+             "new_line": 190
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其四十六）：演示文件内容导出。",
+             "old_line": 191
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其四十七）：演示文件内容导出。",
+             "new_line": 191
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 192,
+             "new_line": 192
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "示例文档段落（其四十八）：演示文件内容导出。",
+             "old_line": 193,
+             "new_line": 193
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 194,
+             "new_line": 194
+            }
+           ]
+          }
+         ],
+         "final": true
+        },
+        "backend_uuid_slug": "5cbeef00-05a2-5a1b-a79d-87217afdd534"
+       },
+       {
+        "uuid": "5cbeef00-604a-505b-a330-05640674c36a",
+        "asset_type": "ASSET_DIFF",
+        "asset_diff": {
+         "title": "示例步骤标题（其一）",
+         "files": [
+          {
+           "filename": "sec_2.2.md",
+           "display_path": "draft_out/sec_2.2.md",
+           "lines": [
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 180,
+             "new_line": 180
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "### 示例小节标题（其七）",
+             "old_line": 181,
+             "new_line": 181
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 182,
+             "new_line": 182
+            },
+            {
+             "kind": "DELETE",
+             "text": "示例文档段落（其四十九）：演示文件内容导出。",
+             "old_line": 183
+            },
+            {
+             "kind": "ADD",
+             "text": "示例文档段落（其五十）：演示文件内容导出。",
+             "new_line": 183
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 184,
+             "new_line": 184
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "### 示例小节标题（其八）",
+             "old_line": 185,
+             "new_line": 185
+            },
+            {
+             "kind": "CONTEXT",
+             "text": "",
+             "old_line": 186,
+             "new_line": 186
+            }
+           ]
+          }
+         ],
+         "final": true
+        },
+        "backend_uuid_slug": "5cbeef00-604a-505b-a330-05640674c36a"
+       }
+      ]
+     }
+    }
+   ],
+   "access_level": "PUBLIC_READ",
+   "answer_modes": [],
+   "structured_answer_block_usages": [
+    "workflow_root"
+   ],
+   "reconnectable": false,
+   "classifier_results": {},
+   "search_implementation_mode": "multi_step",
+   "query_language": "zh",
+   "search_mode": "ASI",
+   "locked_reason": "spending_limit_exceeded",
+   "is_background": true
+  },
+  {
+   "backend_uuid": "5cbeef00-d8de-5933-a96c-e8f00a47f686",
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "uuid": "5cbeef00-d8de-5933-a96c-e8f00a47f686",
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "status": "COMPLETED",
+   "thread_title": "章节提纲规划",
+   "related_queries": [],
+   "display_model": "pplx_asi_opus",
+   "user_selected_model": "pplx_asi_opus",
+   "personalized": false,
+   "mode": "ASI",
+   "query_str": "",
+   "search_focus": "internet",
+   "source": "default",
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "step_type": "FINAL",
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "query_source": "scheduled",
+   "privacy_state": "NONE",
+   "gpt4": false,
+   "entry_created_datetime": "2035-12-26T02:10:46.802652+00:00",
+   "entry_updated_datetime": "2035-12-26T02:12:19.458601+00:00",
+   "blocks": [
+    {
+     "intended_usage": "plan",
+     "plan_block": {
+      "progress": "DONE",
+      "goals": [
+       {
+        "id": "0",
+        "description": "示例计划段落（其十）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "expect_child_goals": true
+       },
+       {
+        "id": "1",
+        "description": "示例计划段落（其五十三）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "2",
+        "description": "示例计划段落（其五十四）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "3",
+        "description": "示例计划段落（其五十五）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "4",
+        "description": "示例计划段落（其五十六）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       },
+       {
+        "id": "5",
+        "description": "示例计划段落（其五十七）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE",
+        "parent_goal_id": "0"
+       }
+      ],
+      "final": true
+     }
+    },
+    {
+     "intended_usage": "workflow_root",
+     "workflow_block": {
+      "version": "1.0",
+      "status": "WORKFLOW_COMPLETED",
+      "headline": "",
+      "started_at": "2035-12-26T02:10:46.761866+00:00",
+      "completed_at": "",
+      "predicted_completion_at": "",
+      "steps": [
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "示例计划段落（其十）：演示计划步骤导出。",
+        "items": [],
+        "started_at": "2035-12-26T02:10:46.761866+00:00",
+        "completed_at": "2035-12-26T02:12:18.939562+00:00",
+        "tool_name": "run_subagent",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0PkOaQ8DWkchhkEoB8y"
+       },
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "",
+        "items": [
+         {
+          "id": "toolu_5crub0PkOaQ8DWkchhkEoB8y",
+          "type": "WORKFLOW_ITEM_WORKFLOW",
+          "payload": {
+           "workflow_payload": {
+            "version": "1.0",
+            "model": "claude48opus",
+            "status": "WORKFLOW_COMPLETED",
+            "headline": "撰写2.5示例主题D",
+            "started_at": "2035-12-26T02:10:46.761866+00:00",
+            "completed_at": "2035-12-26T02:12:18.939562+00:00",
+            "predicted_completion_at": "",
+            "steps": [
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "",
+              "items": [
+               {
+                "id": "5cbeef00-ed5a-59a0-be26-cd1565b0c5d0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "text": "示例计划段落（其五十三）：演示计划步骤导出。",
+                  "chunks": [
+                   "示例计划段落（其五十三",
+                   "）：演示计划步骤导出。"
+                  ],
+                  "variant": "thought",
+                  "is_streaming": false,
+                  "clamp": {
+                   "max_lines": 10,
+                   "expandable": true
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T02:10:53.443595+00:00",
+              "completed_at": "2035-12-26T02:10:53.443595+00:00",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "5cbeef00-ed5a-59a0-be26-cd1565b0c5d0"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其五十四）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例命令段落（其十）：演示工具调用导出。"
+                  ],
+                  "is_mono": true
+                 }
+                }
+               },
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例输出段落（其十）：演示工具输出导出。"
+                  ],
+                  "is_mono": true,
+                  "header": "Output"
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T02:11:23.561806+00:00",
+              "completed_at": "2035-12-26T02:11:23.591507+00:00",
+              "icon": "extract",
+              "tool_name": "bash",
+              "batch_step_id": "5cbeef00-fc53-5d5a-8c1c-3ecb99a56f84",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0uz2LKTjR4yOOe2WfmC"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其五十五）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TODO_LIST",
+                "payload": {
+                 "todo_list_payload": {
+                  "title": "示例待办清单标题（其三）",
+                  "items": [
+                   {
+                    "status": "COMPLETED",
+                    "description": "示例待办事项（其十七）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "COMPLETED",
+                    "description": "示例待办事项（其十八）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "COMPLETED",
+                    "description": "示例待办事项（其十九）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "COMPLETED",
+                    "description": "示例待办事项（其二十）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "IN_PROGRESS",
+                    "description": "示例待办事项（其二十一）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "PENDING",
+                    "description": "示例待办事项（其二十二）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "PENDING",
+                    "description": "示例待办事项（其二十三）：演示待办内容导出。"
+                   }
+                  ],
+                  "diff": {
+                   "items": [
+                    {
+                     "action": "TODO_DIFF_ADDED",
+                     "description": "示例待办事项（其十七）：演示待办内容导出。",
+                     "new_status": "COMPLETED"
+                    },
+                    {
+                     "action": "TODO_DIFF_ADDED",
+                     "description": "示例待办事项（其十八）：演示待办内容导出。",
+                     "new_status": "COMPLETED"
+                    },
+                    {
+                     "action": "TODO_DIFF_ADDED",
+                     "description": "示例待办事项（其十九）：演示待办内容导出。",
+                     "new_status": "COMPLETED"
+                    },
+                    {
+                     "action": "TODO_DIFF_ADDED",
+                     "description": "示例待办事项（其二十）：演示待办内容导出。",
+                     "new_status": "COMPLETED"
+                    },
+                    {
+                     "action": "TODO_DIFF_ADDED",
+                     "description": "示例待办事项（其二十一）：演示待办内容导出。",
+                     "new_status": "IN_PROGRESS"
+                    },
+                    {
+                     "action": "TODO_DIFF_ADDED",
+                     "description": "示例待办事项（其二十二）：演示待办内容导出。",
+                     "new_status": "PENDING"
+                    },
+                    {
+                     "action": "TODO_DIFF_ADDED",
+                     "description": "示例待办事项（其二十三）：演示待办内容导出。",
+                     "new_status": "PENDING"
+                    }
+                   ]
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T02:11:26.088200+00:00",
+              "completed_at": "2035-12-26T02:11:26.088822+00:00",
+              "icon": "plan",
+              "tool_name": "update_todo_status",
+              "batch_step_id": "5cbeef00-5e16-54e4-bb67-72550d43a720",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0K6hgc9WbHqWaNlBG65"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其五十六）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例命令段落（其十一）：演示工具调用导出。"
+                  ],
+                  "is_mono": true
+                 }
+                }
+               },
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TEXT",
+                "payload": {
+                 "text_payload": {
+                  "chunks": [
+                   "示例输出段落（其十一）：演示工具输出导出。"
+                  ],
+                  "is_mono": true,
+                  "header": "Output"
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T02:12:07.518085+00:00",
+              "completed_at": "2035-12-26T02:12:07.518649+00:00",
+              "icon": "extract",
+              "tool_name": "bash",
+              "batch_step_id": "5cbeef00-80a5-5de8-8c8a-fd1130d5ddfc",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0xsNsMwTTa1636VDdpC"
+             },
+             {
+              "status": "WORKFLOW_COMPLETED",
+              "title": "示例计划段落（其五十七）：演示计划步骤导出。",
+              "items": [
+               {
+                "id": "_0",
+                "type": "WORKFLOW_ITEM_TODO_LIST",
+                "payload": {
+                 "todo_list_payload": {
+                  "title": "示例待办清单标题（其三）",
+                  "items": [
+                   {
+                    "status": "COMPLETED",
+                    "description": "示例待办事项（其十七）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "COMPLETED",
+                    "description": "示例待办事项（其十八）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "COMPLETED",
+                    "description": "示例待办事项（其十九）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "COMPLETED",
+                    "description": "示例待办事项（其二十）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "COMPLETED",
+                    "description": "示例待办事项（其二十一）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "IN_PROGRESS",
+                    "description": "示例待办事项（其二十二）：演示待办内容导出。"
+                   },
+                   {
+                    "status": "PENDING",
+                    "description": "示例待办事项（其二十三）：演示待办内容导出。"
+                   }
+                  ],
+                  "diff": {
+                   "items": [
+                    {
+                     "action": "TODO_DIFF_STATUS_CHANGED",
+                     "description": "示例待办事项（其二十一）：演示待办内容导出。",
+                     "old_status": "IN_PROGRESS",
+                     "new_status": "COMPLETED"
+                    },
+                    {
+                     "action": "TODO_DIFF_STATUS_CHANGED",
+                     "description": "示例待办事项（其二十二）：演示待办内容导出。",
+                     "old_status": "PENDING",
+                     "new_status": "IN_PROGRESS"
+                    }
+                   ]
+                  }
+                 }
+                }
+               }
+              ],
+              "started_at": "2035-12-26T02:12:18.680543+00:00",
+              "completed_at": "2035-12-26T02:12:18.681425+00:00",
+              "icon": "plan",
+              "tool_name": "update_todo_status",
+              "batch_step_id": "5cbeef00-59f1-5da3-97d4-94c2a2f57ffa",
+              "source_tier": "SOURCE_TIER_DEFAULT",
+              "id": "toolu_5crub0vC3PB4L8i0RNCDl9p1"
+             }
+            ],
+            "snapshots": [
+             {
+              "type": "USAGE_TOTAL",
+              "usage_total": {
+               "compute_time_s": 321.5240746187046
+              }
+             },
+             {
+              "type": "TODO_LIST",
+              "todo_list": {
+               "title": "示例待办清单标题（其三）",
+               "items": [
+                {
+                 "status": "COMPLETED",
+                 "description": "示例待办事项（其十七）：演示待办内容导出。"
+                },
+                {
+                 "status": "COMPLETED",
+                 "description": "示例待办事项（其十八）：演示待办内容导出。"
+                },
+                {
+                 "status": "COMPLETED",
+                 "description": "示例待办事项（其十九）：演示待办内容导出。"
+                },
+                {
+                 "status": "COMPLETED",
+                 "description": "示例待办事项（其二十）：演示待办内容导出。"
+                },
+                {
+                 "status": "COMPLETED",
+                 "description": "示例待办事项（其二十一）：演示待办内容导出。"
+                },
+                {
+                 "status": "IN_PROGRESS",
+                 "description": "示例待办事项（其二十二）：演示待办内容导出。"
+                },
+                {
+                 "status": "PENDING",
+                 "description": "示例待办事项（其二十三）：演示待办内容导出。"
+                }
+               ]
+              }
+             }
+            ],
+            "id": "toolu_5crub0PkOaQ8DWkchhkEoB8y"
+           }
+          }
+         }
+        ],
+        "started_at": "",
+        "completed_at": "",
+        "unnest_items": true,
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0PkOaQ8DWkchhkEoB8y:workflow"
+       }
+      ],
+      "snapshots": []
+     }
+    }
+   ],
+   "access_level": "PUBLIC_READ",
+   "answer_modes": [],
+   "structured_answer_block_usages": [
+    "workflow_root"
+   ],
+   "reconnectable": false,
+   "classifier_results": {},
+   "search_implementation_mode": "multi_step",
+   "query_language": "zh",
+   "search_mode": "ASI",
+   "locked_reason": "spending_limit_exceeded",
+   "is_background": true
+  }
+ ]
+}

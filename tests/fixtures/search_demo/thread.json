@@ -1,0 +1,36 @@
+{
+ "web_uuid": "12847d17-d6f1-426f-9d2c-f55d7a5c991f",
+ "psc_uuid": "c88739c7-0574-4032-bc33-ef3af8aef69c",
+ "url": "https://example.com/search/12847d17-d6f1-426f-9d2c-f55d7a5c991f",
+ "title": "示例提问段落（其一）：演示单轮搜索导出的合成问题文本？",
+ "mode": "search",
+ "author": "alice",
+ "export_via": "alice",
+ "space": {
+  "uuid": "2f49dd34-6ab9-4215-adbb-490b228379d6",
+  "title": "示例专题空间",
+  "slug": "example-topic-space-a1b2c3"
+ },
+ "lastUpdated": "2035-12-26T00:00:00.000000Z",
+ "threadAccess": null,
+ "n_turns": 1,
+ "n_sources": 0,
+ "metadata": {
+  "created_at": "2035-12-26T00:00:00.000000",
+  "crons": null,
+  "local_workspace_directories": null,
+  "locked_reason": null,
+  "mode": "1",
+  "sensitive_claims_visibility": null,
+  "subscribe_entry_uuids": null,
+  "thread_status": null,
+  "thread_status_summary": null,
+  "thread_status_summary_enum": null,
+  "title": "示例提问段落（其一）：演示单轮搜索导出的合成问题文本？",
+  "updated_at": "2035-12-26T00:00:00.000000",
+  "wake_at": null,
+  "workflow_snapshots": null
+ },
+ "report_info": null,
+ "exported_at": "2036-12-17T11:41:42Z"
+}

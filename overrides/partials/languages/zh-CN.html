@@ -1,0 +1,3 @@
+{# Map the documentation locale to Material's Simplified Chinese UI strings. #}
+{% import "partials/languages/zh.html" as simplified %}
+{% macro t(key) %}{{ simplified.t(key) }}{% endmacro %}

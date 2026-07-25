@@ -1,0 +1,10 @@
+{
+  "_comment": "scrub_pairs.local.json 的模板。本地文件含真实旧值、不入库；公开仓库只带本模板。pairs 为 [旧值, 新值] 列表（按序应用，长串在前）；gate 为门禁零容忍子串。",
+  "pairs": [
+    ["real-project-directory-name", "example-project"],
+    ["敏感研究措辞片段", "通用合成措辞"]
+  ],
+  "gate": [
+    "real-username", "real.email@example.org", "敏感关键词"
+  ]
+}

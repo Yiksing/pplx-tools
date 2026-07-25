@@ -1,0 +1,1616 @@
+{
+ "thread_metadata": {
+  "created_at": "2035-12-26T00:00:00",
+  "crons": null,
+  "local_workspace_directories": null,
+  "locked_reason": "spending_limit_exceeded",
+  "mode": "4",
+  "sensitive_claims_visibility": null,
+  "subscribe_entry_uuids": [],
+  "thread_status": "blocked",
+  "thread_status_summary": "Add credits to continue",
+  "thread_status_summary_enum": "add_credits",
+  "title": "章节提纲规划",
+  "updated_at": "2035-12-26T02:12:19.927523",
+  "wake_at": null,
+  "workflow_snapshots": {
+   "SHARED_FILES": {
+    "shared_files": {
+     "items": [
+      {
+       "uuid": "toolu_5crub02P53JjEGkUX846HLaU",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "outline_v1.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:outline_v1.md"
+        }
+       ],
+       "created_at": "1782190058"
+      },
+      {
+       "uuid": "toolu_5crub0h8zhfEa8zBZRFqf3bz",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "01_提纲_示例主题.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/01_提纲_示例主题.md"
+        }
+       ],
+       "created_at": "1782192283"
+      },
+      {
+       "uuid": "toolu_5crub05tfjTCwsHLgsF5RKX3",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "示例文档（其一）.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/示例文档（其一）.md"
+        }
+       ],
+       "created_at": "1782192325"
+      },
+      {
+       "uuid": "toolu_5crub0C1R5lYvsVcjISmhL54",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "示例文档（其二）.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/示例文档（其二）.md"
+        }
+       ],
+       "created_at": "1782192380"
+      },
+      {
+       "uuid": "toolu_5crub05wtY6z7iuJrd1d7eBR",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "AGENTS.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/AGENTS.md"
+        }
+       ],
+       "created_at": "1782192433"
+      },
+      {
+       "uuid": "toolu_5crub0dLhgURTb1vm1DIvqWz",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "README.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_project/README.md"
+        }
+       ],
+       "created_at": "1782192446"
+      },
+      {
+       "uuid": "toolu_5crub0v5VIdPzLYyMI34vxrx",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "WRITING_SPEC.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:draft_sources/WRITING_SPEC.md"
+        }
+       ],
+       "created_at": "1782194079"
+      }
+     ]
+    },
+    "type": "SHARED_FILES"
+   }
+  }
+ },
+ "entries": [
+  {
+   "text": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"请先用子代理按大纲结合已有文字完成初稿\"}, \"uuid\": \"\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"0\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:20:37.369794+00:00\"}, \"uuid\": \"5cbeef00-d125-5914-ba12-b3fe84181752\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"0\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:20:37.369794+00:00\"}, \"uuid\": \"5cbeef00-895b-5920-8711-f98760aa673d\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"1\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:20:55.071568+00:00\"}, \"uuid\": \"toolu_5crub0dwdwFejpFpJURUXoEA\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"1\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TODO_LIST\", \"payload\": {\"text_payload\": null, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": {\"title\": \"示例待办清单标题（其一）\", \"items\": [{\"status\": \"IN_PROGRESS\", \"description\": \"示例待办事项（其一）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其二）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其三）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其四）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其五）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其六）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其七）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其八）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其九）：演示待办内容导出。\"}], \"diff\": {\"items\": [{\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其一）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"IN_PROGRESS\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其二）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其三）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其四）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其五）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其六）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其七）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其八）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其九）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}]}}, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:20:55.073041+00:00\"}, \"uuid\": \"toolu_5crub0dwdwFejpFpJURUXoEA\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"2\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:20:57.155987+00:00\"}, \"uuid\": \"5cbeef00-8b2d-59bf-a8e3-9f8f768092af\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"2\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:20:57.155987+00:00\"}, \"uuid\": \"5cbeef00-eee5-512c-b501-19219d79f6aa\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"3\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例命令段落（其一）：演示工具调用导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:20:59.075670+00:00\"}, \"uuid\": \"toolu_5crub0nuKmAbQr1hXbwCOuhv\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"3\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例输出段落（其一）：演示工具输出导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": \"Output\", \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:21:05.502848+00:00\"}, \"uuid\": \"toolu_5crub0nuKmAbQr1hXbwCOuhv\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"4\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:21:07.592355+00:00\"}, \"uuid\": \"5cbeef00-406f-589b-8e9a-df239119cc3a\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"4\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:21:07.592355+00:00\"}, \"uuid\": \"5cbeef00-34e4-5f7a-aba5-989280fe7212\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"5\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_SOURCES\", \"payload\": {\"text_payload\": null, \"sources_payload\": {\"sources\": null, \"assets\": [{\"uuid\": \"toolu_5crub0v5VIdPzLYyMI34vxrx\", \"backend_uuid\": null, \"asset_type\": \"DOC_FILE\", \"code\": null, \"attachment\": null, \"chart\": null, \"code_file\": null, \"app\": null, \"generated_image\": null, \"generated_video\": null, \"pdf_file\": null, \"docx_file\": null, \"xlsx_file\": null, \"quiz\": null, \"flashcards\": null, \"doc_file\": {\"name\": null, \"url\": null, \"docx_url\": null, \"filename\": \"WRITING_SPEC.md\", \"description\": null, \"preview_url\": null, \"file_size\": null, \"source_content\": null, \"final\": true, \"transforms\": null, \"source_content_chunks\": null}, \"research_report\": null, \"document_review\": null, \"screenshot\": null, \"slide_file\": null, \"audio_file\": null, \"model_3d\": null, \"asset_diff\": null, \"external_url\": null, \"download_info\": null, \"preview_info\": [{\"type\": \"text\", \"s3_url\": null, \"media_type\": \"text/markdown\", \"streamed_content_chunks\": null, \"is_streaming\": false, \"file_handle\": \"file:draft_sources/WRITING_SPEC.md\", \"width\": null, \"height\": null}], \"version_info\": null, \"fallback_info\": null, \"is_primary_asset\": null, \"backend_uuid_slug\": null, \"parent_asset_id\": null, \"root_asset_id\": null, \"created_at\": \"1782194079\", \"annotation\": null}], \"asset_uuids\": null}, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:21:10.958097+00:00\"}, \"uuid\": \"toolu_5crub0v5VIdPzLYyMI34vxrx\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"5\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:21:27.185166+00:00\"}, \"uuid\": \"toolu_5crub0v5VIdPzLYyMI34vxrx\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"6\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:21:30.767543+00:00\"}, \"uuid\": \"toolu_5crub0AhZVLL10h2tA4Fhd99\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"6\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TODO_LIST\", \"payload\": {\"text_payload\": null, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": {\"title\": \"示例待办清单标题（其一）\", \"items\": [{\"status\": \"COMPLETED\", \"description\": \"示例待办事项（其一）：演示待办内容导出。\"}, {\"status\": \"IN_PROGRESS\", \"description\": \"示例待办事项（其二）：演示待办内容导出。\"}, {\"status\": \"IN_PROGRESS\", \"description\": \"示例待办事项（其三）：演示待办内容导出。\"}, {\"status\": \"IN_PROGRESS\", \"description\": \"示例待办事项（其四）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其五）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其六）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其七）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其八）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其九）：演示待办内容导出。\"}], \"diff\": {\"items\": [{\"action\": \"TODO_DIFF_STATUS_CHANGED\", \"description\": \"示例待办事项（其一）：演示待办内容导出。\", \"old_status\": \"IN_PROGRESS\", \"new_status\": \"COMPLETED\"}, {\"action\": \"TODO_DIFF_STATUS_CHANGED\", \"description\": \"示例待办事项（其二）：演示待办内容导出。\", \"old_status\": \"PENDING\", \"new_status\": \"IN_PROGRESS\"}, {\"action\": \"TODO_DIFF_STATUS_CHANGED\", \"description\": \"示例待办事项（其三）：演示待办内容导出。\", \"old_status\": \"PENDING\", \"new_status\": \"IN_PROGRESS\"}, {\"action\": \"TODO_DIFF_STATUS_CHANGED\", \"description\": \"示例待办事项（其四）：演示待办内容导出。\", \"old_status\": \"PENDING\", \"new_status\": \"IN_PROGRESS\"}]}}, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:21:30.768437+00:00\"}, \"uuid\": \"toolu_5crub0AhZVLL10h2tA4Fhd99\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"7\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:21:34.533595+00:00\"}, \"uuid\": \"toolu_5crub0H7uq91KDQzuHtUZ1Pn\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"7\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:21:47.702318+00:00\"}, \"uuid\": \"toolu_5crub0H7uq91KDQzuHtUZ1Pn\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"8\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:21:50.928497+00:00\"}, \"uuid\": \"toolu_5crub0ZZE6pvYGSrqnk3vaI6\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"8\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:05.645779+00:00\"}, \"uuid\": \"toolu_5crub0ZZE6pvYGSrqnk3vaI6\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"9\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:10.871381+00:00\"}, \"uuid\": \"toolu_5crub0xWWSUQu5TdkaNa6Zs7\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"9\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:26.722754+00:00\"}, \"uuid\": \"toolu_5crub0xWWSUQu5TdkaNa6Zs7\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"workflow_snapshots\\\": {\\\"\\\": [{\\\"type\\\": \\\"TODO_LIST\\\", \\\"todo_list\\\": {\\\"title\\\": \\\"示例待办清单标题（其一）\\\", \\\"items\\\": [{\\\"status\\\": \\\"COMPLETED\\\", \\\"description\\\": \\\"示例待办事项（其一）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"IN_PROGRESS\\\", \\\"description\\\": \\\"示例待办事项（其二）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"IN_PROGRESS\\\", \\\"description\\\": \\\"示例待办事项（其三）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"IN_PROGRESS\\\", \\\"description\\\": \\\"示例待办事项（其四）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"PENDING\\\", \\\"description\\\": \\\"示例待办事项（其五）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"PENDING\\\", \\\"description\\\": \\\"示例待办事项（其六）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"PENDING\\\", \\\"description\\\": \\\"示例待办事项（其七）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"PENDING\\\", \\\"description\\\": \\\"示例待办事项（其八）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"PENDING\\\", \\\"description\\\": \\\"示例待办事项（其九）：演示待办内容导出。\\\"}]}}, {\\\"type\\\": \\\"USAGE_TOTAL\\\", \\\"usage_total\\\": {\\\"compute_time_s\\\": 946.1883852323517}}, {\\\"type\\\": \\\"SKILLS_LOADED\\\", \\\"skills_loaded\\\": {\\\"skills\\\": [{\\\"name\\\": \\\"design-foundations\\\"}, {\\\"name\\\": \\\"office/docx\\\"}]}}]}}\"}, \"uuid\": \"\"}]",
+   "query_str": "请先用子代理按大纲结合已有文字完成初稿",
+   "query_display_metadata": null,
+   "query_source": "default",
+   "query_language": "zh",
+   "backend_uuid": "5cbeef00-1398-5d74-a7b7-b35e74cc8419",
+   "related_queries": [],
+   "related_query_items": [],
+   "refinement_filters_metadata": {},
+   "search_focus": "internet",
+   "sources": [
+    "web"
+   ],
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "gpt4": false,
+   "step_type": "FINAL",
+   "mode": "asi",
+   "display_model": "pplx_asi",
+   "search_mode": "ASI",
+   "personalized": false,
+   "attachments": [],
+   "media_items": null,
+   "plan": {
+    "goals": [
+     {
+      "id": "0",
+      "description": "示例计划段落（其一）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": null
+     },
+     {
+      "id": "1",
+      "description": "示例计划段落（其二）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": null
+     },
+     {
+      "id": "2",
+      "description": "示例计划段落（其三）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": null
+     },
+     {
+      "id": "3",
+      "description": "示例计划段落（其四）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": null
+     },
+     {
+      "id": "4",
+      "description": "示例回答段落（其一）：演示导出格式。本段为合成占位回答，用于演示长回答的提取与渲染流程；全部内容为说明性示例文本，不对应任何真实信息，仅保持原有的结构形态与排版格式。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": null
+     },
+     {
+      "id": "5",
+      "description": "示例计划段落（其五）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": null
+     },
+     {
+      "id": "6",
+      "description": "示例计划段落（其六）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": null
+     },
+     {
+      "id": "7",
+      "description": "示例计划段落（其七）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": true
+     },
+     {
+      "id": "8",
+      "description": "示例计划段落（其八）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": true
+     },
+     {
+      "id": "9",
+      "description": "示例计划段落（其九）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": true
+     }
+    ],
+    "final": true,
+    "channel_uuid": null,
+    "id": null,
+    "description": null,
+    "start_time": null,
+    "estimated_total_duration_in_seconds": null,
+    "end_time": null
+   },
+   "form": null,
+   "eta": {
+    "eta_seconds_remaining": null,
+    "pct_complete": null
+   },
+   "subtext": "NONE",
+   "answer_modes": [],
+   "created_us": 2082244830297206,
+   "updated_us": 2082244946997136,
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "reconnectable": false,
+   "classifier_results": {
+    "personal_search": true,
+    "skip_search": false,
+    "widget_type": null,
+    "hide_nav": false,
+    "hide_sources": false,
+    "image_generation": false,
+    "time_widget": false,
+    "mhe_predictions": {
+     "skip_search": false,
+     "image_generation_intent": false,
+     "time_widget": false,
+     "places_search_intent": false,
+     "shopping_intent": false,
+     "image_preview": false,
+     "video_preview": false,
+     "nav_intent": false,
+     "study_intent": null,
+     "personal_search": true,
+     "weather_widget": false,
+     "finance_widget_gating": false,
+     "calculator_widget": false,
+     "comet_nav_widget_combined_target": false,
+     "finance_agent_gating": false
+    },
+    "mhe_predictions_full": {
+     "skip_search": {
+      "is_true": false,
+      "probability": null,
+      "threshold": null
+     },
+     "image_generation_intent": {
+      "is_true": false,
+      "probability": 0.07080078,
+      "threshold": 0.98
+     },
+     "time_widget": {
+      "is_true": false,
+      "probability": 0.014038086,
+      "threshold": 0.8
+     },
+     "places_search_intent": {
+      "is_true": false,
+      "probability": 0.18261719,
+      "threshold": 0.85
+     },
+     "shopping_intent": {
+      "is_true": false,
+      "probability": 0.009399414,
+      "threshold": 0.8
+     },
+     "image_preview": {
+      "is_true": false,
+      "probability": 0.0071105957,
+      "threshold": 0.42
+     },
+     "video_preview": {
+      "is_true": false,
+      "probability": 0.03955078,
+      "threshold": 0.5
+     },
+     "nav_intent": {
+      "is_true": false,
+      "probability": 0.04736328,
+      "threshold": 0.5
+     },
+     "study_intent": null,
+     "personal_search": {
+      "is_true": true,
+      "probability": null,
+      "threshold": null
+     },
+     "skip_personal_search": {
+      "is_true": false,
+      "probability": 0.23339844,
+      "threshold": 0.95
+     },
+     "weather_widget": {
+      "is_true": false,
+      "probability": 0.0068969727,
+      "threshold": 0.4
+     },
+     "finance_widget_gating": {
+      "is_true": false,
+      "probability": 0.0018692017,
+      "threshold": 0.53
+     },
+     "calculator_widget": {
+      "is_true": false,
+      "probability": 0.014953613,
+      "threshold": 0.3
+     },
+     "comet_nav_widget_combined_target": {
+      "is_true": false,
+      "probability": 0.35351562,
+      "threshold": 0.5
+     },
+     "domain_subdomain": {
+      "label": "WRITING/TECHNICAL_WRITING",
+      "probability": 0.19140625
+     },
+     "finance_agent_gating": {
+      "is_true": false,
+      "probability": 0.01977539,
+      "threshold": 0.7
+     }
+    }
+   },
+   "user_selected_model": "pplx_asi",
+   "proactive_upgrade_reason": null,
+   "proactive_upgrade_model": null,
+   "experiment_overrides": null,
+   "search_implementation_mode": "multi_step",
+   "side_by_side_metadata": null,
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "frontend_uuid": "5cbeef00-6128-5ede-a0af-25654b2a7015",
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "uuid": "5cbeef00-6128-5ede-a0af-25654b2a7015",
+   "privacy_state": "NONE",
+   "expiry_time": null,
+   "status": "blocked",
+   "source": "default",
+   "thread_title": "章节提纲规划",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "author_username": null,
+   "author_image": null,
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "locked_reason": "spending_limit_exceeded",
+   "trigger": null,
+   "is_background": null,
+   "rum_session_id": null,
+   "updated_memory_data": null
+  },
+  {
+   "text": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\"}, \"uuid\": \"\"}]",
+   "query_str": "",
+   "query_display_metadata": null,
+   "query_source": "default",
+   "query_language": "zh",
+   "backend_uuid": "5cbeef00-dea0-58d5-ab08-b873cfc63a5c",
+   "related_queries": [],
+   "related_query_items": [],
+   "refinement_filters_metadata": {},
+   "search_focus": "internet",
+   "sources": null,
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "gpt4": false,
+   "step_type": "FINAL",
+   "mode": "asi",
+   "display_model": "pplx_asi_opus",
+   "search_mode": "ASI",
+   "personalized": false,
+   "attachments": null,
+   "media_items": null,
+   "plan": {
+    "goals": [],
+    "final": false,
+    "channel_uuid": null,
+    "id": null,
+    "description": null,
+    "start_time": null,
+    "estimated_total_duration_in_seconds": null,
+    "end_time": null
+   },
+   "form": null,
+   "eta": {
+    "eta_seconds_remaining": null,
+    "pct_complete": null
+   },
+   "subtext": "NONE",
+   "answer_modes": [],
+   "created_us": 2082245053555258,
+   "updated_us": 2082245082936586,
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "reconnectable": false,
+   "classifier_results": {},
+   "user_selected_model": "pplx_asi_opus",
+   "proactive_upgrade_reason": null,
+   "proactive_upgrade_model": null,
+   "experiment_overrides": null,
+   "search_implementation_mode": "multi_step",
+   "side_by_side_metadata": null,
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "frontend_uuid": null,
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "uuid": "5cbeef00-dea0-58d5-ab08-b873cfc63a5c",
+   "privacy_state": "NONE",
+   "expiry_time": null,
+   "status": "completed",
+   "source": "default",
+   "thread_title": "章节提纲规划",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "author_username": null,
+   "author_image": null,
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "locked_reason": "spending_limit_exceeded",
+   "trigger": "subagent_result",
+   "is_background": false,
+   "rum_session_id": null,
+   "updated_memory_data": null
+  },
+  {
+   "text": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\"}, \"uuid\": \"\"}]",
+   "query_str": "",
+   "query_display_metadata": null,
+   "query_source": "default",
+   "query_language": "zh",
+   "backend_uuid": "5cbeef00-d869-5bc6-813e-eb04cabba060",
+   "related_queries": [],
+   "related_query_items": [],
+   "refinement_filters_metadata": {},
+   "search_focus": "internet",
+   "sources": null,
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "gpt4": false,
+   "step_type": "FINAL",
+   "mode": "asi",
+   "display_model": "pplx_asi_opus",
+   "search_mode": "ASI",
+   "personalized": false,
+   "attachments": null,
+   "media_items": null,
+   "plan": {
+    "goals": [],
+    "final": false,
+    "channel_uuid": null,
+    "id": null,
+    "description": null,
+    "start_time": null,
+    "estimated_total_duration_in_seconds": null,
+    "end_time": null
+   },
+   "form": null,
+   "eta": {
+    "eta_seconds_remaining": null,
+    "pct_complete": null
+   },
+   "subtext": "NONE",
+   "answer_modes": [],
+   "created_us": 2082247939468494,
+   "updated_us": 2082247939852468,
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "reconnectable": false,
+   "classifier_results": {},
+   "user_selected_model": "pplx_asi_opus",
+   "proactive_upgrade_reason": null,
+   "proactive_upgrade_model": null,
+   "experiment_overrides": null,
+   "search_implementation_mode": "multi_step",
+   "side_by_side_metadata": null,
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "frontend_uuid": null,
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "uuid": "5cbeef00-d869-5bc6-813e-eb04cabba060",
+   "privacy_state": "NONE",
+   "expiry_time": null,
+   "status": "blocked",
+   "source": "default",
+   "thread_title": "章节提纲规划",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "author_username": null,
+   "author_image": null,
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "locked_reason": "spending_limit_exceeded",
+   "trigger": "subagent_result",
+   "is_background": false,
+   "rum_session_id": null,
+   "updated_memory_data": null
+  }
+ ],
+ "background_entries": [
+  {
+   "text": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\"}, \"uuid\": \"\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"0\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:05.853413+00:00\"}, \"uuid\": \"toolu_5crub0ZZE6pvYGSrqnk3vaI6\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"0\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:31.650322+00:00\"}, \"uuid\": \"toolu_5crub0ZZE6pvYGSrqnk3vaI6\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"1\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:07.486989+00:00\"}, \"uuid\": \"5cbeef00-199a-5edd-ad2a-27d960b255b1\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"1\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:07.486989+00:00\"}, \"uuid\": \"5cbeef00-0153-505f-8be7-a5db703e01e7\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"2\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": \"示例思考段落（其一）：演示工作过程文本导出。\", \"chunks\": [\"示例思考段落（其一）：演示工作过程文本导出。\"], \"is_mono\": null, \"variant\": null, \"file_handle\": \"file:draft_sources/WRITING_SPEC.md\", \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:10.193065+00:00\"}, \"uuid\": \"toolu_5crub0JshUWHBUvDIp70ZQEL\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"2\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:10.198922+00:00\"}, \"uuid\": \"toolu_5crub0JshUWHBUvDIp70ZQEL\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"3\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": \"示例思考段落（其二）：演示工作过程文本导出。\", \"chunks\": [\"示例思考段落（其二）：演示工作过程文本导出。\"], \"is_mono\": null, \"variant\": null, \"file_handle\": \"file:example_project/01_提纲_示例主题.md\", \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:10.193959+00:00\"}, \"uuid\": \"toolu_5crub0P1mJKXjx4ATQbtnXHZ\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"3\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:10.551970+00:00\"}, \"uuid\": \"toolu_5crub0P1mJKXjx4ATQbtnXHZ\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"4\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:12.251166+00:00\"}, \"uuid\": \"5cbeef00-9696-57cb-8e83-d8e20d060a1f\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"4\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:12.251166+00:00\"}, \"uuid\": \"5cbeef00-0bb4-5447-9ac4-dd39fc94ac23\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"5\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": \"示例思考段落（其三）：演示工作过程文本导出。\", \"chunks\": [\"示例思考段落（其三）：演示工作过程文本导出。\"], \"is_mono\": null, \"variant\": null, \"file_handle\": \"file:draft_sources/orig_2.2.md\", \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:13.210343+00:00\"}, \"uuid\": \"toolu_5crub0ibU7IEbJyy3uYMEyEO\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"5\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:13.481072+00:00\"}, \"uuid\": \"toolu_5crub0ibU7IEbJyy3uYMEyEO\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"6\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:17.171340+00:00\"}, \"uuid\": \"5cbeef00-55b9-508f-b8b6-ab175a30b6a2\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"6\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:17.171340+00:00\"}, \"uuid\": \"5cbeef00-7206-5abb-84de-9669f0b1e750\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"7\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": \"示例思考段落（其四）：演示工作过程文本导出。\", \"chunks\": [\"示例思考段落（其四）：演示工作过程文本导出。\"], \"is_mono\": null, \"variant\": null, \"file_handle\": \"file:research_supplement.md\", \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:17.970653+00:00\"}, \"uuid\": \"toolu_5crub0EGtkEVXsXN8dRfUFWj\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"7\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:18.312629+00:00\"}, \"uuid\": \"toolu_5crub0EGtkEVXsXN8dRfUFWj\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"8\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:22.287481+00:00\"}, \"uuid\": \"5cbeef00-9b56-56c0-a2a0-2877dbea53ca\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"8\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:22.287481+00:00\"}, \"uuid\": \"5cbeef00-b5f6-5547-8cc6-08836613079e\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"9\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例命令段落（其二）：演示工具调用导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:25.825274+00:00\"}, \"uuid\": \"toolu_5crub0Hzasbux1MBxOQY8IPp\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"9\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例输出段落（其二）：演示工具输出导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": \"Output\", \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:26.319609+00:00\"}, \"uuid\": \"toolu_5crub0Hzasbux1MBxOQY8IPp\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"10\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:28.600771+00:00\"}, \"uuid\": \"5cbeef00-20b1-5bb3-8ca2-5d70cef253f0\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"10\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:28.600771+00:00\"}, \"uuid\": \"5cbeef00-ee6e-5164-852d-8924a7db9b2a\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"11\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_QUERIES\", \"payload\": {\"text_payload\": null, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": {\"queries\": [\"示例检索词（其一）\", \"示例检索词（其二）\"]}, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:31.037005+00:00\"}, \"uuid\": \"toolu_5crub0qfkuwKpiec6BREpKvN\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"11\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例思考段落（其五）：演示工作过程文本导出。\"], \"is_mono\": null, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:31.038380+00:00\"}, \"uuid\": \"toolu_5crub0qfkuwKpiec6BREpKvN\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"12\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": \"示例思考段落（其六）：演示工作过程文本导出。\", \"chunks\": [\"示例思考段落（其六）：演示工作过程文本导出。\"], \"is_mono\": null, \"variant\": null, \"file_handle\": \"file:example_project/示例文档（其二）.md\", \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:31.037931+00:00\"}, \"uuid\": \"toolu_5crub0euCDvLbVTvDaj7EDu9\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"12\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:31.294937+00:00\"}, \"uuid\": \"toolu_5crub0euCDvLbVTvDaj7EDu9\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"workflow_snapshots\\\": {\\\"toolu_5crub0ZZE6pvYGSrqnk3vaI6\\\": [{\\\"type\\\": \\\"USAGE_TOTAL\\\", \\\"usage_total\\\": {\\\"compute_time_s\\\": 24.883070705458522}}]}}\"}, \"uuid\": \"\"}]",
+   "query_str": "",
+   "query_display_metadata": null,
+   "query_source": "scheduled",
+   "query_language": "zh",
+   "backend_uuid": "5cbeef00-9eb5-5c39-b6c6-b53aa7147741",
+   "related_queries": [],
+   "related_query_items": [],
+   "refinement_filters_metadata": {},
+   "search_focus": "internet",
+   "sources": null,
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "gpt4": false,
+   "step_type": "FINAL",
+   "mode": "asi",
+   "display_model": "pplx_asi_opus",
+   "search_mode": "ASI",
+   "personalized": false,
+   "attachments": null,
+   "media_items": null,
+   "plan": {
+    "goals": [
+     {
+      "id": "0",
+      "description": "示例计划段落（其十）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": true
+     },
+     {
+      "id": "1",
+      "description": "示例计划段落（其十一）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "2",
+      "description": "示例计划段落（其十二）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "3",
+      "description": "示例计划段落（其十三）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "4",
+      "description": "示例计划段落（其十四）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "5",
+      "description": "示例计划段落（其十五）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "6",
+      "description": "示例计划段落（其十六）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "7",
+      "description": "示例计划段落（其十七）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "8",
+      "description": "示例子代理结论段落（其一）：演示结论导出。本段为合成占位结论，用于演示子代理结论的提取、归并与渲染流程；全部内容为说明性示例文本，不对应任何真实信息与任何实际记录。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "9",
+      "description": "示例计划段落（其十八）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "10",
+      "description": "示例计划段落（其十九）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "11",
+      "description": "示例计划段落（其二十）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "12",
+      "description": "示例计划段落（其二十一）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     }
+    ],
+    "final": true,
+    "channel_uuid": null,
+    "id": null,
+    "description": null,
+    "start_time": null,
+    "estimated_total_duration_in_seconds": null,
+    "end_time": null
+   },
+   "form": null,
+   "eta": {
+    "eta_seconds_remaining": null,
+    "pct_complete": null
+   },
+   "subtext": "NONE",
+   "answer_modes": [],
+   "created_us": 2082244925906936,
+   "updated_us": 2082244951813683,
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "reconnectable": false,
+   "classifier_results": {},
+   "user_selected_model": "pplx_asi_opus",
+   "proactive_upgrade_reason": null,
+   "proactive_upgrade_model": null,
+   "experiment_overrides": null,
+   "search_implementation_mode": "multi_step",
+   "side_by_side_metadata": null,
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "frontend_uuid": null,
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "uuid": "5cbeef00-9eb5-5c39-b6c6-b53aa7147741",
+   "privacy_state": "NONE",
+   "expiry_time": null,
+   "status": "blocked",
+   "source": "default",
+   "thread_title": "章节提纲规划",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "author_username": null,
+   "author_image": null,
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "locked_reason": "spending_limit_exceeded",
+   "trigger": null,
+   "is_background": true,
+   "rum_session_id": null,
+   "updated_memory_data": null
+  },
+  {
+   "text": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\"}, \"uuid\": \"\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"0\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:26.848883+00:00\"}, \"uuid\": \"toolu_5crub0xWWSUQu5TdkaNa6Zs7\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"0\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:22:27.017588+00:00\"}, \"uuid\": \"toolu_5crub0xWWSUQu5TdkaNa6Zs7\"}]",
+   "query_str": "",
+   "query_display_metadata": null,
+   "query_source": "scheduled",
+   "query_language": "zh",
+   "backend_uuid": "5cbeef00-da9a-5824-a715-0447c84f94f0",
+   "related_queries": [],
+   "related_query_items": [],
+   "refinement_filters_metadata": {},
+   "search_focus": "internet",
+   "sources": null,
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "gpt4": false,
+   "step_type": "FINAL",
+   "mode": "asi",
+   "display_model": "pplx_asi_opus",
+   "search_mode": "ASI",
+   "personalized": false,
+   "attachments": null,
+   "media_items": null,
+   "plan": {
+    "goals": [
+     {
+      "id": "0",
+      "description": "示例计划段落（其十）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": true
+     }
+    ],
+    "final": false,
+    "channel_uuid": null,
+    "id": null,
+    "description": null,
+    "start_time": null,
+    "estimated_total_duration_in_seconds": null,
+    "end_time": null
+   },
+   "form": null,
+   "eta": {
+    "eta_seconds_remaining": null,
+    "pct_complete": null
+   },
+   "subtext": "NONE",
+   "answer_modes": [],
+   "created_us": 2082244946889970,
+   "updated_us": 2082244947809571,
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "reconnectable": false,
+   "classifier_results": {},
+   "user_selected_model": "pplx_asi_opus",
+   "proactive_upgrade_reason": null,
+   "proactive_upgrade_model": null,
+   "experiment_overrides": null,
+   "search_implementation_mode": "multi_step",
+   "side_by_side_metadata": null,
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "frontend_uuid": null,
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "uuid": "5cbeef00-da9a-5824-a715-0447c84f94f0",
+   "privacy_state": "NONE",
+   "expiry_time": null,
+   "status": "completed",
+   "source": "default",
+   "thread_title": "章节提纲规划",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "author_username": null,
+   "author_image": null,
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "locked_reason": "spending_limit_exceeded",
+   "trigger": null,
+   "is_background": true,
+   "rum_session_id": null,
+   "updated_memory_data": null
+  },
+  {
+   "text": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\"}, \"uuid\": \"\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"0\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:24:08.159134+00:00\"}, \"uuid\": \"toolu_5crub0zKpUi2WDCFweFiffTl\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"0\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:24:13.989801+00:00\"}, \"uuid\": \"toolu_5crub0zKpUi2WDCFweFiffTl\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"1\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:24:11.288926+00:00\"}, \"uuid\": \"5cbeef00-8755-599e-9d19-53590dccd5b7\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"1\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:24:11.288926+00:00\"}, \"uuid\": \"5cbeef00-ea41-583f-9f9b-70354ca0a57b\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"2\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例命令段落（其三）：演示工具调用导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:24:13.691506+00:00\"}, \"uuid\": \"toolu_5crub0tfg1tL7bLlFWpbCSvc\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"2\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例输出段落（其三）：演示工具输出导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": \"Output\", \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:24:13.806819+00:00\"}, \"uuid\": \"toolu_5crub0tfg1tL7bLlFWpbCSvc\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"workflow_snapshots\\\": {\\\"toolu_5crub0zKpUi2WDCFweFiffTl\\\": [{\\\"type\\\": \\\"USAGE_TOTAL\\\", \\\"usage_total\\\": {\\\"compute_time_s\\\": 30.56481657549739}}]}}\"}, \"uuid\": \"\"}]",
+   "query_str": "",
+   "query_display_metadata": null,
+   "query_source": "scheduled",
+   "query_language": "zh",
+   "backend_uuid": "5cbeef00-7de3-5674-a8ad-e2da3362deaf",
+   "related_queries": [],
+   "related_query_items": [],
+   "refinement_filters_metadata": {},
+   "search_focus": "internet",
+   "sources": null,
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "gpt4": false,
+   "step_type": "FINAL",
+   "mode": "asi",
+   "display_model": "pplx_asi_opus",
+   "search_mode": "ASI",
+   "personalized": false,
+   "attachments": null,
+   "media_items": null,
+   "plan": {
+    "goals": [
+     {
+      "id": "0",
+      "description": "示例计划段落（其十）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": true
+     },
+     {
+      "id": "1",
+      "description": "示例计划段落（其二十二）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "2",
+      "description": "示例计划段落（其二十三）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     }
+    ],
+    "final": true,
+    "channel_uuid": null,
+    "id": null,
+    "description": null,
+    "start_time": null,
+    "estimated_total_duration_in_seconds": null,
+    "end_time": null
+   },
+   "form": null,
+   "eta": {
+    "eta_seconds_remaining": null,
+    "pct_complete": null
+   },
+   "subtext": "NONE",
+   "answer_modes": [],
+   "created_us": 2082245048262421,
+   "updated_us": 2082245054168043,
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "reconnectable": false,
+   "classifier_results": {},
+   "user_selected_model": "pplx_asi_opus",
+   "proactive_upgrade_reason": null,
+   "proactive_upgrade_model": null,
+   "experiment_overrides": null,
+   "search_implementation_mode": "multi_step",
+   "side_by_side_metadata": null,
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "frontend_uuid": null,
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "uuid": "5cbeef00-7de3-5674-a8ad-e2da3362deaf",
+   "privacy_state": "NONE",
+   "expiry_time": null,
+   "status": "blocked",
+   "source": "default",
+   "thread_title": "章节提纲规划",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "author_username": null,
+   "author_image": null,
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "locked_reason": "spending_limit_exceeded",
+   "trigger": null,
+   "is_background": true,
+   "rum_session_id": null,
+   "updated_memory_data": null
+  },
+  {
+   "text": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\"}, \"uuid\": \"\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"0\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:24:12.744922+00:00\"}, \"uuid\": \"toolu_5crub0XhlbwnCJJKapRnE4BB\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"0\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:24:12.931259+00:00\"}, \"uuid\": \"toolu_5crub0XhlbwnCJJKapRnE4BB\"}]",
+   "query_str": "",
+   "query_display_metadata": null,
+   "query_source": "scheduled",
+   "query_language": "zh",
+   "backend_uuid": "5cbeef00-cff4-5565-b851-14cc425eb365",
+   "related_queries": [],
+   "related_query_items": [],
+   "refinement_filters_metadata": {},
+   "search_focus": "internet",
+   "sources": null,
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "gpt4": false,
+   "step_type": "FINAL",
+   "mode": "asi",
+   "display_model": "pplx_asi_opus",
+   "search_mode": "ASI",
+   "personalized": false,
+   "attachments": null,
+   "media_items": null,
+   "plan": {
+    "goals": [
+     {
+      "id": "0",
+      "description": "示例计划段落（其十）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": true
+     }
+    ],
+    "final": false,
+    "channel_uuid": null,
+    "id": null,
+    "description": null,
+    "start_time": null,
+    "estimated_total_duration_in_seconds": null,
+    "end_time": null
+   },
+   "form": null,
+   "eta": {
+    "eta_seconds_remaining": null,
+    "pct_complete": null
+   },
+   "subtext": "NONE",
+   "answer_modes": [],
+   "created_us": 2082245052801818,
+   "updated_us": 2082245053544377,
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "reconnectable": false,
+   "classifier_results": {},
+   "user_selected_model": "pplx_asi_opus",
+   "proactive_upgrade_reason": null,
+   "proactive_upgrade_model": null,
+   "experiment_overrides": null,
+   "search_implementation_mode": "multi_step",
+   "side_by_side_metadata": null,
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "frontend_uuid": null,
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "uuid": "5cbeef00-cff4-5565-b851-14cc425eb365",
+   "privacy_state": "NONE",
+   "expiry_time": null,
+   "status": "completed",
+   "source": "default",
+   "thread_title": "章节提纲规划",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "author_username": null,
+   "author_image": null,
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "locked_reason": "spending_limit_exceeded",
+   "trigger": null,
+   "is_background": true,
+   "rum_session_id": null,
+   "updated_memory_data": null
+  },
+  {
+   "text": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\"}, \"uuid\": \"\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"0\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:24:56.232192+00:00\"}, \"uuid\": \"toolu_5crub0nxoGpTlNxRdjIJuir9\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"0\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:37.399366+00:00\"}, \"uuid\": \"toolu_5crub0nxoGpTlNxRdjIJuir9\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"1\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:24:57.949759+00:00\"}, \"uuid\": \"5cbeef00-4086-58a5-9748-e0e5289b4364\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"1\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:24:57.949759+00:00\"}, \"uuid\": \"5cbeef00-fd04-5ade-9b61-494f7bc00624\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"2\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": \"示例思考段落（其七）：演示工作过程文本导出。\", \"chunks\": [\"示例思考段落（其七）：演示工作过程文本导出。\"], \"is_mono\": null, \"variant\": null, \"file_handle\": \"file:draft_sources/orig_2.6_mgmt_and_orphans.md\", \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:24:59.594386+00:00\"}, \"uuid\": \"toolu_5crub0cSHg2LBbXLLw1S2vuq\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"2\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:24:59.876711+00:00\"}, \"uuid\": \"toolu_5crub0cSHg2LBbXLLw1S2vuq\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"3\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:25:01.509622+00:00\"}, \"uuid\": \"5cbeef00-9aaa-58ca-a4b3-c420ede50add\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"3\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:25:01.509622+00:00\"}, \"uuid\": \"5cbeef00-f832-5176-9f4d-9aebb9d57225\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"4\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:25:07.777221+00:00\"}, \"uuid\": \"toolu_5crub0jr5wGSOwbvA6jqQPLk\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"4\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TODO_LIST\", \"payload\": {\"text_payload\": null, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": {\"title\": \"示例待办清单标题（其二）\", \"items\": [{\"status\": \"COMPLETED\", \"description\": \"示例待办事项（其十）：演示待办内容导出。\"}, {\"status\": \"IN_PROGRESS\", \"description\": \"示例待办事项（其十一）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其十二）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其十三）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其十四）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其十五）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其十六）：演示待办内容导出。\"}], \"diff\": {\"items\": [{\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其十）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"COMPLETED\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其十一）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"IN_PROGRESS\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其十二）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其十三）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其十四）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其十五）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其十六）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}]}}, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:25:07.777675+00:00\"}, \"uuid\": \"toolu_5crub0jr5wGSOwbvA6jqQPLk\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"5\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:25:09.479221+00:00\"}, \"uuid\": \"5cbeef00-d4b1-5077-9f16-9758f81308aa\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"5\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:25:09.479221+00:00\"}, \"uuid\": \"5cbeef00-0a88-5eb8-abea-0f4892abe0ea\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"6\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_SOURCES\", \"payload\": {\"text_payload\": null, \"sources_payload\": {\"sources\": null, \"assets\": [{\"uuid\": \"toolu_5crub0n7lyPfzrRKuRZDWHUT\", \"backend_uuid\": null, \"asset_type\": \"DOC_FILE\", \"code\": null, \"attachment\": null, \"chart\": null, \"code_file\": null, \"app\": null, \"generated_image\": null, \"generated_video\": null, \"pdf_file\": null, \"docx_file\": null, \"xlsx_file\": null, \"quiz\": null, \"flashcards\": null, \"doc_file\": {\"name\": null, \"url\": null, \"docx_url\": null, \"filename\": \"sec_2.2.md\", \"description\": null, \"preview_url\": null, \"file_size\": null, \"source_content\": null, \"final\": true, \"transforms\": null, \"source_content_chunks\": null}, \"research_report\": null, \"document_review\": null, \"screenshot\": null, \"slide_file\": null, \"audio_file\": null, \"model_3d\": null, \"asset_diff\": null, \"external_url\": null, \"download_info\": null, \"preview_info\": [{\"type\": \"text\", \"s3_url\": null, \"media_type\": \"text/markdown\", \"streamed_content_chunks\": null, \"is_streaming\": false, \"file_handle\": \"file:draft_out/sec_2.2.md\", \"width\": null, \"height\": null}], \"version_info\": null, \"fallback_info\": null, \"is_primary_asset\": null, \"backend_uuid_slug\": null, \"parent_asset_id\": null, \"root_asset_id\": null, \"created_at\": \"1782194559\", \"annotation\": null}], \"asset_uuids\": null}, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:25:10.910697+00:00\"}, \"uuid\": \"toolu_5crub0n7lyPfzrRKuRZDWHUT\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"6\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:29:27.500948+00:00\"}, \"uuid\": \"toolu_5crub0n7lyPfzrRKuRZDWHUT\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"7\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:29:31.045942+00:00\"}, \"uuid\": \"5cbeef00-f4c5-531e-9827-1239581ae199\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"7\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:29:31.045942+00:00\"}, \"uuid\": \"5cbeef00-e15b-58ce-aa69-05c0a5eae131\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"8\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例命令段落（其四）：演示工具调用导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:29:33.045125+00:00\"}, \"uuid\": \"toolu_5crub0p8isCvhCBNPItSDQ2d\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"8\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例输出段落（其四）：演示工具输出导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": \"Output\", \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:29:33.114385+00:00\"}, \"uuid\": \"toolu_5crub0p8isCvhCBNPItSDQ2d\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"9\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:29:59.744113+00:00\"}, \"uuid\": \"5cbeef00-6a95-5164-b234-de506c091acd\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"9\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:29:59.744113+00:00\"}, \"uuid\": \"5cbeef00-729f-5da0-bfcc-2d38d8c68288\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"10\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:30:37.267116+00:00\"}, \"uuid\": \"toolu_5crub0RXq41v3rhw0GVm8Hsp\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"10\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_SOURCES\", \"payload\": {\"text_payload\": null, \"sources_payload\": {\"sources\": null, \"assets\": [{\"uuid\": \"5cbeef00-ee98-5491-8fcc-d46d9e3a032c\", \"backend_uuid\": null, \"asset_type\": \"ASSET_DIFF\", \"code\": null, \"attachment\": null, \"chart\": null, \"code_file\": null, \"app\": null, \"generated_image\": null, \"generated_video\": null, \"pdf_file\": null, \"docx_file\": null, \"xlsx_file\": null, \"quiz\": null, \"flashcards\": null, \"doc_file\": null, \"research_report\": null, \"document_review\": null, \"screenshot\": null, \"slide_file\": null, \"audio_file\": null, \"model_3d\": null, \"asset_diff\": {\"title\": \"示例步骤标题（其一）\", \"files\": [{\"filename\": \"sec_2.2.md\", \"display_path\": \"draft_out/sec_2.2.md\", \"old_content_chunks\": null, \"new_content_chunks\": null, \"file_handle\": null, \"lines\": [{\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 14, \"new_line\": 14}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其一）：演示文件内容导出。\", \"old_line\": 15, \"new_line\": 15}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 16, \"new_line\": 16}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其二）：演示文件内容导出。\", \"old_line\": 17, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其三）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 17}, {\"kind\": \"ADD\", \"text\": \"\", \"old_line\": null, \"new_line\": 18}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其四）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 19}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 18, \"new_line\": 20}, {\"kind\": \"CONTEXT\", \"text\": \"### 示例小节标题（其一）\", \"old_line\": 19, \"new_line\": 21}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 20, \"new_line\": 22}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 22, \"new_line\": 24}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其五）：演示文件内容导出。\", \"old_line\": 23, \"new_line\": 25}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 24, \"new_line\": 26}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其六）：演示文件内容导出。\", \"old_line\": 25, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其七）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 27}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 26, \"new_line\": 28}, {\"kind\": \"CONTEXT\", \"text\": \"### 示例小节标题（其二）\", \"old_line\": 27, \"new_line\": 29}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 28, \"new_line\": 30}]}], \"final\": true}, \"external_url\": null, \"download_info\": null, \"preview_info\": null, \"version_info\": null, \"fallback_info\": null, \"is_primary_asset\": null, \"backend_uuid_slug\": \"5cbeef00-ee98-5491-8fcc-d46d9e3a032c\", \"parent_asset_id\": null, \"root_asset_id\": null, \"created_at\": null, \"annotation\": null}], \"asset_uuids\": null}, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:30:37.267705+00:00\"}, \"uuid\": \"toolu_5crub0RXq41v3rhw0GVm8Hsp\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"11\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:30:40.212172+00:00\"}, \"uuid\": \"5cbeef00-89b8-5db8-825d-dc07d50adaac\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"11\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:30:40.212172+00:00\"}, \"uuid\": \"5cbeef00-43fc-5b40-90ff-c411e84956e7\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"12\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:32:04.496133+00:00\"}, \"uuid\": \"toolu_5crub0sE2v231Nk2T3cN7mwj\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"12\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_SOURCES\", \"payload\": {\"text_payload\": null, \"sources_payload\": {\"sources\": null, \"assets\": [{\"uuid\": \"5cbeef00-1df6-5dc7-8b43-806ab7ce54d6\", \"backend_uuid\": null, \"asset_type\": \"ASSET_DIFF\", \"code\": null, \"attachment\": null, \"chart\": null, \"code_file\": null, \"app\": null, \"generated_image\": null, \"generated_video\": null, \"pdf_file\": null, \"docx_file\": null, \"xlsx_file\": null, \"quiz\": null, \"flashcards\": null, \"doc_file\": null, \"research_report\": null, \"document_review\": null, \"screenshot\": null, \"slide_file\": null, \"audio_file\": null, \"model_3d\": null, \"asset_diff\": {\"title\": \"示例步骤标题（其一）\", \"files\": [{\"filename\": \"sec_2.2.md\", \"display_path\": \"draft_out/sec_2.2.md\", \"old_content_chunks\": null, \"new_content_chunks\": null, \"file_handle\": null, \"lines\": [{\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 126, \"new_line\": 126}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其八）：演示文件内容导出。\", \"old_line\": 127, \"new_line\": 127}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 128, \"new_line\": 128}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其九）：演示文件内容导出。\", \"old_line\": 129, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其十）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 129}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 130, \"new_line\": 130}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其十一）：演示文件内容导出。\", \"old_line\": 131, \"new_line\": 131}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 132, \"new_line\": 132}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 136, \"new_line\": 136}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其十二）：演示文件内容导出。\", \"old_line\": 137, \"new_line\": 137}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 138, \"new_line\": 138}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其十三）：演示文件内容导出。\", \"old_line\": 139, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其十四）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 139}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 140, \"new_line\": 140}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其十五）：演示文件内容导出。\", \"old_line\": 141, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其十六）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 141}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 142, \"new_line\": 142}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其十七）：演示文件内容导出。\", \"old_line\": 143, \"new_line\": 143}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 144, \"new_line\": 144}]}], \"final\": true}, \"external_url\": null, \"download_info\": null, \"preview_info\": null, \"version_info\": null, \"fallback_info\": null, \"is_primary_asset\": null, \"backend_uuid_slug\": \"5cbeef00-1df6-5dc7-8b43-806ab7ce54d6\", \"parent_asset_id\": null, \"root_asset_id\": null, \"created_at\": null, \"annotation\": null}], \"asset_uuids\": null}, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:32:04.580850+00:00\"}, \"uuid\": \"toolu_5crub0sE2v231Nk2T3cN7mwj\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"13\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:32:06.395221+00:00\"}, \"uuid\": \"5cbeef00-ca08-5a1f-8757-0e1997555810\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"13\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:32:06.395221+00:00\"}, \"uuid\": \"5cbeef00-6f64-5d4a-8da0-40b0d98d5acf\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"14\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例命令段落（其五）：演示工具调用导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:32:09.145316+00:00\"}, \"uuid\": \"toolu_5crub0QgeWiwT2DI1G5V0zd5\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"14\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例输出段落（其五）：演示工具输出导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": \"Output\", \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:32:09.202447+00:00\"}, \"uuid\": \"toolu_5crub0QgeWiwT2DI1G5V0zd5\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"15\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:32:13.318575+00:00\"}, \"uuid\": \"5cbeef00-0ead-5959-8dd6-104eb995eb64\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"15\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:32:13.318575+00:00\"}, \"uuid\": \"5cbeef00-aac8-5bad-9d06-144631869bcc\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"16\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": \"示例思考段落（其八）：演示工作过程文本导出。\", \"chunks\": [\"示例思考段落（其八）：演示工作过程文本导出。\"], \"is_mono\": null, \"variant\": null, \"file_handle\": \"file:draft_out/sec_2.2.md\", \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:32:16.657212+00:00\"}, \"uuid\": \"toolu_5crub0iPJBLzdM5JhvLnv9Ut\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"16\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:32:16.913106+00:00\"}, \"uuid\": \"toolu_5crub0iPJBLzdM5JhvLnv9Ut\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"17\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:32:45.305607+00:00\"}, \"uuid\": \"5cbeef00-6bef-5e68-abca-33f9aecfe45b\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"17\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:32:45.305607+00:00\"}, \"uuid\": \"5cbeef00-f4d9-524a-82f2-6b53c747fca9\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"18\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:34:47.434102+00:00\"}, \"uuid\": \"toolu_5crub0LNnUYbZHANkQvT5kc6\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"18\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_SOURCES\", \"payload\": {\"text_payload\": null, \"sources_payload\": {\"sources\": null, \"assets\": [{\"uuid\": \"5cbeef00-08f0-5531-99b9-a1dc68776edf\", \"backend_uuid\": null, \"asset_type\": \"ASSET_DIFF\", \"code\": null, \"attachment\": null, \"chart\": null, \"code_file\": null, \"app\": null, \"generated_image\": null, \"generated_video\": null, \"pdf_file\": null, \"docx_file\": null, \"xlsx_file\": null, \"quiz\": null, \"flashcards\": null, \"doc_file\": null, \"research_report\": null, \"document_review\": null, \"screenshot\": null, \"slide_file\": null, \"audio_file\": null, \"model_3d\": null, \"asset_diff\": {\"title\": \"示例步骤标题（其一）\", \"files\": [{\"filename\": \"sec_2.2.md\", \"display_path\": \"draft_out/sec_2.2.md\", \"old_content_chunks\": null, \"new_content_chunks\": null, \"file_handle\": null, \"lines\": [{\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 146, \"new_line\": 146}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其十八）：演示文件内容导出。\", \"old_line\": 147, \"new_line\": 147}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 148, \"new_line\": 148}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其十九）：演示文件内容导出。\", \"old_line\": 149, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其二十）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 149}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 150, \"new_line\": 150}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其二十一）：演示文件内容导出。\", \"old_line\": 151, \"new_line\": 151}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 152, \"new_line\": 152}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其二十二）：演示文件内容导出。\", \"old_line\": 153, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其二十三）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 153}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 154, \"new_line\": 154}, {\"kind\": \"CONTEXT\", \"text\": \"### 示例小节标题（其三）\", \"old_line\": 155, \"new_line\": 155}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 156, \"new_line\": 156}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其二十四）：演示文件内容导出。\", \"old_line\": 157, \"new_line\": 157}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 158, \"new_line\": 158}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其二十五）：演示文件内容导出。\", \"old_line\": 159, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其二十六）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 159}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 160, \"new_line\": 160}, {\"kind\": \"CONTEXT\", \"text\": \"### 示例小节标题（其四）\", \"old_line\": 161, \"new_line\": 161}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 162, \"new_line\": 162}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 174, \"new_line\": 174}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其二十七）：演示文件内容导出。\", \"old_line\": 175, \"new_line\": 175}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 176, \"new_line\": 176}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其二十八）：演示文件内容导出。\", \"old_line\": 177, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其二十九）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 177}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 178, \"new_line\": 178}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其三十）：演示文件内容导出。\", \"old_line\": 179, \"new_line\": 179}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 180, \"new_line\": 180}]}], \"final\": true}, \"external_url\": null, \"download_info\": null, \"preview_info\": null, \"version_info\": null, \"fallback_info\": null, \"is_primary_asset\": null, \"backend_uuid_slug\": \"5cbeef00-08f0-5531-99b9-a1dc68776edf\", \"parent_asset_id\": null, \"root_asset_id\": null, \"created_at\": null, \"annotation\": null}], \"asset_uuids\": null}, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:34:47.543621+00:00\"}, \"uuid\": \"toolu_5crub0LNnUYbZHANkQvT5kc6\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"19\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:34:53.150538+00:00\"}, \"uuid\": \"5cbeef00-5bfa-5db8-859f-6e4f94d40dd4\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"19\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:34:53.150538+00:00\"}, \"uuid\": \"5cbeef00-8092-5d8a-8b69-d14a58c3866c\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"20\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例命令段落（其六）：演示工具调用导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:34:56.328365+00:00\"}, \"uuid\": \"toolu_5crub0QGZIDkmCFXgKSKkB2l\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"20\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例输出段落（其六）：演示工具输出导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": \"Output\", \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:34:56.376208+00:00\"}, \"uuid\": \"toolu_5crub0QGZIDkmCFXgKSKkB2l\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"21\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:34:58.082447+00:00\"}, \"uuid\": \"5cbeef00-a83f-5d33-b3ca-995425fbd490\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"21\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:34:58.082447+00:00\"}, \"uuid\": \"5cbeef00-6da6-58d4-bd05-2f92c2e858c2\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"22\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:36:16.457297+00:00\"}, \"uuid\": \"toolu_5crub0xyXxJxfZjnBcBNTsZg\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"22\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_SOURCES\", \"payload\": {\"text_payload\": null, \"sources_payload\": {\"sources\": null, \"assets\": [{\"uuid\": \"5cbeef00-a1fe-5494-b0a0-11f8c09f07f7\", \"backend_uuid\": null, \"asset_type\": \"ASSET_DIFF\", \"code\": null, \"attachment\": null, \"chart\": null, \"code_file\": null, \"app\": null, \"generated_image\": null, \"generated_video\": null, \"pdf_file\": null, \"docx_file\": null, \"xlsx_file\": null, \"quiz\": null, \"flashcards\": null, \"doc_file\": null, \"research_report\": null, \"document_review\": null, \"screenshot\": null, \"slide_file\": null, \"audio_file\": null, \"model_3d\": null, \"asset_diff\": {\"title\": \"示例步骤标题（其一）\", \"files\": [{\"filename\": \"sec_2.2.md\", \"display_path\": \"draft_out/sec_2.2.md\", \"old_content_chunks\": null, \"new_content_chunks\": null, \"file_handle\": null, \"lines\": [{\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 58, \"new_line\": 58}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其三十一）：演示文件内容导出。\", \"old_line\": 59, \"new_line\": 59}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 60, \"new_line\": 60}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其三十二）：演示文件内容导出。\", \"old_line\": 61, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其三十三）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 61}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 62, \"new_line\": 62}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其三十四）：演示文件内容导出。\", \"old_line\": 63, \"new_line\": 63}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 64, \"new_line\": 64}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 68, \"new_line\": 68}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其三十五）：演示文件内容导出。\", \"old_line\": 69, \"new_line\": 69}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 70, \"new_line\": 70}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其三十六）：演示文件内容导出。\", \"old_line\": 71, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其三十七）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 71}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 72, \"new_line\": 72}, {\"kind\": \"CONTEXT\", \"text\": \"### 示例小节标题（其五）\", \"old_line\": 73, \"new_line\": 73}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 74, \"new_line\": 74}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其三十八）：演示文件内容导出。\", \"old_line\": 75, \"new_line\": 75}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 76, \"new_line\": 76}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其三十九）：演示文件内容导出。\", \"old_line\": 77, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其四十）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 77}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 78, \"new_line\": 78}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其四十一）：演示文件内容导出。\", \"old_line\": 79, \"new_line\": 79}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 80, \"new_line\": 80}]}], \"final\": true}, \"external_url\": null, \"download_info\": null, \"preview_info\": null, \"version_info\": null, \"fallback_info\": null, \"is_primary_asset\": null, \"backend_uuid_slug\": \"5cbeef00-a1fe-5494-b0a0-11f8c09f07f7\", \"parent_asset_id\": null, \"root_asset_id\": null, \"created_at\": null, \"annotation\": null}], \"asset_uuids\": null}, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:36:16.467038+00:00\"}, \"uuid\": \"toolu_5crub0xyXxJxfZjnBcBNTsZg\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"23\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:36:16.470932+00:00\"}, \"uuid\": \"5cbeef00-5777-595e-807d-6c3911e98524\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"23\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:24.264837+00:00\"}, \"uuid\": \"5cbeef00-5777-595e-807d-6c3911e98524\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"24\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:27.574741+00:00\"}, \"uuid\": \"5cbeef00-c58c-58a7-a534-8c05fe33e94f\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"24\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:27.574741+00:00\"}, \"uuid\": \"5cbeef00-7c4a-5342-814a-20a5be23654b\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"25\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例命令段落（其七）：演示工具调用导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:30.427948+00:00\"}, \"uuid\": \"toolu_5crub0EX7tkH2Ykp36nJdT92\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"25\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例输出段落（其七）：演示工具输出导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": \"Output\", \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:30.429350+00:00\"}, \"uuid\": \"toolu_5crub0EX7tkH2Ykp36nJdT92\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"26\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": \"示例思考段落（其八）：演示工作过程文本导出。\", \"chunks\": [\"示例思考段落（其八）：演示工作过程文本导出。\"], \"is_mono\": null, \"variant\": null, \"file_handle\": \"file:draft_out/sec_2.2.md\", \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:30.429014+00:00\"}, \"uuid\": \"toolu_5crub0hqbMmagruyS0JAes0V\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"26\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:30.699036+00:00\"}, \"uuid\": \"toolu_5crub0hqbMmagruyS0JAes0V\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"27\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:38.610958+00:00\"}, \"uuid\": \"5cbeef00-07ad-5b65-b533-10ced3505ad3\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"27\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:38.610958+00:00\"}, \"uuid\": \"5cbeef00-aa13-539c-8c4d-9fa0c7128008\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"28\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": \"示例思考段落（其一）：演示工作过程文本导出。\", \"chunks\": [\"示例思考段落（其一）：演示工作过程文本导出。\"], \"is_mono\": null, \"variant\": null, \"file_handle\": \"file:draft_sources/WRITING_SPEC.md\", \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:41.147334+00:00\"}, \"uuid\": \"toolu_5crub08qcHfINLGejx4UuhIr\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"28\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:41.176154+00:00\"}, \"uuid\": \"toolu_5crub08qcHfINLGejx4UuhIr\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"29\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": \"示例思考段落（其三）：演示工作过程文本导出。\", \"chunks\": [\"示例思考段落（其三）：演示工作过程文本导出。\"], \"is_mono\": null, \"variant\": null, \"file_handle\": \"file:draft_sources/orig_2.2.md\", \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:41.148286+00:00\"}, \"uuid\": \"toolu_5crub0kVeZvvBG8BQ1YmBcSG\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"29\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:41.384005+00:00\"}, \"uuid\": \"toolu_5crub0kVeZvvBG8BQ1YmBcSG\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"30\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:45.919617+00:00\"}, \"uuid\": \"5cbeef00-838e-522a-bae9-a06098fbbe10\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"30\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:37:45.919617+00:00\"}, \"uuid\": \"5cbeef00-c591-54dc-adc0-d6ae237e9611\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"31\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:01.156674+00:00\"}, \"uuid\": \"toolu_5crub0Q613vqS4EjmZM9Fxqg\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"31\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_SOURCES\", \"payload\": {\"text_payload\": null, \"sources_payload\": {\"sources\": null, \"assets\": [{\"uuid\": \"5cbeef00-2d1d-53a2-b352-250fcbe66064\", \"backend_uuid\": null, \"asset_type\": \"ASSET_DIFF\", \"code\": null, \"attachment\": null, \"chart\": null, \"code_file\": null, \"app\": null, \"generated_image\": null, \"generated_video\": null, \"pdf_file\": null, \"docx_file\": null, \"xlsx_file\": null, \"quiz\": null, \"flashcards\": null, \"doc_file\": null, \"research_report\": null, \"document_review\": null, \"screenshot\": null, \"slide_file\": null, \"audio_file\": null, \"model_3d\": null, \"asset_diff\": {\"title\": \"示例步骤标题（其一）\", \"files\": [{\"filename\": \"sec_2.2.md\", \"display_path\": \"draft_out/sec_2.2.md\", \"old_content_chunks\": null, \"new_content_chunks\": null, \"file_handle\": null, \"lines\": [{\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 32, \"new_line\": 32}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其四十二）：演示文件内容导出。\", \"old_line\": 33, \"new_line\": 33}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 34, \"new_line\": 34}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其四十三）：演示文件内容导出。\", \"old_line\": 35, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其四十四）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 35}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 36, \"new_line\": 36}, {\"kind\": \"CONTEXT\", \"text\": \"### 示例小节标题（其六）\", \"old_line\": 37, \"new_line\": 37}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 38, \"new_line\": 38}]}], \"final\": true}, \"external_url\": null, \"download_info\": null, \"preview_info\": null, \"version_info\": null, \"fallback_info\": null, \"is_primary_asset\": null, \"backend_uuid_slug\": \"5cbeef00-2d1d-53a2-b352-250fcbe66064\", \"parent_asset_id\": null, \"root_asset_id\": null, \"created_at\": null, \"annotation\": null}], \"asset_uuids\": null}, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:01.209725+00:00\"}, \"uuid\": \"toolu_5crub0Q613vqS4EjmZM9Fxqg\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"32\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:05.759026+00:00\"}, \"uuid\": \"5cbeef00-b55e-5aa5-bc9f-ce58546c0d84\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"32\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:05.759026+00:00\"}, \"uuid\": \"5cbeef00-4e6f-5c2a-b339-a214144af7a4\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"33\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例命令段落（其八）：演示工具调用导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:08.196756+00:00\"}, \"uuid\": \"toolu_5crub0HfrTjcHTVS8JxZEhK1\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"33\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例输出段落（其八）：演示工具输出导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": \"Output\", \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:08.197721+00:00\"}, \"uuid\": \"toolu_5crub0HfrTjcHTVS8JxZEhK1\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"34\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:11.533506+00:00\"}, \"uuid\": \"5cbeef00-701f-5c33-b504-f3f411eed655\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"34\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:11.533506+00:00\"}, \"uuid\": \"5cbeef00-e8ea-59cf-98aa-8113c7b43a9c\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"35\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:31.311620+00:00\"}, \"uuid\": \"toolu_5crub0itHmG5dpkxQhQq0Vsb\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"35\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_SOURCES\", \"payload\": {\"text_payload\": null, \"sources_payload\": {\"sources\": null, \"assets\": [{\"uuid\": \"5cbeef00-05a2-5a1b-a79d-87217afdd534\", \"backend_uuid\": null, \"asset_type\": \"ASSET_DIFF\", \"code\": null, \"attachment\": null, \"chart\": null, \"code_file\": null, \"app\": null, \"generated_image\": null, \"generated_video\": null, \"pdf_file\": null, \"docx_file\": null, \"xlsx_file\": null, \"quiz\": null, \"flashcards\": null, \"doc_file\": null, \"research_report\": null, \"document_review\": null, \"screenshot\": null, \"slide_file\": null, \"audio_file\": null, \"model_3d\": null, \"asset_diff\": {\"title\": \"示例步骤标题（其一）\", \"files\": [{\"filename\": \"sec_2.2.md\", \"display_path\": \"draft_out/sec_2.2.md\", \"old_content_chunks\": null, \"new_content_chunks\": null, \"file_handle\": null, \"lines\": [{\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 188, \"new_line\": 188}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其四十五）：演示文件内容导出。\", \"old_line\": 189, \"new_line\": 189}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 190, \"new_line\": 190}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其四十六）：演示文件内容导出。\", \"old_line\": 191, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其四十七）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 191}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 192, \"new_line\": 192}, {\"kind\": \"CONTEXT\", \"text\": \"示例文档段落（其四十八）：演示文件内容导出。\", \"old_line\": 193, \"new_line\": 193}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 194, \"new_line\": 194}]}], \"final\": true}, \"external_url\": null, \"download_info\": null, \"preview_info\": null, \"version_info\": null, \"fallback_info\": null, \"is_primary_asset\": null, \"backend_uuid_slug\": \"5cbeef00-05a2-5a1b-a79d-87217afdd534\", \"parent_asset_id\": null, \"root_asset_id\": null, \"created_at\": null, \"annotation\": null}], \"asset_uuids\": null}, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:31.313326+00:00\"}, \"uuid\": \"toolu_5crub0itHmG5dpkxQhQq0Vsb\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"36\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:31.312983+00:00\"}, \"uuid\": \"toolu_5crub0vZpM9X7PsJ1GahN51F\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"36\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_SOURCES\", \"payload\": {\"text_payload\": null, \"sources_payload\": {\"sources\": null, \"assets\": [{\"uuid\": \"5cbeef00-604a-505b-a330-05640674c36a\", \"backend_uuid\": null, \"asset_type\": \"ASSET_DIFF\", \"code\": null, \"attachment\": null, \"chart\": null, \"code_file\": null, \"app\": null, \"generated_image\": null, \"generated_video\": null, \"pdf_file\": null, \"docx_file\": null, \"xlsx_file\": null, \"quiz\": null, \"flashcards\": null, \"doc_file\": null, \"research_report\": null, \"document_review\": null, \"screenshot\": null, \"slide_file\": null, \"audio_file\": null, \"model_3d\": null, \"asset_diff\": {\"title\": \"示例步骤标题（其一）\", \"files\": [{\"filename\": \"sec_2.2.md\", \"display_path\": \"draft_out/sec_2.2.md\", \"old_content_chunks\": null, \"new_content_chunks\": null, \"file_handle\": null, \"lines\": [{\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 180, \"new_line\": 180}, {\"kind\": \"CONTEXT\", \"text\": \"### 示例小节标题（其七）\", \"old_line\": 181, \"new_line\": 181}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 182, \"new_line\": 182}, {\"kind\": \"DELETE\", \"text\": \"示例文档段落（其四十九）：演示文件内容导出。\", \"old_line\": 183, \"new_line\": null}, {\"kind\": \"ADD\", \"text\": \"示例文档段落（其五十）：演示文件内容导出。\", \"old_line\": null, \"new_line\": 183}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 184, \"new_line\": 184}, {\"kind\": \"CONTEXT\", \"text\": \"### 示例小节标题（其八）\", \"old_line\": 185, \"new_line\": 185}, {\"kind\": \"CONTEXT\", \"text\": \"\", \"old_line\": 186, \"new_line\": 186}]}], \"final\": true}, \"external_url\": null, \"download_info\": null, \"preview_info\": null, \"version_info\": null, \"fallback_info\": null, \"is_primary_asset\": null, \"backend_uuid_slug\": \"5cbeef00-604a-505b-a330-05640674c36a\", \"parent_asset_id\": null, \"root_asset_id\": null, \"created_at\": null, \"annotation\": null}], \"asset_uuids\": null}, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:31.372190+00:00\"}, \"uuid\": \"toolu_5crub0vZpM9X7PsJ1GahN51F\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"37\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:33.111524+00:00\"}, \"uuid\": \"5cbeef00-07d3-5c1e-a805-769fd845cec6\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"37\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:33.111524+00:00\"}, \"uuid\": \"5cbeef00-5b45-5065-af62-827a67473c31\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"38\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例命令段落（其九）：演示工具调用导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:37.132718+00:00\"}, \"uuid\": \"toolu_5crub0T01c3M5KaZKpIPldpv\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"38\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例输出段落（其九）：演示工具输出导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": \"Output\", \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T01:38:37.133223+00:00\"}, \"uuid\": \"toolu_5crub0T01c3M5KaZKpIPldpv\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"workflow_snapshots\\\": {\\\"toolu_5crub0nxoGpTlNxRdjIJuir9\\\": [{\\\"type\\\": \\\"USAGE_TOTAL\\\", \\\"usage_total\\\": {\\\"compute_time_s\\\": 848.633777635172}}, {\\\"type\\\": \\\"TODO_LIST\\\", \\\"todo_list\\\": {\\\"title\\\": \\\"示例待办清单标题（其二）\\\", \\\"items\\\": [{\\\"status\\\": \\\"COMPLETED\\\", \\\"description\\\": \\\"示例待办事项（其十）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"IN_PROGRESS\\\", \\\"description\\\": \\\"示例待办事项（其十一）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"PENDING\\\", \\\"description\\\": \\\"示例待办事项（其十二）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"PENDING\\\", \\\"description\\\": \\\"示例待办事项（其十三）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"PENDING\\\", \\\"description\\\": \\\"示例待办事项（其十四）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"PENDING\\\", \\\"description\\\": \\\"示例待办事项（其十五）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"PENDING\\\", \\\"description\\\": \\\"示例待办事项（其十六）：演示待办内容导出。\\\"}]}}]}}\"}, \"uuid\": \"\"}]",
+   "query_str": "",
+   "query_display_metadata": null,
+   "query_source": "scheduled",
+   "query_language": "zh",
+   "backend_uuid": "5cbeef00-507d-5466-af63-a52708eda91c",
+   "related_queries": [],
+   "related_query_items": [],
+   "refinement_filters_metadata": {},
+   "search_focus": "internet",
+   "sources": null,
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "gpt4": false,
+   "step_type": "FINAL",
+   "mode": "asi",
+   "display_model": "pplx_asi_opus",
+   "search_mode": "ASI",
+   "personalized": false,
+   "attachments": null,
+   "media_items": null,
+   "plan": {
+    "goals": [
+     {
+      "id": "0",
+      "description": "示例计划段落（其十）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": true
+     },
+     {
+      "id": "1",
+      "description": "示例计划段落（其二十四）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "2",
+      "description": "示例计划段落（其二十五）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "3",
+      "description": "示例计划段落（其二十六）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "4",
+      "description": "示例计划段落（其二十七）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "5",
+      "description": "示例计划段落（其二十八）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "6",
+      "description": "示例计划段落（其二十九）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "7",
+      "description": "示例计划段落（其三十）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "8",
+      "description": "示例计划段落（其三十一）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "9",
+      "description": "示例计划段落（其三十二）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "10",
+      "description": "示例计划段落（其三十三）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "11",
+      "description": "示例计划段落（其三十四）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "12",
+      "description": "示例计划段落（其三十三）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "13",
+      "description": "示例计划段落（其三十五）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "14",
+      "description": "示例计划段落（其三十六）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "15",
+      "description": "示例计划段落（其三十七）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "16",
+      "description": "示例计划段落（其三十八）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "17",
+      "description": "示例计划段落（其三十九）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "18",
+      "description": "示例计划段落（其三十三）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "19",
+      "description": "示例计划段落（其四十）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "20",
+      "description": "示例计划段落（其四十一）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "21",
+      "description": "示例计划段落（其四十二）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "22",
+      "description": "示例计划段落（其三十三）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "23",
+      "description": "示例计划段落（其四十三）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "24",
+      "description": "示例计划段落（其四十四）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "25",
+      "description": "示例计划段落（其四十五）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "26",
+      "description": "示例计划段落（其三十八）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "27",
+      "description": "示例计划段落（其四十六）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "28",
+      "description": "示例计划段落（其十二）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "29",
+      "description": "示例计划段落（其十五）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "30",
+      "description": "示例计划段落（其四十七）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "31",
+      "description": "示例计划段落（其三十三）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "32",
+      "description": "示例计划段落（其四十八）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "33",
+      "description": "示例计划段落（其四十九）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "34",
+      "description": "示例计划段落（其五十）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "35",
+      "description": "示例计划段落（其三十三）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "36",
+      "description": "示例计划段落（其三十三）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "37",
+      "description": "示例计划段落（其五十一）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "38",
+      "description": "示例计划段落（其五十二）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     }
+    ],
+    "final": true,
+    "channel_uuid": null,
+    "id": null,
+    "description": null,
+    "start_time": null,
+    "estimated_total_duration_in_seconds": null,
+    "end_time": null
+   },
+   "form": null,
+   "eta": {
+    "eta_seconds_remaining": null,
+    "pct_complete": null
+   },
+   "subtext": "NONE",
+   "answer_modes": [],
+   "created_us": 2082245096278584,
+   "updated_us": 2082245917732157,
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "reconnectable": false,
+   "classifier_results": {},
+   "user_selected_model": "pplx_asi_opus",
+   "proactive_upgrade_reason": null,
+   "proactive_upgrade_model": null,
+   "experiment_overrides": null,
+   "search_implementation_mode": "multi_step",
+   "side_by_side_metadata": null,
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "frontend_uuid": null,
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "uuid": "5cbeef00-507d-5466-af63-a52708eda91c",
+   "privacy_state": "NONE",
+   "expiry_time": null,
+   "status": "blocked",
+   "source": "default",
+   "thread_title": "章节提纲规划",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "author_username": null,
+   "author_image": null,
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "locked_reason": "spending_limit_exceeded",
+   "trigger": null,
+   "is_background": true,
+   "rum_session_id": null,
+   "updated_memory_data": null
+  },
+  {
+   "text": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\"}, \"uuid\": \"\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"0\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T02:10:46.761866+00:00\"}, \"uuid\": \"toolu_5crub0PkOaQ8DWkchhkEoB8y\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"0\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T02:12:18.939562+00:00\"}, \"uuid\": \"toolu_5crub0PkOaQ8DWkchhkEoB8y\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"1\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T02:10:53.443595+00:00\"}, \"uuid\": \"5cbeef00-3f2c-55b8-876b-1fba05a9b18d\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"1\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T02:10:53.443595+00:00\"}, \"uuid\": \"5cbeef00-1bed-5bb7-88aa-3708fbd0702d\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"2\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例命令段落（其十）：演示工具调用导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T02:11:23.561806+00:00\"}, \"uuid\": \"toolu_5crub0uz2LKTjR4yOOe2WfmC\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"2\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例输出段落（其十）：演示工具输出导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": \"Output\", \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T02:11:23.591507+00:00\"}, \"uuid\": \"toolu_5crub0uz2LKTjR4yOOe2WfmC\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"3\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T02:11:26.088200+00:00\"}, \"uuid\": \"toolu_5crub0K6hgc9WbHqWaNlBG65\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"3\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TODO_LIST\", \"payload\": {\"text_payload\": null, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": {\"title\": \"示例待办清单标题（其三）\", \"items\": [{\"status\": \"COMPLETED\", \"description\": \"示例待办事项（其十七）：演示待办内容导出。\"}, {\"status\": \"COMPLETED\", \"description\": \"示例待办事项（其十八）：演示待办内容导出。\"}, {\"status\": \"COMPLETED\", \"description\": \"示例待办事项（其十九）：演示待办内容导出。\"}, {\"status\": \"COMPLETED\", \"description\": \"示例待办事项（其二十）：演示待办内容导出。\"}, {\"status\": \"IN_PROGRESS\", \"description\": \"示例待办事项（其二十一）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其二十二）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其二十三）：演示待办内容导出。\"}], \"diff\": {\"items\": [{\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其十七）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"COMPLETED\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其十八）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"COMPLETED\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其十九）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"COMPLETED\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其二十）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"COMPLETED\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其二十一）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"IN_PROGRESS\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其二十二）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}, {\"action\": \"TODO_DIFF_ADDED\", \"description\": \"示例待办事项（其二十三）：演示待办内容导出。\", \"old_status\": null, \"new_status\": \"PENDING\"}]}}, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T02:11:26.088822+00:00\"}, \"uuid\": \"toolu_5crub0K6hgc9WbHqWaNlBG65\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"4\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例命令段落（其十一）：演示工具调用导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": null, \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T02:12:07.518085+00:00\"}, \"uuid\": \"toolu_5crub0xsNsMwTTa1636VDdpC\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"4\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TEXT\", \"payload\": {\"text_payload\": {\"text\": null, \"chunks\": [\"示例输出段落（其十一）：演示工具输出导出。\"], \"is_mono\": true, \"variant\": null, \"file_handle\": null, \"is_streaming\": null, \"icon\": null, \"clamp\": null, \"header\": \"Output\", \"attachments\": null, \"images\": null}, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": null, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T02:12:07.518649+00:00\"}, \"uuid\": \"toolu_5crub0xsNsMwTTa1636VDdpC\"}, {\"step_type\": \"ASI_TOOL_INPUT\", \"content\": {\"goal_id\": \"5\", \"workflow_items\": [], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T02:12:18.680543+00:00\"}, \"uuid\": \"toolu_5crub0vC3PB4L8i0RNCDl9p1\"}, {\"step_type\": \"ASI_TOOL_OUTPUT\", \"content\": {\"goal_id\": \"5\", \"workflow_items\": [{\"id\": \"_0\", \"type\": \"WORKFLOW_ITEM_TODO_LIST\", \"payload\": {\"text_payload\": null, \"sources_payload\": null, \"workflow_payload\": null, \"queries_payload\": null, \"user_questions_payload\": null, \"content_payload\": null, \"user_response_payload\": null, \"table_payload\": null, \"generation_placeholder_payload\": null, \"todo_list_payload\": {\"title\": \"示例待办清单标题（其三）\", \"items\": [{\"status\": \"COMPLETED\", \"description\": \"示例待办事项（其十七）：演示待办内容导出。\"}, {\"status\": \"COMPLETED\", \"description\": \"示例待办事项（其十八）：演示待办内容导出。\"}, {\"status\": \"COMPLETED\", \"description\": \"示例待办事项（其十九）：演示待办内容导出。\"}, {\"status\": \"COMPLETED\", \"description\": \"示例待办事项（其二十）：演示待办内容导出。\"}, {\"status\": \"COMPLETED\", \"description\": \"示例待办事项（其二十一）：演示待办内容导出。\"}, {\"status\": \"IN_PROGRESS\", \"description\": \"示例待办事项（其二十二）：演示待办内容导出。\"}, {\"status\": \"PENDING\", \"description\": \"示例待办事项（其二十三）：演示待办内容导出。\"}], \"diff\": {\"items\": [{\"action\": \"TODO_DIFF_STATUS_CHANGED\", \"description\": \"示例待办事项（其二十一）：演示待办内容导出。\", \"old_status\": \"IN_PROGRESS\", \"new_status\": \"COMPLETED\"}, {\"action\": \"TODO_DIFF_STATUS_CHANGED\", \"description\": \"示例待办事项（其二十二）：演示待办内容导出。\", \"old_status\": \"PENDING\", \"new_status\": \"IN_PROGRESS\"}]}}, \"inline_claims_payload\": null, \"embedded_iframe_payload\": null, \"widget_payload\": null}, \"display_mode\": null, \"variant\": null}], \"workflow_snapshots\": [], \"timestamp\": \"2035-12-26T02:12:18.681425+00:00\"}, \"uuid\": \"toolu_5crub0vC3PB4L8i0RNCDl9p1\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"workflow_snapshots\\\": {\\\"toolu_5crub0PkOaQ8DWkchhkEoB8y\\\": [{\\\"type\\\": \\\"USAGE_TOTAL\\\", \\\"usage_total\\\": {\\\"compute_time_s\\\": 321.5240746187046}}, {\\\"type\\\": \\\"TODO_LIST\\\", \\\"todo_list\\\": {\\\"title\\\": \\\"示例待办清单标题（其三）\\\", \\\"items\\\": [{\\\"status\\\": \\\"COMPLETED\\\", \\\"description\\\": \\\"示例待办事项（其十七）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"COMPLETED\\\", \\\"description\\\": \\\"示例待办事项（其十八）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"COMPLETED\\\", \\\"description\\\": \\\"示例待办事项（其十九）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"COMPLETED\\\", \\\"description\\\": \\\"示例待办事项（其二十）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"COMPLETED\\\", \\\"description\\\": \\\"示例待办事项（其二十一）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"IN_PROGRESS\\\", \\\"description\\\": \\\"示例待办事项（其二十二）：演示待办内容导出。\\\"}, {\\\"status\\\": \\\"PENDING\\\", \\\"description\\\": \\\"示例待办事项（其二十三）：演示待办内容导出。\\\"}]}}]}}\"}, \"uuid\": \"\"}]",
+   "query_str": "",
+   "query_display_metadata": null,
+   "query_source": "scheduled",
+   "query_language": "zh",
+   "backend_uuid": "5cbeef00-d8de-5933-a96c-e8f00a47f686",
+   "related_queries": [],
+   "related_query_items": [],
+   "refinement_filters_metadata": {},
+   "search_focus": "internet",
+   "sources": null,
+   "read_write_token": "00000000-0000-4000-8000-0000000000ff",
+   "gpt4": false,
+   "step_type": "FINAL",
+   "mode": "asi",
+   "display_model": "pplx_asi_opus",
+   "search_mode": "ASI",
+   "personalized": false,
+   "attachments": null,
+   "media_items": null,
+   "plan": {
+    "goals": [
+     {
+      "id": "0",
+      "description": "示例计划段落（其十）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": null,
+      "expect_child_goals": true
+     },
+     {
+      "id": "1",
+      "description": "示例计划段落（其五十三）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "2",
+      "description": "示例计划段落（其五十四）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "3",
+      "description": "示例计划段落（其五十五）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "4",
+      "description": "示例计划段落（其五十六）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     },
+     {
+      "id": "5",
+      "description": "示例计划段落（其五十七）：演示计划步骤导出。",
+      "final": true,
+      "todo_task_status": "INCOMPLETE",
+      "step_ids": null,
+      "frontend_thought": null,
+      "parent_goal_id": "0",
+      "expect_child_goals": null
+     }
+    ],
+    "final": true,
+    "channel_uuid": null,
+    "id": null,
+    "description": null,
+    "start_time": null,
+    "estimated_total_duration_in_seconds": null,
+    "end_time": null
+   },
+   "form": null,
+   "eta": {
+    "eta_seconds_remaining": null,
+    "pct_complete": null
+   },
+   "subtext": "NONE",
+   "answer_modes": [],
+   "created_us": 2082247846802652,
+   "updated_us": 2082247939458601,
+   "updated_datetime": "2035-12-26T02:12:19.927523",
+   "reconnectable": false,
+   "classifier_results": {},
+   "user_selected_model": "pplx_asi_opus",
+   "proactive_upgrade_reason": null,
+   "proactive_upgrade_model": null,
+   "experiment_overrides": null,
+   "search_implementation_mode": "multi_step",
+   "side_by_side_metadata": null,
+   "context_uuid": "5cbeef00-9e6c-59ec-973e-1686b530c6f0",
+   "frontend_uuid": null,
+   "frontend_context_uuid": "5cbeef00-c8c1-5d60-be30-9bc79b84e9e6",
+   "uuid": "5cbeef00-d8de-5933-a96c-e8f00a47f686",
+   "privacy_state": "NONE",
+   "expiry_time": null,
+   "status": "completed",
+   "source": "default",
+   "thread_title": "章节提纲规划",
+   "thread_access": 2,
+   "thread_url_slug": "5cbeef00-94e1-5525-824f-f1882519dea4",
+   "author_username": null,
+   "author_image": null,
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "locked_reason": "spending_limit_exceeded",
+   "trigger": null,
+   "is_background": true,
+   "rum_session_id": null,
+   "updated_memory_data": null
+  }
+ ]
+}

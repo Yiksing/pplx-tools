@@ -1,0 +1,242 @@
+name: translate-docs
+
+on:
+  workflow_run:
+    workflows: ["quality"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Regenerate every machine translation
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: translate-docs-main
+  cancel-in-progress: true
+
+jobs:
+  translate-validate-build:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'main')
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      BASE_SHA: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+      DEEPSEEK_TRANSLATION_MODEL: ${{ vars.DEEPSEEK_TRANSLATION_MODEL }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          enable-cache: true
+          python-version: "3.11"
+
+      - name: Verify the validated main revision
+        run: |
+          set -euo pipefail
+          if [[ ! "${BASE_SHA}" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error title=Invalid validated SHA::Expected an exact lowercase commit SHA"
+            exit 2
+          fi
+          git fetch origin main
+          if [[ "$(git rev-parse HEAD)" != "${BASE_SHA}" ||
+                "$(git rev-parse origin/main)" != "${BASE_SHA}" ]]; then
+            echo "::error title=Validated SHA no longer current::Refusing to translate a different main revision"
+            exit 1
+          fi
+
+      - name: Check dependency lock
+        run: uv lock --check
+
+      - name: Sync locked environment
+        run: uv sync --frozen
+
+      - name: Configure and resume the generated-only checkpoint
+        run: |
+          set -euo pipefail
+          checkpoint_branch="automation/i18n-checkpoints/${BASE_SHA}"
+          echo "CHECKPOINT_BRANCH=${checkpoint_branch}" >> "${GITHUB_ENV}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin \
+             "refs/heads/${checkpoint_branch}" >/dev/null 2>&1; then
+            git fetch origin \
+              "refs/heads/${checkpoint_branch}:refs/remotes/origin/${checkpoint_branch}"
+            uv run python scripts/translate_docs.py \
+              --verify-checkpoint \
+              --checkpoint-base "${BASE_SHA}" \
+              --checkpoint-branch "${checkpoint_branch}"
+            git switch --create "${checkpoint_branch}" \
+              --track "origin/${checkpoint_branch}"
+          else
+            git switch --create "${checkpoint_branch}" "${BASE_SHA}"
+          fi
+
+      - name: Refresh stable translated heading anchors
+        run: >-
+          uv run python scripts/translate_docs.py
+          --refresh-heading-anchors
+          --commit-each-locale
+          --checkpoint-branch "${CHECKPOINT_BRANCH}"
+
+      - name: Show incremental translation plan
+        id: plan
+        env:
+          FORCE_TRANSLATIONS: ${{ inputs.force || false }}
+        run: |
+          set -euo pipefail
+          args=(--plan)
+          if [[ "${FORCE_TRANSLATIONS}" == "true" ]]; then
+            args+=(--force)
+          fi
+          plan_path="${RUNNER_TEMP}/translation-plan.json"
+          uv run python scripts/translate_docs.py "${args[@]}" | tee "${plan_path}"
+          api_required="$(uv run python -c \
+            'import json,sys; p=json.load(open(sys.argv[1], encoding="utf-8")); print(str(bool(p["document_translations_pending"] or p["catalog_translations_pending"])).lower())' \
+            "${plan_path}")"
+          work_required="$(uv run python -c \
+            'import json,sys; p=json.load(open(sys.argv[1], encoding="utf-8")); print(str(bool(p["document_translations_pending"] or p["catalog_translations_pending"] or p["obsolete_document_translations"] or p["obsolete_catalog_translations"])).lower())' \
+            "${plan_path}")"
+          echo "api_required=${api_required}" >> "${GITHUB_OUTPUT}"
+          echo "work_required=${work_required}" >> "${GITHUB_OUTPUT}"
+
+      - name: Apply generated-only cleanup without API access
+        if: >-
+          steps.plan.outputs.work_required == 'true' &&
+          steps.plan.outputs.api_required != 'true'
+        run: >-
+          uv run python scripts/translate_docs.py
+          --commit-each-locale
+          --checkpoint-branch "${CHECKPOINT_BRANCH}"
+
+      - name: Reconfirm current main before API access
+        if: steps.plan.outputs.api_required == 'true'
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          if [[ "$(git rev-parse origin/main)" != "${BASE_SHA}" ]]; then
+            echo "::error title=Main advanced before translation::Refusing paid translation for a stale revision"
+            exit 1
+          fi
+
+      - name: Generate and checkpoint each configured machine locale
+        if: steps.plan.outputs.api_required == 'true'
+        env:
+          DEEKSEEK_API_KEY: ${{ secrets.DEEKSEEK_API_KEY }}
+          FORCE_TRANSLATIONS: ${{ inputs.force || false }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${DEEKSEEK_API_KEY}" ]]; then
+            echo "::error title=Missing repository secret::DEEKSEEK_API_KEY is not configured for Actions"
+            exit 1
+          fi
+          args=(
+            --commit-each-locale
+            --checkpoint-branch "${CHECKPOINT_BRANCH}"
+          )
+          if [[ "${FORCE_TRANSLATIONS}" == "true" ]]; then
+            args+=(--force)
+          fi
+          uv run python scripts/translate_docs.py "${args[@]}"
+
+      - name: Recheck dependency lock
+        run: uv lock --check
+
+      - name: Verify generated translation manifest
+        run: uv run python scripts/translate_docs.py --check
+
+      - name: Audit complete multilingual documentation
+        run: uv run python scripts/audit_docs.py --format github --machine-mode required
+
+      - name: Check simulated fixture residue
+        run: uv run python tests/scrub_fixtures.py --check
+
+      - name: Run complete test suite
+        run: uv run pytest -q
+
+      - name: Build every locale strictly
+        run: uv run mkdocs build --strict
+
+      - name: Commit final generated cleanup to the checkpoint
+        id: commit
+        run: |
+          set -euo pipefail
+          git add docs i18n/generated i18n/manifest.json
+          if git diff --cached --quiet; then
+            echo "created=false" >> "${GITHUB_OUTPUT}"
+          else
+            git commit -m "chore(i18n): finalize machine translations [skip ci]"
+            git push origin "HEAD:refs/heads/${CHECKPOINT_BRANCH}"
+            echo "created=true" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Promote the fully validated checkpoint to main
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          if [[ "$(git rev-parse origin/main)" != "${BASE_SHA}" ]]; then
+            echo "::error title=Main advanced during translation::Refusing to promote a stale checkpoint"
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor "${BASE_SHA}" HEAD; then
+            echo "::error title=Invalid checkpoint history::Checkpoint is not a linear descendant of its base"
+            exit 1
+          fi
+          if [[ "$(git rev-parse HEAD)" != "${BASE_SHA}" ]]; then
+            git fetch origin \
+              "refs/heads/${CHECKPOINT_BRANCH}:refs/remotes/origin/${CHECKPOINT_BRANCH}"
+            uv run python scripts/translate_docs.py \
+              --verify-checkpoint \
+              --checkpoint-base "${BASE_SHA}" \
+              --checkpoint-branch "${CHECKPOINT_BRANCH}"
+            remote_checkpoint="$(
+              git ls-remote origin "refs/heads/${CHECKPOINT_BRANCH}" |
+              awk '{print $1}'
+            )"
+            if [[ "${remote_checkpoint}" != "$(git rev-parse HEAD)" ]]; then
+              echo "::error title=Checkpoint push mismatch::Remote checkpoint is not the validated HEAD"
+              exit 1
+            fi
+            git push origin HEAD:main
+          fi
+
+      - name: Remove the promoted checkpoint branch
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --heads origin \
+             "refs/heads/${CHECKPOINT_BRANCH}" >/dev/null 2>&1; then
+            git push origin --delete "${CHECKPOINT_BRANCH}"
+          fi
+
+      - name: Upload validated GitHub Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
+        with:
+          path: site
+
+  deploy:
+    name: Deploy GitHub Pages
+    needs: translate-validate-build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Deploy validated multilingual documentation
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5

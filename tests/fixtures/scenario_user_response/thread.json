@@ -1,0 +1,380 @@
+{
+ "web_uuid": "6562de79-f652-49d9-b399-a656d2158d39",
+ "psc_uuid": "d37dd918-56ec-464d-904e-22088919be31",
+ "url": "https://example.com/computer/tasks/6562de79-f652-49d9-b399-a656d2158d39",
+ "title": "示例工作流规划标题（合成）",
+ "mode": "computer",
+ "author": "alice",
+ "export_via": "alice",
+ "space": {
+  "uuid": "6ae46597-3085-4ec2-a362-8500580b26c1",
+  "title": "示例学科空间",
+  "slug": "example-subject-space-g7h8i9"
+ },
+ "lastUpdated": "2035-12-26T10:31:33.026619Z",
+ "threadAccess": null,
+ "n_turns": 18,
+ "n_sources": 0,
+ "metadata": {
+  "created_at": "2035-12-26T00:00:00.000000",
+  "crons": null,
+  "local_workspace_directories": null,
+  "locked_reason": null,
+  "mode": "4",
+  "sensitive_claims_visibility": null,
+  "subscribe_entry_uuids": null,
+  "thread_status": "completed",
+  "thread_status_summary": null,
+  "thread_status_summary_enum": null,
+  "title": "示例工作流规划标题（合成）",
+  "updated_at": "2035-12-26T10:31:33.026619",
+  "wake_at": null,
+  "workflow_snapshots": {
+   "SHARED_FILES": {
+    "shared_files": {
+     "items": [
+      {
+       "uuid": "toolu_5crub0766MSKXlz1qRhurcQQ",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "session_12_kickoff_2026-07-03.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/12_example_pipeline_planning/conversation_records/session_12_kickoff_2026-07-03.md"
+        }
+       ],
+       "created_at": "2082242382"
+      },
+      {
+       "uuid": "toolu_5crub0HOJAarzhJLw0trhRYM",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "DECISIONS_2026-07-03.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/12_example_pipeline_planning/DECISIONS_2026-07-03.md"
+        }
+       ],
+       "created_at": "2082242811"
+      },
+      {
+       "uuid": "toolu_5crub0lvjjOXxjebWmYMtECx",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "HOW_TO_RUN_ON_DEVICE.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/12_example_pipeline_planning/HOW_TO_RUN_ON_DEVICE.md"
+        }
+       ],
+       "created_at": "2082242874"
+      },
+      {
+       "uuid": "toolu_5crub0FmiRKXLhDDy1hmN08w",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "README.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/13_example_report/README.md"
+        }
+       ],
+       "created_at": "2082243662"
+      },
+      {
+       "uuid": "toolu_5crub0ISCNIKw01CuvNJWrkh",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "PRACTICUM_REPORT.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/13_example_report/PRACTICUM_REPORT.md"
+        }
+       ],
+       "created_at": "2082243891"
+      },
+      {
+       "uuid": "toolu_5crub00no51upBuA7jpeCn9p",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "DATA_SOURCE_TABLE.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/13_example_report/DATA_SOURCE_TABLE.md"
+        }
+       ],
+       "created_at": "2082243938"
+      },
+      {
+       "uuid": "toolu_5crub0x0KZRZwI9Hf8eCcazA",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "PREPROCESSING_METHODS.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/13_example_report/PREPROCESSING_METHODS.md"
+        }
+       ],
+       "created_at": "2082243998"
+      },
+      {
+       "uuid": "toolu_5crub0zyMr299OHlC48ZTzWe",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "EVALUATION_PROTOCOL.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/13_example_report/EVALUATION_PROTOCOL.md"
+        }
+       ],
+       "created_at": "2082244247"
+      },
+      {
+       "uuid": "toolu_5crub0nIdNaR7Z98tQiAbSRN",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "R1_download_stats.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/13_example_report/results_placeholder/R1_download_stats.md"
+        }
+       ],
+       "created_at": "2082244247"
+      },
+      {
+       "uuid": "toolu_5crub0HWxoUh7B5mqkvnI573",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "R2_qc_survival.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/13_example_report/results_placeholder/R2_qc_survival.md"
+        }
+       ],
+       "created_at": "2082244247"
+      },
+      {
+       "uuid": "toolu_5crub0cvmpemA9ZZS6o6H8X6",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "R3_regrid_diff.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/13_example_report/results_placeholder/R3_regrid_diff.md"
+        }
+       ],
+       "created_at": "2082244247"
+      },
+      {
+       "uuid": "toolu_5crub0hrJGbgUcnrT9IwvKOm",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "R4_site_timeseries.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/13_example_report/results_placeholder/R4_site_timeseries.md"
+        }
+       ],
+       "created_at": "2082244247"
+      },
+      {
+       "uuid": "toolu_5crub0PaH5W3NtI5eVMwSXEI",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "R5_model_impact.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/13_example_report/results_placeholder/R5_model_impact.md"
+        }
+       ],
+       "created_at": "2082244247"
+      },
+      {
+       "uuid": "toolu_5crub0PMxD3AKAoovdhUYzB5",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "README.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/13_example_report/figures/README.md"
+        }
+       ],
+       "created_at": "2082244247"
+      },
+      {
+       "uuid": "toolu_5crub0YoJblWjKM6k6pNOnsU",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "session_13_kickoff_2026-07-03.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/13_example_report/conversation_records/session_13_kickoff_2026-07-03.md"
+        }
+       ],
+       "created_at": "2082244247"
+      },
+      {
+       "uuid": "toolu_5crub0jX5Xe06FtxtX39mZGm",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "VISUALIZATION_PLAN.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/13_example_report/VISUALIZATION_PLAN.md"
+        }
+       ],
+       "created_at": "2082244474"
+      },
+      {
+       "uuid": "toolu_5crub03EQuTYudgoGEqEcgHy",
+       "asset_type": "CODE_FILE",
+       "code_file": {
+        "filename": "tools.start_download.sh",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "application/x-sh",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/12_example_pipeline_planning/scripts/tools.start_download.sh"
+        }
+       ],
+       "created_at": "2082243276"
+      },
+      {
+       "uuid": "toolu_5crub070Hxo92fzbeL21D2fG",
+       "asset_type": "CODE_FILE",
+       "code_file": {
+        "filename": "tools.stop_download.sh",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "application/x-sh",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/12_example_pipeline_planning/scripts/tools.stop_download.sh"
+        }
+       ],
+       "created_at": "2082243295"
+      },
+      {
+       "uuid": "toolu_5crub09hWLt1UCzX82l5JHG0",
+       "asset_type": "CODE_FILE",
+       "code_file": {
+        "filename": "tools.check_download_progress.py",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/x-python",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/12_example_pipeline_planning/scripts/tools.check_download_progress.py"
+        }
+       ],
+       "created_at": "2082243324"
+      },
+      {
+       "uuid": "toolu_5crub0tQD5DVLyYM0oeUV4jG",
+       "asset_type": "UNKNOWN",
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "application/octet-stream",
+         "is_streaming": false,
+         "file_handle": "file:repo/Sessions/13_example_report/scripts_placeholder/matplotlibrc"
+        }
+       ],
+       "created_at": "2082244630"
+      }
+     ]
+    },
+    "type": "SHARED_FILES"
+   }
+  }
+ },
+ "report_info": null,
+ "exported_at": "2036-01-11T20:53:48Z"
+}

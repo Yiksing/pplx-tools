@@ -1,0 +1,957 @@
+{
+ "thread_metadata": {
+  "created_at": "2035-12-26T00:00:00",
+  "crons": null,
+  "local_workspace_directories": null,
+  "locked_reason": null,
+  "mode": "4",
+  "sensitive_claims_visibility": null,
+  "subscribe_entry_uuids": null,
+  "thread_status": "completed",
+  "thread_status_summary": null,
+  "thread_status_summary_enum": null,
+  "title": "完善课程报告规划",
+  "updated_at": "2036-01-06T06:43:16.896023",
+  "wake_at": null,
+  "workflow_snapshots": {
+   "SHARED_FILES": {
+    "shared_files": {
+     "items": [
+      {
+       "uuid": "5cbeef00-506e-5407-b5a4-3f3a6bda88bb",
+       "asset_type": "SLIDES",
+       "slide_file": {
+        "name": "示例课程报告",
+        "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-3267-597e-a314-e388eff875b5/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A.pptx",
+        "pdf_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-cdac-5f24-b591-62fec821e2e1/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "示例课程报告.pptx",
+         "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-3267-597e-a314-e388eff875b5/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A.pptx",
+         "size": 8406881,
+         "is_exportable": true,
+         "status_id": "share_1bc15bf22a80"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-3267-597e-a314-e388eff875b5/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A.pptx_preview.png",
+         "media_type": "image/png",
+         "width": 800,
+         "height": 450
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://pplx-res.cloudinary.com/image/upload/s--q9jDFMKA--/c_limit,w_640,h_640/v1/code-interpreter/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-3267-597e-a314-e388eff875b5/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A.pptx_preview.png",
+         "media_type": "image/png",
+         "width": 640,
+         "height": 360
+        }
+       ],
+       "fallback_info": {
+        "name": "示例课程报告.pptx",
+        "webview_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-3267-597e-a314-e388eff875b5/%E7%A4%BA%E4%BE%8B%E8%AF%BE%E7%A8%8B%E6%8A%A5%E5%91%8A.pptx"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "5cbeef00-506e-5407-b5a4-3f3a6bda88bb",
+       "parent_asset_id": "5cbeef00-330c-5f56-a972-6bd509919295",
+       "root_asset_id": "5cbeef00-57e1-5f7f-a68e-2eb7015c4bc6",
+       "created_at": "1780812152"
+      },
+      {
+       "uuid": "5cbeef00-5d70-5009-babf-fedd94d54aca",
+       "asset_type": "SLIDES",
+       "slide_file": {
+        "name": "slides_supplement",
+        "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-a0df-57f6-9ad2-fec6ac14da30/slides_supplement.pptx",
+        "pdf_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-1e58-51c5-ae9c-10e21269a5ae/slides_supplement.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "slides_supplement.pptx",
+         "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-a0df-57f6-9ad2-fec6ac14da30/slides_supplement.pptx",
+         "size": 289883,
+         "is_exportable": true,
+         "status_id": "share_1a4884f60fc1"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-a0df-57f6-9ad2-fec6ac14da30/slides_supplement.pptx_preview.png",
+         "media_type": "image/png",
+         "width": 800,
+         "height": 449
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://pplx-res.cloudinary.com/image/upload/s--TVUq1mCt--/c_limit,w_640,h_640/v1/code-interpreter/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-a0df-57f6-9ad2-fec6ac14da30/slides_supplement.pptx_preview.png",
+         "media_type": "image/png",
+         "width": 640,
+         "height": 359
+        }
+       ],
+       "fallback_info": {
+        "name": "slides_supplement.pptx",
+        "webview_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-a0df-57f6-9ad2-fec6ac14da30/slides_supplement.pptx"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "5cbeef00-5d70-5009-babf-fedd94d54aca",
+       "root_asset_id": "5cbeef00-5d70-5009-babf-fedd94d54aca",
+       "created_at": "1780868407"
+      },
+      {
+       "uuid": "5cbeef00-9e0b-59d4-8e5c-9de52ee24090",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "main",
+        "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-a9d5-59ca-826f-7d97ae5724e0/main.pdf",
+        "file_size": 6143728,
+        "filename": "main.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "main.pdf",
+         "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-a9d5-59ca-826f-7d97ae5724e0/main.pdf",
+         "size": 6143728,
+         "is_exportable": true,
+         "status_id": "share_2bb3ffb99794"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-a9d5-59ca-826f-7d97ae5724e0/main.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 800,
+         "height": 450
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://pplx-res.cloudinary.com/image/upload/s--dtiI6xou--/c_limit,w_640,h_640/v1/code-interpreter/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-a9d5-59ca-826f-7d97ae5724e0/main.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 640,
+         "height": 360
+        }
+       ],
+       "fallback_info": {
+        "name": "main.pdf",
+        "webview_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-a9d5-59ca-826f-7d97ae5724e0/main.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "5cbeef00-9e0b-59d4-8e5c-9de52ee24090",
+       "parent_asset_id": "5cbeef00-0d17-51eb-ae90-f6fab5c4e1f4",
+       "root_asset_id": "5cbeef00-f7b3-5f97-a08e-2598a44a01c4",
+       "created_at": "1780811843"
+      },
+      {
+       "uuid": "toolu_5crub0pnbSiRdt7EQsn8u86Z",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "new_background.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:new_background.md"
+        }
+       ],
+       "created_at": "1780815983"
+      },
+      {
+       "uuid": "5cbeef00-b93a-5158-98a5-78bccad73cab",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "main",
+        "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-f9c0-5910-8383-d6291a999fbd/main.pdf",
+        "file_size": 6161403,
+        "filename": "main.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "main.pdf",
+         "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-f9c0-5910-8383-d6291a999fbd/main.pdf",
+         "size": 6161403,
+         "is_exportable": true,
+         "status_id": "share_c67b74756a3d"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-f9c0-5910-8383-d6291a999fbd/main.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 800,
+         "height": 450
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://pplx-res.cloudinary.com/image/upload/s--ZKHY4sZE--/c_limit,w_640,h_640/v1/code-interpreter/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-f9c0-5910-8383-d6291a999fbd/main.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 640,
+         "height": 360
+        }
+       ],
+       "fallback_info": {
+        "name": "main.pdf",
+        "webview_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-f9c0-5910-8383-d6291a999fbd/main.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "5cbeef00-b93a-5158-98a5-78bccad73cab",
+       "parent_asset_id": "5cbeef00-9e0b-59d4-8e5c-9de52ee24090",
+       "root_asset_id": "5cbeef00-f7b3-5f97-a08e-2598a44a01c4",
+       "created_at": "1780816145"
+      },
+      {
+       "uuid": "toolu_5crub0SFwBpOf17MutmeKe5I",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "README.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_repo/示例目录一/README.md"
+        }
+       ],
+       "created_at": "1780817646"
+      },
+      {
+       "uuid": "5cbeef00-978c-5312-ab13-fdfcdd7a842e",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "main",
+        "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-de19-5da4-a005-d4f4c61ac6b7/main.pdf",
+        "file_size": 6163210,
+        "filename": "main.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "main.pdf",
+         "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-de19-5da4-a005-d4f4c61ac6b7/main.pdf",
+         "size": 6163210,
+         "is_exportable": true,
+         "status_id": "share_5fb4f5810dfb"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-de19-5da4-a005-d4f4c61ac6b7/main.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 800,
+         "height": 450
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://pplx-res.cloudinary.com/image/upload/s--Btq351oa--/c_limit,w_640,h_640/v1/code-interpreter/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-de19-5da4-a005-d4f4c61ac6b7/main.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 640,
+         "height": 360
+        }
+       ],
+       "fallback_info": {
+        "name": "main.pdf",
+        "webview_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-de19-5da4-a005-d4f4c61ac6b7/main.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "5cbeef00-978c-5312-ab13-fdfcdd7a842e",
+       "parent_asset_id": "5cbeef00-b93a-5158-98a5-78bccad73cab",
+       "root_asset_id": "5cbeef00-f7b3-5f97-a08e-2598a44a01c4",
+       "created_at": "1780828637"
+      },
+      {
+       "uuid": "5cbeef00-0de7-57f1-a4b3-a72a007b4d4e",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "main",
+        "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-6cd8-5408-bd4f-40307fa1cc1e/main.pdf",
+        "file_size": 6327892,
+        "filename": "main.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "main.pdf",
+         "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-6cd8-5408-bd4f-40307fa1cc1e/main.pdf",
+         "size": 6327892,
+         "is_exportable": true,
+         "status_id": "share_89e7966e8dba"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-6cd8-5408-bd4f-40307fa1cc1e/main.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 800,
+         "height": 450
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://pplx-res.cloudinary.com/image/upload/s--YouoRD4K--/c_limit,w_640,h_640/v1/code-interpreter/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-6cd8-5408-bd4f-40307fa1cc1e/main.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 640,
+         "height": 360
+        }
+       ],
+       "fallback_info": {
+        "name": "main.pdf",
+        "webview_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-6cd8-5408-bd4f-40307fa1cc1e/main.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "5cbeef00-0de7-57f1-a4b3-a72a007b4d4e",
+       "parent_asset_id": "5cbeef00-978c-5312-ab13-fdfcdd7a842e",
+       "root_asset_id": "5cbeef00-f7b3-5f97-a08e-2598a44a01c4",
+       "created_at": "1780844762"
+      },
+      {
+       "uuid": "5cbeef00-b9a8-5e03-85ae-978daa02ad27",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "main",
+        "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-5a4e-559c-a5bc-d827a1ed5013/main.pdf",
+        "file_size": 6229527,
+        "filename": "main.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "main.pdf",
+         "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-5a4e-559c-a5bc-d827a1ed5013/main.pdf",
+         "size": 6229527,
+         "is_exportable": true,
+         "status_id": "share_bebdf5218743"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-5a4e-559c-a5bc-d827a1ed5013/main.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 800,
+         "height": 450
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://pplx-res.cloudinary.com/image/upload/s--t6kUV0Cb--/c_limit,w_640,h_640/v1/code-interpreter/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-5a4e-559c-a5bc-d827a1ed5013/main.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 640,
+         "height": 360
+        }
+       ],
+       "fallback_info": {
+        "name": "main.pdf",
+        "webview_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-5a4e-559c-a5bc-d827a1ed5013/main.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "5cbeef00-b9a8-5e03-85ae-978daa02ad27",
+       "parent_asset_id": "5cbeef00-0de7-57f1-a4b3-a72a007b4d4e",
+       "root_asset_id": "5cbeef00-f7b3-5f97-a08e-2598a44a01c4",
+       "created_at": "1780845406"
+      },
+      {
+       "uuid": "5cbeef00-2b8f-56b7-9262-93137a420aec",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "main",
+        "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-0624-545b-9ea6-b67530a89203/main.pdf",
+        "file_size": 6357251,
+        "filename": "main.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "main.pdf",
+         "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-0624-545b-9ea6-b67530a89203/main.pdf",
+         "size": 6357251,
+         "is_exportable": true,
+         "status_id": "share_f27265644e31"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-0624-545b-9ea6-b67530a89203/main.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 800,
+         "height": 450
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://pplx-res.cloudinary.com/image/upload/s--hpdH9yqv--/c_limit,w_640,h_640/v1/code-interpreter/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-0624-545b-9ea6-b67530a89203/main.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 640,
+         "height": 360
+        }
+       ],
+       "fallback_info": {
+        "name": "main.pdf",
+        "webview_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-0624-545b-9ea6-b67530a89203/main.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "5cbeef00-2b8f-56b7-9262-93137a420aec",
+       "parent_asset_id": "5cbeef00-b9a8-5e03-85ae-978daa02ad27",
+       "root_asset_id": "5cbeef00-f7b3-5f97-a08e-2598a44a01c4",
+       "created_at": "1780845559"
+      },
+      {
+       "uuid": "5cbeef00-50c8-5443-a0e4-5de28b265835",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "main",
+        "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-c6ae-5e5d-9fd8-70c9ab5681ed/main.pdf",
+        "file_size": 6381649,
+        "filename": "main.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "main.pdf",
+         "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-c6ae-5e5d-9fd8-70c9ab5681ed/main.pdf",
+         "size": 6381649,
+         "is_exportable": true,
+         "status_id": "share_9a42e609bae0"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-c6ae-5e5d-9fd8-70c9ab5681ed/main.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 800,
+         "height": 450
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://pplx-res.cloudinary.com/image/upload/s--f_hZ-A9i--/c_limit,w_640,h_640/v1/code-interpreter/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-c6ae-5e5d-9fd8-70c9ab5681ed/main.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 640,
+         "height": 360
+        }
+       ],
+       "fallback_info": {
+        "name": "main.pdf",
+        "webview_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-c6ae-5e5d-9fd8-70c9ab5681ed/main.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "5cbeef00-50c8-5443-a0e4-5de28b265835",
+       "parent_asset_id": "5cbeef00-2b8f-56b7-9262-93137a420aec",
+       "root_asset_id": "5cbeef00-f7b3-5f97-a08e-2598a44a01c4",
+       "created_at": "1780845693"
+      },
+      {
+       "uuid": "5cbeef00-86b8-51c1-bb22-3747a44e2e6b",
+       "asset_type": "PDF_FILE",
+       "pdf_file": {
+        "name": "ppt_v2",
+        "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-e211-54ac-98bd-f2f439439bbe/ppt_v2.pdf",
+        "file_size": 6295084,
+        "filename": "ppt_v2.pdf"
+       },
+       "download_info": [
+        {
+         "filename": "ppt_v2.pdf",
+         "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-e211-54ac-98bd-f2f439439bbe/ppt_v2.pdf",
+         "size": 6295084,
+         "is_exportable": true,
+         "status_id": "share_3c7d2c830971"
+        }
+       ],
+       "preview_info": [
+        {
+         "type": "image",
+         "s3_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-e211-54ac-98bd-f2f439439bbe/ppt_v2.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 800,
+         "height": 450
+        },
+        {
+         "type": "thumbnail",
+         "s3_url": "https://pplx-res.cloudinary.com/image/upload/s--20WHOuZH--/c_limit,w_640,h_640/v1/code-interpreter/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-e211-54ac-98bd-f2f439439bbe/ppt_v2.pdf_preview.png",
+         "media_type": "image/png",
+         "width": 640,
+         "height": 360
+        }
+       ],
+       "fallback_info": {
+        "name": "ppt_v2.pdf",
+        "webview_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-e211-54ac-98bd-f2f439439bbe/ppt_v2.pdf"
+       },
+       "is_primary_asset": true,
+       "backend_uuid_slug": "5cbeef00-86b8-51c1-bb22-3747a44e2e6b",
+       "root_asset_id": "5cbeef00-86b8-51c1-bb22-3747a44e2e6b",
+       "created_at": "1780850770"
+      },
+      {
+       "uuid": "toolu_5crub0vBrcoTAOTfHsQDN3hn",
+       "asset_type": "DOC_FILE",
+       "doc_file": {
+        "filename": "README.md",
+        "final": true
+       },
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "text/markdown",
+         "is_streaming": false,
+         "file_handle": "file:example_repo/示例目录二/README.md"
+        }
+       ],
+       "created_at": "1781748760"
+      },
+      {
+       "uuid": "toolu_5crub00epMv83AWQ65uug7T2",
+       "asset_type": "UNKNOWN",
+       "preview_info": [
+        {
+         "type": "text",
+         "media_type": "application/x-tex",
+         "is_streaming": false,
+         "file_handle": "file:new_bg_frames.tex"
+        }
+       ],
+       "created_at": "1780816046"
+      }
+     ]
+    },
+    "type": "SHARED_FILES"
+   },
+   "TODO_LIST": {
+    "todo_list": {
+     "title": "示例待办清单标题（其一）",
+     "items": [
+      {
+       "status": "COMPLETED",
+       "description": "示例待办事项（其一）：演示待办内容导出。"
+      },
+      {
+       "status": "COMPLETED",
+       "description": "示例待办事项（其二）：演示待办内容导出。"
+      },
+      {
+       "status": "COMPLETED",
+       "description": "示例待办事项（其三）：演示待办内容导出。"
+      },
+      {
+       "status": "COMPLETED",
+       "description": "示例待办事项（其四）：演示待办内容导出。"
+      },
+      {
+       "status": "COMPLETED",
+       "description": "示例待办事项（其五）：演示待办内容导出。"
+      }
+     ]
+    },
+    "type": "TODO_LIST"
+   }
+  }
+ },
+ "entries": [
+  {
+   "backend_uuid": "5cbeef00-b705-56ce-baf7-b05552ec4116",
+   "context_uuid": "5cbeef00-d237-5224-95f5-decb7a9b6022",
+   "uuid": "5cbeef00-ea27-5c01-9189-224881a2f9fb",
+   "frontend_context_uuid": "5cbeef00-aa2d-5757-afaa-45e11855d64d",
+   "frontend_uuid": "5cbeef00-ea27-5c01-9189-224881a2f9fb",
+   "status": "COMPLETED",
+   "thread_title": "完善课程报告规划",
+   "related_queries": [],
+   "display_model": "pplx_asi",
+   "user_selected_model": "pplx_asi",
+   "personalized": false,
+   "mode": "ASI",
+   "query_str": "示例查询（其一）：演示问答导出格式。",
+   "search_focus": "internet",
+   "source": "default",
+   "attachments": [],
+   "updated_datetime": "2036-01-06T06:43:16.896023",
+   "step_type": "FINAL",
+   "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+   "thread_access": 5,
+   "thread_url_slug": "5cbeef00-26d4-5a46-a591-01db0193a62a",
+   "query_source": "default",
+   "privacy_state": "NONE",
+   "gpt4": false,
+   "sources": {
+    "sources": [
+     "web"
+    ]
+   },
+   "entry_created_datetime": "2035-12-26T19:40:53.303139+00:00",
+   "entry_updated_datetime": "2035-12-26T19:41:44.300022+00:00",
+   "blocks": [
+    {
+     "intended_usage": "plan",
+     "plan_block": {
+      "progress": "DONE",
+      "goals": [
+       {
+        "id": "0",
+        "description": "示例计划段落（其一）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE"
+       },
+       {
+        "id": "1",
+        "description": "示例计划段落（其二）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE"
+       },
+       {
+        "id": "2",
+        "description": "示例计划段落（其三）：演示计划步骤导出。",
+        "final": true,
+        "todo_task_status": "INCOMPLETE"
+       },
+       {
+        "id": "3",
+        "description": "已完成推送（示例）",
+        "final": true,
+        "todo_task_status": "INCOMPLETE"
+       }
+      ],
+      "final": true
+     }
+    },
+    {
+     "intended_usage": "workflow_root",
+     "workflow_block": {
+      "version": "1.0",
+      "status": "WORKFLOW_COMPLETED",
+      "headline": "",
+      "started_at": "2035-12-26T19:41:01.351866+00:00",
+      "completed_at": "2035-12-26T19:41:42.045642+00:00",
+      "predicted_completion_at": "",
+      "steps": [
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "示例计划段落（其一）：演示计划步骤导出。",
+        "items": [
+         {
+          "id": "_0",
+          "type": "WORKFLOW_ITEM_TEXT",
+          "payload": {
+           "text_payload": {
+            "chunks": [
+             "示例命令段落（其一）：演示工具调用导出。"
+            ],
+            "is_mono": true
+           }
+          }
+         },
+         {
+          "id": "_0",
+          "type": "WORKFLOW_ITEM_TEXT",
+          "payload": {
+           "text_payload": {
+            "chunks": [
+             "示例输出段落（其一）：演示工具输出导出。"
+            ],
+            "is_mono": true,
+            "header": "Output"
+           }
+          }
+         }
+        ],
+        "started_at": "2035-12-26T19:41:01.351866+00:00",
+        "completed_at": "2035-12-26T19:41:15.935512+00:00",
+        "icon": "extract",
+        "tool_name": "bash",
+        "batch_step_id": "5cbeef00-3597-583f-961b-8717bfdc8043",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0OBnLQpuWQuWlaeYR5p"
+       },
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "示例计划段落（其二）：演示计划步骤导出。",
+        "items": [
+         {
+          "id": "_0",
+          "type": "WORKFLOW_ITEM_TEXT",
+          "payload": {
+           "text_payload": {
+            "chunks": [
+             "示例命令段落（其二）：演示工具调用导出。"
+            ],
+            "is_mono": true
+           }
+          }
+         },
+         {
+          "id": "_0",
+          "type": "WORKFLOW_ITEM_TEXT",
+          "payload": {
+           "text_payload": {
+            "chunks": [
+             "示例输出段落（其二）：演示工具输出导出。"
+            ],
+            "is_mono": true,
+            "header": "Output"
+           }
+          }
+         }
+        ],
+        "started_at": "2035-12-26T19:41:18.633590+00:00",
+        "completed_at": "2035-12-26T19:41:33.149456+00:00",
+        "icon": "extract",
+        "tool_name": "bash",
+        "batch_step_id": "5cbeef00-a275-5555-a3fa-04220f5a92c4",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "connector_source_id": "github_mcp_direct",
+        "id": "toolu_5crub0AfIr0DouFUlOIG9qMJ"
+       },
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "示例计划段落（其三）：演示计划步骤导出。",
+        "items": [
+         {
+          "id": "_0",
+          "type": "WORKFLOW_ITEM_SOURCES",
+          "payload": {
+           "sources_payload": {
+            "asset_uuids": [
+             "5cbeef00-2b8f-56b7-9262-93137a420aec"
+            ]
+           }
+          },
+          "display_mode": "WORKFLOW_ITEM_ALWAYS_EXPAND"
+         }
+        ],
+        "started_at": "2035-12-26T19:41:36.332324+00:00",
+        "completed_at": "2035-12-26T19:41:38.183739+00:00",
+        "icon": "store",
+        "tool_name": "share_file",
+        "batch_step_id": "5cbeef00-f217-5549-919e-cd0c24dd0483",
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "toolu_5crub0i44c4GvXMiO1PtyIgG"
+       },
+       {
+        "status": "WORKFLOW_COMPLETED",
+        "title": "",
+        "items": [
+         {
+          "id": "5cbeef00-e722-5a73-aa28-550c191ce3d9",
+          "type": "WORKFLOW_ITEM_TEXT",
+          "payload": {
+           "text_payload": {
+            "text": "已完成推送（示例）",
+            "chunks": [
+             "已完成",
+             "推送（",
+             "示例）"
+            ],
+            "variant": "answer",
+            "is_streaming": false
+           }
+          },
+          "display_mode": "WORKFLOW_ITEM_ALWAYS_EXPAND",
+          "variant": "answer"
+         },
+         {
+          "id": "5cbeef00-e722-5a73-aa28-550c191ce3d9:3:0",
+          "type": "WORKFLOW_ITEM_SOURCES",
+          "payload": {
+           "sources_payload": {
+            "asset_uuids": [
+             "5cbeef00-2b8f-56b7-9262-93137a420aec"
+            ]
+           }
+          },
+          "variant": "answer"
+         }
+        ],
+        "started_at": "",
+        "completed_at": "2035-12-26T19:41:40.411074+00:00",
+        "unnest_items": true,
+        "source_tier": "SOURCE_TIER_DEFAULT",
+        "id": "5cbeef00-e722-5a73-aa28-550c191ce3d9:answer"
+       }
+      ],
+      "snapshots": [
+       {
+        "type": "USAGE_TOTAL",
+        "usage_total": {
+         "compute_time_s": 4622.878032856155
+        }
+       }
+      ]
+     }
+    },
+    {
+     "intended_usage": "unified_assets",
+     "unified_assets_block": {
+      "assets": [
+       {
+        "uuid": "5cbeef00-2b8f-56b7-9262-93137a420aec",
+        "asset_type": "PDF_FILE",
+        "pdf_file": {
+         "name": "main",
+         "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-0624-545b-9ea6-b67530a89203/main.pdf",
+         "file_size": 6357251,
+         "filename": "main.pdf"
+        },
+        "download_info": [
+         {
+          "filename": "main.pdf",
+          "url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-0624-545b-9ea6-b67530a89203/main.pdf",
+          "size": 6357251,
+          "is_exportable": true,
+          "status_id": "share_f27265644e31"
+         }
+        ],
+        "preview_info": [
+         {
+          "type": "image",
+          "s3_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-0624-545b-9ea6-b67530a89203/main.pdf_preview.png",
+          "media_type": "image/png",
+          "width": 800,
+          "height": 450
+         },
+         {
+          "type": "thumbnail",
+          "s3_url": "https://pplx-res.cloudinary.com/image/upload/s--hpdH9yqv--/c_limit,w_640,h_640/v1/code-interpreter/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-0624-545b-9ea6-b67530a89203/main.pdf_preview.png",
+          "media_type": "image/png",
+          "width": 640,
+          "height": 360
+         }
+        ],
+        "fallback_info": {
+         "name": "main.pdf",
+         "webview_url": "https://d2z0o16i8xm8ak.cloudfront.net/5cbeef00-d237-5224-95f5-decb7a9b6022/5cbeef00-0624-545b-9ea6-b67530a89203/main.pdf"
+        },
+        "is_primary_asset": true,
+        "backend_uuid_slug": "5cbeef00-2b8f-56b7-9262-93137a420aec",
+        "parent_asset_id": "5cbeef00-b9a8-5e03-85ae-978daa02ad27",
+        "root_asset_id": "5cbeef00-f7b3-5f97-a08e-2598a44a01c4",
+        "created_at": "1780845559"
+       }
+      ]
+     }
+    }
+   ],
+   "access_level": "COLLECTION_READ",
+   "answer_modes": [],
+   "structured_answer_block_usages": [
+    "workflow_root"
+   ],
+   "reconnectable": false,
+   "classifier_results": {
+    "personal_search": true,
+    "skip_search": false,
+    "widget_type": null,
+    "hide_nav": false,
+    "hide_sources": false,
+    "image_generation": false,
+    "time_widget": false,
+    "mhe_predictions": {
+     "skip_search": false,
+     "image_generation_intent": false,
+     "time_widget": false,
+     "places_search_intent": false,
+     "shopping_intent": false,
+     "image_preview": false,
+     "video_preview": false,
+     "nav_intent": false,
+     "study_intent": null,
+     "personal_search": true,
+     "weather_widget": false,
+     "finance_widget_gating": false,
+     "calculator_widget": false,
+     "comet_nav_widget_combined_target": true,
+     "finance_agent_gating": false
+    },
+    "mhe_predictions_full": {
+     "skip_search": {
+      "is_true": false,
+      "probability": null,
+      "threshold": null
+     },
+     "image_generation_intent": {
+      "is_true": false,
+      "probability": 0.95703125,
+      "threshold": 0.98
+     },
+     "time_widget": {
+      "is_true": false,
+      "probability": 0.017456055,
+      "threshold": 0.8
+     },
+     "places_search_intent": {
+      "is_true": false,
+      "probability": 0.123535156,
+      "threshold": 0.85
+     },
+     "shopping_intent": {
+      "is_true": false,
+      "probability": 0.0068969727,
+      "threshold": 0.8
+     },
+     "image_preview": {
+      "is_true": false,
+      "probability": 0.06738281,
+      "threshold": 0.42
+     },
+     "video_preview": {
+      "is_true": false,
+      "probability": 0.07714844,
+      "threshold": 0.5
+     },
+     "nav_intent": {
+      "is_true": false,
+      "probability": 0.040283203,
+      "threshold": 0.5
+     },
+     "study_intent": null,
+     "personal_search": {
+      "is_true": true,
+      "probability": null,
+      "threshold": null
+     },
+     "skip_personal_search": {
+      "is_true": false,
+      "probability": 0.12890625,
+      "threshold": 0.95
+     },
+     "weather_widget": {
+      "is_true": false,
+      "probability": 0.026733398,
+      "threshold": 0.4
+     },
+     "finance_widget_gating": {
+      "is_true": false,
+      "probability": 0.0057373047,
+      "threshold": 0.53
+     },
+     "calculator_widget": {
+      "is_true": false,
+      "probability": 0.034179688,
+      "threshold": 0.3
+     },
+     "comet_nav_widget_combined_target": {
+      "is_true": true,
+      "probability": 0.5859375,
+      "threshold": 0.5
+     },
+     "domain_subdomain": {
+      "label": "TECHNOLOGY/SOFTWARE",
+      "probability": 0.19726562
+     },
+     "finance_agent_gating": {
+      "is_true": false,
+      "probability": 0.04736328,
+      "threshold": 0.7
+     }
+    }
+   },
+   "search_implementation_mode": "multi_step",
+   "query_language": "zh",
+   "search_mode": "ASI"
+  }
+ ],
+ "background_entries": []
+}

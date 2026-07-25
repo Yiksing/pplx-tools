@@ -1,0 +1,235 @@
+site_name: Perplexity CLI toolkit
+site_description: Perplexity conversation archive & interactive query toolkit
+site_url: https://pplx.iekseng.com/
+repo_url: https://github.com/Yiksing/pplx-tools
+edit_uri: edit/main/docs/
+docs_dir: docs
+exclude_docs: README.md
+
+theme:
+  name: material
+  custom_dir: overrides
+  language: en
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: perplexity-light
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: perplexity-dark
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  features:
+    - navigation.path
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.tracking
+    - navigation.footer
+    - navigation.top
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - search.highlight
+    - search.suggest
+    - toc.follow
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      slugify: !!python/name:markdown.extensions.toc.slugify_unicode
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"/]+|(?=[\u4e00-\u9fff])|(?<=[\u4e00-\u9fff])'
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      languages:
+        - locale: en
+          default: true
+          name: English
+          build: true
+        - locale: zh-CN
+          name: 简体中文
+          build: true
+          site_name: Perplexity 命令行工具集
+          site_description: Perplexity 对话记录归档与交互查询工具
+          nav:
+            - 首页: index.md
+            - 使用指南:
+                - guide/index.md
+                - 开始使用:
+                    - 快速上手: guide/getting-started.md
+                    - 配置: guide/configuration.md
+                - 命令参考:
+                    - pplx-export: guide/pplx-export.md
+                    - pplx-ask: guide/pplx-ask.md
+                    - 维护命令: guide/maintenance-commands.md
+                - 归档与同步:
+                    - 归档结构: guide/archive-layout.md
+                    - 会话模式: guide/modes.md
+                    - 增量同步: guide/incremental-sync.md
+                - 运行与排错:
+                    - 限频纪律: guide/rate-limiting.md
+                    - 故障排查: guide/troubleshooting.md
+            - 系统架构:
+                - architecture/index.md
+                - 架构总览: architecture/overview.md
+                - 运行流程:
+                    - 导出管线: architecture/export-pipeline.md
+                    - 子代理与中断: architecture/subagents-interruptions.md
+                    - ask 时序与多账户: architecture/ask-and-accounts.md
+                - 数据与可靠性:
+                    - 数据模型与目录契约: architecture/data-model.md
+                    - 限频与错误处理: architecture/rate-limiting-errors.md
+                    - 离线运维机制: architecture/offline-operations.md
+            - Web API 参考:
+                - reference/api/index.md
+                - 认证模型: reference/api/api-authentication.md
+                - GraphQL: reference/api/api-graphql.md
+                - REST 端点: reference/api/api-rest-endpoints.md
+                - 响应与错误语义: reference/api/api-responses-errors.md
+                - 发现方法与路线图: reference/api/api-discovery-roadmap.md
+            - 维护者指南:
+                - development/index.md
+                - 测试体系架构: development/testing-architecture.md
+                - 测试实践: development/testing.md
+                - Fixtures 与快照: development/fixtures.md
+                - 国际化与机器翻译: development/i18n.md
+        - locale: ar
+          name: العربية
+          build: true
+        - locale: de
+          name: Deutsch
+          build: true
+        - locale: es
+          name: español
+          build: true
+        - locale: fr
+          name: français
+          build: true
+        - locale: it
+          name: italiano
+          build: true
+        - locale: ja
+          name: 日本語
+          build: true
+        - locale: ko
+          name: 한국어
+          build: true
+        - locale: pt
+          name: português
+          build: true
+        - locale: ru
+          name: русский
+          build: true
+        - locale: zh-Hant
+          name: 繁體中文
+          build: true
+  - redirects:
+      redirect_maps:
+        design/index.md: architecture/index.md
+        design/overview.md: architecture/overview.md
+        design/export-pipeline.md: architecture/export-pipeline.md
+        design/subagents-interruptions.md: architecture/subagents-interruptions.md
+        design/ask-and-accounts.md: architecture/ask-and-accounts.md
+        design/data-model.md: architecture/data-model.md
+        design/rate-limiting-errors.md: architecture/rate-limiting-errors.md
+        design/offline-operations.md: architecture/offline-operations.md
+        design/testing-architecture.md: development/testing-architecture.md
+        design/api-authentication.md: reference/api/api-authentication.md
+        design/api-graphql.md: reference/api/api-graphql.md
+        design/api-rest-endpoints.md: reference/api/api-rest-endpoints.md
+        design/api-responses-errors.md: reference/api/api-responses-errors.md
+        design/api-discovery-roadmap.md: reference/api/api-discovery-roadmap.md
+        zh-CN/design/index.md: https://pplx.iekseng.com/zh-CN/architecture/
+        zh-CN/design/overview.md: https://pplx.iekseng.com/zh-CN/architecture/overview/
+        zh-CN/design/export-pipeline.md: https://pplx.iekseng.com/zh-CN/architecture/export-pipeline/
+        zh-CN/design/subagents-interruptions.md: https://pplx.iekseng.com/zh-CN/architecture/subagents-interruptions/
+        zh-CN/design/ask-and-accounts.md: https://pplx.iekseng.com/zh-CN/architecture/ask-and-accounts/
+        zh-CN/design/data-model.md: https://pplx.iekseng.com/zh-CN/architecture/data-model/
+        zh-CN/design/rate-limiting-errors.md: https://pplx.iekseng.com/zh-CN/architecture/rate-limiting-errors/
+        zh-CN/design/offline-operations.md: https://pplx.iekseng.com/zh-CN/architecture/offline-operations/
+        zh-CN/design/testing-architecture.md: https://pplx.iekseng.com/zh-CN/development/testing-architecture/
+        zh-CN/design/api-authentication.md: https://pplx.iekseng.com/zh-CN/reference/api/api-authentication/
+        zh-CN/design/api-graphql.md: https://pplx.iekseng.com/zh-CN/reference/api/api-graphql/
+        zh-CN/design/api-rest-endpoints.md: https://pplx.iekseng.com/zh-CN/reference/api/api-rest-endpoints/
+        zh-CN/design/api-responses-errors.md: https://pplx.iekseng.com/zh-CN/reference/api/api-responses-errors/
+        zh-CN/design/api-discovery-roadmap.md: https://pplx.iekseng.com/zh-CN/reference/api/api-discovery-roadmap/
+
+extra_css:
+  - stylesheets/extra.css?v=20260725-guide-numbering
+
+extra_javascript:
+  - javascripts/language-preference.js?v=20260725-locale-routing
+  - javascripts/navigation-state.js?v=20260725-responsive-nav
+
+hooks:
+  - scripts/mkdocs_i18n.py
+  - scripts/mkdocs_heading_numbers.py
+
+nav:
+  - Home: index.md
+  - User guide:
+      - guide/index.md
+      - Start here:
+          - Getting started: guide/getting-started.md
+          - Configuration: guide/configuration.md
+      - Command reference:
+          - pplx-export: guide/pplx-export.md
+          - pplx-ask: guide/pplx-ask.md
+          - Maintenance commands: guide/maintenance-commands.md
+      - Archives and sync:
+          - Archive layout: guide/archive-layout.md
+          - Conversation modes: guide/modes.md
+          - Incremental sync: guide/incremental-sync.md
+      - Operations:
+          - Rate limiting: guide/rate-limiting.md
+          - Troubleshooting: guide/troubleshooting.md
+  - Architecture:
+      - architecture/index.md
+      - Architecture overview: architecture/overview.md
+      - Runtime flows:
+          - Export pipeline: architecture/export-pipeline.md
+          - Sub-agents and interruptions: architecture/subagents-interruptions.md
+          - pplx-ask and accounts: architecture/ask-and-accounts.md
+      - Data and reliability:
+          - Data model and directory contract: architecture/data-model.md
+          - Rate limiting and error handling: architecture/rate-limiting-errors.md
+          - Offline operations: architecture/offline-operations.md
+  - Web API reference:
+      - reference/api/index.md
+      - Authentication model: reference/api/api-authentication.md
+      - GraphQL: reference/api/api-graphql.md
+      - REST endpoints: reference/api/api-rest-endpoints.md
+      - Responses and error semantics: reference/api/api-responses-errors.md
+      - Discovery methods and roadmap: reference/api/api-discovery-roadmap.md
+  - Maintainer guide:
+      - development/index.md
+      - Testing architecture: development/testing-architecture.md
+      - Testing practices: development/testing.md
+      - Fixtures and snapshots: development/fixtures.md
+      - Internationalization: development/i18n.md
