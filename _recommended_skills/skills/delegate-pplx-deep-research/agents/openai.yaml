@@ -1,0 +1,4 @@
+interface:
+  display_name: "Delegate PPLX Deep Research"
+  short_description: "Delegate detailed, archived Perplexity research"
+  default_prompt: "Use $delegate-pplx-deep-research to delegate an evidence-heavy investigation and return the archived report and source inventory."

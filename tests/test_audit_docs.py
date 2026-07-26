@@ -140,7 +140,9 @@ class _EchoTranslationClient:
 
 @pytest.fixture()
 def mini_repo(tmp_path: Path) -> Path:
-    """Build a complete miniature repository; no test reads the real checkout."""
+    """Build a complete miniature repository; no test reads the real checkout.
+
+    构建完整的微型仓库；测试不会读取真实检出。"""
     _write(tmp_path, "README.md", "# Home\n")
     _write(tmp_path, "README.zh-CN.md", "# 首页\n")
     _write(tmp_path, "pplx_export/README.md", "# Package\n")

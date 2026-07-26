@@ -1,0 +1,4 @@
+interface:
+  display_name: "Search with PPLX"
+  short_description: "Run focused Perplexity searches with archived sources"
+  default_prompt: "Use $search-with-pplx to run a focused Perplexity search and integrate the archived answer and sources."

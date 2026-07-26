@@ -66,7 +66,7 @@ def _patch_common(monkeypatch, tokens, sessions, collections):
 
 class TestNameKey:
     def test_sanitize_and_fallback(self):
-        """Email local part is sanitized; empty email falls back to the uid prefix.
+        """Email local part is restricted to safe characters; empty email uses the uid prefix.
 
         email 本地部分被规范化；空 email 回退 uid 前缀。
         """

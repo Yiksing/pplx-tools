@@ -1,4 +1,6 @@
-"""Isolated tests for the documentation localization pipeline."""
+"""Isolated tests for the documentation localization pipeline.
+
+文档本地化流程的隔离测试。"""
 
 from __future__ import annotations
 
