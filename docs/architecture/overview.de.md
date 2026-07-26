@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/architecture/overview.md"
-translation_source_sha256: "48a859cceb434af9d7c542a335e0065b961027fec7d44a929f17ca6e27e23142"
+translation_source_sha256: "cd4c6cf3ca00c7690750ff9c42cb9c706647ee9f15e1d7dc9a2a1e02d34c1a7f"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -13,7 +13,7 @@ translation_prompt_version: "v1"
 ---
 
 <a id="layered-architecture-overview" data-pplx-source-anchor="true"></a>
-## Überblick über die Schichtenarchitektur
+## Überblick über die geschichtete Architektur
 
 Paketstruktur (`pplx_export/`, ~5.600 Zeilen Quellcode und wachsend mit der Entwicklung, ohne Tests;
 genauen Zeilenzahlen pro `wc -l`):
@@ -54,7 +54,7 @@ flowchart TD
         TH["throttle.py rate-limit backoff (throttle.py:15)"]
         ST["state.py BatchState checkpoint (state.py:63)"]
         LG["logging.py central logging (logging.py:45)"]
-        CK["cookies/ + auth.py<br/>cookie sources and credentials (cookies/loaders.py:203)"]
+        CK["cookies/ + auth.py<br/>cookie sources and credentials (cookies/loaders.py:270)"]
         RL["relations.py relations graph (relations.py:200)"]
         RG["registry.py site registry (registry.py:9)"]
         subgraph HTTP["core/http/ transports"]
@@ -114,25 +114,25 @@ flowchart TD
 
 Wesentliche Abhängigkeitsrichtungen (überprüft durch Durchsuchen aller Importe):
 
-- **Einbahnstraße**: CLI → commands → sites → core. `core/` importiert keine Perplexity konkrete Implementierung
-  (keine Site-Hardcodierung); **die einzige Ausnahme** ist `core/registry.py:7`, das die
-  `SiteAdapter`-ABC aus `sites/base.py` importiert – ein Interface-Verweis, kein Site-Verweis; konkrete Sites werden über `register()` injiziert
+- **Einbahnstraße**: CLI → commands → sites → core. `core/` importiert keine konkrete Implementierung von Perplexity
+  (keine Site-Hardcodierung); **die einzige Ausnahme** ist `core/registry.py:7`, das das
+  `SiteAdapter`-ABC aus `sites/base.py` importiert — ein Interface-Verweis, kein Site-Verweis; konkrete Sites werden über `register()` injiziert
   (eingebaute Perplexity-Registrierung in `pplx_export/__init__.py:34-43`).
 - `config.py` ist die einzige Quelle für Site-Konstanten (Domain, `DEFAULT_ARCHIVE_ROOT`) und lädt
-  **benutzerebene externalisierte Konfiguration**: die Account-Tabellen `ACCOUNT_DISPLAY_NAMES/ACCOUNT_EMAIL/ACCOUNT_UID` und den
-  BOT-Bereich aus TOML (`--config` > `PPLX_EXPORT_CONFIG` >
+  **benutzerebene externalisierte Konfiguration**: die Kontentabellen `ACCOUNT_DISPLAY_NAMES/ACCOUNT_EMAIL/ACCOUNT_UID` und der
+  BOT-Bereich stammen aus TOML (`--config` > `PPLX_EXPORT_CONFIG` >
   `~/.config/pplx-export/config.toml`; Vorlage `config.example.toml`), Dictionaries werden direkt aktualisiert,
   anmutiger Abbau bei Fehlen; `core/models.py:18` importiert es ebenfalls (`author_folder`).
 - `ask_api.py` ist das einzige Site-Layer-Modul, das direkt von einer konkreten Transportimplementierung abhängt
   (importiert `CookieTransport` und verwendet dessen `_cookie_header`/`_opener`-Interna für den SSE-Stream,
-  ask_api.py:23, 114-130) – SSE liegt außerhalb der Abstraktion des Transport-ABC.
+  ask_api.py:23, 114-130) — SSE liegt außerhalb der Abstraktion des Transport-ABC.
 - `hooks/`, `writers/` hängen nur von `core/` ab; die einzige Implementierung von `writers/base.py`,
-  `FilesystemWriter`, lebt im Site-Layer (fs_writer.py:54) – ABC und Implementierung getrennt.
+  `FilesystemWriter`, lebt im Site-Layer (fs_writer.py:54) — ABC und Implementierung getrennt.
 
 ---
 
 <a id="module-dependency-graph-real-import-relations" data-pplx-source-anchor="true"></a>
-## Modulabhängigkeitsgraph (reale Importbeziehungen)
+## Modulabhängigkeitsgraph (tatsächliche Importbeziehungen)
 
 Erstellt aus einer vollständigen `grep '^from \.'`-Zählung (Intra-Paket-Referenzen ausgelassen; alle `__init__.py` sind leer
 außer dem Paketstamm `pplx_export/__init__.py`, der die Registrierungsaufgabe trägt):
@@ -281,9 +281,9 @@ So lesen Sie den Graphen:
 
 - **Core-Kette**: `cli → commands → sites → core`. Kein Core-Modul hängt von konkreten
   Befehls-/Site-Implementierungen ab; `KG → SBASE` (Registry → SiteAdapter ABC) ist die einzige
-  schichtübergreifende Rückreferenz und bildet eine Dependency-Injection-Schleife mit der Registrierung von `E0`.
-- Aggregation innerhalb von `sites/perplexity/`: `adapter` ist die Fassade (bestehend aus graphql/rest/parsers/
-  normalize/assets); `render` hängt von `parsers` ab (Quelle der Wahrheit für die wf-Statusklassifizierung); `fs_writer`
+  schichtübergreifende Rückreferenz und bildet eine Abhängigkeitsinjektionsschleife mit der Registrierung von `E0`.
+- Aggregation innerhalb von `sites/perplexity/`: `adapter` ist die Fassade (bestehend aus GraphQL/REST/Parsern/
+  Normalisieren/Assets); `render` hängt von `parsers` ab (Quelle der Wahrheit für die WF-Statusklassifizierung); `fs_writer`
   hängt von `render + parsers + writers/base` ab.
 - Tests `tests/` leben außerhalb des Pakets und importieren direkt reine Funktionen aus jeder Schicht (conftest.py's
   `render_fixture` verwendet `commands.rerender_cmd.rerender` für das Offline-Neu-Rendering wieder).
@@ -291,33 +291,33 @@ So lesen Sie den Graphen:
 ---
 
 <a id="design-principles-summary" data-pplx-source-anchor="true"></a>
-## Zusammenfassung der Entwurfsprinzipien
+## Zusammenfassung der Designprinzipien
 
 1. **Rohe Antworten beibehalten; gerenderte Artefakte offline regenerierbar**:
-   `adapter.get_thread` parst und assembliert die Konversation im Speicher, bevor
+   `adapter.get_thread` parst und setzt die Konversation im Speicher zusammen, bevor
    der Writer läuft (adapter.py:58-157). Ein erfolgreicher Schreibvorgang speichert `thread.json`
    zuerst und dann die verfügbaren Klartext/schematisierten Antworten als `raw_*.json`
    (fs_writer.py:224-266); Parsen/Rendering/Unterbrechungsregistrierung können später
    aus den Rohdaten ohne Netzwerk erneut ausgeführt werden ([§12](offline-operations.md)),
    wodurch die Renderer-Entwicklung von historischen Archiven entkoppelt wird.
-2. **Einzelner Parsing-Punkt, tolerant gegenüber Datenstrukturänderungen**: Feldextraktion ist
+2. **Einzelner Parsing-Punkt, tolerant gegenüber Datenstrukturänderungen**: Die Feldextraktion ist
    in `parsers.py` konzentriert (das `_g`/`_loads`/`to_int`-Fehlertoleranz-Trio); die Modus-
-   Erkennung hat duale redundante Signale plus einen All-Signale-Fehlen-Fallback-Abruf ([§4](export-pipeline.md)) –
-   der Schadensradius einer Plattformüberholung wird auf ein Modul komprimiert.
+   Erkennung hat duale redundante Signale plus einen Fallback-Abruf bei fehlenden Signalen ([§4](export-pipeline.md)) —
+   die Schlagkraft einer Plattformüberholung wird auf ein Modul komprimiert.
 3. **Deterministischer Attributionswasserfall**: „Jede Hintergrundnutzlast landet an genau einem
-   Ort, wird nie zweimal gerendert“ wird durch Datenstrukturen garantiert (das verankerte Set, used_cand
-   Einmalverbrauch, Iteration nur auf oberster Ebene gegen Doppelzählung) – keine heuristische Zeit-
+   Ort, wird nie zweimal gerendert“ wird durch Datenstrukturen garantiert (die verankerte Menge, used_cand
+   Einmalverbrauch, Iteration nur auf oberster Ebene gegen Doppelzählung) — keine heuristische Zeit-
    Schätzung; Unterbrechungssemantik hat fünf Klassen mit einer Quelle der Wahrheit
    (classify_wf_status), die von Render-/Registrierungs-/Alarmpfaden gemeinsam genutzt wird ([§5, §6](subagents-interruptions.md)).
-4. **Ratenbegrenzungsdisziplin ist eine rote Sicherheitslinie**: zufällige Intervalle, keine Nebenläufigkeit, 3^N
-   Backoff mit einer Obergrenze, Auth-Fehler-Fail-Fast, der ENTRY_EXPIRED-Endzustand, 404 nie
-   als abgelaufen fehlinterpretiert ([§11](rate-limiting-errors.md)) – alles dient dem Anti-Ban-Ziel „Exportverhalten ≈ menschliches
+4. **Ratenbegrenzungsdisziplin ist eine rote Sicherheitslinie**: zufällige Intervalle, keine Parallelität, 3^N
+   Backoff mit einer Obergrenze, Auth-Fehler-Fail-Fast, der ENTRY_EXPIRED-Endzustand, 404 niemals
+   fälschlicherweise als abgelaufen beurteilt ([§11](rate-limiting-errors.md)) — alles dient dem Anti-Ban-Ziel „Exportverhalten ≈ menschliches
    Surfen“ (eine explizite Benutzeranforderung).
 5. **Einzelne Konfigurationsquelle + Datenschutz externalisiert**: Site-Konstanten/Standardpfade
-   leben nur in `config.py`; Accounts/Bereiche sind persönlicher Datenschutz, externalisiert in benutzerebene
+   leben nur in `config.py`; Konten/Bereiche sind persönlicher Datenschutz, externalisiert in benutzerebenes
    TOML (`--config` > `PPLX_EXPORT_CONFIG` > `~/.config/pplx-export/config.toml`); Multi-Account-
-   Cookie-Autoumschaltung ist eine durch registrierte E-Mails gesteuerte Sondierungsschleife, ohne manuelle Browser-
-   Bedienung ([§9](ask-and-accounts.md)).
+   Cookie-Autoumschaltung ist eine Sondierungsschleife, die von registrierten E-Mails gesteuert wird, ohne manuellen Browser-
+   Betrieb ([§9](ask-and-accounts.md)).
 6. **Geschichtete Einweg-Abhängigkeiten**: CLI → commands → sites → core, mit null Site-Hardcodierung
-   in core und Sites, die über die Registry injiziert werden – eine neue Site implementiert die fünf `SiteAdapter`
+   im Core und Sites, die über die Registry injiziert werden — eine neue Site implementiert die fünf `SiteAdapter`
    Methoden und nutzt alle Core-Funktionen wieder (sites/base.py:21-69).
