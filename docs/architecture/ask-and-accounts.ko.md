@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/architecture/ask-and-accounts.zh-CN.md"
-translation_source_sha256: "b3f3a26e4ef469a9d1cc9d69acd466cfff37203888b388014ad69bc162b4118c"
+translation_source_sha256: "58d3b8978a596a37688507766337cdd856daedf3a9b9472016353a3c0e996bcd"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -13,7 +13,7 @@ translation_prompt_version: "v1"
 ---
 
 <a id="pplx-ask-时序详图" data-pplx-source-anchor="true"></a>
-## pplx-ask 시퀀스 상세 다이어그램
+## pplx-ask 시퀀스 상세
 
 `cmd_ask`(ask_cli.py:86-198)의 전체 시퀀스: envelope 구성 → SSE 스트림 → 최종 상태 확인 →
 BOT 공간 → 읽음 확인 → 인간화된 원격 측정 → 재사용 내보내기 파이프라인 아카이브.
@@ -59,25 +59,24 @@ sequenceDiagram
 
 설계 포인트:
 
-- **envelope은 실제 측정된 매개변수 템플릿**입니다: `_BASE_PARAMS`(ask_api.py:44-68) 25개의 고정 키
-  (32개 항목의 `supported_block_use_cases`, 언어/시간대/검색 포커스 등 포함), `build_envelope`가
-  mode/모델/frontend_uuid 등의 필드를 추가로 주입하며, 브라우저의 실제 제출과 일치합니다(참조:
-  [../reference/api/api-rest-endpoints.md](../reference/api/api-rest-endpoints.md) §3.9 및 `docs/perplexity-api-samples/`의 39-params 샘플).
-- **SSE 소비는 Transport ABC를 따르지 않음**: 스트리밍 인터페이스는 `get_json/post_json/download`
-  추상화 내에 있지 않으며, `post_stream`는 `CookieTransport`의 `_cookie_header`/`_opener`를 직접 재사용합니다
-  (ask_api.py:126-130) — 이는 [§1](overview.md)에서 언급된 의도적인 결합입니다.
+- **envelope은 실제 매개변수 템플릿**: `_BASE_PARAMS`(ask_api.py:44-68) 25개의 고정 키
+  (32개 `supported_block_use_cases`, 언어/시간대/검색 포커스 등 포함), `build_envelope`가
+  mode/모델/frontend_uuid 등의 필드를 추가로 주입하여 브라우저 실제 제출과 일치([../reference/api/api-rest-endpoints.md](../reference/api/api-rest-endpoints.md) §3.9 및 `docs/perplexity-api-samples/`의 39-params 샘플 참조).
+- **SSE 소비는 Transport ABC를 사용하지 않음**: 스트리밍 인터페이스는 `get_json/post_json/download`
+  추상화 내에 없으며, `post_stream`가 직접 `CookieTransport`의 `_cookie_header`/`_opener`를
+  재사용(ask_api.py:126-130) — 이는 [§1](overview.md)에서 언급된 의도적 결합입니다.
 - **원격 측정의 인간화**: `_DEVICE_POOL` 세 장치 무작위(ask_api.py:210-214), 무작위 지연,
-  무작위 읽기 시간, 이벤트 스키마는 브라우저 실제 측정과 항목별로 정렬됩니다(`_telemetry_event`,
-  ask_api.py:217-231); 읽음 확인과 원격 측정은 분리됨 — analytics의 "thread viewed"는 unread를
-  변경하지 않으며, 실제 확인은 `mark_viewed`입니다(ask_api.py:194-201 주석).
+  무작위 읽기 시간, 이벤트 스키마는 브라우저 실제 측정과 항목별로 정렬(`_telemetry_event`,
+  ask_api.py:217-231); 읽음 확인과 원격 측정은 분리 — analytics의 "thread viewed"는 unread를
+  변경하지 않으며, 실제 확인은 `mark_viewed`(ask_api.py:194-201 주석).
 
 ---
 
 <a id="多账户-cookie-切换流程" data-pplx-source-anchor="true"></a>
 ## 다중 계정 쿠키 전환 흐름
 
-쿠키 파싱 및 계정 검증은 `commands/common.py:make_transport`(common.py:93-155)에서 수행;
-소스 열거는 `core/cookies/loaders.py`에서; webbridge 경로 검증은 `_validate_bridge_account`에서
+쿠키 파싱 및 계정 검증은 `commands/common.py:make_transport`(common.py:93-155);
+소스 열거는 `core/cookies/loaders.py`; webbridge 경로 검증은 `_validate_bridge_account`
 (common.py:158-187).
 
 ```mermaid
@@ -90,11 +89,11 @@ flowchart TD
     WB2 -->|"bridge 不可达"| WBWARN["仅 log.warning 放行<br/>（备用通路不硬失败，common.py:186-187）"]
     WBWARN --> WBOK
 
-    MODE -->|"cookie（默认）"| SRC{"cookie 来源优先级<br/>cookies.resolve（cookies/loaders.py:203-235）"}
-    SRC -->|"1. --cookies-from 指定浏览器"| F1["from_browser（cookies/loaders.py:51）"]
-    SRC -->|"2. --cookies 文件"| F2["from_file：Netscape / JSON 两种格式<br/>#HttpOnly_ 前缀还原（cookies/loaders.py:142-182）"]
+    MODE -->|"cookie（默认）"| SRC{"cookie 来源优先级<br/>cookies.resolve（cookies/loaders.py:270-302）"}
+    SRC -->|"1. --cookies-from 指定浏览器"| F1["from_browser（cookies/loaders.py:107）"]
+    SRC -->|"2. --cookies 文件"| F2["from_file：Netscape / JSON 两种格式<br/>#HttpOnly_ 前缀还原（cookies/loaders.py:209-249）"]
     SRC -->|"3. 新鲜缓存"| F3["CookieCache.load<br/>&lt;out&gt;/index/.cookies.json，12h 新鲜期<br/>（cookies/cache.py:33-47）"]
-    SRC -->|"4. auto-detect"| F4["edge → chrome → firefox → safari<br/>（AUTO_DETECT_ORDER，cookies/loaders.py:32）<br/>browser_cookie3 解密"]
+    SRC -->|"4. auto-detect"| F4["edge → chrome → firefox → safari<br/>（AUTO_DETECT_ORDER，cookies/loaders.py:39）<br/>browser_cookie3 解密"]
     F1 --> SESS
     F2 --> SESS
     F3 --> SESS
@@ -103,8 +102,8 @@ flowchart TD
     SESS -->|"email == ACCOUNT_EMAIL[account]<br/>（用户级配置 accounts.&lt;名&gt;.email）"| OK(("CookieTransport 就绪<br/>+ CookieCache.save 刷新缓存（common.py:150）"))
     SESS -->|"未登记 email"| WARN2["log.warning 提示登记，放行（common.py:146-149）"] --> OK
     SESS -->|"email 不符"| SW["_try_switch_account（common.py:190-215）"]
-    SW --> ENUM["list_account_tokens（cookies/loaders.py:108-139）<br/>枚举浏览器 __Secure-pplx.session.&lt;uid&gt;<br/>（www 子域条目优先）"]
-    ENUM --> LOOP{"逐令牌：替换<br/>__Secure-next-auth.session-token<br/>（ACTIVE_SESSION_COOKIE，cookies/loaders.py:105）"}
+    SW --> ENUM["list_account_tokens（cookies/loaders.py:175-206）<br/>枚举浏览器 __Secure-pplx.session.&lt;uid&gt;<br/>（www 子域条目优先）"]
+    ENUM --> LOOP{"逐令牌：替换<br/>__Secure-next-auth.session-token<br/>（ACTIVE_SESSION_COOKIE，cookies/loaders.py:172）"}
     LOOP --> PROBE["新 CookieTransport 探测<br/>GET /api/auth/session（common.py:207-208）"]
     PROBE -->|"email 匹配"| SWOK(("切换成功：用新 cookie 表<br/>重建 CookieTransport（common.py:136-140）"))
     PROBE -->|"不匹配"| LOOP
@@ -114,12 +113,12 @@ flowchart TD
 요점:
 
 - **다중 계정 모델**: 동일 브라우저에서 계정당 하나의 `__Secure-pplx.session.<uid>` 쿠키;
-  전환 = 대상 계정의 값을 `__Secure-next-auth.session-token`에 쓰기(cookies/loaders.py:113-120
+  전환 = 대상 계정의 값을 `__Secure-next-auth.session-token`에 기록(cookies/loaders.py:180-187
   주석; 메커니즘 실제 측정은 [../reference/api/api-authentication.md](../reference/api/api-authentication.md) §1.2 참조). 브라우저 UI 조작 불필요.
 - **캐시는 `--out`를 따름**: `<out_root>/index/.cookies.json`(common.py:111),
-  fetched_at/source/account_email 포함, 성공적인 검증 후 항상 새로고침(common.py:150).
+  fetched_at/source/account_email 포함, 성공적 검증 후 항상 새로고침(common.py:150).
 - **webbridge와 쿠키는 상호 배타적**: `--cookies/--cookies-from`와 `--transport webbridge`를
   동시에 제공하면 오류 발생(cli.py:229-233; common.py:112-116).
 - `core/auth.py:CredentialProvider`(WebBridge 쿠키 추출: CDP Storage.getCookies
   우선, document.cookie 대체, auth.py:41-67)는 **예비 폴백 체인**이며, 현재 유일한 호출자는
-  `cookies.from_webbridge`(cookies/loaders.py:185-200)입니다.
+  `cookies.from_webbridge`(cookies/loaders.py:252-267).

@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/architecture/overview.zh-CN.md"
-translation_source_sha256: "90f43a01d7ae68d92d12afb765e20414e041b7ab87bb04192a8d664ef9ebafb1"
+translation_source_sha256: "7fb3a731adc6ca1bdfa5032639c0aac94268a0d0c7966c9134c7fca26fe2dc00"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -15,8 +15,8 @@ translation_prompt_version: "v1"
 <a id="分层架构总览" data-pplx-source-anchor="true"></a>
 ## 계층형 아키텍처 개요
 
-패키지 구조(`pplx_export/`, 소스 코드 규모 약 5.6k 라인이며 개발에 따라 증가, 테스트 제외;
-정확한 라인 수는 `wc -l` 실측 기준):
+패키지 구조(`pplx_export/`, 소스 규모 약 5.6k 라인이며 개발에 따라 증가, 테스트 미포함;
+정확한 라인 수는 `wc -l` 실제 측정 기준):
 
 ```mermaid
 flowchart TD
@@ -54,7 +54,7 @@ flowchart TD
         TH["throttle.py 限频退避（throttle.py:15）"]
         ST["state.py BatchState 断点（state.py:63）"]
         LG["logging.py 中央日志（logging.py:45）"]
-        CK["cookies/ + auth.py<br/>cookie 来源与凭证（cookies/loaders.py:203）"]
+        CK["cookies/ + auth.py<br/>cookie 来源与凭证（cookies/loaders.py:270）"]
         RL["relations.py 关系图（relations.py:200）"]
         RG["registry.py 站点注册表（registry.py:9）"]
         subgraph HTTP["core/http/ transports"]
@@ -123,18 +123,18 @@ flowchart TD
   BOT 공간은 TOML에서 가져옴(`--config` > `PPLX_EXPORT_CONFIG` >
   `~/.config/pplx-export/config.toml`, 템플릿 `config.example.toml`), dict 제자리 업데이트,
   누락 시 폴백; `core/models.py:18`도 이를 import함(`author_folder`).
-- `ask_api.py`는 사이트 계층에서 유일하게 구체적인 transport 구현에 직접 의존하는 모듈
+- `ask_api.py`는 사이트 계층에서 유일하게 구체 transport 구현에 직접 의존하는 모듈
   (`CookieTransport`을 import하고 그 `_cookie_header`/`_opener` 내부 필드를 SSE 스트림에 재사용,
-  ask_api.py:23, 114-130)——SSE는 Transport ABC의 추상 범위에 포함되지 않음.
+  ask_api.py:23, 114-130)——SSE는 Transport ABC의 추상화 범위에 없음.
 - `hooks/`, `writers/`는 `core/`에만 의존; `writers/base.py`의 유일한 구현
-  `FilesystemWriter`는 사이트 계층에 있음(fs_writer.py:54), ABC와 구현이 분리됨.
+  `FilesystemWriter`는 사이트 계층에 있음(fs_writer.py:54), ABC와 구현 분리.
 
 ---
 
 <a id="模块依赖图真实-import-关系" data-pplx-source-anchor="true"></a>
 ## 모듈 의존성 그래프(실제 import 관계)
 
-`grep '^from \.'` 전체 통계 기준으로 작성(동일 패키지 내 참조 생략; `__init__.py`는 모두 비어 있으며,
+`grep '^from \.'` 전체 통계 기준 작성(동일 패키지 내 참조 생략; `__init__.py`는 모두 비어 있으며,
 패키지 루트 `pplx_export/__init__.py`만 등록 역할 담당):
 
 ```mermaid
@@ -281,11 +281,11 @@ flowchart LR
 
 - **핵심 경로**: `cli → commands → sites → core`. 어떤 core 모듈도
   commands/sites의 구체 구현에 의존하지 않으며, `KG → SBASE`(registry → SiteAdapter ABC)가 유일한
-  계층 간 역참조로, `E0`의 등록 동작과 함께 의존성 주입 폐루프를 형성함.
+  계층 간 역참조로, `E0`의 등록 동작과 함께 의존성 주입 폐루프를 형성.
 - `sites/perplexity/` 내부 집계 관계: `adapter`는 퍼사드(graphql/rest/parsers/
-  normalize/assets 조합), `render`는 `parsers`에 의존(wf 상태 분류의 진정한 출처), `fs_writer`는
+  normalize/assets 구성), `render`는 `parsers`에 의존(wf 상태 분류 진원), `fs_writer`는
   `render + parsers + writers/base`에 의존.
-- 테스트 `tests/`는 패키지 외부에 있으며, 각 계층의 순수 함수를 직접 import함(conftest.py의
+- 테스트 `tests/`는 패키지 외부에 위치하며, 각 계층의 순수 함수를 직접 import(conftest.py의
   `render_fixture`는 `commands.rerender_cmd.rerender`를 재사용하여 오프라인 재렌더링).
 
 ---
@@ -294,23 +294,23 @@ flowchart LR
 ## 설계 원칙 요약
 
 1. **원본 응답 보존, 렌더링 결과물은 오프라인에서 재생성 가능**: `adapter.get_thread`는 먼저 메모리에서 대화를
-   파싱하고 조립한 후(adapter.py:58-157), writer가 실행됨. 성공적으로 쓰기 시 먼저
-   `thread.json`를 저장한 후, 실제로 얻은 plain/schematized 응답을 `raw_*.json`로 저장
-   (fs_writer.py:224-266); 파싱/렌더링/중단 등록 이후 모두 raw에서 네트워크 없이 재실행 가능
-   ([§12](offline-operations.md)), 렌더러 발전과 기록 보관이 분리됨.
-2. **파싱 단일 지점 적응, 데이터 구조 변경에 내성**: 필드 추출은 `parsers.py`에 집중됨(`_g`/`_loads`/
-   `to_int` 오류 허용 삼총사), 패턴 판별은 이중 신호 상호 백업 + 신호 완전 소멸 시 폴백으로 여러 개 가져오기([§4](export-pipeline.md)),
+   파싱하고 조립한 후(adapter.py:58-157), writer가 실행됨. 성공적 쓰기 시 먼저
+   `thread.json`를 저장하고, 실제 획득한 plain/schematized 응답을 `raw_*.json`로 저장
+   (fs_writer.py:224-266); 파싱/렌더링/중단 기록 이후 raw에서 네트워크 없이 재실행 가능
+   ([§12](offline-operations.md)), 렌더러 발전과 기록 아카이브 분리.
+2. **파싱 단일 지점 적응, 데이터 구조 변경에 내성**: 필드 추출은 `parsers.py`에 집중(`_g`/`_loads`/
+   `to_int` 오류 허용 3종 세트), 패턴 판별은 이중 신호 상호 백업 + 신호 완전 소멸 시 폴백 다중 캡처([§4](export-pipeline.md)),
    플랫폼 변경의 영향 범위가 하나의 모듈로 축소됨.
-3. **귀속 워터폴 결정적**: 백그라운드 로드는 "각 항목은 한 곳에만 저장, 절대 이중 렌더링 없음"이 데이터 구조로 보장됨
-   (anchored 집합, used_cand 단일 소비, 최상위 반복 이중 계산 방지), 휴리스틱 시간 추측 없음;
-   중단 의미는 다섯 가지 유형, 하나의 진정한 출처(classify_wf_status), 렌더링/등록/경고 세 가지 경로에서 공유([§5, §6](subagents-interruptions.md)).
+3. **귀속 폭포 결정적**: 백그라운드 로드는 '각 항목은 한 곳에만 떨어지고, 절대 이중 렌더링하지 않음'을 데이터 구조로 보장
+   (anchored 집합, used_cand 단일 소비, 최상위 반복에서 이중 계산 방지), 휴리스틱 시간 추측 없음;
+   중단 의미론은 다섯 가지 유형, 하나의 진원(classify_wf_status), 렌더링/기록/경고 세 경로 공유([§5, §6](subagents-interruptions.md)).
 4. **속도 제한 규율은 안전 경계선**: 무작위 간격, 동시성 없음, 3^N 백오프 상한, 인증 실패 시 fail-fast,
-   ENTRY_EXPIRED 최종 상태, 404는 절대 만료로 오판하지 않음([§11](rate-limiting-errors.md))——모두 "내보내기 동작 ≈ 인간
-   브라우징"의 계정 차단 방지 목표에 기여(사용자 명시적 요구).
-5. **설정 단일 출처 + 프라이버시 외부화**: 사이트 상수/기본 경로는 `config.py`에만 있음; 계정/공간은
-   개인 프라이버시에 속하므로 사용자 수준 TOML로 외부화(`--config` > `PPLX_EXPORT_CONFIG` >
+   ENTRY_EXPIRED 최종 상태, 404는 절대 만료로 오판하지 않음([§11](rate-limiting-errors.md))——모두 '내보내기 동작 ≈ 인간의
+   브라우징'에 해당하는 계정 차단 방지 목표(사용자 명시적 요구)에 기여.
+5. **설정 단일 출처 + 개인정보 외부화**: 사이트 상수/기본 경로는 `config.py`에만 있음; 계정/공간은
+   개인 개인정보로, 사용자 수준 TOML로 외부화(`--config` > `PPLX_EXPORT_CONFIG` >
    `~/.config/pplx-export/config.toml`); 다중 계정 쿠키 자동 전환은
-   등록된 email 기반 탐지 폐루프로, 사용자가 브라우저를 조작할 필요 없음([§9](ask-and-accounts.md)).
+   등록된 email 기반 탐지 폐루프로, 수동 브라우저 조작 불필요([§9](ask-and-accounts.md)).
 6. **계층형 단방향 의존성**: CLI → commands → sites → core, core는 사이트 하드코딩 없음,
-   사이트는 레지스트리를 통해 주입됨——새 사이트 구현은 `SiteAdapter`의 다섯 가지 메서드만 구현하면 모든 핵심 기능을 재사용 가능
+   사이트는 레지스트리를 통해 주입——새 사이트 구현은 `SiteAdapter`의 다섯 메서드만 구현하면 모든 핵심 기능 재사용 가능
    (sites/base.py:21-69).
