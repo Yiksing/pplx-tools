@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/architecture/overview.md"
-translation_source_sha256: "48a859cceb434af9d7c542a335e0065b961027fec7d44a929f17ca6e27e23142"
+translation_source_sha256: "cd4c6cf3ca00c7690750ff9c42cb9c706647ee9f15e1d7dc9a2a1e02d34c1a7f"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -16,7 +16,7 @@ translation_prompt_version: "v1"
 ## نظرة عامة على البنية الطبقية
 
 هيكل الحزمة (`pplx_export/`، ~5.6 ألف سطر من المصدر وتزداد مع التطوير، باستثناء الاختبارات؛
-أعداد الأسطر الدقيقة لكل `wc -l`):
+أعداد الأسطر الدقيقة حسب `wc -l`):
 
 ```mermaid
 flowchart TD
@@ -54,7 +54,7 @@ flowchart TD
         TH["throttle.py rate-limit backoff (throttle.py:15)"]
         ST["state.py BatchState checkpoint (state.py:63)"]
         LG["logging.py central logging (logging.py:45)"]
-        CK["cookies/ + auth.py<br/>cookie sources and credentials (cookies/loaders.py:203)"]
+        CK["cookies/ + auth.py<br/>cookie sources and credentials (cookies/loaders.py:270)"]
         RL["relations.py relations graph (relations.py:200)"]
         RG["registry.py site registry (registry.py:9)"]
         subgraph HTTP["core/http/ transports"]
@@ -118,13 +118,13 @@ flowchart TD
   (لا ترميز موقع ثابت)؛ **الاستثناء الوحيد** هو `core/registry.py:7` الذي يستورد
   ABC `SiteAdapter` من `sites/base.py` — مرجع واجهة، وليس مرجع موقع؛ يتم حقن المواقع الملموسة عبر `register()`
   (تسجيل Perplexity المدمج في `pplx_export/__init__.py:34-43`).
-- `config.py` هو المصدر الوحيد لثوابت الموقع (النطاق، `DEFAULT_ARCHIVE_ROOT`)، ويقوم بتحميل
-  **التكوين الخارجي على مستوى المستخدم**: جداول الحسابات `ACCOUNT_DISPLAY_NAMES/ACCOUNT_EMAIL/ACCOUNT_UID` ومساحة
+- `config.py` هو المصدر الوحيد لثوابت الموقع (النطاق، `DEFAULT_ARCHIVE_ROOT`)، ويحمل
+  **تكوينًا خارجيًا على مستوى المستخدم**: جداول الحسابات `ACCOUNT_DISPLAY_NAMES/ACCOUNT_EMAIL/ACCOUNT_UID` ومساحة
   BOT تأتي من TOML (`--config` > `PPLX_EXPORT_CONFIG` >
   `~/.config/pplx-export/config.toml`؛ قالب `config.example.toml`)، يتم تحديث القواميس في مكانها،
-  تدهور سلس عند فقدانها؛ `core/models.py:18` يستوردها أيضًا (`author_folder`).
-- `ask_api.py` هي وحدة الطبقة الوحيدة التي تعتمد بشكل مباشر على تنفيذ نقل ملموس
-  (تستورد `CookieTransport` وتعيد استخدام دواخلها `_cookie_header`/`_opener` لدفق SSE،
+  تدهور سلس عند الغياب؛ `core/models.py:18` يستورده أيضًا (`author_folder`).
+- `ask_api.py` هي الوحدة الوحيدة في طبقة الموقع التي تعتمد بشكل مباشر على تنفيذ نقل ملموس
+  (تستورد `CookieTransport` وتعيد استخدام داخلياته `_cookie_header`/`_opener` لدفق SSE،
   ask_api.py:23, 114-130) — SSE خارج تجريد Transport ABC.
 - `hooks/`، `writers/` تعتمدان فقط على `core/`؛ التنفيذ الوحيد لـ `writers/base.py`،
   `FilesystemWriter`، يعيش في طبقة الموقع (fs_writer.py:54) — تم فصل ABC والتنفيذ.
@@ -279,14 +279,14 @@ flowchart LR
 
 كيفية قراءة الرسم البياني:
 
-- **سلسلة النواة**: `cli → commands → sites → core`. لا تعتمد أي وحدة نواة على تنفيذات
-  أوامر/مواقع ملموسة؛ `KG → SBASE` (السجل ← SiteAdapter ABC) هو المرجع العكسي الوحيد
-  عبر الطبقات، مما يشكل حلقة حقن تبعية مع تسجيل `E0`.
+- **سلسلة النواة**: `cli → commands → sites → core`. لا تعتمد أي وحدة نواة على تنفيذات أوامر/مواقع ملموسة؛
+  `KG → SBASE` (السجل ← SiteAdapter ABC) هو المرجع العكسي الوحيد عبر الطبقات،
+  مشكلاً حلقة حقن تبعية مع تسجيل `E0`.
 - التجميع داخل `sites/perplexity/`: `adapter` هو الواجهة (تجميع graphql/rest/parsers/
   normalize/assets)؛ `render` يعتمد على `parsers` (مصدر الحقيقة لتصنيف حالة wf)؛ `fs_writer`
   يعتمد على `render + parsers + writers/base`.
-- الاختبارات `tests/` تعيش خارج الحزمة وتستورد مباشرة الدوال البحتة من كل طبقة (`render_fixture` في conftest.py
-  يعيد استخدام `commands.rerender_cmd.rerender` لإعادة التقديم دون اتصال).
+- الاختبارات `tests/` تعيش خارج الحزمة وتستورد مباشرة دوال نقية من كل طبقة (conftest.py's
+  `render_fixture` يعيد استخدام `commands.rerender_cmd.rerender` لإعادة التقديم دون اتصال).
 
 ---
 
@@ -301,23 +301,23 @@ flowchart LR
    من الخام بدون شبكة ([§12](offline-operations.md))، مما يفصل
    تطور المُقدّم عن الأرشيفات التاريخية.
 2. **نقطة تحليل واحدة، متسامحة مع تغييرات هيكل البيانات**: استخراج الحقول
-   مركز في `parsers.py` (ثلاثية تحمل الأخطاء `_g`/`_loads`/`to_int`)؛ اكتشاف
-   الوضع يحتوي على إشارات مكررة زائدة بالإضافة إلى احتياطي جلب عند فقدان جميع الإشارات ([§4](export-pipeline.md)) —
+   مركز في `parsers.py` (ثلاثية تحمل الأخطاء `_g`/`_loads`/`to_int`)؛
+   اكتشاف الوضع له إشارات زائدة مزدوجة بالإضافة إلى استرجاع احتياطي عند فقدان جميع الإشارات ([§4](export-pipeline.md)) —
    نصف قطر انفجار إعادة تصميم المنصة مضغوط في وحدة واحدة.
 3. **شلال إسناد حتمي**: "كل حمولة خلفية تهبط في مكان واحد بالضبط،
-   لا تُعرض أبدًا مرتين" مضمون بواسطة هياكل البيانات (المجموعة المثبتة، استهلاك used_cand
-   الفردي، التكرار على المستوى الأعلى فقط ضد العد المزدوج) — لا تخمين زمني
-   استرشادي؛ دلالات المقاطعة تحتوي على خمس فئات مع مصدر حقيقة واحد
-   (classify_wf_status) مشترك بين مسارات التقديم/التسجيل/التنبيه ([§5, §6](subagents-interruptions.md)).
+   لا تُعرض أبدًا مرتين" مضمون بهياكل البيانات (المجموعة المثبتة، استهلاك used_cand
+   الفردي، التكرار على المستوى الأعلى فقط ضد العد المزدوج) — لا تخمين زمني استدلالي؛
+   دلالات المقاطعة لها خمس فئات مع مصدر حقيقة واحد
+   (classify_wf_status) مشترك بين مسارات العرض/التسجيل/التنبيه ([§5, §6](subagents-interruptions.md)).
 4. **انضباط حد المعدل هو خط أحمر للسلامة**: فترات عشوائية، لا تزامن، تراجع 3^N
    مع حد أقصى، فشل سريع عند فشل المصادقة، الحالة النهائية ENTRY_EXPIRED، 404 لا يُساء
-   أبدًا تقديرها كمنتهية الصلاحية ([§11](rate-limiting-errors.md)) — كلها تخدم هدف منع الحظر المتمثل في "سلوك التصدير ≈ تصفح
-   بشري" (متطلب مستخدم صريح).
+   أبدًا تقديره كمنتهي ([§11](rate-limiting-errors.md)) — كلها تخدم هدف منع الحظر "سلوك التصدير ≈ تصفح بشري"
+   (متطلب مستخدم صريح).
 5. **مصدر واحد للتكوين + الخصوصية خارجية**: ثوابت الموقع/المسارات الافتراضية
    تعيش فقط في `config.py`؛ الحسابات/المساحات هي خصوصية شخصية، خارجية في TOML
-   على مستوى المستخدم (`--config` > `PPLX_EXPORT_CONFIG` > `~/.config/pplx-export/config.toml`)؛ التبديل التلقائي
-   لملفات تعريف الارتباط متعددة الحسابات هو حلقة استقصاء مدفوعة بالبريد الإلكتروني المسجل، بدون تشغيل
-   يدوي للمتصفح ([§9](ask-and-accounts.md)).
+   على مستوى المستخدم (`--config` > `PPLX_EXPORT_CONFIG` > `~/.config/pplx-export/config.toml`)؛
+   التبديل التلقائي لملفات تعريف الارتباط متعددة الحسابات هو حلقة استقصاء مدفوعة بالبريد الإلكتروني المسجل،
+   بدون عملية متصفح يدوية ([§9](ask-and-accounts.md)).
 6. **تبعيات طبقات باتجاه واحد**: CLI ← أوامر ← مواقع ← نواة، مع عدم وجود ترميز موقع ثابت
-   في النواة ويتم حقن المواقع عبر السجل — موقع جديد ينفذ طرق `SiteAdapter` الخمسة
+   في النواة وحقن المواقع عبر السجل — موقع جديد ينفذ طرق `SiteAdapter` الخمسة
    ويعيد استخدام جميع مرافق النواة (sites/base.py:21-69).
