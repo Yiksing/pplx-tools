@@ -148,11 +148,11 @@
     "docs/architecture/ask-and-accounts.md::fr": {
       "model": "deepseek-v4-flash",
       "output_path": "docs/architecture/ask-and-accounts.fr.md",
-      "output_sha256": "1753e9927c34fc028fc1a69ff7fffef5c29b1d301f66af54ae5972d06e70f145",
+      "output_sha256": "1a58e3d65f3ccba77d5fa3b1891c25566a840ac1620befb62691eb09dc888650",
       "prompt_version": "v1",
       "source_locale": "en",
       "source_path": "docs/architecture/ask-and-accounts.md",
-      "source_sha256": "d350a1679fbc6f9d566a9955de3c45d88daf9c58ae0ed2d8f3c9c0c8d38f8f05",
+      "source_sha256": "fecfe8824ffed615a6fcc43ff90af9f59c12dfb4c8173aab0b0a075e72416116",
       "translation_fingerprint": "fdf61797fad7e6b209fa648fd05b5f7d95ce05b2c74bbac92003fc6256d6eb60",
       "warnings": []
     },
@@ -698,11 +698,11 @@
     "docs/architecture/overview.md::fr": {
       "model": "deepseek-v4-flash",
       "output_path": "docs/architecture/overview.fr.md",
-      "output_sha256": "b82fd0b5040445b2accd96c2e49ba776b8dc9fdfabf557dfff142fe7d97435b8",
+      "output_sha256": "2657e419939a8529e08936f8c43f788aab556fac0a0d1b64cd03c4d19340ddeb",
       "prompt_version": "v1",
       "source_locale": "en",
       "source_path": "docs/architecture/overview.md",
-      "source_sha256": "48a859cceb434af9d7c542a335e0065b961027fec7d44a929f17ca6e27e23142",
+      "source_sha256": "cd4c6cf3ca00c7690750ff9c42cb9c706647ee9f15e1d7dc9a2a1e02d34c1a7f",
       "translation_fingerprint": "fdf61797fad7e6b209fa648fd05b5f7d95ce05b2c74bbac92003fc6256d6eb60",
       "warnings": []
     },
@@ -1688,11 +1688,11 @@
     "docs/guide/configuration.md::fr": {
       "model": "deepseek-v4-flash",
       "output_path": "docs/guide/configuration.fr.md",
-      "output_sha256": "c72fc71635f158bd67daab6f03ee4a3d4985460c5ccaed60cf38bfa9c489a0e1",
+      "output_sha256": "8be98ad5ec736acb9398c6f7b627a0644e452ae48113112f56c86953d6c332de",
       "prompt_version": "v1",
       "source_locale": "en",
       "source_path": "docs/guide/configuration.md",
-      "source_sha256": "17a6ed1ea6a178fefb108fb05ebc93982f869568bba13654444489c41d36da34",
+      "source_sha256": "39f85a86f94a3b326e9d3b9a74e9452a379a4745667b57c124c9512bfd1d9755",
       "translation_fingerprint": "fdf61797fad7e6b209fa648fd05b5f7d95ce05b2c74bbac92003fc6256d6eb60",
       "warnings": []
     },
@@ -2678,11 +2678,11 @@
     "docs/guide/troubleshooting.md::fr": {
       "model": "deepseek-v4-flash",
       "output_path": "docs/guide/troubleshooting.fr.md",
-      "output_sha256": "e5ff376b1a3d6776e6cfd7bc5849fb76dfafb1d0202d1a3198ae9bf225814605",
+      "output_sha256": "e99e7574cca2592291d8f5f5807a45ec7decdedde97e805e5464b62e621df97a",
       "prompt_version": "v1",
       "source_locale": "en",
       "source_path": "docs/guide/troubleshooting.md",
-      "source_sha256": "99dee1bd48f525fcf72fcfd09992043114e918fd4ce2870f0586fc2937c70d62",
+      "source_sha256": "6eb13cb35b2da72789c46ad4bf63ba5a3ab0eca92581d51589ad8181748be600",
       "translation_fingerprint": "fdf61797fad7e6b209fa648fd05b5f7d95ce05b2c74bbac92003fc6256d6eb60",
       "warnings": []
     },

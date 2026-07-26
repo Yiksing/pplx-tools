@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/guide/troubleshooting.md"
-translation_source_sha256: "99dee1bd48f525fcf72fcfd09992043114e918fd4ce2870f0586fc2937c70d62"
+translation_source_sha256: "6eb13cb35b2da72789c46ad4bf63ba5a3ab0eca92581d51589ad8181748be600"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -10,14 +10,14 @@ translation_prompt_version: "v1"
 <a id="troubleshooting" data-pplx-source-anchor="true"></a>
 # Dépannage
 
-Format FAQ : chaque entrée suit le schéma **problème → cause → correctif**. Pour la référence complète de la sémantique des erreurs (codes de statut, états terminaux, discipline de reprise), voir
+Format FAQ : chaque entrée est **problème → cause → correctif**. Pour la référence complète de la sémantique des erreurs (codes de statut, états terminaux, discipline de réessai), voir
 [Réponses et erreurs](../reference/api/api-responses-errors.md) et
 [Limitation de débit et erreurs](../architecture/rate-limiting-errors.md).
 
 <a id="bare-requests-to-the-api-get-a-cloudflare-403" data-pplx-source-anchor="true"></a>
 ## Requêtes brutes vers l'API obtiennent un Cloudflare 403
 
-**Problème** : un `curl` / script fait maison contre les points de terminaison REST de `www.perplexity.ai`
+**Problème** : un `curl` / script fait maison contre les points de terminaison REST `www.perplexity.ai`
 renvoie 403 avec une page de défi Cloudflare — même avec les cookies copiés depuis le
 navigateur — alors que les mêmes points de terminaison fonctionnent via l'outil.
 
@@ -25,8 +25,8 @@ navigateur — alors que les mêmes points de terminaison fonctionnent via l'out
 liés à l'empreinte TLS du navigateur. L'empreinte d'un client brut ne correspond pas, donc
 le défi se déclenche. L'outil réussit car il utilise Python `urllib` avec des cookies
 importés du navigateur et un `User-Agent` de Chrome de bureau
-(`pplx_export/core/http/cookie_transport.py:29`). Cloudflare peut aussi renvoyer 403 sous contrôle
-de débit — dans ce cas, la réponse porte la même forme de défi.
+(`pplx_export/core/http/cookie_transport.py:29`). Cloudflare peut aussi renvoyer 403 sous contrôle de débit
+— dans ce cas, la réponse porte la même forme de défi.
 
 **Correctif** :
 
@@ -35,11 +35,11 @@ de débit — dans ce cas, la réponse porte la même forme de défi.
 - Dans l'outil, une réponse 200 avec un corps non JSON (l'interstitiel Cloudflare) est
   classée comme une erreur de transport, pas des données (`pplx_export/core/http/cookie_transport.py:133`).
 - Si des 403 apparaissent dans l'outil, ralentissez (voir
-  [Limitation de débit](rate-limiting.md)) et rafraîchissez les cookies ; un défi persistant
-  signifie une reconnexion dans le navigateur.
+  [Limitation de débit](rate-limiting.md)) et rafraîchissez les cookies ; un défi
+  persistant signifie une reconnexion dans le navigateur.
 - Attention aux deux visages du 403 : un défi de contrôle de risque Cloudflare (disparaît une fois que vous
-  ralentissez) contre un 403 au niveau de l'API (cookie mort — levé immédiatement sans backoff ; voir
-  la section suivante). La page de conception décrit ce dernier
+  ralentissez) versus un 403 au niveau de l'API (cookie mort — levé immédiatement sans backoff ; voir
+  la section suivante). La page de conception mappe ce dernier
   ([rate-limiting-errors.md](../architecture/rate-limiting-errors.md)).
 
 Contexte : [Authentification API](../reference/api/api-authentication.md).
@@ -48,24 +48,24 @@ Contexte : [Authentification API](../reference/api/api-authentication.md).
 ## Erreurs 401 / cookies expirés
 
 **Problème** : les commandes échouent avec une erreur d'authentification — `AuthTransportError: 鉴权失败 401`
-de `pplx-export`, ou `pplx-ask ask` se termine avec un code HTTP 401/403 indiquant de mettre à jour le
+de `pplx-export`, ou `pplx-ask ask` se terminant avec un indice HTTP 401/403 pour mettre à jour le
 cookie.
 
 **Cause** : le cookie de session a expiré ou a été invalidé. `401`/`403` sont traités
 comme des échecs d'authentification et levés immédiatement — pas de backoff, car le backoff ne peut pas
-autoréparer une session morte (`pplx_export/core/http/cookie_transport.py:82` ;
-`pplx_export/core/errors.py:68`). `batch` échoue également rapidement après 3 échecs d'authentification
-consécutifs afin qu'un cookie mort ne consume pas toute la file d'attente.
+auto-réparer une session morte (`pplx_export/core/http/cookie_transport.py:82` ;
+`pplx_export/core/errors.py:68`). `batch` échoue en outre rapidement après 3 échecs d'authentification
+consécutifs afin qu'un cookie mort ne brûle pas toute la file d'attente.
 
 **Correctif** :
 
-1. Reconnectez-vous (ou rouvrez le site) dans le navigateur pour renouveler les cookies de session.
+1. Reconnectez-vous (ou rouvrez le site) dans le navigateur pour que les cookies de session soient renouvelés.
 2. Rafraîchissez le cache de cookies de l'outil. Le cache à `<out>/index/.cookies.json` est réutilisé
    dans une fenêtre de fraîcheur de 12 heures (`pplx_export/core/cookies/cache.py:22`), donc après
    reconnexion, soit :
-   - exécutez une fois avec `--cookies-from <browser>` pour forcer une nouvelle importation depuis le navigateur, soit
+   - exécutez une fois avec `--cookies-from <browser>` pour forcer une nouvelle importation depuis le navigateur, ou
    - supprimez `<out>/index/.cookies.json` et laissez la prochaine exécution réimporter automatiquement.
-3. Chaque exécution qui réussit la validation réenregistre le cache
+3. Chaque exécution qui valide avec succès réenregistre le cache
    (`pplx_export/commands/common.py:150`), donc les exécutions quotidiennes restent fraîches d'elles-mêmes.
 
 Détails de configuration : [Pour commencer](getting-started.md) · [Configuration](configuration.md).
@@ -78,10 +78,16 @@ magasin de cookies du navigateur même si le navigateur est connecté.
 
 **Mécanisme** : les navigateurs de la famille Chromium sous Linux chiffrent la base de données de cookies avec une
 clé conservée dans le trousseau du système, lue à l'exécution via l'API Secret Service D-Bus.
-`browser_cookie3` communique avec D-Bus via `jeepney` en Python pur — déjà installé avec
-l'outil sous Linux, rien à configurer en plus — et se rabat sur le mot de passe `peanuts` hérité
+`browser_cookie3` parle D-Bus via `jeepney` en Python pur — déjà installé avec l'outil
+sous Linux, rien de plus à configurer — et se rabat sur le mot de passe `peanuts` hérité
 lorsqu'aucun trousseau ne répond, ce qui ne déchiffre que les cookies que Chrome a également écrits
-sans trousseau. Firefox n'a besoin de rien de tout cela : son `cookies.sqlite` n'est pas chiffré.
+sans trousseau. Lorsque le trousseau existe mais que la recherche D-Bus elle-même échoue au niveau du
+transport (par exemple, un bus de session refusant l'authentification anonyme), la chaîne de repli
+propre à `browser_cookie3` ne s'engage jamais ; l'outil détecte ce cas et réessaie une fois en
+contournant le trousseau, en utilisant le mot de passe par défaut de Chromium — la même clé que Chromium
+lui-même utilise lorsqu'aucun trousseau n'est disponible (`pplx_export/core/cookies/loaders.py:62-104`,
+câblé dans le chemin de chargement à `loaders.py:136-153`). Firefox n'a besoin de rien de tout cela : son
+`cookies.sqlite` n'est pas chiffré.
 
 **La matrice** :
 
@@ -89,11 +95,12 @@ sans trousseau. Firefox n'a besoin de rien de tout cela : son `cookies.sqlite` n
 |---|---|---|
 | Navigateur | Firefox | Zéro friction — `cookies.sqlite` n'est pas chiffré |
 | Navigateur | Chromium + trousseau accessible | Fonctionne — la clé est récupérée via Secret Service |
-| Navigateur | Chromium + pas de trousseau | Chemin `peanuts` — fonctionne seulement si Chrome a aussi écrit sans trousseau |
+| Navigateur | Chromium + pas de trousseau | Chemin `peanuts` — fonctionne uniquement si Chrome a également écrit sans trousseau |
+| Navigateur | Chromium + trousseau inaccessible (échec au niveau D-Bus) | L'outil réessaie automatiquement avec le mot de passe par défaut de Chromium — même portée que le chemin `peanuts` |
 | Méthode d'installation | Paquet natif | Détection automatique (chemins intégrés de browser_cookie3) |
 | Méthode d'installation | snap / flatpak | Détection automatique — le registre de profils intégré couvre les profils sous `~/snap/<name>/...` resp. `~/.var/app/<app-id>/...` (`pplx_export/core/cookies/profiles.py:37-67`) |
-| Environnement de bureau | GNOME | Fonctionne généralement d'emblée (gnome-keyring) |
-| Environnement de bureau | KDE | Activez **Utiliser KWallet pour l'interface Secret Service** dans les paramètres de KWallet |
+| Environnement de bureau | GNOME | Fonctionne généralement directement (gnome-keyring) |
+| Environnement de bureau | KDE | Activez **Utiliser KWallet pour l'interface Secret Service** dans les paramètres KWallet |
 | Environnement de bureau | Sans tête / minimal | Pas de bus de session D-Bus → chemin `peanuts` |
 | Famille de distribution | Debian / Ubuntu | Installez `libsecret-1-0` + `gnome-keyring` |
 | Famille de distribution | Fedora / RHEL | Installez `libsecret` + `gnome-keyring` ; les installations minimales / serveur manquent souvent complètement de trousseau — l'échec le plus courant |
@@ -101,44 +108,44 @@ sans trousseau. Firefox n'a besoin de rien de tout cela : son `cookies.sqlite` n
 
 Les installations en bac à sable n'ont besoin d'aucun indicateur supplémentaire : le chemin natif est sondé en premier, puis les
 bases de données de cookies snap/flatpak du registre via un `cookie_file=` explicite
-(`pplx_export/core/cookies/loaders.py:89-101`).
+(`pplx_export/core/cookies/loaders.py:155-168`).
 
 **Scénario → canal recommandé** :
 
 | Scénario | Canal recommandé |
 |---|---|
 | Firefox installé | `--cookies-from firefox` — zéro friction |
-| Bureau GNOME / KDE | La détection automatique fonctionne d'emblée |
+| Bureau GNOME / KDE | La détection automatique fonctionne simplement |
 | Navigateur snap / flatpak | Détection automatique — le registre le couvre ; sinon `--cookies FILE` exporté via une extension de navigateur |
-| Serveur sans tête | `--cookies FILE` — le recours universel ; `--transport webbridge` en dernier recours |
+| Serveur sans tête | `--cookies FILE` — le repli universel ; `--transport webbridge` en dernier recours |
 
 <a id="an-export-ran-under-the-wrong-account-multi-account" data-pplx-source-anchor="true"></a>
 ## Une exportation a été exécutée sous le mauvais compte (multi-compte)
 
 **Problème** : des fils archivés ont été récupérés avec la session du mauvais compte — par exemple, une
-exécution de `--account alice` a extrait des données en tant que `bob`, ou l'archive montre des fils qui
+exécution `--account alice` a extrait des données en tant que `bob`, ou l'archive montre des fils qui
 n'appartiennent pas au compte visé.
 
-**Cause** : avec plusieurs comptes connectés dans le même navigateur, le jeton de session actif
+**Cause** : avec plusieurs comptes connectés au même navigateur, le jeton de session actif
 (`__Secure-next-auth.session-token`) peut appartenir à un compte différent de celui que vous
 avez ciblé. Si le `email` du compte cible n'est pas enregistré dans la configuration au niveau utilisateur,
 l'outil ne peut pas le détecter et enregistre seulement un avertissement.
 
-**Comment l'outil le prévient** (`pplx_export/commands/common.py:93`) : au démarrage, le
-transport appelle `GET /api/auth/session` et compare l'email actif avec celui enregistré.
-En cas de non-correspondance, il énumère automatiquement les cookies de session par compte du navigateur
-(`__Secure-pplx.session.<user_id>`), les substitue chacun dans le jeton actif, et sonde
+**Comment l'outil l'empêche** (`pplx_export/commands/common.py:93`) : au démarrage, le
+transport appelle `GET /api/auth/session` et compare l'email actif avec celui
+enregistré. En cas de non-correspondance, il énumère automatiquement les cookies de session par compte du navigateur
+(`__Secure-pplx.session.<user_id>`), substitue chacun dans le jeton actif, et sonde
 la session jusqu'à ce que l'email cible corresponde (`pplx_export/commands/common.py:190` ;
-`pplx_export/core/cookies/loaders.py:108`). Si aucun jeton ne correspond, la commande se termine avec une erreur
-claire — elle ne continue jamais silencieusement avec le mauvais compte.
+`pplx_export/core/cookies/loaders.py:175`). Si aucun jeton ne correspond, la commande s'arrête avec une erreur
+claire — elle ne continue jamais silencieusement sous le mauvais compte.
 
 **Correctif** :
 
 - Enregistrez le `email` de chaque compte sous `[accounts.<name>]` (voir
   [Configuration](configuration.md)) et passez `--account` explicitement.
 - Vérifiez la ligne de journal de démarrage `[auth] cookie 来源 …，当前账户: …` — elle nomme l'email
-  de session actif avant toute récupération.
-- Pour auditer une archive existante, le `thread.json` de chaque fil porte un champ `export_via`
+  de session actif avant que quoi que ce soit ne soit récupéré.
+- Pour auditer une archive existante, chaque `thread.json` de fil porte un champ `export_via`
   enregistrant quel compte a effectué l'exportation
   (`pplx_export/sites/perplexity/fs_writer.py:229`). `pplx-export sync-deleted` utilise le
   même champ pour choisir le compte pour la vérification en ligne.
@@ -158,16 +165,16 @@ variable d'environnement `PPLX_EXPORT_CONFIG`, ou le chemin par défaut
 `~/.config/pplx-export/config.toml` (`pplx_export/config.py:113`). Deux cas liés mais
 distincts : un **chemin de configuration explicitement spécifié** qui n'existe pas lève
 `ConfigError` ; une configuration corrompue (non analysable) lève toujours `ConfigError` — une configuration
-cassée ne dégrade jamais silencieusement.
+cassée ne se dégrade jamais silencieusement.
 
 **Effets du mode dégradé** :
 
 - Le registre des comptes est vide, donc la vérification de propriété des cookies est ignorée avec un
-  avertissement et les commandes s'exécutent avec le compte fictif `default`
+  avertissement et les commandes s'exécutent sous le compte fictif `default`
   (`pplx_export/commands/common.py:51`). Un `--account` explicite génère une erreur à la place.
-- `pplx-ask ask` ignore le déplacement automatique dans l'espace BOT (`moved_to_bot` reste `false`
-  dans le JSON de résultat) et la télémétrie porte un ID utilisateur vide ; la demande et l'archivage
-  fonctionnent par ailleurs.
+- `pplx-ask ask` saute le déplacement automatique dans l'espace BOT (`moved_to_bot` reste `false`
+  dans le JSON de résultat) et la télémétrie porte un identifiant utilisateur vide ; demander et archiver
+  fonctionnent autrement.
 - Les archives atterrissent dans le dossier de compte de repli dérivé du nom d'utilisateur.
 
 **Correctif** : copiez `config.example.toml` vers `~/.config/pplx-export/config.toml`, remplissez
@@ -179,26 +186,26 @@ cassée ne dégrade jamais silencieusement.
 **Problème** : l'exportation ou la resynchronisation d'un fil signale `ENTRY_EXPIRED` ou
 `ENTRY_DELETED`, et le fil ne peut plus jamais être récupéré.
 
-**Cause** : les deux arrivent sous forme de HTTP 400 de `GET /rest/thread/<uuid>` avec des codes
+**Cause** : les deux arrivent sous forme de HTTP 400 depuis `GET /rest/thread/<uuid>` avec des codes
 d'erreur différents, et les deux sont terminaux — le fil n'existe plus sur la plateforme :
 
 | Code | Signification | Mappage dans l'outil | État terminal |
 |---|---|---|---|
-| `ENTRY_EXPIRED` | La plateforme a purgé le fil (~3 mois de rétention) | `EntryExpiredError` (`pplx_export/core/errors.py:24`) | `expired` |
+| `ENTRY_EXPIRED` | La plateforme a purgé le fil (rétention d'environ 3 mois) | `EntryExpiredError` (`pplx_export/core/errors.py:24`) | `expired` |
 | `ENTRY_DELETED` | Le fil a été activement supprimé par l'utilisateur / le côté distant (l'effet en aval de `DELETE /rest/thread/delete_thread_by_entry_uuid`) | `EntryDeletedError`, une sous-classe de `EntryExpiredError` (`pplx_export/core/errors.py:30`) | `deleted` |
 
 **Ce que cela signifie pour votre archive** :
 
 - Aucun des deux états n'est jamais réessayé — ni par synchronisation incrémentielle, ni avec `--force`. La
-  marque terminale vit dans `<out>/index/batch_state.json`.
+  marque terminale se trouve dans `<out>/index/batch_state.json`.
 - Votre **archive locale n'est jamais supprimée ni déplacée** par l'outil — la copie du dépôt
   est la sauvegarde. La commande d'exportation enregistre l'état terminal et se termine gracieusement
   (`pplx_export/commands/export_cmd.py:51`).
 - Parce que la relation de sous-classe est délibérée, les chemins de code qui ne connaissent que
-  `EntryExpiredError` traitent toujours `ENTRY_DELETED` comme terminal ; les chemins avertis (batch /
+  `EntryExpiredError` traitent toujours `ENTRY_DELETED` comme terminal ; les chemins conscients (batch /
   export / sync-deleted / search-mode-backfill) le classifient précisément comme `deleted`.
-- Conclusion pratique : exportez en temps utile. Passé la purge d'environ 3 mois, les liens sources
-  d'artefacts/rapports expirent également de manière irrécupérable.
+- Conclusion pratique : exportez en temps utile. Passé la purge d'environ 3 mois, les liens vers les sources d'artefacts/rapports
+  expirent également de manière irrécupérable.
 
 Connexe : [Synchronisation incrémentielle](incremental-sync.md) ·
 [Réponses et erreurs](../reference/api/api-responses-errors.md).
@@ -211,17 +218,17 @@ Connexe : [Synchronisation incrémentielle](incremental-sync.md) ·
 `assets/files/`.
 
 **Cause** : les gestionnaires d'espace de travail cloud préfixés par `toolu_` (DOC_FILE / CODE_FILE / UNKNOWN sans
-formulaire URL) n'ont pas de canal de téléchargement API : `GET /rest/assets/<asset_uuid>/data` renvoie
+forme d'URL) n'ont pas de canal de téléchargement API : `GET /rest/assets/<asset_uuid>/data` renvoie
 404 `ASSET_NOT_FOUND` pour eux, et `file-repository/download` rejette les gestionnaires `file:repo/...`
-(400). C'est une **limite connue de complétude de l'archive**, pas un bogue dans l'exportation.
+(400). Il s'agit d'une **limite connue de complétude de l'archive**, pas d'un bogue dans l'exportation.
 `pplx-export assets-backfill` marque ces versions `no_download_channel` et
 les ignore (`pplx_export/commands/assets_backfill_cmd.py:356`).
 
 **Correctif** :
 
 - Rien à télécharger aujourd'hui — le drapeau est l'enregistrement délibéré de la limite.
-- Le contenu survit souvent en ligne : le texte d'extraction de page des sous-agents et les charges utiles
-  des étapes sont préservés dans le JSON brut du fil (`raw_entries.json` / `raw_blocks.json`) et
+- Le contenu survit souvent en ligne : le texte d'extraction de page des sous-agents et les charges utiles des étapes
+  sont conservés dans le JSON brut du fil (`raw_entries.json` / `raw_blocks.json`) et
   dans le `turns/` rendu — vérifiez d'abord là.
 - `file-repository/list-files` est suivi comme un chemin de sauvetage potentiel futur ; voir
   [Feuille de route de découverte API](../reference/api/api-discovery-roadmap.md).
@@ -231,14 +238,14 @@ Disposition du manifeste : [Disposition de l'archive](archive-layout.md).
 <a id="where-are-the-logs" data-pplx-source-anchor="true"></a>
 ## Où sont les journaux ?
 
-**Console** : progression de niveau INFO par défaut ; `-v` / `--verbose` passe en DEBUG
+**Console** : progression de niveau INFO par défaut ; `-v` / `--verbose` passe à DEBUG
 (traçage des requêtes, décisions internes) ; les avertissements et erreurs sont toujours affichés.
 
 **Fichier** : passez `--log-file` pour capturer le flux DEBUG complet
 (`pplx_export/core/logging.py:45`) :
 
 - `--log-file` sans valeur atterrit à `<out>/index/logs/<cmd>-<timestamp>.log`
-  (`pplx_export/commands/common.py:218`) — par ex. `pplx-ask-ask-20260723-120000.log`.
+  (`pplx_export/commands/common.py:218`) — par exemple `pplx-ask-ask-20260723-120000.log`.
 - `--log-file PATH` écrit dans le chemin donné.
 
 **Autres fichiers d'état utiles pour le diagnostic** (sous `<out>/index/`) :
@@ -247,7 +254,7 @@ Disposition du manifeste : [Disposition de l'archive](archive-layout.md).
 |---|---|
 | `.cookies.json` | Cache de cookies (fraîcheur de 12 h ; écrit atomiquement avec 0o600 — c'est un identifiant équivalent à une connexion, gardez-le privé) |
 | `batch_state.json` | État d'exportation par fil, incluant les marques terminales `expired` / `deleted` |
-| `answer_variants_log.jsonl` | Registre de variantes de réécriture de réponse |
+| `answer_variants_log.jsonl` | Registre des variantes de réécriture de réponse |
 | `library_*.json` | Instantanés d'index de bibliothèque par compte |
 
 <a id="see-also" data-pplx-source-anchor="true"></a>

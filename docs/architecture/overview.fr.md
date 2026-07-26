@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/architecture/overview.md"
-translation_source_sha256: "48a859cceb434af9d7c542a335e0065b961027fec7d44a929f17ca6e27e23142"
+translation_source_sha256: "cd4c6cf3ca00c7690750ff9c42cb9c706647ee9f15e1d7dc9a2a1e02d34c1a7f"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -16,7 +16,7 @@ translation_prompt_version: "v1"
 ## Aperçu de l'architecture en couches
 
 Structure du package (`pplx_export/`, ~5,6k lignes de code source et en croissance avec le développement, hors tests ;
-comptes exacts de lignes selon `wc -l`) :
+comptes exacts de lignes par `wc -l`) :
 
 ```mermaid
 flowchart TD
@@ -54,7 +54,7 @@ flowchart TD
         TH["throttle.py rate-limit backoff (throttle.py:15)"]
         ST["state.py BatchState checkpoint (state.py:63)"]
         LG["logging.py central logging (logging.py:45)"]
-        CK["cookies/ + auth.py<br/>cookie sources and credentials (cookies/loaders.py:203)"]
+        CK["cookies/ + auth.py<br/>cookie sources and credentials (cookies/loaders.py:270)"]
         RL["relations.py relations graph (relations.py:200)"]
         RG["registry.py site registry (registry.py:9)"]
         subgraph HTTP["core/http/ transports"]
@@ -114,8 +114,8 @@ flowchart TD
 
 Essentiels de la direction des dépendances (vérifiés en parcourant toutes les importations) :
 
-- **Unidirectionnelle** : CLI → commands → sites → core. `core/` n'importe aucune implémentation concrète de Perplexity
-  (pas de codage en dur de site) ; **la seule exception** est `core/registry.py:7` important l'ABC
+- **Unidirectionnel** : CLI → commandes → sites → core. `core/` n'importe aucune implémentation concrète de Perplexity
+  (pas de codification en dur de site) ; **la seule exception** est `core/registry.py:7` important l'ABC
   `SiteAdapter` depuis `sites/base.py` — une référence d'interface, pas une référence de site ; les sites concrets sont injectés via `register()`
   (enregistrement Perplexity intégré dans `pplx_export/__init__.py:34-43`).
 - `config.py` est la source unique des constantes de site (domaine, `DEFAULT_ARCHIVE_ROOT`), et charge
@@ -134,7 +134,7 @@ Essentiels de la direction des dépendances (vérifiés en parcourant toutes les
 <a id="module-dependency-graph-real-import-relations" data-pplx-source-anchor="true"></a>
 ## Graphe de dépendances des modules (relations d'importation réelles)
 
-Tiré d'un recensement complet `grep '^from \.'` (références intra-package omises ; tous les `__init__.py` sont vides
+Issu d'un recensement complet `grep '^from \.'` (références intra-package omises ; tous les `__init__.py` sont vides
 sauf la racine du package `pplx_export/__init__.py`, qui porte la charge d'enregistrement) :
 
 ```mermaid
@@ -279,14 +279,14 @@ flowchart LR
 
 Comment lire le graphe :
 
-- **Chaîne cœur** : `cli → commands → sites → core`. Aucun module cœur ne dépend d'implémentations concrètes
-  de commandes/sites ; `KG → SBASE` (registre → SiteAdapter ABC) est la seule
-  référence inverse inter-couche, formant une boucle d'injection de dépendances avec l'enregistrement de `E0`.
+- **Chaîne core** : `cli → commands → sites → core`. Aucun module core ne dépend d'implémentations concrètes de
+  commandes/sites ; `KG → SBASE` (registre → SiteAdapter ABC) est la seule
+  référence croisée inverse entre couches, formant une boucle d'injection de dépendances avec l'enregistrement de `E0`.
 - Agrégation dans `sites/perplexity/` : `adapter` est la façade (composant graphql/rest/parsers/
   normalize/assets) ; `render` dépend de `parsers` (source de vérité pour la classification du statut wf) ; `fs_writer`
   dépend de `render + parsers + writers/base`.
-- Les tests `tests/` vivent en dehors du package et importent directement des fonctions pures de chaque couche (le
-  `render_fixture` de conftest.py réutilise `commands.rerender_cmd.rerender` pour le rendu hors ligne).
+- Les tests `tests/` vivent en dehors du package et importent directement des fonctions pures de chaque couche (le `render_fixture` de conftest.py
+  réutilise `commands.rerender_cmd.rerender` pour le rendu hors ligne).
 
 ---
 
@@ -295,7 +295,7 @@ Comment lire le graphe :
 
 1. **Réponses brutes conservées ; artefacts rendus régénérables hors ligne** :
    `adapter.get_thread` analyse et assemble la conversation en mémoire avant
-   que l'écrivain ne s'exécute (adapter.py:58-157). Une écriture réussie stocke `thread.json`
+   que le writer ne s'exécute (adapter.py:58-157). Une écriture réussie stocke `thread.json`
    d'abord, puis les réponses disponibles en texte brut/schématisées comme `raw_*.json`
    (fs_writer.py:224-266) ; l'analyse/rendu/enregistrement d'interruption peuvent ensuite
    être réexécutés à partir des données brutes sans réseau ([§12](offline-operations.md)),
@@ -303,13 +303,13 @@ Comment lire le graphe :
 2. **Point d'analyse unique, tolérant aux changements de structure de données** : l'extraction de champs est
    concentrée dans `parsers.py` (le trio de tolérance aux pannes `_g`/`_loads`/`to_int`) ; la détection
    de mode a des signaux redondants doubles plus une solution de repli en cas d'absence de tous les signaux ([§4](export-pipeline.md)) —
-   le rayon d'explosion d'une refonte de plateforme est compressé dans un module.
+   le rayon d'impact d'une refonte de plateforme est compressé dans un seul module.
 3. **Cascade d'attribution déterministe** : "chaque charge utile d'arrière-plan atterrit exactement à un
    endroit, jamais rendue deux fois" est garantie par les structures de données (l'ensemble ancré, la consommation unique de used_cand,
-   l'itération uniquement au niveau supérieur contre le double comptage) — pas de devinette heuristique de
-   temps ; la sémantique d'interruption a cinq classes avec une source de vérité
+   l'itération uniquement au niveau supérieur contre le double comptage) — pas de devinette heuristique de temps ;
+   la sémantique d'interruption a cinq classes avec une source de vérité unique
    (classify_wf_status) partagée par les chemins de rendu/enregistrement/alerte ([§5, §6](subagents-interruptions.md)).
-4. **La discipline de limite de débit est une ligne rouge de sécurité** : intervalles aléatoires, pas de concurrence, backoff 3^N
+4. **La discipline de limitation de débit est une ligne rouge de sécurité** : intervalles aléatoires, pas de concurrence, backoff 3^N
    avec un plafond, échec rapide en cas d'échec d'authentification, état terminal ENTRY_EXPIRED, 404 jamais
    mal interprété comme expiré ([§11](rate-limiting-errors.md)) — tout servant l'objectif anti-bannissement de "comportement d'exportation ≈ navigation humaine"
    (une exigence utilisateur explicite).
@@ -318,6 +318,6 @@ Comment lire le graphe :
    au niveau utilisateur (`--config` > `PPLX_EXPORT_CONFIG` > `~/.config/pplx-export/config.toml`) ; le
    changement automatique de cookies multi-comptes est une boucle de sondage pilotée par les emails enregistrés, sans opération
    manuelle de navigateur ([§9](ask-and-accounts.md)).
-6. **Dépendances unidirectionnelles en couches** : CLI → commands → sites → core, avec zéro codage en dur de site
+6. **Dépendances unidirectionnelles en couches** : CLI → commandes → sites → core, avec zéro codification en dur de site
    dans core et les sites injectés via le registre — un nouveau site implémente les cinq méthodes `SiteAdapter`
-   et réutilise toutes les fonctionnalités de base (sites/base.py:21-69).
+   et réutilise toutes les fonctionnalités core (sites/base.py:21-69).
