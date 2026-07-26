@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/architecture/overview.zh-CN.md"
-translation_source_sha256: "90f43a01d7ae68d92d12afb765e20414e041b7ab87bb04192a8d664ef9ebafb1"
+translation_source_sha256: "7fb3a731adc6ca1bdfa5032639c0aac94268a0d0c7966c9134c7fca26fe2dc00"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -54,7 +54,7 @@ flowchart TD
         TH["throttle.py 限频退避（throttle.py:15）"]
         ST["state.py BatchState 断点（state.py:63）"]
         LG["logging.py 中央日志（logging.py:45）"]
-        CK["cookies/ + auth.py<br/>cookie 来源与凭证（cookies/loaders.py:203）"]
+        CK["cookies/ + auth.py<br/>cookie 来源与凭证（cookies/loaders.py:270）"]
         RL["relations.py 关系图（relations.py:200）"]
         RG["registry.py 站点注册表（registry.py:9）"]
         subgraph HTTP["core/http/ transports"]
@@ -112,29 +112,29 @@ flowchart TD
     CFG -. "被各层 import，自身零依赖" .- MO
 ```
 
-依存方向の要点（grep で全 import を確認）：
+依存方向の要点（grep 全量 import で確認）：
 
 - **単方向**：CLI → commands → sites → core。`core/` は Perplexity の具体的な実装を一切 import しない
   （サイトのハードコードなし）；**唯一の例外**は `core/registry.py:7` が `sites/base.py` の
-  `SiteAdapter` ABC を import する点——サイト参照ではなくインターフェース参照であり、具体的なサイトは `register()` を介して注入される
-  （`pplx_export/__init__.py:34-43` に組み込みで perplexity が登録されている）。
-- `config.py` はサイト定数（ドメイン名、`DEFAULT_ARCHIVE_ROOT`）の唯一のソースであり、**ユーザーレベルの外部設定**の読み込みも担当する：
+  `SiteAdapter` ABC を import する点——インターフェース参照でありサイト参照ではなく、具体的なサイトは `register()` を介して注入される
+  （`pplx_export/__init__.py:34-43` 内で perplexity が組み込み登録される）。
+- `config.py` はサイト定数（ドメイン、`DEFAULT_ARCHIVE_ROOT`）の唯一のソースであり、**ユーザーレベルの外部設定**の読み込みを担当する：
   アカウントテーブル `ACCOUNT_DISPLAY_NAMES/ACCOUNT_EMAIL/ACCOUNT_UID` と
   BOT スペースは TOML から（`--config` > `PPLX_EXPORT_CONFIG` >
   `~/.config/pplx-export/config.toml`、テンプレート `config.example.toml`）、dict はその場で更新、
-  欠落時はデフォルトにフォールバック；`core/models.py:18` もこれを import する（`author_folder`）。
-- `ask_api.py` はサイト層で唯一、具体的な transport 実装に直接依存するモジュールである
-  （import `CookieTransport` し、その `_cookie_header`/`_opener` 内部フィールドを SSE ストリームに再利用、
+  欠落時はデグラデーション；`core/models.py:18` もこれを import する（`author_folder`）。
+- `ask_api.py` はサイト層で唯一、具体的な transport 実装に直接依存するモジュール
+  （`CookieTransport` を import し、その `_cookie_header`/`_opener` 内部フィールドを SSE ストリームに再利用、
   ask_api.py:23、114-130）——SSE は Transport ABC の抽象範囲外。
 - `hooks/`、`writers/` は `core/` のみに依存；`writers/base.py` の唯一の実装
-  `FilesystemWriter` はサイト層にある（fs_writer.py:54）、ABC と実装は分離されている。
+  `FilesystemWriter` はサイト層にある（fs_writer.py:54）、ABC と実装は分離。
 
 ---
 
 <a id="模块依赖图真实-import-关系" data-pplx-source-anchor="true"></a>
-## モジュール依存関係図（実際の import 関係）
+## モジュール依存グラフ（実際の import 関係）
 
-`grep '^from \.'` の全量統計に基づいて作成（同一パッケージ内の参照は省略；`__init__.py` はすべて空で、
+`grep '^from \.'` の全量統計に基づき作成（同一パッケージ内の参照は省略；`__init__.py` はすべて空で、
 パッケージルート `pplx_export/__init__.py` のみが登録責務を担う）：
 
 ```mermaid
@@ -277,13 +277,13 @@ flowchart LR
     TST -.-> CR
 ```
 
-図の読み方のポイント：
+グラフの読み方：
 
-- **コアリンク**：`cli → commands → sites → core`。どの core モジュールも
+- **コアパス**：`cli → commands → sites → core`。どの core モジュールも
   commands/sites の具体的な実装に依存せず、`KG → SBASE`（registry → SiteAdapter ABC）が唯一の
-  クロスレイヤー逆参照であり、`E0` の登録動作と合わせて依存性注入の閉ループを形成する。
+  クロスレイヤー逆参照であり、`E0` の登録動作と組み合わせて依存性注入の閉ループを形成する。
 - `sites/perplexity/` 内部の集約関係：`adapter` はファサード（graphql/rest/parsers/
-  normalize/assets を組み合わせる）、`render` は `parsers` に依存（wf ステータス分類の真のソース）、`fs_writer`
+  normalize/assets を合成）、`render` は `parsers` に依存（wf 状態分類の真のソース）、`fs_writer`
   は `render + parsers + writers/base` に依存。
 - テスト `tests/` はパッケージ外にあり、各層の純粋関数を直接 import する（conftest.py の
   `render_fixture` は `commands.rerender_cmd.rerender` を再利用してオフラインで再レンダリング）。
@@ -293,24 +293,24 @@ flowchart LR
 <a id="设计原则总结" data-pplx-source-anchor="true"></a>
 ## 設計原則のまとめ
 
-1. **元のレスポンスを保持し、レンダリング成果物はオフラインで再生成可能**：`adapter.get_thread` はまずメモリ上でパースし
+1. **元のレスポンスを保持し、レンダリング成果物はオフラインで再生成可能**：`adapter.get_thread` はまずメモリ上で解析し
    会話を組み立て（adapter.py:58-157）、その後 writer が実行される。書き込み成功時はまず
-   `thread.json` を保存し、次に実際に取得した plain/schematized レスポンスを `raw_*.json` として保存する
-   （fs_writer.py:224-266）；パース/レンダリング/中断登録はその後、raw からネットワークゼロで再実行可能
+   `thread.json` を保存し、次に実際に取得した plain/schematized レスポンスを `raw_*.json` として保存
+   （fs_writer.py:224-266）；解析/レンダリング/中断の記録後は、raw からネットワークゼロで再実行可能
    （[§12](offline-operations.md)）、レンダラーの進化と履歴アーカイブは疎結合。
-2. **パースは単一アダプターで、データ構造の変更に耐性**：フィールド抽出は `parsers.py` に集中（`_g`/`_loads`/
-   `to_int` のフォールトトレラント三種の神器）、パターン判定は二重シグナルの相互バックアップ＋全シグナル消失時のフォールバックで多めに取得（[§4](export-pipeline.md)）、
+2. **解析は単一箇所で適応し、データ構造の変更に耐性**：フィールド抽出は `parsers.py` に集中（`_g`/`_loads`/
+   `to_int` のフォールトトレラント三種の神器）、パターン判定は二重シグナルで相互バックアップ + 全シグナル消失時は多めに取得（[§4](export-pipeline.md)）、
    プラットフォームの変更による影響範囲は一つのモジュールに圧縮される。
-3. **帰属のウォーターフォールは決定論的**：バックグラウンド負荷「各アイテムは一箇所のみ、二重レンダリングは絶対にしない」はデータ構造で保証
-   （anchored 集合、used_cand の一回限りの消費、トップレベルのイテレーションで二重カウント防止）、ヒューリスティックな時間推測は行わない；
-   中断セマンティクスは五種類で一つの真のソース（classify_wf_status）、レンダリング/登録/警告の三つの経路で共有（[§5、§6](subagents-interruptions.md)）。
-4. **レート制限の規律は安全上の赤線**：ランダム間隔、並行処理なし、3^N バックオフ上限、認証失敗時は fail-fast、
-   ENTRY_EXPIRED は終端状態、404 は決して期限切れと誤判定しない（[§11](rate-limiting-errors.md)）——すべて「エクスポート動作 ≈ 人間の
-   ブラウジング」というアカウント停止防止目標に奉仕する（ユーザーの明確な要求）。
-5. **設定は単一ソース＋プライバシーは外部化**：サイト定数/デフォルトパスは `config.py` のみ；アカウント/スペースは
-   個人のプライバシーに属し、ユーザーレベルの TOML として外部化（`--config` > `PPLX_EXPORT_CONFIG` >
+3. **帰属の滝は決定論的**：バックグラウンド負荷「各項目は一箇所のみに配置、二重レンダリングは絶対に行わない」はデータ構造によって保証
+   （anchored 集合、used_cand の単回消費、トップレベルイテレーションでの二重計上防止）、ヒューリスティックな時間推測は行わない；
+   中断セマンティクスは五種類で一つの真のソース（classify_wf_status）、レンダリング/記録/警告の三経路で共有（[§5、§6](subagents-interruptions.md)）。
+4. **レート制限の規律は安全上の赤線**：ランダム間隔、並行処理なし、3^N バックオフ上限あり、認証失敗時は fail-fast、
+   ENTRY_EXPIRED は終状態、404 は決して期限切れと誤判定しない（[§11](rate-limiting-errors.md)）——すべて「エクスポート動作 ≈ 人間の
+   ブラウジング」というアカウント停止防止目標に奉仕（ユーザーからの明確な要求）。
+5. **設定は単一ソース + プライバシーは外部化**：サイト定数/デフォルトパスは `config.py` のみ；アカウント/スペースは
+   個人のプライバシーであり、ユーザーレベルの TOML として外部化（`--config` > `PPLX_EXPORT_CONFIG` >
    `~/.config/pplx-export/config.toml`）；複数アカウントの cookie 自動切り替え
-   は登録メール駆動の検出ループであり、手動でのブラウザ操作は不要（[§9](ask-and-accounts.md)）。
-6. **階層的な単方向依存**：CLI → commands → sites → core、core はサイトのハードコードがゼロ、
-   サイトはレジストリを介して注入される——新しいサイト実装は `SiteAdapter` の五つのメソッドを実装するだけで全てのコア機能を再利用可能
+   は登録メール駆動の検出ループであり、ブラウザの手動操作は不要（[§9](ask-and-accounts.md)）。
+6. **階層的な単方向依存**：CLI → commands → sites → core、core はサイトのハードコードゼロ、
+   サイトはレジストリを介して注入——新しいサイト実装は `SiteAdapter` の五つのメソッドを実装するだけで全てのコア機能を再利用可能
    （sites/base.py:21-69）。

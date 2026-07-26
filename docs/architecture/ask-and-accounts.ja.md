@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/architecture/ask-and-accounts.zh-CN.md"
-translation_source_sha256: "b3f3a26e4ef469a9d1cc9d69acd466cfff37203888b388014ad69bc162b4118c"
+translation_source_sha256: "58d3b8978a596a37688507766337cdd856daedf3a9b9472016353a3c0e996bcd"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -15,8 +15,8 @@ translation_prompt_version: "v1"
 <a id="pplx-ask-时序详图" data-pplx-source-anchor="true"></a>
 ## pplx-ask シーケンス詳細図
 
-`cmd_ask`（ask_cli.py:86-198）の完全なシーケンス：エンベロープ構築 → SSE ストリーム → 終了状態チェック →
-BOT スペース → 既読応答 → 人間らしいテレメトリー → エクスポートパイプラインの再利用によるアーカイブ。
+`cmd_ask`（ask_cli.py:86-198）の完全なシーケンス：envelope 構築 → SSE ストリーム → 終了状態チェック →
+BOT 空間 → 既読応答 → 人間らしいテレメトリー → エクスポートパイプラインの再利用によるアーカイブ。
 
 ```mermaid
 sequenceDiagram
@@ -59,24 +59,25 @@ sequenceDiagram
 
 設計上のポイント：
 
-- **エンベロープは実測パラメータテンプレート**：`_BASE_PARAMS`（ask_api.py:44-68）25 個の固定キー
-  （32 項目の `supported_block_use_cases`、言語/タイムゾーン/検索フォーカスなどを含む）、`build_envelope`
-  で mode/model/frontend_uuid などのフィールドをさらに注入し、ブラウザの実際の送信と一致（[../reference/api/api-rest-endpoints.md](../reference/api/api-rest-endpoints.md) §3.9 および `docs/perplexity-api-samples/` の 39-params サンプルと比較）。
+- **envelope は実測パラメータテンプレート**：`_BASE_PARAMS`（ask_api.py:44-68）の 25 個の固定キー
+  （32 個の `supported_block_use_cases`、言語/タイムゾーン/検索フォーカスなどを含む）、`build_envelope`
+  で mode/モデル/frontend_uuid などのフィールドをさらに注入し、ブラウザの実際の送信と一致（
+  [../reference/api/api-rest-endpoints.md](../reference/api/api-rest-endpoints.md) §3.9 および `docs/perplexity-api-samples/` の 39-params サンプルと照合）。
 - **SSE 消費は Transport ABC を経由しない**：ストリーミングインターフェースは `get_json/post_json/download`
   抽象化の範囲外であり、`post_stream` は `CookieTransport` の `_cookie_header`/`_opener`
-  を直接再利用（ask_api.py:126-130）——これは [§1](overview.md) で言及された意図的な結合である。
-- **テレメトリーの人間らしさ**：`_DEVICE_POOL` 3 デバイスランダム（ask_api.py:210-214）、ランダムな一時停止、
-  ランダムな読了時間、イベントスキーマはブラウザ実測と項目ごとに一致（`_telemetry_event`、
-  ask_api.py:217-231）；既読応答とテレメトリーは分離——analytics の "thread viewed" は unread を反転させず、
-  真の応答は `mark_viewed`（ask_api.py:194-201 コメント）。
+  を直接再利用する（ask_api.py:126-130）——これは [§1](overview.md) で言及された意図的な結合である。
+- **テレメトリーの人間らしさ**：`_DEVICE_POOL` の 3 デバイスランダム（ask_api.py:210-214）、ランダムな一時停止、
+  ランダムな読み取り時間、イベントスキーマはブラウザの実測と項目ごとに一致（`_telemetry_event`、
+  ask_api.py:217-231）；既読応答とテレメトリーは分離——analytics の "thread viewed" は unread を反転せず、
+  真の応答は `mark_viewed`（ask_api.py:194-201 のコメント）。
 
 ---
 
 <a id="多账户-cookie-切换流程" data-pplx-source-anchor="true"></a>
-## マルチアカウント Cookie 切り替えフロー
+## マルチアカウント cookie 切り替えフロー
 
-Cookie 解析とアカウント検証は `commands/common.py:make_transport`（common.py:93-155）；
-ソースの列挙は `core/cookies/loaders.py`；webbridge 経路の検証は `_validate_bridge_account`
+cookie 解析とアカウント検証は `commands/common.py:make_transport`（common.py:93-155）；
+ソースの列挙は `core/cookies/loaders.py`；webbridge パスの検証は `_validate_bridge_account`
 （common.py:158-187）。
 
 ```mermaid
@@ -89,11 +90,11 @@ flowchart TD
     WB2 -->|"bridge 不可达"| WBWARN["仅 log.warning 放行<br/>（备用通路不硬失败，common.py:186-187）"]
     WBWARN --> WBOK
 
-    MODE -->|"cookie（默认）"| SRC{"cookie 来源优先级<br/>cookies.resolve（cookies/loaders.py:203-235）"}
-    SRC -->|"1. --cookies-from 指定浏览器"| F1["from_browser（cookies/loaders.py:51）"]
-    SRC -->|"2. --cookies 文件"| F2["from_file：Netscape / JSON 两种格式<br/>#HttpOnly_ 前缀还原（cookies/loaders.py:142-182）"]
+    MODE -->|"cookie（默认）"| SRC{"cookie 来源优先级<br/>cookies.resolve（cookies/loaders.py:270-302）"}
+    SRC -->|"1. --cookies-from 指定浏览器"| F1["from_browser（cookies/loaders.py:107）"]
+    SRC -->|"2. --cookies 文件"| F2["from_file：Netscape / JSON 两种格式<br/>#HttpOnly_ 前缀还原（cookies/loaders.py:209-249）"]
     SRC -->|"3. 新鲜缓存"| F3["CookieCache.load<br/>&lt;out&gt;/index/.cookies.json，12h 新鲜期<br/>（cookies/cache.py:33-47）"]
-    SRC -->|"4. auto-detect"| F4["edge → chrome → firefox → safari<br/>（AUTO_DETECT_ORDER，cookies/loaders.py:32）<br/>browser_cookie3 解密"]
+    SRC -->|"4. auto-detect"| F4["edge → chrome → firefox → safari<br/>（AUTO_DETECT_ORDER，cookies/loaders.py:39）<br/>browser_cookie3 解密"]
     F1 --> SESS
     F2 --> SESS
     F3 --> SESS
@@ -102,23 +103,23 @@ flowchart TD
     SESS -->|"email == ACCOUNT_EMAIL[account]<br/>（用户级配置 accounts.&lt;名&gt;.email）"| OK(("CookieTransport 就绪<br/>+ CookieCache.save 刷新缓存（common.py:150）"))
     SESS -->|"未登记 email"| WARN2["log.warning 提示登记，放行（common.py:146-149）"] --> OK
     SESS -->|"email 不符"| SW["_try_switch_account（common.py:190-215）"]
-    SW --> ENUM["list_account_tokens（cookies/loaders.py:108-139）<br/>枚举浏览器 __Secure-pplx.session.&lt;uid&gt;<br/>（www 子域条目优先）"]
-    ENUM --> LOOP{"逐令牌：替换<br/>__Secure-next-auth.session-token<br/>（ACTIVE_SESSION_COOKIE，cookies/loaders.py:105）"}
+    SW --> ENUM["list_account_tokens（cookies/loaders.py:175-206）<br/>枚举浏览器 __Secure-pplx.session.&lt;uid&gt;<br/>（www 子域条目优先）"]
+    ENUM --> LOOP{"逐令牌：替换<br/>__Secure-next-auth.session-token<br/>（ACTIVE_SESSION_COOKIE，cookies/loaders.py:172）"}
     LOOP --> PROBE["新 CookieTransport 探测<br/>GET /api/auth/session（common.py:207-208）"]
     PROBE -->|"email 匹配"| SWOK(("切换成功：用新 cookie 表<br/>重建 CookieTransport（common.py:136-140）"))
     PROBE -->|"不匹配"| LOOP
     LOOP -->|"全部失败"| ERR["SystemExit：列出目标 email 与当前 email<br/>提示先在浏览器登录（common.py:142-145）"]
 ```
 
-ポイント：
+要点：
 
-- **マルチアカウントモデル**：同一ブラウザでアカウントごとに 1 つの `__Secure-pplx.session.<uid>` Cookie；
-  切り替え = 対象アカウントのその値を `__Secure-next-auth.session-token` に書き込む（cookies/loaders.py:113-120
-  コメント；メカニズムは [../reference/api/api-authentication.md](../reference/api/api-authentication.md) §1.2 で実測済み）。ブラウザ UI の操作は不要。
+- **マルチアカウントモデル**：同一ブラウザでアカウントごとに 1 つの `__Secure-pplx.session.<uid>` cookie；
+  切り替え = 対象アカウントのその値を `__Secure-next-auth.session-token` に書き込む（cookies/loaders.py:180-187
+  のコメント；メカニズムの実測は [../reference/api/api-authentication.md](../reference/api/api-authentication.md) §1.2 を参照）。ブラウザ UI の操作は不要。
 - **キャッシュは `--out` に従う**：`<out_root>/index/.cookies.json`（common.py:111）、
-  fetched_at/source/account_email を含み、検証成功後は常にリフレッシュ（common.py:150）。
-- **webbridge と Cookie は排他**：`--cookies/--cookies-from` と `--transport webbridge`
-  を同時に指定するとエラー（cli.py:229-233；common.py:112-116）。
-- `core/auth.py:CredentialProvider`（WebBridge による Cookie 抽出：CDP Storage.getCookies
-  優先、document.cookie フォールバック、auth.py:41-67）は**予備のフォールバックチェーン**であり、現在の唯一の呼び出し元は
-  `cookies.from_webbridge`（cookies/loaders.py:185-200）。
+  fetched_at/source/account_email を含み、検証成功後は常にリフレッシュされる（common.py:150）。
+- **webbridge と cookie は排他的**：`--cookies/--cookies-from` と `--transport webbridge`
+  を同時に指定するとエラーになる（cli.py:229-233；common.py:112-116）。
+- `core/auth.py:CredentialProvider`（WebBridge からの cookie 抽出：CDP Storage.getCookies
+  優先、document.cookie がフォールバック、auth.py:41-67）は**予備のフォールバックチェーン**であり、現在の唯一の呼び出し元は
+  `cookies.from_webbridge`（cookies/loaders.py:252-267）。
