@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/architecture/overview.md"
-translation_source_sha256: "48a859cceb434af9d7c542a335e0065b961027fec7d44a929f17ca6e27e23142"
+translation_source_sha256: "cd4c6cf3ca00c7690750ff9c42cb9c706647ee9f15e1d7dc9a2a1e02d34c1a7f"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -54,7 +54,7 @@ flowchart TD
         TH["throttle.py rate-limit backoff (throttle.py:15)"]
         ST["state.py BatchState checkpoint (state.py:63)"]
         LG["logging.py central logging (logging.py:45)"]
-        CK["cookies/ + auth.py<br/>cookie sources and credentials (cookies/loaders.py:203)"]
+        CK["cookies/ + auth.py<br/>cookie sources and credentials (cookies/loaders.py:270)"]
         RL["relations.py relations graph (relations.py:200)"]
         RG["registry.py site registry (registry.py:9)"]
         subgraph HTTP["core/http/ transports"]
@@ -112,11 +112,11 @@ flowchart TD
     CFG -. "imported by all layers, zero dependencies itself" .- MO
 ```
 
-Elementos esenciales de la dirección de dependencias (verificados examinando todas las importaciones):
+Aspectos esenciales de la dirección de dependencias (verificados revisando todas las importaciones):
 
 - **Unidireccional**: CLI → comandos → sitios → núcleo. `core/` no importa ninguna implementación concreta de Perplexity
-  (sin codificación fija de sitios); **la única excepción** es `core/registry.py:7` que importa la
-  clase abstracta `SiteAdapter` de `sites/base.py` — una referencia de interfaz, no una referencia de sitio; los sitios concretos se inyectan a través de `register()`
+  (sin codificación de sitios); **la única excepción** es `core/registry.py:7` importando la
+  ABC `SiteAdapter` desde `sites/base.py` — una referencia de interfaz, no una referencia de sitio; los sitios concretos se inyectan a través de `register()`
   (registro integrado de Perplexity en `pplx_export/__init__.py:34-43`).
 - `config.py` es la única fuente de constantes de sitio (dominio, `DEFAULT_ARCHIVE_ROOT`), y carga
   **configuración externalizada a nivel de usuario**: las tablas de cuentas `ACCOUNT_DISPLAY_NAMES/ACCOUNT_EMAIL/ACCOUNT_UID` y el
@@ -127,14 +127,14 @@ Elementos esenciales de la dirección de dependencias (verificados examinando to
   (importa `CookieTransport` y reutiliza sus internos `_cookie_header`/`_opener` para el flujo SSE,
   ask_api.py:23, 114-130) — SSE está fuera de la abstracción de Transport ABC.
 - `hooks/`, `writers/` dependen solo de `core/`; la única implementación de `writers/base.py`,
-  `FilesystemWriter`, reside en la capa de sitios (fs_writer.py:54) — ABC e implementación separadas.
+  `FilesystemWriter`, vive en la capa de sitios (fs_writer.py:54) — ABC e implementación separadas.
 
 ---
 
 <a id="module-dependency-graph-real-import-relations" data-pplx-source-anchor="true"></a>
 ## Grafo de dependencias de módulos (relaciones de importación reales)
 
-Extraído de un censo completo de `grep '^from \.'` (se omiten referencias dentro del paquete; todos los `__init__.py` están vacíos
+Extraído de un censo completo de `grep '^from \.'` (se omiten las referencias dentro del paquete; todos los `__init__.py` están vacíos
 excepto la raíz del paquete `pplx_export/__init__.py`, que lleva a cabo el registro):
 
 ```mermaid
@@ -279,8 +279,8 @@ flowchart LR
 
 Cómo leer el grafo:
 
-- **Cadena del núcleo**: `cli → commands → sites → core`. Ningún módulo del núcleo depende de implementaciones concretas
-  de comandos/sitios; `KG → SBASE` (registro → SiteAdapter ABC) es la única
+- **Cadena del núcleo**: `cli → commands → sites → core`. Ningún módulo del núcleo depende de implementaciones
+  concretas de comandos/sitios; `KG → SBASE` (registro → ABC SiteAdapter) es la única
   referencia inversa entre capas, formando un bucle de inyección de dependencias con el registro de `E0`.
 - Agregación dentro de `sites/perplexity/`: `adapter` es la fachada (componiendo graphql/rest/parsers/
   normalize/assets); `render` depende de `parsers` (fuente de verdad para la clasificación de estado wf); `fs_writer`
@@ -297,27 +297,27 @@ Cómo leer el grafo:
    `adapter.get_thread` analiza y ensambla la conversación en memoria antes de que
    el escritor se ejecute (adapter.py:58-157). Una escritura exitosa almacena `thread.json`
    primero y luego las respuestas sin procesar/esquematizadas disponibles como `raw_*.json`
-   (fs_writer.py:224-266); el análisis/representación/registro de interrupción puede luego
-   reejecutarse a partir de datos sin procesar sin red ([§12](offline-operations.md)), desacoplando
+   (fs_writer.py:224-266); el análisis/representación/registro de interrupción pueden luego
+   reejecutarse desde los datos sin procesar sin red ([§12](offline-operations.md)), desacoplando
    la evolución del renderizador de los archivos históricos.
 2. **Punto de análisis único, tolerante a cambios en la estructura de datos**: la extracción de campos está
    concentrada en `parsers.py` (el trío de tolerancia a fallos `_g`/`_loads`/`to_int`); la detección
    de modo tiene señales redundantes duales más una recuperación de respaldo cuando faltan todas las señales ([§4](export-pipeline.md)) —
    el radio de explosión de una renovación de plataforma se comprime en un módulo.
-3. **Cascada de atribución determinista**: "cada carga útil de fondo aterriza exactamente en un
+3. **Cascada de atribución determinista**: "cada carga útil de fondo cae exactamente en un
    lugar, nunca se renderiza dos veces" está garantizado por las estructuras de datos (el conjunto anclado, consumo único de used_cand,
-   iteración solo de nivel superior contra doble conteo) — sin adivinación heurística de tiempo;
+   iteración solo de nivel superior contra doble conteo) — sin adivinación de tiempo heurística;
    la semántica de interrupción tiene cinco clases con una fuente de verdad
    (classify_wf_status) compartida por las rutas de renderizado/registro/alerta ([§5, §6](subagents-interruptions.md)).
 4. **La disciplina de límite de velocidad es una línea roja de seguridad**: intervalos aleatorios, sin concurrencia, retroceso 3^N
    con un límite, fallo rápido en fallo de autenticación, el estado terminal ENTRY_EXPIRED, 404 nunca
-   malinterpretado como caducado ([§11](rate-limiting-errors.md)) — todo sirviendo al objetivo anti-bloqueo de "comportamiento de exportación ≈ navegación humana"
+   malinterpretado como expirado ([§11](rate-limiting-errors.md)) — todo sirviendo al objetivo anti-bloqueo de "comportamiento de exportación ≈ navegación humana"
    (un requisito explícito del usuario).
 5. **Fuente única de configuración + privacidad externalizada**: las constantes de sitio/rutas predeterminadas
    viven solo en `config.py`; las cuentas/espacios son privacidad personal, externalizados en TOML
    a nivel de usuario (`--config` > `PPLX_EXPORT_CONFIG` > `~/.config/pplx-export/config.toml`); el cambio automático
-   de cookies entre cuentas múltiples es un bucle de sondeo impulsado por correos electrónicos registrados, sin operación
-   manual del navegador ([§9](ask-and-accounts.md)).
-6. **Dependencias unidireccionales en capas**: CLI → comandos → sitios → núcleo, con cero codificación fija de sitios
-   en el núcleo y sitios inyectados a través del registro — un nuevo sitio implementa los cinco métodos de `SiteAdapter`
+   de cookies de múltiples cuentas es un bucle de sondeo impulsado por correos electrónicos registrados, sin operación manual
+   del navegador ([§9](ask-and-accounts.md)).
+6. **Dependencias unidireccionales en capas**: CLI → comandos → sitios → núcleo, con cero codificación de sitios
+   en el núcleo y los sitios inyectados a través del registro — un nuevo sitio implementa los cinco métodos de `SiteAdapter`
    y reutiliza todas las instalaciones del núcleo (sites/base.py:21-69).

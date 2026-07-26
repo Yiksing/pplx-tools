@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/architecture/ask-and-accounts.md"
-translation_source_sha256: "d350a1679fbc6f9d566a9955de3c45d88daf9c58ae0ed2d8f3c9c0c8d38f8f05"
+translation_source_sha256: "fecfe8824ffed615a6fcc43ff90af9f59c12dfb4c8173aab0b0a075e72416116"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -13,10 +13,10 @@ translation_prompt_version: "v1"
 ---
 
 <a id="pplx-ask-sequence-in-detail" data-pplx-source-anchor="true"></a>
-## Secuencia detallada de pplx-ask
+## Secuencia de pplx-ask en detalle
 
-La secuencia completa de `cmd_ask` (ask_cli.py:86-198): construcción del envelope → flujo SSE → verificación de estado final →
-espacio BOT → confirmación de lectura → telemetría humanizada → archivado mediante el pipeline de exportación.
+La secuencia completa de `cmd_ask` (ask_cli.py:86-198): construcción del envoltorio → flujo SSE → verificación de estado final →
+espacio BOT → recibo de lectura → telemetría humanizada → archivado mediante el pipeline de exportación.
 
 ```mermaid
 sequenceDiagram
@@ -57,27 +57,27 @@ sequenceDiagram
     A-->>U: machine-readable JSON: thread_uuid / thread_url /<br/>context_uuid / moved_to_bot / mark_read / telemetry (booleans)<br/>/ step_errors (failed steps only) / exported (end of ask_cli.py)
 ```
 
-Elementos esenciales de diseño:
+Aspectos esenciales del diseño:
 
-- **El envelope es una plantilla de parámetros probada en campo**: `_BASE_PARAMS` (ask_api.py:44-68) tiene 25 claves fijas
+- **El envoltorio es una plantilla de parámetros probada en campo**: `_BASE_PARAMS` (ask_api.py:44-68) tiene 25 claves fijas
   (incl. 32 `supported_block_use_cases`, idioma/zona horaria/enfoque de búsqueda, etc.); `build_envelope`
   inyecta los campos mode/model/frontend_uuid, coincidiendo con envíos reales del navegador (comparar
   [../reference/api/api-rest-endpoints.md](../reference/api/api-rest-endpoints.md) §3.9 y las muestras de 39 parámetros en `docs/perplexity-api-samples/`).
-- **El consumo de SSE evita la ABC de Transport**: la transmisión en flujo está fuera de la abstracción `get_json/post_json/download`;
-  `post_stream` reutiliza directamente `CookieTransport`'s `_cookie_header`/`_opener`
+- **El consumo de SSE evita la abstracción Transport ABC**: la transmisión en flujo está fuera de la
+  abstracción `get_json/post_json/download`; `post_stream` reutiliza directamente `CookieTransport`'s `_cookie_header`/`_opener`
   (ask_api.py:126-130) — el acoplamiento deliberado mencionado en [§1](overview.md).
 - **Humanización de telemetría**: `_DEVICE_POOL` aleatoriza entre tres dispositivos (ask_api.py:210-214), pausas aleatorias,
   duraciones de lectura aleatorias; los esquemas de eventos se alinean elemento por elemento con las observaciones del navegador (`_telemetry_event`,
-  ask_api.py:217-231); la confirmación de lectura es independiente de la telemetría — la analítica "hilo visto" no cambia el estado de no leído;
-  la confirmación real es `mark_viewed` (comentario en ask_api.py:194-201).
+  ask_api.py:217-231); el recibo de lectura está separado de la telemetría — el análisis "hilo visto" no cambia el estado de no leído;
+  el recibo real es `mark_viewed` (ask_api.py:194-201 comentario).
 
 ---
 
 <a id="multi-account-cookie-switching-flow" data-pplx-source-anchor="true"></a>
-## Flujo de cambio de cookies para múltiples cuentas
+## Flujo de cambio de cookies multi-cuenta
 
 La resolución de cookies y la validación de cuentas residen en `commands/common.py:make_transport` (common.py:93-155);
-la enumeración de fuentes en `core/cookies/loaders.py`; la validación de la ruta webbridge en `_validate_bridge_account`
+la enumeración de fuentes en `core/cookies/loaders.py`; la validación de ruta de webbridge en `_validate_bridge_account`
 (common.py:158-187).
 
 ```mermaid
@@ -90,11 +90,11 @@ flowchart TD
     WB2 -->|"bridge unreachable"| WBWARN["log.warning only, proceed<br/>(fallback path doesn't hard-fail, common.py:186-187)"]
     WBWARN --> WBOK
 
-    MODE -->|"cookie (default)"| SRC{"cookie source priority<br/>cookies.resolve (cookies/loaders.py:203-235)"}
-    SRC -->|"1. --cookies-from specifies browser"| F1["from_browser (cookies/loaders.py:51)"]
-    SRC -->|"2. --cookies file"| F2["from_file: Netscape / JSON formats<br/>#HttpOnly_ prefix restored (cookies/loaders.py:142-182)"]
+    MODE -->|"cookie (default)"| SRC{"cookie source priority<br/>cookies.resolve (cookies/loaders.py:270-302)"}
+    SRC -->|"1. --cookies-from specifies browser"| F1["from_browser (cookies/loaders.py:107)"]
+    SRC -->|"2. --cookies file"| F2["from_file: Netscape / JSON formats<br/>#HttpOnly_ prefix restored (cookies/loaders.py:209-249)"]
     SRC -->|"3. fresh cache"| F3["CookieCache.load<br/>&lt;out&gt;/index/.cookies.json, 12h freshness<br/>(cookies/cache.py:33-47)"]
-    SRC -->|"4. auto-detect"| F4["edge → chrome → firefox → safari<br/>(AUTO_DETECT_ORDER, cookies/loaders.py:32)<br/>browser_cookie3 decryption"]
+    SRC -->|"4. auto-detect"| F4["edge → chrome → firefox → safari<br/>(AUTO_DETECT_ORDER, cookies/loaders.py:39)<br/>browser_cookie3 decryption"]
     F1 --> SESS
     F2 --> SESS
     F3 --> SESS
@@ -103,23 +103,23 @@ flowchart TD
     SESS -->|"email == ACCOUNT_EMAIL[account]<br/>(user-level config accounts.&lt;name&gt;.email)"| OK(("CookieTransport ready<br/>+ CookieCache.save refreshes cache (common.py:150)"))
     SESS -->|"unregistered email"| WARN2["log.warning suggests registering, proceed (common.py:146-149)"] --> OK
     SESS -->|"email mismatch"| SW["_try_switch_account (common.py:190-215)"]
-    SW --> ENUM["list_account_tokens (cookies/loaders.py:108-139)<br/>enumerate browser __Secure-pplx.session.&lt;uid&gt;<br/>(www-subdomain entries preferred)"]
-    ENUM --> LOOP{"per token: replace<br/>__Secure-next-auth.session-token<br/>(ACTIVE_SESSION_COOKIE, cookies/loaders.py:105)"}
+    SW --> ENUM["list_account_tokens (cookies/loaders.py:175-206)<br/>enumerate browser __Secure-pplx.session.&lt;uid&gt;<br/>(www-subdomain entries preferred)"]
+    ENUM --> LOOP{"per token: replace<br/>__Secure-next-auth.session-token<br/>(ACTIVE_SESSION_COOKIE, cookies/loaders.py:172)"}
     LOOP --> PROBE["probe with new CookieTransport<br/>GET /api/auth/session (common.py:207-208)"]
     PROBE -->|"email matches"| SWOK(("switch succeeded: rebuild CookieTransport<br/>with the new cookie jar (common.py:136-140)"))
     PROBE -->|"no match"| LOOP
     LOOP -->|"all failed"| ERR["SystemExit: list target email and current email<br/>prompt to log in in the browser first (common.py:142-145)"]
 ```
 
-Elementos esenciales:
+Aspectos esenciales:
 
-- **Modelo de múltiples cuentas**: una cookie `__Secure-pplx.session.<uid>` por cuenta en el mismo navegador;
-  cambiar = escribir el valor de la cuenta objetivo en `__Secure-next-auth.session-token` (comentario en cookies/loaders.py:113-120;
-  mecanismo probado en [../reference/api/api-authentication.md](../reference/api/api-authentication.md) §1.2). No se necesita interfaz de navegador.
+- **Modelo multi-cuenta**: una cookie `__Secure-pplx.session.<uid>` por cuenta en el mismo navegador;
+  cambiar = escribir el valor de la cuenta objetivo en `__Secure-next-auth.session-token` (cookies/loaders.py:180-187
+  comentario; mecanismo probado en [../reference/api/api-authentication.md](../reference/api/api-authentication.md) §1.2). No se necesita interfaz de navegador.
 - **La caché sigue a `--out`**: `<out_root>/index/.cookies.json` (common.py:111),
-  con fetched_at/source/account_email; siempre se actualiza tras una validación exitosa (common.py:150).
+  con fetched_at/source/account_email; siempre se actualiza después de una validación exitosa (common.py:150).
 - **webbridge y cookie son mutuamente excluyentes**: pasar `--cookies/--cookies-from` junto con `--transport webbridge`
-  produce un error (cli.py:229-233; common.py:112-116).
+  genera un error (cli.py:229-233; common.py:112-116).
 - `core/auth.py:CredentialProvider` (extracción de cookies mediante WebBridge: CDP Storage.getCookies
-  preferido, document.cookie como alternativa, auth.py:41-67) pertenece a la **cadena de respaldo reservada**; su único llamante hoy es
-  `cookies.from_webbridge` (cookies/loaders.py:185-200).
+  preferido, document.cookie como respaldo, auth.py:41-67) pertenece a la **cadena de respaldo reservada**; su único llamante hoy es
+  `cookies.from_webbridge` (cookies/loaders.py:252-267).
