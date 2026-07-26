@@ -120,10 +120,10 @@ TOML 没有任何通路或 cookie 设置。这些按调用选择：
 
 多个账户同登一个浏览器时，cookie 库为**每个账户**各存一条会话 cookie，配置里的 `email` 字段告诉工具它需要哪一个：
 
-- 每个已登录账户有一条 `__Secure-pplx.session.<uid>` cookie（`ACCOUNT_SESSION_PREFIX`，`pplx_export/core/cookies/loaders.py:104`）；`<uid>` 后缀即账户的 `user_id`。
-- **当前活跃**账户就是令牌当前写在 `__Secure-next-auth.session-token` 里的那个（`ACTIVE_SESSION_COOKIE`，`pplx_export/core/cookies/loaders.py:105`）。切换账户 = 把目标账户的按账户 cookie 值写进该 cookie——无需浏览器 UI（`pplx_export/core/cookies/loaders.py:113-120`）。
+- 每个已登录账户有一条 `__Secure-pplx.session.<uid>` cookie（`ACCOUNT_SESSION_PREFIX`，`pplx_export/core/cookies/loaders.py:171`）；`<uid>` 后缀即账户的 `user_id`。
+- **当前活跃**账户就是令牌当前写在 `__Secure-next-auth.session-token` 里的那个（`ACTIVE_SESSION_COOKIE`，`pplx_export/core/cookies/loaders.py:172`）。切换账户 = 把目标账户的按账户 cookie 值写进该 cookie——无需浏览器 UI（`pplx_export/core/cookies/loaders.py:180-187`）。
 - 启动时 transport 探测 `GET https://www.perplexity.ai/api/auth/session`，把返回的 email 与 `accounts.<name>.email` 比对（`pplx_export/commands/common.py:126-130`）。
-- 不匹配时，`_try_switch_account`（`pplx_export/commands/common.py:190-215`）经 `list_account_tokens`（`pplx_export/core/cookies/loaders.py:108-139`，优先 `www.` 子域上的条目）枚举浏览器中全部账户令牌，逐个写进 `__Secure-next-auth.session-token` 试配，首个匹配即用它重建 transport。
+- 不匹配时，`_try_switch_account`（`pplx_export/commands/common.py:190-215`）经 `list_account_tokens`（`pplx_export/core/cookies/loaders.py:175-206`，优先 `www.` 子域上的条目）枚举浏览器中全部账户令牌，逐个写进 `__Secure-next-auth.session-token` 试配，首个匹配即用它重建 transport。
 - 全部不匹配时命令退出，列出两个 email 并请你先在浏览器登录目标账户（`pplx_export/commands/common.py:142-145`）——见[故障排查](troubleshooting.md)。
 - 未登记 `email` 的账户不做校验直接放行，并 warning 请你自行确认浏览器登录的是正确账户（`pplx_export/commands/common.py:146-149`）。
 
@@ -141,7 +141,7 @@ TOML 没有任何通路或 cookie 设置。这些按调用选择：
 | 写入 | 原子写：临时文件以 `0o600` 创建后 `os.replace`（`pplx_export/core/cookies/cache.py:49-67`） |
 | Git | 已被 `.gitignore` 覆盖（`**/index/.cookies.json`） |
 
-cookie 解析顺序（`cookies.resolve`，`pplx_export/core/cookies/loaders.py:203-235`）：显式 `--cookies-from` → 显式 `--cookies` 文件 → 新鲜缓存 → auto-detect 浏览器（edge → chrome → firefox → safari）。每次账户校验成功后都会刷新缓存（`pplx_export/commands/common.py:150`）。
+cookie 解析顺序（`cookies.resolve`，`pplx_export/core/cookies/loaders.py:270-302`）：显式 `--cookies-from` → 显式 `--cookies` 文件 → 新鲜缓存 → auto-detect 浏览器（edge → chrome → firefox → safari）。每次账户校验成功后都会刷新缓存（`pplx_export/commands/common.py:150`）。
 
 ## 保护你的文件
 

@@ -78,11 +78,11 @@ flowchart TD
     WB2 -->|"bridge unreachable"| WBWARN["log.warning only, proceed<br/>(fallback path doesn't hard-fail, common.py:186-187)"]
     WBWARN --> WBOK
 
-    MODE -->|"cookie (default)"| SRC{"cookie source priority<br/>cookies.resolve (cookies/loaders.py:203-235)"}
-    SRC -->|"1. --cookies-from specifies browser"| F1["from_browser (cookies/loaders.py:51)"]
-    SRC -->|"2. --cookies file"| F2["from_file: Netscape / JSON formats<br/>#HttpOnly_ prefix restored (cookies/loaders.py:142-182)"]
+    MODE -->|"cookie (default)"| SRC{"cookie source priority<br/>cookies.resolve (cookies/loaders.py:270-302)"}
+    SRC -->|"1. --cookies-from specifies browser"| F1["from_browser (cookies/loaders.py:107)"]
+    SRC -->|"2. --cookies file"| F2["from_file: Netscape / JSON formats<br/>#HttpOnly_ prefix restored (cookies/loaders.py:209-249)"]
     SRC -->|"3. fresh cache"| F3["CookieCache.load<br/>&lt;out&gt;/index/.cookies.json, 12h freshness<br/>(cookies/cache.py:33-47)"]
-    SRC -->|"4. auto-detect"| F4["edge → chrome → firefox → safari<br/>(AUTO_DETECT_ORDER, cookies/loaders.py:32)<br/>browser_cookie3 decryption"]
+    SRC -->|"4. auto-detect"| F4["edge → chrome → firefox → safari<br/>(AUTO_DETECT_ORDER, cookies/loaders.py:39)<br/>browser_cookie3 decryption"]
     F1 --> SESS
     F2 --> SESS
     F3 --> SESS
@@ -91,8 +91,8 @@ flowchart TD
     SESS -->|"email == ACCOUNT_EMAIL[account]<br/>(user-level config accounts.&lt;name&gt;.email)"| OK(("CookieTransport ready<br/>+ CookieCache.save refreshes cache (common.py:150)"))
     SESS -->|"unregistered email"| WARN2["log.warning suggests registering, proceed (common.py:146-149)"] --> OK
     SESS -->|"email mismatch"| SW["_try_switch_account (common.py:190-215)"]
-    SW --> ENUM["list_account_tokens (cookies/loaders.py:108-139)<br/>enumerate browser __Secure-pplx.session.&lt;uid&gt;<br/>(www-subdomain entries preferred)"]
-    ENUM --> LOOP{"per token: replace<br/>__Secure-next-auth.session-token<br/>(ACTIVE_SESSION_COOKIE, cookies/loaders.py:105)"}
+    SW --> ENUM["list_account_tokens (cookies/loaders.py:175-206)<br/>enumerate browser __Secure-pplx.session.&lt;uid&gt;<br/>(www-subdomain entries preferred)"]
+    ENUM --> LOOP{"per token: replace<br/>__Secure-next-auth.session-token<br/>(ACTIVE_SESSION_COOKIE, cookies/loaders.py:172)"}
     LOOP --> PROBE["probe with new CookieTransport<br/>GET /api/auth/session (common.py:207-208)"]
     PROBE -->|"email matches"| SWOK(("switch succeeded: rebuild CookieTransport<br/>with the new cookie jar (common.py:136-140)"))
     PROBE -->|"no match"| LOOP
@@ -102,7 +102,7 @@ flowchart TD
 Essentials:
 
 - **Multi-account model**: one `__Secure-pplx.session.<uid>` cookie per account in the same browser;
-  switching = writing the target account's value into `__Secure-next-auth.session-token` (cookies/loaders.py:113-120
+  switching = writing the target account's value into `__Secure-next-auth.session-token` (cookies/loaders.py:180-187
   comment; mechanism tested in [../reference/api/api-authentication.md](../reference/api/api-authentication.md) §1.2). No browser UI needed.
 - **Cache follows `--out`**: `<out_root>/index/.cookies.json` (common.py:111),
   with fetched_at/source/account_email; always refreshed after successful validation (common.py:150).
@@ -110,4 +110,4 @@ Essentials:
   errors out (cli.py:229-233; common.py:112-116).
 - `core/auth.py:CredentialProvider` (cookie extraction via WebBridge: CDP Storage.getCookies
   preferred, document.cookie fallback, auth.py:41-67) belongs to the **reserved fallback chain**; its only caller today is
-  `cookies.from_webbridge` (cookies/loaders.py:185-200).
+  `cookies.from_webbridge` (cookies/loaders.py:252-267).

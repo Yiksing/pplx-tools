@@ -120,10 +120,10 @@ What "offline commands" cover and how degraded runs interact with the archive is
 
 With several accounts signed into the same browser, the store holds one session cookie **per account**, and the config's `email` field tells the tool which one it needs:
 
-- Each signed-in account has a `__Secure-pplx.session.<uid>` cookie (`ACCOUNT_SESSION_PREFIX`, `pplx_export/core/cookies/loaders.py:104`); the `<uid>` suffix is the account's `user_id`.
-- The **active** account is whichever token currently sits in `__Secure-next-auth.session-token` (`ACTIVE_SESSION_COOKIE`, `pplx_export/core/cookies/loaders.py:105`). Switching accounts = writing the target account's per-account cookie value into that cookie — no browser UI needed (`pplx_export/core/cookies/loaders.py:113-120`).
+- Each signed-in account has a `__Secure-pplx.session.<uid>` cookie (`ACCOUNT_SESSION_PREFIX`, `pplx_export/core/cookies/loaders.py:171`); the `<uid>` suffix is the account's `user_id`.
+- The **active** account is whichever token currently sits in `__Secure-next-auth.session-token` (`ACTIVE_SESSION_COOKIE`, `pplx_export/core/cookies/loaders.py:172`). Switching accounts = writing the target account's per-account cookie value into that cookie — no browser UI needed (`pplx_export/core/cookies/loaders.py:180-187`).
 - At startup the transport probes `GET https://www.perplexity.ai/api/auth/session` and compares the returned email against `accounts.<name>.email` (`pplx_export/commands/common.py:126-130`).
-- On mismatch, `_try_switch_account` (`pplx_export/commands/common.py:190-215`) enumerates every account token in the browser via `list_account_tokens` (`pplx_export/core/cookies/loaders.py:108-139`, preferring entries on the `www.` subdomain), tries each one in `__Secure-next-auth.session-token`, and rebuilds the transport on the first match.
+- On mismatch, `_try_switch_account` (`pplx_export/commands/common.py:190-215`) enumerates every account token in the browser via `list_account_tokens` (`pplx_export/core/cookies/loaders.py:175-206`, preferring entries on the `www.` subdomain), tries each one in `__Secure-next-auth.session-token`, and rebuilds the transport on the first match.
 - If no token matches, the command exits naming both emails and asking you to log the target account in the browser first (`pplx_export/commands/common.py:142-145`) — see [Troubleshooting](troubleshooting.md).
 - An account with no registered `email` proceeds unchecked, with a warning asking you to confirm the browser login yourself (`pplx_export/commands/common.py:146-149`).
 
@@ -141,7 +141,7 @@ After successful validation the resolved cookies are cached so later runs skip t
 | Write | Atomic: temp file created with mode `0o600`, then `os.replace` (`pplx_export/core/cookies/cache.py:49-67`) |
 | Git | Covered by `.gitignore` (`**/index/.cookies.json`) |
 
-Cookie resolution order (`cookies.resolve`, `pplx_export/core/cookies/loaders.py:203-235`): explicit `--cookies-from` → explicit `--cookies` file → fresh cache → auto-detect browsers (edge → chrome → firefox → safari). The cache is refreshed after every successful account validation (`pplx_export/commands/common.py:150`).
+Cookie resolution order (`cookies.resolve`, `pplx_export/core/cookies/loaders.py:270-302`): explicit `--cookies-from` → explicit `--cookies` file → fresh cache → auto-detect browsers (edge → chrome → firefox → safari). The cache is refreshed after every successful account validation (`pplx_export/commands/common.py:150`).
 
 ## Protecting your files
 

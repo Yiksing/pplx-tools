@@ -69,7 +69,13 @@ key kept in the OS keyring, read at runtime through the Secret Service D-Bus API
 `browser_cookie3` talks D-Bus via pure-Python `jeepney` — already installed with the
 tool on Linux, nothing extra to set up — and falls back to the legacy `peanuts`
 password when no keyring answers, which only decrypts cookies that Chrome also wrote
-without a keyring. Firefox needs none of this: its `cookies.sqlite` is unencrypted.
+without a keyring. When the keyring exists but the D-Bus lookup itself fails at the
+transport level (e.g. a session bus rejecting anonymous auth), `browser_cookie3`'s
+own fallback chain never engages; the tool detects that case and retries once with
+the keyring bypassed, using Chromium's default password — the same key Chromium
+itself uses when no keyring is available (`pplx_export/core/cookies/loaders.py:62-104`,
+wired into the load path at `loaders.py:136-153`). Firefox needs none of this: its
+`cookies.sqlite` is unencrypted.
 
 **The matrix**:
 
@@ -78,6 +84,7 @@ without a keyring. Firefox needs none of this: its `cookies.sqlite` is unencrypt
 | Browser | Firefox | Zero friction — `cookies.sqlite` is not encrypted |
 | Browser | Chromium + reachable keyring | Works — the key is fetched via Secret Service |
 | Browser | Chromium + no keyring | `peanuts` path — works only if Chrome also wrote without a keyring |
+| Browser | Chromium + keyring unreachable (D-Bus-level failure) | The tool auto-retries with Chromium's default password — same reach as the `peanuts` path |
 | Install method | Native package | Auto-detected (browser_cookie3's built-in paths) |
 | Install method | snap / flatpak | Auto-detected — the built-in profile registry covers profiles under `~/snap/<name>/...` resp. `~/.var/app/<app-id>/...` (`pplx_export/core/cookies/profiles.py:37-67`) |
 | Desktop environment | GNOME | Usually works out of the box (gnome-keyring) |
@@ -89,7 +96,7 @@ without a keyring. Firefox needs none of this: its `cookies.sqlite` is unencrypt
 
 Sandbox installs need no extra flags: the native path is probed first, then the
 registry's snap/flatpak cookie databases via an explicit `cookie_file=`
-(`pplx_export/core/cookies/loaders.py:89-101`).
+(`pplx_export/core/cookies/loaders.py:155-168`).
 
 **Scenario → recommended channel**:
 
@@ -116,7 +123,7 @@ transport calls `GET /api/auth/session` and compares the live email with the reg
 one. On mismatch it automatically enumerates the browser's per-account session cookies
 (`__Secure-pplx.session.<user_id>`), substitutes each into the active token, and probes
 the session until the target email matches (`pplx_export/commands/common.py:190`;
-`pplx_export/core/cookies/loaders.py:108`). If no token matches, the command aborts with a clear
+`pplx_export/core/cookies/loaders.py:175`). If no token matches, the command aborts with a clear
 error — it never silently proceeds as the wrong account.
 
 **Fix**:

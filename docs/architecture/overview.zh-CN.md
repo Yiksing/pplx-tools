@@ -43,7 +43,7 @@ flowchart TD
         TH["throttle.py 限频退避（throttle.py:15）"]
         ST["state.py BatchState 断点（state.py:63）"]
         LG["logging.py 中央日志（logging.py:45）"]
-        CK["cookies/ + auth.py<br/>cookie 来源与凭证（cookies/loaders.py:203）"]
+        CK["cookies/ + auth.py<br/>cookie 来源与凭证（cookies/loaders.py:270）"]
         RL["relations.py 关系图（relations.py:200）"]
         RG["registry.py 站点注册表（registry.py:9）"]
         subgraph HTTP["core/http/ transports"]

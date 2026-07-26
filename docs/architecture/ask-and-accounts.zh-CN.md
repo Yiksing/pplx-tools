@@ -78,11 +78,11 @@ flowchart TD
     WB2 -->|"bridge 不可达"| WBWARN["仅 log.warning 放行<br/>（备用通路不硬失败，common.py:186-187）"]
     WBWARN --> WBOK
 
-    MODE -->|"cookie（默认）"| SRC{"cookie 来源优先级<br/>cookies.resolve（cookies/loaders.py:203-235）"}
-    SRC -->|"1. --cookies-from 指定浏览器"| F1["from_browser（cookies/loaders.py:51）"]
-    SRC -->|"2. --cookies 文件"| F2["from_file：Netscape / JSON 两种格式<br/>#HttpOnly_ 前缀还原（cookies/loaders.py:142-182）"]
+    MODE -->|"cookie（默认）"| SRC{"cookie 来源优先级<br/>cookies.resolve（cookies/loaders.py:270-302）"}
+    SRC -->|"1. --cookies-from 指定浏览器"| F1["from_browser（cookies/loaders.py:107）"]
+    SRC -->|"2. --cookies 文件"| F2["from_file：Netscape / JSON 两种格式<br/>#HttpOnly_ 前缀还原（cookies/loaders.py:209-249）"]
     SRC -->|"3. 新鲜缓存"| F3["CookieCache.load<br/>&lt;out&gt;/index/.cookies.json，12h 新鲜期<br/>（cookies/cache.py:33-47）"]
-    SRC -->|"4. auto-detect"| F4["edge → chrome → firefox → safari<br/>（AUTO_DETECT_ORDER，cookies/loaders.py:32）<br/>browser_cookie3 解密"]
+    SRC -->|"4. auto-detect"| F4["edge → chrome → firefox → safari<br/>（AUTO_DETECT_ORDER，cookies/loaders.py:39）<br/>browser_cookie3 解密"]
     F1 --> SESS
     F2 --> SESS
     F3 --> SESS
@@ -91,8 +91,8 @@ flowchart TD
     SESS -->|"email == ACCOUNT_EMAIL[account]<br/>（用户级配置 accounts.&lt;名&gt;.email）"| OK(("CookieTransport 就绪<br/>+ CookieCache.save 刷新缓存（common.py:150）"))
     SESS -->|"未登记 email"| WARN2["log.warning 提示登记，放行（common.py:146-149）"] --> OK
     SESS -->|"email 不符"| SW["_try_switch_account（common.py:190-215）"]
-    SW --> ENUM["list_account_tokens（cookies/loaders.py:108-139）<br/>枚举浏览器 __Secure-pplx.session.&lt;uid&gt;<br/>（www 子域条目优先）"]
-    ENUM --> LOOP{"逐令牌：替换<br/>__Secure-next-auth.session-token<br/>（ACTIVE_SESSION_COOKIE，cookies/loaders.py:105）"}
+    SW --> ENUM["list_account_tokens（cookies/loaders.py:175-206）<br/>枚举浏览器 __Secure-pplx.session.&lt;uid&gt;<br/>（www 子域条目优先）"]
+    ENUM --> LOOP{"逐令牌：替换<br/>__Secure-next-auth.session-token<br/>（ACTIVE_SESSION_COOKIE，cookies/loaders.py:172）"}
     LOOP --> PROBE["新 CookieTransport 探测<br/>GET /api/auth/session（common.py:207-208）"]
     PROBE -->|"email 匹配"| SWOK(("切换成功：用新 cookie 表<br/>重建 CookieTransport（common.py:136-140）"))
     PROBE -->|"不匹配"| LOOP
@@ -102,7 +102,7 @@ flowchart TD
 要点：
 
 - **多账户模型**：同浏览器每账户一条 `__Secure-pplx.session.<uid>` cookie；
-  切换 = 把目标账户那条的值写进 `__Secure-next-auth.session-token`（cookies/loaders.py:113-120
+  切换 = 把目标账户那条的值写进 `__Secure-next-auth.session-token`（cookies/loaders.py:180-187
   注释；机制实测见 [../reference/api/api-authentication.md](../reference/api/api-authentication.md) §1.2）。无需操作浏览器 UI。
 - **缓存跟随 `--out`**：`<out_root>/index/.cookies.json`（common.py:111），
   含 fetched_at/source/account_email，成功校验后总是刷新（common.py:150）。
@@ -110,4 +110,4 @@ flowchart TD
   同给即报错（cli.py:229-233；common.py:112-116）。
 - `core/auth.py:CredentialProvider`（WebBridge 提取 cookie：CDP Storage.getCookies
   优先、document.cookie 兜底，auth.py:41-67）属**预留降级链**，当前唯一调用方是
-  `cookies.from_webbridge`（cookies/loaders.py:185-200）。
+  `cookies.from_webbridge`（cookies/loaders.py:252-267）。

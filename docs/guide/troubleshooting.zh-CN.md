@@ -59,7 +59,11 @@ cookie 库，尽管浏览器确实处于登录状态。
 数据库，运行时经 Secret Service D-Bus API 取出该密钥。`browser_cookie3` 通过纯
 Python 的 `jeepney` 访问 D-Bus——它已随工具安装在 Linux 上，无需额外配置——
 当没有任何 keyring 应答时回退到旧式 `peanuts` 口令，而该口令只能解开 Chrome
-当初同样在无 keyring 环境下写入的 cookie。Firefox 完全不涉及这些：其
+当初同样在无 keyring 环境下写入的 cookie。当 keyring 存在但 D-Bus 查询在传输层
+本身失败时（如会话总线拒绝匿名访问），`browser_cookie3` 自身的兜底链不会生效；
+工具识别该情形并绕过 keyring 重试一次，使用 Chromium 默认密码——即 Chromium
+在无 keyring 可用时自己使用的密钥（`pplx_export/core/cookies/loaders.py:62-104`，
+接入加载路径于 `loaders.py:136-153`）。Firefox 完全不涉及这些：其
 `cookies.sqlite` 不加密。
 
 **矩阵**：
@@ -69,6 +73,7 @@ Python 的 `jeepney` 访问 D-Bus——它已随工具安装在 Linux 上，无�
 | 浏览器 | Firefox | 零摩擦——`cookies.sqlite` 不加密 |
 | 浏览器 | Chromium + keyring 可达 | 正常——经 Secret Service 取密钥 |
 | 浏览器 | Chromium + 无 keyring | `peanuts` 路径——仅当 Chrome 当初也在无 keyring 下写入才有效 |
+| 浏览器 | Chromium + keyring 不可达（D-Bus 层失败） | 工具自动用 Chromium 默认密码重试——可达性与 `peanuts` 路径相同 |
 | 安装方式 | 原生包 | auto-detect（browser_cookie3 内置路径） |
 | 安装方式 | snap / flatpak | auto-detect——内置 profile 注册表覆盖了 `~/snap/<name>/...` 与 `~/.var/app/<app-id>/...` 下的 profile（`pplx_export/core/cookies/profiles.py:37-67`） |
 | 桌面环境 | GNOME | 通常开箱即用（gnome-keyring） |
@@ -79,7 +84,7 @@ Python 的 `jeepney` 访问 D-Bus——它已随工具安装在 Linux 上，无�
 | 发行版 | Arch | 机制相同，仅包名不同 |
 
 沙箱安装无需额外参数：先探测原生路径，再按注册表以显式 `cookie_file=` 探测
-snap/flatpak 的 cookie 数据库（`pplx_export/core/cookies/loaders.py:89-101`）。
+snap/flatpak 的 cookie 数据库（`pplx_export/core/cookies/loaders.py:155-168`）。
 
 **场景 → 推荐通道**：
 
@@ -103,7 +108,7 @@ snap/flatpak 的 cookie 数据库（`pplx_export/core/cookies/loaders.py:89-101`
 `GET /api/auth/session`，把实时 email 与登记值比对。不匹配时自动枚举浏览器里各账户
 的会话 cookie（`__Secure-pplx.session.<user_id>`），逐个替换活跃令牌并探测 session，
 直到命中目标 email（`pplx_export/commands/common.py:190`；
-`pplx_export/core/cookies/loaders.py:108`）。无令牌匹配时命令带清晰报错中止——绝不以错误
+`pplx_export/core/cookies/loaders.py:175`）。无令牌匹配时命令带清晰报错中止——绝不以错误
 账户静默继续。
 
 **修复**：
