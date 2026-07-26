@@ -28,6 +28,9 @@ Read the current source of truth before changing the pipeline:
 Read [references/pipeline.md](references/pipeline.md) only when changing stage
 topology, permissions, action pins, deployment, or the complete command matrix.
 
+Read [references/ci-failure-playbook.md](references/ci-failure-playbook.md)
+only when diagnosing a failed, unexpectedly skipped, or unchained Actions run.
+
 ## Workflow
 
 1. Classify the task as local reproduction, validation-gate maintenance,

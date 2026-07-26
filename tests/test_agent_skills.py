@@ -23,6 +23,7 @@ EXPECTED_SKILLS = {
     "maintain-docs-i18n",
     "maintain-mkdocs",
     "manage-test-fixtures",
+    "privacy-release-gate",
     "quality-gates",
     "review-pplx-tools",
     "test-pplx-tools",
