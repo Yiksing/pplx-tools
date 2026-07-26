@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/architecture/overview.md"
-translation_source_sha256: "48a859cceb434af9d7c542a335e0065b961027fec7d44a929f17ca6e27e23142"
+translation_source_sha256: "cd4c6cf3ca00c7690750ff9c42cb9c706647ee9f15e1d7dc9a2a1e02d34c1a7f"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -15,7 +15,7 @@ translation_prompt_version: "v1"
 <a id="layered-architecture-overview" data-pplx-source-anchor="true"></a>
 ## Visão geral da arquitetura em camadas
 
-Estrutura do pacote (`pplx_export/`, ~5,6k linhas de código-fonte e crescendo com o desenvolvimento, excluindo testes;
+Estrutura de pacotes (`pplx_export/`, ~5,6k linhas de código-fonte e crescendo com o desenvolvimento, excluindo testes;
 contagens exatas de linhas por `wc -l`):
 
 ```mermaid
@@ -54,7 +54,7 @@ flowchart TD
         TH["throttle.py rate-limit backoff (throttle.py:15)"]
         ST["state.py BatchState checkpoint (state.py:63)"]
         LG["logging.py central logging (logging.py:45)"]
-        CK["cookies/ + auth.py<br/>cookie sources and credentials (cookies/loaders.py:203)"]
+        CK["cookies/ + auth.py<br/>cookie sources and credentials (cookies/loaders.py:270)"]
         RL["relations.py relations graph (relations.py:200)"]
         RG["registry.py site registry (registry.py:9)"]
         subgraph HTTP["core/http/ transports"]
@@ -112,17 +112,17 @@ flowchart TD
     CFG -. "imported by all layers, zero dependencies itself" .- MO
 ```
 
-Essenciais da direção de dependência (verificados examinando todas as importações):
+Essenciais da direção de dependências (verificados examinando todas as importações):
 
 - **Unidirecional**: CLI → comandos → sites → core. `core/` não importa nenhuma implementação concreta de Perplexity
   (sem hardcoding de site); **a única exceção** é `core/registry.py:7` importando a
   ABC `SiteAdapter` de `sites/base.py` — uma referência de interface, não uma referência de site; sites concretos são injetados via `register()`
-  (registro embutido do Perplexity em `pplx_export/__init__.py:34-43`).
+  (registro interno do Perplexity em `pplx_export/__init__.py:34-43`).
 - `config.py` é a única fonte de constantes de site (domínio, `DEFAULT_ARCHIVE_ROOT`), e carrega
   **configuração externalizada em nível de usuário**: as tabelas de conta `ACCOUNT_DISPLAY_NAMES/ACCOUNT_EMAIL/ACCOUNT_UID` e o
   espaço BOT vêm de TOML (`--config` > `PPLX_EXPORT_CONFIG` >
   `~/.config/pplx-export/config.toml`; modelo `config.example.toml`), dicionários atualizados in-place,
-  degradação suave quando ausentes; `core/models.py:18` também o importa (`author_folder`).
+  degradação graciosa quando ausentes; `core/models.py:18` também o importa (`author_folder`).
 - `ask_api.py` é o único módulo da camada de site que depende diretamente de uma implementação de transporte concreta
   (importa `CookieTransport` e reutiliza seus internos `_cookie_header`/`_opener` para o stream SSE,
   ask_api.py:23, 114-130) — SSE está fora da abstração do Transport ABC.
@@ -135,7 +135,7 @@ Essenciais da direção de dependência (verificados examinando todas as importa
 ## Grafo de dependência de módulos (relações reais de importação)
 
 Extraído de um censo completo de `grep '^from \.'` (referências intra-pacote omitidas; todos os `__init__.py` estão vazios,
-exceto a raiz do pacote `pplx_export/__init__.py`, que carrega a função de registro):
+ exceto a raiz do pacote `pplx_export/__init__.py`, que carrega a função de registro):
 
 ```mermaid
 flowchart LR
@@ -280,7 +280,7 @@ flowchart LR
 Como ler o grafo:
 
 - **Cadeia core**: `cli → commands → sites → core`. Nenhum módulo core depende de implementações concretas
-  de comandos/sites; `KG → SBASE` (registro → ABC SiteAdapter) é a única
+  de comandos/sites; `KG → SBASE` (registry → SiteAdapter ABC) é a única
   referência reversa entre camadas, formando um loop de injeção de dependência com o registro de `E0`.
 - Agregação dentro de `sites/perplexity/`: `adapter` é a fachada (compondo graphql/rest/parsers/
   normalize/assets); `render` depende de `parsers` (fonte da verdade para classificação de status wf); `fs_writer`
@@ -300,7 +300,7 @@ Como ler o grafo:
    (fs_writer.py:224-266); análise/renderização/registro de interrupção podem posteriormente
    ser reexecutados a partir do bruto com zero rede ([§12](offline-operations.md)), desacoplando
    a evolução do renderizador de arquivos históricos.
-2. **Ponto único de análise, tolerante a mudanças na estrutura de dados**: a extração de campos é
+2. **Ponto único de análise, tolerante a mudanças na estrutura de dados**: a extração de campos está
    concentrada em `parsers.py` (o trio de tolerância a falhas `_g`/`_loads`/`to_int`); a detecção
    de modo tem sinais redundantes duais mais um fallback de busca quando todos os sinais estão ausentes ([§4](export-pipeline.md)) —
    o raio de explosão de uma reformulação da plataforma é comprimido em um módulo.
@@ -315,9 +315,9 @@ Como ler o grafo:
    (um requisito explícito do usuário).
 5. **Fonte única de configuração + privacidade externalizada**: constantes de site/caminhos padrão
    vivem apenas em `config.py`; contas/espaços são privacidade pessoal, externalizados em TOML
-   em nível de usuário (`--config` > `PPLX_EXPORT_CONFIG` > `~/.config/pplx-export/config.toml`); a troca automática de
-   cookies de múltiplas contas é um loop de sonda impulsionado por e-mails registrados, sem operação manual
-   no navegador ([§9](ask-and-accounts.md)).
+   de nível de usuário (`--config` > `PPLX_EXPORT_CONFIG` > `~/.config/pplx-export/config.toml`); a troca automática de
+   cookies de múltiplas contas é um loop de sondagem orientado por e-mails registrados, sem operação manual
+   de navegador ([§9](ask-and-accounts.md)).
 6. **Dependências unidirecionais em camadas**: CLI → comandos → sites → core, com zero hardcoding de site
-   em core e sites injetados via registro — um novo site implementa os cinco métodos `SiteAdapter`
+   em core e sites injetados via registry — um novo site implementa os cinco métodos `SiteAdapter`
    e reutiliza todas as facilidades do core (sites/base.py:21-69).
