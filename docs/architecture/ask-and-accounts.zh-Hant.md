@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/architecture/ask-and-accounts.zh-CN.md"
-translation_source_sha256: "b3f3a26e4ef469a9d1cc9d69acd466cfff37203888b388014ad69bc162b4118c"
+translation_source_sha256: "58d3b8978a596a37688507766337cdd856daedf3a9b9472016353a3c0e996bcd"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -16,7 +16,7 @@ translation_prompt_version: "v1"
 ## pplx-ask 時序詳圖
 
 `cmd_ask`（ask_cli.py:86-198）的完整時序：envelope 構造 → SSE 流 → 終態檢查 →
-BOT 空間 → 已讀回執 → 人性化遙測 → 複用匯出管線歸檔。
+BOT 空間 → 已讀回執 → 人性化遙測 → 複用導出管線歸檔。
 
 ```mermaid
 sequenceDiagram
@@ -60,10 +60,10 @@ sequenceDiagram
 設計要點：
 
 - **envelope 是實測參數模板**：`_BASE_PARAMS`（ask_api.py:44-68）25 個固定鍵
-  （含 32 項 `supported_block_use_cases`、語言/時區/搜尋焦點等），`build_envelope`
-  再注入 mode/模型/frontend_uuid 等欄位，與瀏覽器真實提交一致（對照
+  （含 32 項 `supported_block_use_cases`、語言/時區/搜索焦點等），`build_envelope`
+  再注入 mode/模型/frontend_uuid 等字段，與瀏覽器真實提交一致（對照
   [../reference/api/api-rest-endpoints.md](../reference/api/api-rest-endpoints.md) §3.9 與 `docs/perplexity-api-samples/` 的 39-params 樣本）。
-- **SSE 消費不走 Transport ABC**：流式介面不在 `get_json/post_json/download`
+- **SSE 消費不走 Transport ABC**：流式接口不在 `get_json/post_json/download`
   抽象內，`post_stream` 直接複用 `CookieTransport` 的 `_cookie_header`/`_opener`
   （ask_api.py:126-130）——這是 [§1](overview.md) 提到的刻意耦合。
 - **遙測的人性化**：`_DEVICE_POOL` 三設備隨機（ask_api.py:210-214）、隨機停頓、
@@ -77,7 +77,7 @@ sequenceDiagram
 ## 多帳戶 cookie 切換流程
 
 cookie 解析與帳戶校驗在 `commands/common.py:make_transport`（common.py:93-155）；
-來源列舉在 `core/cookies/loaders.py`；webbridge 通路校驗在 `_validate_bridge_account`
+來源枚舉在 `core/cookies/loaders.py`；webbridge 通路校驗在 `_validate_bridge_account`
 （common.py:158-187）。
 
 ```mermaid
@@ -90,11 +90,11 @@ flowchart TD
     WB2 -->|"bridge 不可达"| WBWARN["仅 log.warning 放行<br/>（备用通路不硬失败，common.py:186-187）"]
     WBWARN --> WBOK
 
-    MODE -->|"cookie（默认）"| SRC{"cookie 来源优先级<br/>cookies.resolve（cookies/loaders.py:203-235）"}
-    SRC -->|"1. --cookies-from 指定浏览器"| F1["from_browser（cookies/loaders.py:51）"]
-    SRC -->|"2. --cookies 文件"| F2["from_file：Netscape / JSON 两种格式<br/>#HttpOnly_ 前缀还原（cookies/loaders.py:142-182）"]
+    MODE -->|"cookie（默认）"| SRC{"cookie 来源优先级<br/>cookies.resolve（cookies/loaders.py:270-302）"}
+    SRC -->|"1. --cookies-from 指定浏览器"| F1["from_browser（cookies/loaders.py:107）"]
+    SRC -->|"2. --cookies 文件"| F2["from_file：Netscape / JSON 两种格式<br/>#HttpOnly_ 前缀还原（cookies/loaders.py:209-249）"]
     SRC -->|"3. 新鲜缓存"| F3["CookieCache.load<br/>&lt;out&gt;/index/.cookies.json，12h 新鲜期<br/>（cookies/cache.py:33-47）"]
-    SRC -->|"4. auto-detect"| F4["edge → chrome → firefox → safari<br/>（AUTO_DETECT_ORDER，cookies/loaders.py:32）<br/>browser_cookie3 解密"]
+    SRC -->|"4. auto-detect"| F4["edge → chrome → firefox → safari<br/>（AUTO_DETECT_ORDER，cookies/loaders.py:39）<br/>browser_cookie3 解密"]
     F1 --> SESS
     F2 --> SESS
     F3 --> SESS
@@ -103,8 +103,8 @@ flowchart TD
     SESS -->|"email == ACCOUNT_EMAIL[account]<br/>（用户级配置 accounts.&lt;名&gt;.email）"| OK(("CookieTransport 就绪<br/>+ CookieCache.save 刷新缓存（common.py:150）"))
     SESS -->|"未登记 email"| WARN2["log.warning 提示登记，放行（common.py:146-149）"] --> OK
     SESS -->|"email 不符"| SW["_try_switch_account（common.py:190-215）"]
-    SW --> ENUM["list_account_tokens（cookies/loaders.py:108-139）<br/>枚举浏览器 __Secure-pplx.session.&lt;uid&gt;<br/>（www 子域条目优先）"]
-    ENUM --> LOOP{"逐令牌：替换<br/>__Secure-next-auth.session-token<br/>（ACTIVE_SESSION_COOKIE，cookies/loaders.py:105）"}
+    SW --> ENUM["list_account_tokens（cookies/loaders.py:175-206）<br/>枚举浏览器 __Secure-pplx.session.&lt;uid&gt;<br/>（www 子域条目优先）"]
+    ENUM --> LOOP{"逐令牌：替换<br/>__Secure-next-auth.session-token<br/>（ACTIVE_SESSION_COOKIE，cookies/loaders.py:172）"}
     LOOP --> PROBE["新 CookieTransport 探测<br/>GET /api/auth/session（common.py:207-208）"]
     PROBE -->|"email 匹配"| SWOK(("切换成功：用新 cookie 表<br/>重建 CookieTransport（common.py:136-140）"))
     PROBE -->|"不匹配"| LOOP
@@ -114,12 +114,12 @@ flowchart TD
 要點：
 
 - **多帳戶模型**：同瀏覽器每帳戶一條 `__Secure-pplx.session.<uid>` cookie；
-  切換 = 把目標帳戶那條的值寫進 `__Secure-next-auth.session-token`（cookies/loaders.py:113-120
+  切換 = 把目標帳戶那條的值寫進 `__Secure-next-auth.session-token`（cookies/loaders.py:180-187
   註釋；機制實測見 [../reference/api/api-authentication.md](../reference/api/api-authentication.md) §1.2）。無需操作瀏覽器 UI。
 - **快取跟隨 `--out`**：`<out_root>/index/.cookies.json`（common.py:111），
-  含 fetched_at/source/account_email，成功校驗後總是重新整理（common.py:150）。
+  含 fetched_at/source/account_email，成功校驗後總是刷新（common.py:150）。
 - **webbridge 與 cookie 互斥**：`--cookies/--cookies-from` 與 `--transport webbridge`
   同給即報錯（cli.py:229-233；common.py:112-116）。
 - `core/auth.py:CredentialProvider`（WebBridge 提取 cookie：CDP Storage.getCookies
-  優先、document.cookie 兜底，auth.py:41-67）屬**預留降級鏈**，當前唯一呼叫方是
-  `cookies.from_webbridge`（cookies/loaders.py:185-200）。
+  優先、document.cookie 兜底，auth.py:41-67）屬**預留降級鏈**，當前唯一調用方是
+  `cookies.from_webbridge`（cookies/loaders.py:252-267）。

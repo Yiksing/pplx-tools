@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/architecture/overview.zh-CN.md"
-translation_source_sha256: "90f43a01d7ae68d92d12afb765e20414e041b7ab87bb04192a8d664ef9ebafb1"
+translation_source_sha256: "7fb3a731adc6ca1bdfa5032639c0aac94268a0d0c7966c9134c7fca26fe2dc00"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -54,7 +54,7 @@ flowchart TD
         TH["throttle.py 限频退避（throttle.py:15）"]
         ST["state.py BatchState 断点（state.py:63）"]
         LG["logging.py 中央日志（logging.py:45）"]
-        CK["cookies/ + auth.py<br/>cookie 来源与凭证（cookies/loaders.py:203）"]
+        CK["cookies/ + auth.py<br/>cookie 来源与凭证（cookies/loaders.py:270）"]
         RL["relations.py 关系图（relations.py:200）"]
         RG["registry.py 站点注册表（registry.py:9）"]
         subgraph HTTP["core/http/ transports"]
@@ -123,11 +123,11 @@ flowchart TD
   BOT 空間來自 TOML（`--config` > `PPLX_EXPORT_CONFIG` >
   `~/.config/pplx-export/config.toml`，模板 `config.example.toml`），dict 就地更新、
   缺失降級；`core/models.py:18` 也 import 它（`author_folder`）。
-- `ask_api.py` 是站點層中唯一直接依賴具體 transport 實現的模組
+- `ask_api.py` 是站點層中唯一直接依賴具體 transport 實作的模組
   （import `CookieTransport` 並復用其 `_cookie_header`/`_opener` 內部欄位做 SSE 串流，
   ask_api.py:23、114-130）——SSE 不在 Transport ABC 的抽象範圍內。
-- `hooks/`、`writers/` 只依賴 `core/`；`writers/base.py` 的唯一實現
-  `FilesystemWriter` 在站點層（fs_writer.py:54），ABC 與實現分離。
+- `hooks/`、`writers/` 只依賴 `core/`；`writers/base.py` 的唯一實作
+  `FilesystemWriter` 在站點層（fs_writer.py:54），ABC 與實作分離。
 
 ---
 
@@ -280,7 +280,7 @@ flowchart LR
 讀圖要點：
 
 - **核心鏈路**：`cli → commands → sites → core`。任何 core 模組都不依賴
-  commands/sites 的具體實現，`KG → SBASE`（registry → SiteAdapter ABC）是唯一的
+  commands/sites 的具體實作，`KG → SBASE`（registry → SiteAdapter ABC）是唯一的
   跨層反向引用，配合 `E0` 的註冊動作形成依賴注入閉環。
 - `sites/perplexity/` 內部聚合關係：`adapter` 是門面（組合 graphql/rest/parsers/
   normalize/assets），`render` 依賴 `parsers`（wf 狀態分類真源），`fs_writer`
@@ -312,5 +312,5 @@ flowchart LR
    `~/.config/pplx-export/config.toml`）；多帳戶 cookie 自動切換
    是登記 email 驅動的探測閉環，無需人工操作瀏覽器（[§9](ask-and-accounts.md)）。
 6. **分層單向依賴**：CLI → commands → sites → core，core 零站點硬編碼，
-   站點經註冊表注入——新站點實現 `SiteAdapter` 五個方法即可復用全部核心設施
+   站點經註冊表注入——新站點實作 `SiteAdapter` 五個方法即可復用全部核心設施
    （sites/base.py:21-69）。

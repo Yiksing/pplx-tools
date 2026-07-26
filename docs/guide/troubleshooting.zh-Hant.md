@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/guide/troubleshooting.zh-CN.md"
-translation_source_sha256: "7257dc1ef6951872e07601249b586695343feae30b436b684f087cafe9e8da2d"
+translation_source_sha256: "dadb0d4e847c97d5c11b428f8e9b7e8ea0c5272322a5d3a6202214ba49b0c249"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -24,7 +24,7 @@ Cloudflare 質詢頁——即使帶上了從瀏覽器複製的 cookie——而�
 綁定。裸客戶端指紋不匹配，質詢即觸發。工具能過是因為用 Python `urllib` + 從瀏覽器
 導入的 cookie + 桌面 Chrome `User-Agent`
 （`pplx_export/core/http/cookie_transport.py:29`）。Cloudflare 在風控限流時也可能
-403——那時回應帶同樣的質詢形態。
+403——那時響應帶同樣的質詢形態。
 
 **修復**：
 
@@ -71,7 +71,11 @@ cookie 庫，儘管瀏覽器確實處於登入狀態。
 資料庫，執行時經 Secret Service D-Bus API 取出該金鑰。`browser_cookie3` 透過純
 Python 的 `jeepney` 存取 D-Bus——它已隨工具安裝在 Linux 上，無需額外設定——
 當沒有任何 keyring 應答時回退到舊式 `peanuts` 口令，而該口令只能解開 Chrome
-當初同樣在無 keyring 環境下寫入的 cookie。Firefox 完全不涉及這些：其
+當初同樣在無 keyring 環境下寫入的 cookie。當 keyring 存在但 D-Bus 查詢在傳輸層
+本身失敗時（如會話總線拒絕匿名存取），`browser_cookie3` 自身的兜底鏈不會生效；
+工具識別該情形並繞過 keyring 重試一次，使用 Chromium 預設密碼——即 Chromium
+在無 keyring 可用時自己使用的金鑰（`pplx_export/core/cookies/loaders.py:62-104`，
+接入載入路徑於 `loaders.py:136-153`）。Firefox 完全不涉及這些：其
 `cookies.sqlite` 不加密。
 
 **矩陣**：
@@ -81,6 +85,7 @@ Python 的 `jeepney` 存取 D-Bus——它已隨工具安裝在 Linux 上，無�
 | 瀏覽器 | Firefox | 零摩擦——`cookies.sqlite` 不加密 |
 | 瀏覽器 | Chromium + keyring 可達 | 正常——經 Secret Service 取金鑰 |
 | 瀏覽器 | Chromium + 無 keyring | `peanuts` 路徑——僅當 Chrome 當初也在無 keyring 下寫入才有效 |
+| 瀏覽器 | Chromium + keyring 不可達（D-Bus 層失敗） | 工具自動用 Chromium 預設密碼重試——可達性與 `peanuts` 路徑相同 |
 | 安裝方式 | 原生套件 | auto-detect（browser_cookie3 內建路徑） |
 | 安裝方式 | snap / flatpak | auto-detect——內建 profile 註冊表覆蓋了 `~/snap/<name>/...` 與 `~/.var/app/<app-id>/...` 下的 profile（`pplx_export/core/cookies/profiles.py:37-67`） |
 | 桌面環境 | GNOME | 通常開箱即用（gnome-keyring） |
@@ -91,7 +96,7 @@ Python 的 `jeepney` 存取 D-Bus——它已隨工具安裝在 Linux 上，無�
 | 發行版 | Arch | 機制相同，僅套件名不同 |
 
 沙箱安裝無需額外參數：先探測原生路徑，再按註冊表以顯式 `cookie_file=` 探測
-snap/flatpak 的 cookie 資料庫（`pplx_export/core/cookies/loaders.py:89-101`）。
+snap/flatpak 的 cookie 資料庫（`pplx_export/core/cookies/loaders.py:155-168`）。
 
 **場景 → 推薦通道**：
 
@@ -108,15 +113,15 @@ snap/flatpak 的 cookie 資料庫（`pplx_export/core/cookies/loaders.py:89-101`
 **問題**：歸檔執行緒是用錯誤帳戶的會話抓取的——例如 `--account alice` 的執行實際以
 `bob` 拉資料，或歸檔裡出現不屬於目標帳戶的執行緒。
 
-**原因**：同一瀏覽器登入多個帳戶時，活躍的會話權杖
+**原因**：同一瀏覽器登入多個帳戶時，活躍的會話令牌
 （`__Secure-next-auth.session-token`）可能屬於另一個帳戶。若目標帳戶的 `email`
 未在使用者級設定中登記，工具無法識別，只能記一條 warning。
 
 **工具的預防機制**（`pplx_export/commands/common.py:93`）：啟動時 transport 調
 `GET /api/auth/session`，把即時 email 與登記值比對。不匹配時自動列舉瀏覽器裡各帳戶
-的會話 cookie（`__Secure-pplx.session.<user_id>`），逐個替換活躍權杖並探測 session，
+的會話 cookie（`__Secure-pplx.session.<user_id>`），逐個替換活躍令牌並探測 session，
 直到命中目標 email（`pplx_export/commands/common.py:190`；
-`pplx_export/core/cookies/loaders.py:108`）。無權杖匹配時命令帶清晰報錯中止——絕不以錯誤
+`pplx_export/core/cookies/loaders.py:175`）。無令牌匹配時命令帶清晰報錯中止——絕不以錯誤
 帳戶靜默繼續。
 
 **修復**：
@@ -179,7 +184,7 @@ snap/flatpak 的 cookie 資料庫（`pplx_export/core/cookies/loaders.py:89-101`
 - 子類關係是刻意設計：只認識 `EntryExpiredError` 的既有路徑仍會把 `ENTRY_DELETED`
   當終態處理；感知子類的路徑（batch / export / sync-deleted / search-mode-backfill）
   則精確歸類為 `deleted`。
-- 實踐要點：及時匯出。過了約 3 個月的清除期，產物 / 報告來源連結也不可恢復地過期。
+- 實踐要點：及時匯出。過了約 3 個月的清除期，產物 / 報告源連結也不可恢復地過期。
 
 相關：[增量同步](incremental-sync.md) · [回應與錯誤](../reference/api/api-responses-errors.md)。
 
@@ -199,7 +204,7 @@ CODE_FILE / UNKNOWN）沒有 API 下載通道：`GET /rest/assets/<asset_uuid>/d
 **修復**：
 
 - 目前無可下載——該標記即是對此邊界的有意記錄。
-- 內容往往有內聯留存：子代理的頁面抽取文字與步驟負載儲存在執行緒的 raw JSON
+- 內容往往有內聯留存：子代理的頁面抽取文字與步驟負載保存在執行緒的 raw JSON
   （`raw_entries.json` / `raw_blocks.json`）和渲染出的 `turns/` 裡——先查那裡。
 - `file-repository/list-files` 已被追蹤為潛在的未來救援路徑，見
   [API 發現路線圖](../reference/api/api-discovery-roadmap.md)。
@@ -224,7 +229,7 @@ warning 與 error 始終顯示。
 |---|---|
 | `.cookies.json` | cookie 快取（12 小時新鮮期；0o600 原子寫入——屬登入等價憑證，注意保密） |
 | `batch_state.json` | 逐執行緒匯出狀態，含 `expired` / `deleted` 終態標記 |
-| `answer_variants_log.jsonl` | 答案重寫變體登記處 |
+| `answer_variants_log.jsonl` | 答案改寫變體登記處 |
 | `library_*.json` | 各帳戶的 library 索引快照 |
 
 <a id="参见" data-pplx-source-anchor="true"></a>
