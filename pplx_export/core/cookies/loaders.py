@@ -4,16 +4,23 @@ import, WebBridge extraction, and the resolve() priority chain.
 Sandbox installs (snap/flatpak): browser_cookie3's built-in paths cover only
 native installs, so after the native attempt fails or comes up empty, the
 registry paths in `profiles.py` are probed with an explicit `cookie_file=`.
+On Linux, a D-Bus-level keyring failure (e.g. a session bus rejecting
+anonymous auth) triggers one retry with the keyring bypassed, using Chromium's
+default password — the key Chromium itself uses when no keyring is available.
 
 浏览器库加载：bc3 胶水、账户令牌枚举、cookie 文件导入、WebBridge 提取与 resolve() 优先级链。
 
 沙箱安装（snap/flatpak）：browser_cookie3 内置路径只覆盖原生安装，
 原生尝试失败或为空后，按 `profiles.py` 注册表以显式 `cookie_file=` 继续探测。
+在 Linux 上，keyring 在 D-Bus 层失败（如会话总线拒绝匿名访问）会触发一次
+绕过 keyring 的重试，使用 Chromium 默认密码——即 Chromium 在无 keyring
+可用时自己使用的密钥。
 """
 
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 from ...config import PPLX_DOMAIN
@@ -31,6 +38,10 @@ _BROWSER_LOADERS = {
 }
 AUTO_DETECT_ORDER = ["edge", "chrome", "firefox", "safari"]
 
+# Chromium-family browsers deriving their cookie key via the Linux Secret Service
+# 经 Linux Secret Service 派生 cookie 密钥的 Chromium 系浏览器
+_CHROMIUM_FAMILY = {"edge", "chrome", "chromium", "brave", "opera", "vivaldi"}
+
 
 def _domain_match(cookie_domain: str, domain: str) -> bool:
     """Domain matching (F-11/N-04): suffix matching — substring matching would
@@ -46,6 +57,51 @@ def _domain_match(cookie_domain: str, domain: str) -> bool:
 def _bc3_loader(name: str):
     import browser_cookie3
     return getattr(browser_cookie3, _BROWSER_LOADERS[name])
+
+
+def _is_keyring_transport_error(exc: BaseException) -> bool:
+    """True when the keyring lookup broke at the D-Bus transport level (e.g.
+    jeepney AuthenticationError from a session bus rejecting anonymous auth),
+    rather than the keyring simply not holding a password.
+
+    当 keyring 查询在 D-Bus 传输层失败（如会话总线拒绝匿名访问导致的
+    jeepney AuthenticationError）时为真——区别于 keyring 里只是没有密码。"""
+    mod = (type(exc).__module__ or "").lower()
+    return "jeepney" in mod or "dbus" in mod or type(exc).__name__ == "AuthenticationError"
+
+
+def _load_bypassing_keyring(name: str, domain: str, kwargs: dict):
+    """Retry a bc3 load with the keyring password manager stubbed to Chromium's
+    default password ('peanuts').
+
+    browser_cookie3's own fallback chain only catches RuntimeError, so a
+    transport-level D-Bus failure escapes before it reaches the default
+    password — which is the key Chromium actually uses when no keyring is
+    available (e.g. flatpak Edge without encrypted_key in Local State).
+
+    用 Chromium 默认密码（'peanuts'）顶替 keyring 密码管理器重试一次 bc3 加载。
+
+    browser_cookie3 自身的兜底链只捕获 RuntimeError,D-Bus 传输层失败会在到达
+    默认密码之前逃逸——而无 keyring 可用时（如 Local State 无 encrypted_key 的
+    flatpak Edge)Chromium 实际使用的正是默认密码。"""
+    import browser_cookie3 as bc3
+    pm = getattr(bc3, "_LinuxPasswordManager", None)
+    if pm is None:
+        raise AuthError("browser_cookie3 无 _LinuxPasswordManager,无法绕过 keyring")
+    peanuts = getattr(bc3, "CHROMIUM_DEFAULT_PASSWORD", b"peanuts")
+
+    class _DefaultPasswordManager:
+        def __init__(self, use_dbus):
+            pass
+
+        def get_password(self, os_crypt_name):
+            return peanuts
+
+    bc3._LinuxPasswordManager = _DefaultPasswordManager
+    try:
+        return _bc3_loader(name)(domain_name=domain, **kwargs)
+    finally:
+        bc3._LinuxPasswordManager = pm
 
 
 def from_browser(name: str, domain: str = PPLX_DOMAIN) -> dict[str, str]:
@@ -81,8 +137,19 @@ def from_browser_raw(name: str, domain: str = PPLX_DOMAIN) -> list[tuple[str, st
         try:
             cj = _bc3_loader(name)(domain_name=domain, **kwargs)
         except Exception as e:
-            errors.append(e)
-            return []
+            if not (sys.platform.startswith("linux") and name in _CHROMIUM_FAMILY
+                    and _is_keyring_transport_error(e)):
+                errors.append(e)
+                return []
+            # Keyring unreachable at the D-Bus level: retry once with Chromium's
+            # default password; if that also fails, the original cause is reported
+            # keyring 在 D-Bus 层不可达：用 Chromium 默认密码重试一次；仍失败则报告原始原因
+            try:
+                cj = _load_bypassing_keyring(name, domain, kwargs)
+            except Exception:
+                errors.append(e)
+                return []
+            log.debug(f"cookie 来源: {name}（keyring 不可达，已用默认密码解密）")
         return [(c.name, c.domain or "", c.value) for c in cj
                 if _domain_match(c.domain or "", domain)]
 
