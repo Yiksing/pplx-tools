@@ -1,5 +1,5 @@
 """pplx_export CLI: init / index / space-index / export / batch / spaces / sync-space / relations /
-re-render / schedule / assets-backfill / usage-backfill / search-mode-backfill /
+status / re-render / schedule / assets-backfill / usage-backfill / search-mode-backfill /
 sync-deleted / debug-js.
 
 Command implementations are split into the `commands/` package (common shared layer +
@@ -11,7 +11,7 @@ Usage:
   pplx-export <cmd> --help     show subcommand-specific help
 
 pplx_export CLI：init / index / space-index / export / batch / spaces / sync-space / relations /
-re-render / schedule / assets-backfill / usage-backfill / search-mode-backfill /
+status / re-render / schedule / assets-backfill / usage-backfill / search-mode-backfill /
 sync-deleted / debug-js。
 
 命令实现已拆至 `commands/` 包（common 公共层 + 各 cmd 模块）；本文件仅 argparse 定义与分发。

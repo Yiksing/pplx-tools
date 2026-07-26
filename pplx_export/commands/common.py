@@ -252,12 +252,15 @@ def add_common_args(ap, *, with_site: bool = False, with_transport: bool = False
     ap.add_argument("--out", type=Path, default=DEFAULT_ARCHIVE_ROOT,
                     help="归档输出根目录（默认 ./web_archive）")
     ap.add_argument("--cookies-from", default=None, metavar="BROWSER",
-                    help="从指定浏览器导入 cookie（edge/chrome/firefox/safari/brave…）")
+                    help="从指定浏览器导入 cookie（edge/chrome/chromium/firefox/safari/brave/opera/"
+                         "vivaldi；自动探测 snap/flatpak 安装路径；Linux 上 keyring 在 D-Bus 层"
+                         "不可达时自动改用 Chromium 默认密码解密）")
     ap.add_argument("--cookies", default=None, metavar="FILE",
                     help="Netscape cookie 文件或 JSON cookie 文件")
     if with_transport:
         ap.add_argument("--transport", default="cookie", choices=["cookie", "webbridge"],
-                        help="数据通路：默认 cookie 直连；仅明确指定 webbridge 才走页面上下文")
+                        help="数据通路：默认 cookie 直连；仅明确指定 webbridge 才走页面上下文"
+                             "（需本机 WebBridge 守护进程 127.0.0.1:10086 与浏览器扩展在线）")
     ap.add_argument("-v", "--verbose", action="count", default=0,
                     help="调试输出：-v 显示请求追踪/内部判定等 DEBUG 细节（默认仅进度）")
     ap.add_argument("--log-file", nargs="?", const="AUTO", default=None, metavar="PATH",

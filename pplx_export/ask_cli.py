@@ -233,7 +233,7 @@ def main():
   pplx-ask ask "<长 prompt>" --mode council        模型委员会（默认三模型）
   pplx-ask ask "<prompt>" --mode council --models gpt55_thinking,claude48opusthinking
   pplx-ask ask "<prompt>" --mode deep-research     深度研究（固定 pplx_alpha）
-  pplx-ask ask "<prompt>" --space wei-bo-yao-gan-xxx  在该空间创建，完成后移入 BOT
+  pplx-ask ask "<prompt>" --space my-research-xxx  在该空间创建，完成后移入 BOT
   pplx-ask ask "<prompt>" --mark-read              完成后发已读回执
   pplx-ask mark-read <thread_url|uuid>             单独发已读回执
   pplx-ask space-create "我的空间"                 创建空间
