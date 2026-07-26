@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/architecture/overview.md"
-translation_source_sha256: "48a859cceb434af9d7c542a335e0065b961027fec7d44a929f17ca6e27e23142"
+translation_source_sha256: "cd4c6cf3ca00c7690750ff9c42cb9c706647ee9f15e1d7dc9a2a1e02d34c1a7f"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -54,7 +54,7 @@ flowchart TD
         TH["throttle.py rate-limit backoff (throttle.py:15)"]
         ST["state.py BatchState checkpoint (state.py:63)"]
         LG["logging.py central logging (logging.py:45)"]
-        CK["cookies/ + auth.py<br/>cookie sources and credentials (cookies/loaders.py:203)"]
+        CK["cookies/ + auth.py<br/>cookie sources and credentials (cookies/loaders.py:270)"]
         RL["relations.py relations graph (relations.py:200)"]
         RG["registry.py site registry (registry.py:9)"]
         subgraph HTTP["core/http/ transports"]
@@ -116,12 +116,12 @@ Elementi essenziali della direzione delle dipendenze (verificati esaminando tutt
 
 - **Unidirezionale**: CLI → comandi → siti → core. `core/` non importa alcuna implementazione concreta di Perplexity
   (nessun hardcoding del sito); **l'unica eccezione** è `core/registry.py:7` che importa l'ABC
-  `SiteAdapter` da `sites/base.py` — un riferimento all'interfaccia, non al sito; i siti concreti vengono iniettati tramite `register()`
-  (registrazione built-in di Perplexity in `pplx_export/__init__.py:34-43`).
-- `config.py` è l'unica fonte delle costanti del sito (dominio, `DEFAULT_ARCHIVE_ROOT`) e carica
+  `SiteAdapter` da `sites/base.py` — un riferimento all'interfaccia, non un riferimento al sito; i siti concreti vengono iniettati tramite `register()`
+  (registrazione Perplexity integrata in `pplx_export/__init__.py:34-43`).
+- `config.py` è l'unica fonte di costanti del sito (dominio, `DEFAULT_ARCHIVE_ROOT`) e carica
   la **configurazione esternalizzata a livello utente**: le tabelle degli account `ACCOUNT_DISPLAY_NAMES/ACCOUNT_EMAIL/ACCOUNT_UID` e lo
   spazio BOT provengono da TOML (`--config` > `PPLX_EXPORT_CONFIG` >
-  `~/.config/pplx-export/config.toml`; template `config.example.toml`), dict aggiornati in place,
+  `~/.config/pplx-export/config.toml`; template `config.example.toml`), dizionari aggiornati sul posto,
   degradazione graduale in caso di assenza; anche `core/models.py:18` lo importa (`author_folder`).
 - `ask_api.py` è l'unico modulo del livello sito che dipende direttamente da un'implementazione di trasporto concreta
   (importa `CookieTransport` e riutilizza i suoi interni `_cookie_header`/`_opener` per lo stream SSE,
@@ -280,12 +280,12 @@ flowchart LR
 Come leggere il grafico:
 
 - **Catena core**: `cli → commands → sites → core`. Nessun modulo core dipende da implementazioni concrete
-  di comandi/siti; `KG → SBASE` (registro → ABC SiteAdapter) è l'unico
-  riferimento incrociato tra livelli, formando un ciclo di dependency injection con la registrazione di `E0`.
-- Aggregazione all'interno di `sites/perplexity/`: `adapter` è la facciata (compone graphql/rest/parsers/
+  di comandi/siti; `KG → SBASE` (registro → SiteAdapter ABC) è l'unico
+  riferimento incrociato inverso tra livelli, formando un ciclo di dependency injection con la registrazione di `E0`.
+- Aggregazione all'interno di `sites/perplexity/`: `adapter` è la facciata (compone graphql/rest/parser/
   normalize/assets); `render` dipende da `parsers` (fonte di verità per la classificazione dello stato wf); `fs_writer`
   dipende da `render + parsers + writers/base`.
-- I test `tests/` risiedono al di fuori del pacchetto e importano direttamente funzioni pure da ogni livello (conftest.py's
+- I test `tests/` risiedono al di fuori del pacchetto e importano direttamente funzioni pure da ogni livello (conftest.py
   `render_fixture` riutilizza `commands.rerender_cmd.rerender` per il re-rendering offline).
 
 ---
@@ -300,20 +300,20 @@ Come leggere il grafico:
    (fs_writer.py:224-266); l'analisi/rendering/registrazione dell'interruzione possono successivamente
    essere rieseguiti dai dati grezzi senza rete ([§12](offline-operations.md)), disaccoppiando
    l'evoluzione del renderer dagli archivi storici.
-2. **Punto di analisi singolo, tollerante ai cambiamenti della struttura dati**: l'estrazione dei campi è
+2. **Singolo punto di analisi, tollerante ai cambiamenti della struttura dati**: l'estrazione dei campi è
    concentrata in `parsers.py` (il trio di tolleranza ai guasti `_g`/`_loads`/`to_int`); il rilevamento della
    modalità ha segnali ridondanti duali più un fallback di recupero in caso di assenza di tutti i segnali ([§4](export-pipeline.md)) —
    il raggio d'esplosione di una revisione della piattaforma è compresso in un modulo.
-3. **Cascata di attribuzione deterministica**: "ogni payload di sfondo finisce esattamente in un
-   posto, mai renderizzato due volte" è garantito dalle strutture dati (l'insieme ancorato, il consumo singolo di used_cand,
-   l'iterazione solo a livello superiore contro il doppio conteggio) — nessuna stima euristica del
+3. **Cascata di attribuzione deterministica**: "ogni payload di sfondo atterra esattamente in un
+   posto, mai renderizzato due volte" è garantito dalle strutture dati (l'insieme ancorato, consumo singolo di used_cand,
+   iterazione solo a livello superiore contro il doppio conteggio) — nessuna stima euristica del
    tempo; la semantica di interruzione ha cinque classi con una fonte di verità
    (classify_wf_status) condivisa dai percorsi di rendering/registrazione/avviso ([§5, §6](subagents-interruptions.md)).
 4. **La disciplina del limite di velocità è una linea rossa di sicurezza**: intervalli casuali, nessuna concorrenza, backoff 3^N
    con un limite, fail-fast in caso di errore di autenticazione, stato terminale ENTRY_EXPIRED, 404 mai
-   scambiato per scaduto ([§11](rate-limiting-errors.md)) — tutto al servizio dell'obiettivo anti-ban di "comportamento di esportazione ≈ navigazione umana"
-   (un requisito utente esplicito).
-5. **Singola fonte di configurazione + privacy esternalizzata**: le costanti/i percorsi predefiniti del sito
+   scambiato per scaduto ([§11](rate-limiting-errors.md)) — tutto al servizio dell'obiettivo anti-ban di "comportamento di esportazione ≈ navigazione
+   umana" (un requisito utente esplicito).
+5. **Singola fonte di configurazione + privacy esternalizzata**: le costanti del sito/i percorsi predefiniti
    risiedono solo in `config.py`; account/spazi sono privacy personale, esternalizzati in TOML
    a livello utente (`--config` > `PPLX_EXPORT_CONFIG` > `~/.config/pplx-export/config.toml`); il cambio automatico di cookie
    multi-account è un ciclo di probe guidato dalle email registrate, senza operazione manuale del
