@@ -1534,11 +1534,11 @@
     "docs/development/testing.md::zh-Hant": {
       "model": "deepseek-v4-flash",
       "output_path": "docs/development/testing.zh-Hant.md",
-      "output_sha256": "3f33ca812283de7633a9ee4d4a8c620b5f503b13747d962d54a839cc003284c1",
+      "output_sha256": "73a7f5c5408a3bde058f4098cfd40d988d4332b9d3e4031574bf95d80fcd731a",
       "prompt_version": "v1",
       "source_locale": "zh-CN",
       "source_path": "docs/development/testing.zh-CN.md",
-      "source_sha256": "8876379e1f59a425bc149713192064dc705e47ea0e86c3729cf30993a0261c18",
+      "source_sha256": "6135b1f3741f588961c302bffc7d049b47ff6c6df0c8797a8888b56edc1cf7a5",
       "translation_fingerprint": "fdf61797fad7e6b209fa648fd05b5f7d95ce05b2c74bbac92003fc6256d6eb60",
       "warnings": []
     },
