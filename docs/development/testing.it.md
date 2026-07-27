@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/development/testing.md"
-translation_source_sha256: "1d44ab1bb1faabe00f9539537eb1048a3c363dd3c62485f795de1eb2ddbd9ac0"
+translation_source_sha256: "a552c25a28367f384140a2e5cc2e9fa2a8546034b668772f5df79133d4995648"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -10,7 +10,7 @@ translation_prompt_version: "v1"
 <a id="testing" data-pplx-source-anchor="true"></a>
 # Test
 
-La suite di test risiede in `tests/`, al di fuori del pacchetto `pplx_export`, e viene eseguita completamente offline. I suoi input a forma di API sono dati simulati deterministici committati sotto `tests/fixtures/`; i test non dipendono da servizi live o da una configurazione utente reale.
+La suite di test risiede in `tests/`, al di fuori del pacchetto `pplx_export`, e viene eseguita completamente offline. I suoi input a forma di API sono dati simulati deterministici committati sotto `tests/fixtures/`; i test non dipendono da servizi live o da una configurazione reale a livello utente.
 
 Questa pagina contiene l'inventario corrente dei moduli di test e il flusso di lavoro per i contributori. Per la progettazione delle regressioni, vedere [Architettura del sistema di test](testing-architecture.md). Per il contratto dei dati di input, vedere [Fixture di test](fixtures.md).
 
@@ -24,8 +24,8 @@ uv run pytest tests
 pytest è una dipendenza di sviluppo dichiarata. La suite garantisce:
 
 - **Zero rete** — gli input simulati sono verificati; i percorsi che interagiscono con la rete sono coperti con fakes, `tmp_path` e `monkeypatch`.
-- **Nessuna configurazione utente reale** — prima di importare qualsiasi modulo di produzione, `tests/conftest.py` crea una configurazione temporanea locale al processo e sovrascrive `PPLX_EXPORT_CONFIG`. Ogni test riceve quindi la propria configurazione placeholder `alice` / `bob` e ripristina il placeholder locale al processo successivamente. Le regressioni dei sottoprocessi verificano che una configurazione mancante o danneggiata del chiamante non possa interrompere la raccolta dei test.
-- **Feedback rapido** — al 2026-07-25 il progetto ha osservato 435 test raccolti da 32 moduli `test_*.py` e ha eseguito l'intera suite in circa 13–25 secondi nelle esecuzioni di verifica locali. I conteggi sono un'istantanea datata del repository e cresceranno.
+- **Nessuna configurazione utente reale** — prima di importare qualsiasi modulo di produzione, `tests/conftest.py` crea una configurazione temporanea locale al processo e sovrascrive `PPLX_EXPORT_CONFIG`. Ogni test riceve quindi la propria configurazione `alice` / `bob` segnaposto e ripristina il segnaposto locale al processo successivamente. Le regressioni dei sottoprocessi verificano che una configurazione del chiamante mancante o danneggiata non possa interrompere la raccolta dei test.
+- **Feedback rapido** — al 2026-07-25 il progetto osservava 435 test raccolti da 32 moduli `test_*.py` e l'intera suite veniva eseguita in circa 13–25 secondi nelle esecuzioni di verifica locali. I conteggi sono un'istantanea datata del repository e cresceranno.
 
 Selezioni utili:
 
@@ -40,18 +40,18 @@ Selezioni utili:
 <a id="current-module-inventory" data-pplx-source-anchor="true"></a>
 ## Inventario corrente dei moduli
 
-Inventario sincronizzato con il repository il **2026-07-24**:
+Inventario sincronizzato con il repository il **2026-07-27**:
 
 <!-- audit:inventory test-modules -->
 
 | Famiglia funzionale | Moduli | Scopo |
 |---|---|---|
-| Snapshot di rendering | `test_render_snapshots.py` | ri-renderizza tutte le fixture simulate in modalità completa e scenario ridotto, quindi confronta i prodotti committati byte per byte |
-| Utility core e condivise | `test_units.py` | stato, throttling, pianificazione, normalizzazione, denominazione degli asset, rilevamento della modalità, percorsi sicuri e regressioni trasversali |
+| Snapshot di rendering | `test_render_snapshots.py` | ri-renderizzare tutte le fixture simulate in modalità completa e scenario ridotto, quindi confrontare i prodotti committati byte per byte |
+| Utility core e condivise | `test_units.py` | stato, limitazione, pianificazione, normalizzazione, denominazione degli asset, rilevamento modalità, percorsi sicuri e regressioni trasversali |
 | Contratti di documentazione, competenze e localizzazione | `test_agent_skills.py`<br/>`test_audit_docs.py`<br/>`test_translate_docs.py` | contratti di competenza locali al repository più test isolati su repository in miniatura per il revisore di documentazione in sola lettura e la pipeline di traduzione automatica |
 | Configurazione, autenticazione e bootstrap | `test_config_external.py`<br/>`test_cookie_profiles.py`<br/>`test_credential.py`<br/>`test_init.py` | isolamento della configurazione esterna, profili di origine dei cookie, selezione delle credenziali e inizializzazione |
-| Semantica di rendering e flusso di lavoro | `test_interruptions.py`<br/>`test_stub_workflows.py`<br/>`test_answer_variants.py`<br/>`test_answer_variant_logging.py`<br/>`test_relations.py` | attribuzione del flusso di lavoro, stati di interruzione, varianti di risposta, registrazione di audit e archi di relazione |
-| Manutenzione di archivio offline e indice | `test_search_mode_backfill.py`<br/>`test_sync_deleted.py`<br/>`test_status.py` | arricchimento, comportamento di ripresa/idempotenza, rilevamento di eliminazione cross-account, stati terminali e livelli di report di stato/variazione dell'account offline |
+| Semantica di rendering e flusso di lavoro | `test_interruptions.py`<br/>`test_stub_workflows.py`<br/>`test_answer_variants.py`<br/>`test_answer_variant_logging.py`<br/>`test_relations.py` | attribuzione del flusso di lavoro, stati di interruzione, varianti di risposta, registrazione di controllo e archi di relazione |
+| Manutenzione di archivio e indice offline | `test_search_mode_backfill.py`<br/>`test_sync_deleted.py`<br/>`test_status.py` | arricchimento, comportamento di ripresa/idempotenza, rilevamento di eliminazione tra account, stati terminali e livelli di report di stato/variazione dell'account offline |
 | Regressioni di revisione | 16 moduli `test_fix_*.py` elencati di seguito | correzioni derivate dai risultati della revisione; i nomi dei moduli mantengono la discendenza della revisione |
 
 <a id="review-regression-lineage" data-pplx-source-anchor="true"></a>
@@ -64,11 +64,12 @@ Gli identificatori di revisione spiegano perché esiste una regressione; non son
 | Revisione N | `test_fix_n01_inline_assets.py`, `test_fix_n02_spaces_link.py`, `test_fix_n03_n12.py`, `test_fix_n04_cookies.py`, `test_fix_n05_n06_n09.py`, `test_fix_n07_usage_checkpoint.py`, `test_fix_n08_throttle_overflow.py`, `test_fix_n10_table_header.py`, `test_fix_n11_batch_total.py` |
 | Revisione V3 | `test_fix_v301_nested_sources_text.py`, `test_fix_v305_export_products.py` |
 | Revisione V4 | `test_fix_v401_thread_dir_migration.py`, `test_fix_v402_manifest_count.py`, `test_fix_v403_handle_assets_idempotency.py`, `test_fix_v405_ask_post_steps.py` |
-| Revisione V5 | `test_fix_v5_review.py`, più aggiunte mirate ai moduli tematici esistenti |
+| Revisione V5 | `test_fix_v5_review.py`, più aggiunte mirate a moduli tematici esistenti |
+| Revisione V6 | `test_fix_v6_atomic_writes.py` |
 
 <!-- /audit:inventory test-modules -->
 
-Le docstring dei moduli rimangono la spiegazione autorevole del vecchio comportamento di ogni risultato, del comportamento corretto e del confine della regressione.
+Le docstring dei moduli rimangono la spiegazione autorevole del vecchio comportamento di ogni risultato, del comportamento corretto e del confine di regressione.
 
 <a id="how-snapshot-tests-reuse-the-production-re-render-path" data-pplx-source-anchor="true"></a>
 ## Come i test snapshot riutilizzano il percorso di ri-rendering di produzione
@@ -80,7 +81,7 @@ I test snapshot non implementano un renderer parallelo:
 3. La factory di fixture `rendered` restituisce l'output fresco e la directory `golden/` committata della fixture.
 4. I test confrontano `conversation.md` e ogni `turns/turn_*.md` byte per byte.
 
-Gli invarianti di contenuto integrano l'uguaglianza byte: le risposte non devono collassare nel placeholder vuoto `(无)`, e residui di rappresentazione dict come `{'type': ...` non devono trapelare nel testo renderizzato.
+Gli invarianti di contenuto integrano l'uguaglianza byte: le risposte non devono collassare nel segnaposto `(无)` vuoto, e residui di rappresentazione dict come `{'type': ...` non devono trapelare nel testo renderizzato.
 
 <a id="adding-a-test" data-pplx-source-anchor="true"></a>
 ## Aggiunta di un test

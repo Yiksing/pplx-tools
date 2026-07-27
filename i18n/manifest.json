@@ -1479,11 +1479,11 @@
     "docs/development/testing.md::it": {
       "model": "deepseek-v4-flash",
       "output_path": "docs/development/testing.it.md",
-      "output_sha256": "a69e545a749d27287d52a328f21d3c8c9d0f995079d0772f025e7df9aff16ea0",
+      "output_sha256": "5f7fc4b1a0cb5b536cdda296c3e95691e0c31c51197b5783cddecf09a2e98172",
       "prompt_version": "v1",
       "source_locale": "en",
       "source_path": "docs/development/testing.md",
-      "source_sha256": "1d44ab1bb1faabe00f9539537eb1048a3c363dd3c62485f795de1eb2ddbd9ac0",
+      "source_sha256": "a552c25a28367f384140a2e5cc2e9fa2a8546034b668772f5df79133d4995648",
       "translation_fingerprint": "fdf61797fad7e6b209fa648fd05b5f7d95ce05b2c74bbac92003fc6256d6eb60",
       "warnings": []
     },
