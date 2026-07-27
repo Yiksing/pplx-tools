@@ -38,7 +38,7 @@ pytest 是已声明的开发依赖。测试套件保证：
 
 ## 当前模块清单
 
-清单已于 **2026-07-24** 对照仓库同步：
+清单已于 **2026-07-27** 对照仓库同步：
 
 <!-- audit:inventory test-modules -->
 
@@ -63,6 +63,7 @@ pytest 是已声明的开发依赖。测试套件保证：
 | V3 轮评审 | `test_fix_v301_nested_sources_text.py`、`test_fix_v305_export_products.py` |
 | V4 轮评审 | `test_fix_v401_thread_dir_migration.py`、`test_fix_v402_manifest_count.py`、`test_fix_v403_handle_assets_idempotency.py`、`test_fix_v405_ask_post_steps.py` |
 | V5 轮评审 | `test_fix_v5_review.py`，以及既有专题模块中的定点增补 |
+| V6 轮评审 | `test_fix_v6_atomic_writes.py` |
 
 <!-- /audit:inventory test-modules -->
 

@@ -43,7 +43,7 @@ Useful selections:
 
 ## Current module inventory
 
-Inventory synchronized with the repository on **2026-07-24**:
+Inventory synchronized with the repository on **2026-07-27**:
 
 <!-- audit:inventory test-modules -->
 
@@ -70,6 +70,7 @@ existing topical module.
 | V3 review | `test_fix_v301_nested_sources_text.py`, `test_fix_v305_export_products.py` |
 | V4 review | `test_fix_v401_thread_dir_migration.py`, `test_fix_v402_manifest_count.py`, `test_fix_v403_handle_assets_idempotency.py`, `test_fix_v405_ask_post_steps.py` |
 | V5 review | `test_fix_v5_review.py`, plus focused additions to existing topical modules |
+| V6 review | `test_fix_v6_atomic_writes.py` |
 
 <!-- /audit:inventory test-modules -->
 
