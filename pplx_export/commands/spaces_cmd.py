@@ -11,6 +11,7 @@ import re as _re
 import time
 from pathlib import Path
 
+from ..core.fsio import atomic_write_text
 from ..core.logging import get_logger
 
 log = get_logger("cli")
@@ -162,8 +163,7 @@ def cmd_space_index(adapter, space_url: str, out_root: Path, bridge=None):
            "count": len(rows), "threads": rows}
     safe_slug = _re.sub(r"[^\w.-]+", "_", slug)[:60]
     p = out_root / "index" / f"space_{safe_slug}.json"
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=1))
+    atomic_write_text(p, json.dumps(doc, ensure_ascii=False, indent=1))
     log.info(f"[space-index] {len(rows)} 条 → {p}")
 
 
@@ -236,7 +236,7 @@ def cmd_sync_space(out_root: Path, rebuild_spaces: bool = True) -> int:
              "slug": new_sp.get("slug", "")}
             if new_sp else None
         )
-        tj.write_text(json.dumps(data, ensure_ascii=False, indent=1))
+        atomic_write_text(tj, json.dumps(data, ensure_ascii=False, indent=1))
         patched += 1
         title = (data.get("title") or "")[:40]
         changes.append(f"  {uuid[:8]} {title}: {old_slug or '(无)'} → {new_slug or '(无)'}")
@@ -326,7 +326,7 @@ def cmd_spaces(out_root: Path, adapter=None, fetch_meta: bool = False, adapter_f
                 log.info(f"[space-meta {i}/{len(slugs)}] {slug[:45]} 失败: {str(e)[:80]}")
             if i < len(slugs):
                 time.sleep(3.0)
-        meta_path.write_text(json.dumps(meta_cache, ensure_ascii=False, indent=1))
+        atomic_write_text(meta_path, json.dumps(meta_cache, ensure_ascii=False, indent=1))
         log.info(f"[space-meta] {len(slugs)} 个空间 → {meta_path}")
 
     spaces_dir = Path("spaces")
@@ -382,8 +382,8 @@ def cmd_spaces(out_root: Path, adapter=None, fetch_meta: bool = False, adapter_f
                 # N-02：相对 spaces_dir 用 relpath（此前 '../../' 多一层导致反链 404）
                 link = f"[已导出]({os.path.relpath(best, spaces_dir)})"
             lines.append(f"| {title_t} | {author} | {mode} | {lu} | `{uuid[:8]}` | {link} |")
-        (spaces_dir / f"{safe}.md").write_text("\n".join(lines) + "\n")
-    (spaces_dir / "spaces.json").write_text(json.dumps(
+        atomic_write_text(spaces_dir / f"{safe}.md", "\n".join(lines) + "\n")
+    atomic_write_text(spaces_dir / "spaces.json", json.dumps(
         {"generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
          "count": len(registry), "spaces": registry}, ensure_ascii=False, indent=1))
     log.info(f"[spaces] {len(registry)} 个空间索引 → {spaces_dir}")

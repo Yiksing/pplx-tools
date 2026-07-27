@@ -9,6 +9,7 @@ import json
 import time
 from pathlib import Path
 
+from ..core.fsio import atomic_write_text
 from ..core.logging import get_logger
 from ..core.models import Asset
 from ..sites.perplexity import parsers as px
@@ -42,8 +43,7 @@ def _write_manifest(manifest_path: Path, manifest: dict) -> None:
     统一写回：先按契约重算 count（版本总数），再落盘。
     """
     manifest["count"] = manifest_version_count(manifest)
-    manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=1))
+    atomic_write_text(manifest_path, json.dumps(manifest, ensure_ascii=False, indent=1))
 
 
 def _index_manifest(manifest: dict) -> tuple[dict, dict]:
@@ -174,7 +174,7 @@ def _fetch_missing_blocks(adapter, out_root: Path, limit, adapter_for_dir=None) 
                 tj = json.loads((td / "thread.json").read_text())
                 uuid = tj.get("web_uuid") or td.name.rsplit("_", 1)[-1]
                 blocks = ad.fetcher.get_thread_blocks(uuid)
-                (td / "raw_blocks.json").write_text(json.dumps(
+                atomic_write_text(td / "raw_blocks.json", json.dumps(
                     {"thread_metadata": blocks["metadata"], "entries": blocks["entries"],
                      "background_entries": blocks["background_entries"]}, ensure_ascii=False))
                 assets = px.collect_downloadable_assets(blocks["entries"])
@@ -317,8 +317,7 @@ def cmd_assets_backfill(adapter, out_root: Path, online: bool, limit, adapter_fo
             # 不再出现「跳过写盘却声称已落盘」的误报
             try:
                 if not dest.exists() or dest.read_text() != a["content"]:
-                    files_dir.mkdir(parents=True, exist_ok=True)
-                    dest.write_text(a["content"])
+                    atomic_write_text(dest, a["content"])
             except Exception as e:
                 log.warning(f"[backfill] 内联资产写盘失败 {td.name[:30]}/{dest.name}: {e}")
                 continue
@@ -483,7 +482,7 @@ def cmd_assets_backfill(adapter, out_root: Path, online: bool, limit, adapter_fo
                     refresh_fail += 1
         for m, mp in touched.values():
             m["count"] = manifest_version_count(m)
-            mp.write_text(json.dumps(m, ensure_ascii=False, indent=1))
+            atomic_write_text(mp, json.dumps(m, ensure_ascii=False, indent=1))
     log.info(f"[backfill] 内联提取 {inline_n}，句柄登记 {handle_n}"
           + (f"，在线刷新 ok={refresh_ok} fail={refresh_fail}" if online else "")
           + f"（遍历 {len(thread_dirs)} 线程）")

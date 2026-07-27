@@ -9,6 +9,7 @@ import json
 import time
 from pathlib import Path
 
+from ..core.fsio import atomic_write_text
 from ..core.logging import get_logger
 
 log = get_logger("cli")
@@ -38,8 +39,7 @@ def cmd_index(adapter, account, out_root: Path):
             n_kept += 1
     doc = {"account": account.username, "extracted_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
            "count": len(rows), "threads": rows}
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=1))
+    atomic_write_text(p, json.dumps(doc, ensure_ascii=False, indent=1))
     log.info(f"[index] {len(rows)} 条（保留 search_mode 富化 {n_kept} 条）→ {p}")
 
 

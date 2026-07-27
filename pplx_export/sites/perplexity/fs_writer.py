@@ -20,6 +20,7 @@ import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 
+from ...core.fsio import atomic_write_text
 from ...core.logging import get_logger
 from ...core.models import Conversation, author_folder
 from ...writers.base import Writer
@@ -250,36 +251,38 @@ class FilesystemWriter(Writer):
             # 集中登记处：index/answer_variants_log.jsonl（按 thread+entry 去重，幂等）
             variant_log.append_registry(self.out_root, conv.web_uuid, conv.title,
                                         conv.answer_variants, source="online")
-        (thread_dir / "thread.json").write_text(json.dumps(thread_json, ensure_ascii=False, indent=1))
+        atomic_write_text(thread_dir / "thread.json",
+                          json.dumps(thread_json, ensure_ascii=False, indent=1))
 
         # raw (full fidelity)
         # raw（完整保真）
         plain = conv._plain
         if plain is not None:
-            (thread_dir / "raw_entries.json").write_text(json.dumps(
+            atomic_write_text(thread_dir / "raw_entries.json", json.dumps(
                 {"thread_metadata": plain.get("metadata"), "entries": plain.get("entries"),
                  "background_entries": plain.get("background_entries")}, ensure_ascii=False))
         blocks = conv._blocks
         if blocks is not None:
-            (thread_dir / "raw_blocks.json").write_text(json.dumps(
+            atomic_write_text(thread_dir / "raw_blocks.json", json.dumps(
                 {"thread_metadata": blocks.get("metadata"), "entries": blocks.get("entries"),
                  "background_entries": blocks.get("background_entries")}, ensure_ascii=False))
 
         # sources
         # sources（引文）
         src_list = conv.citations
-        (thread_dir / "sources.json").write_text(json.dumps(
+        atomic_write_text(thread_dir / "sources.json", json.dumps(
             {"count": len(src_list), "sources": [
                 {"name": c.name, "url": c.url, "snippet": c.snippet, "timestamp": c.timestamp}
                 for c in src_list]}, ensure_ascii=False, indent=1))
         lines = ["# 引文列表", ""]
         for i, c in enumerate(src_list, 1):
             lines.append(f"{i}. [{c.name or c.url}]({c.url})")
-        (thread_dir / "sources.md").write_text("\n".join(lines) + "\n")
+        atomic_write_text(thread_dir / "sources.md", "\n".join(lines) + "\n")
 
         # conversation.md (compact version)
         # conversation.md（简版）
-        (thread_dir / "conversation.md").write_text(render.render_conversation(conv, sub_map))
+        atomic_write_text(thread_dir / "conversation.md",
+                          render.render_conversation(conv, sub_map))
 
         # turns/ (full version)
         # turns/（完整版）
@@ -300,8 +303,8 @@ class FilesystemWriter(Writer):
             if stale:
                 p.unlink()
         for t in conv.turns:
-            (turns_dir / f"turn_{t.index:04d}.md").write_text(
-                render.render_turn(t, conv.mode, sub_map))
+            atomic_write_text(turns_dir / f"turn_{t.index:04d}.md",
+                              render.render_turn(t, conv.mode, sub_map))
 
         # report.md (deep-research)
         # report.md（deep-research）
@@ -313,7 +316,7 @@ class FilesystemWriter(Writer):
                 head = [f"# {conv.report.title or '研究报告'}", ""]
                 if conv.report.file_name:
                     head += [f"> 产物文件: {conv.report.file_name}", ""]
-                (thread_dir / "report.md").write_text("\n".join(head) + md)
+                atomic_write_text(thread_dir / "report.md", "\n".join(head) + md)
 
         # assets manifest + list of downloaded files
         # assets manifest + 已下载文件清单
@@ -326,7 +329,7 @@ class FilesystemWriter(Writer):
                                        "created_at": a.created_at, "downloaded_to": a.downloaded_to}
                                       for a in sorted(vs, key=lambda x: parsers.to_int(x.created_at))]}
                         for n, vs in sorted(by_name.items())]
-            (thread_dir / "assets" / "assets_manifest.json").write_text(json.dumps(
+            atomic_write_text(thread_dir / "assets" / "assets_manifest.json", json.dumps(
                 {"count": len(conv.assets), "files": manifest}, ensure_ascii=False, indent=1))
 
         return thread_dir

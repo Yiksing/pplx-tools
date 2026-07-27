@@ -64,6 +64,7 @@ import json
 from pathlib import Path
 
 from ..core.errors import EntryDeletedError, EntryExpiredError
+from ..core.fsio import atomic_write_text
 from ..core.logging import get_logger
 from ..core.state import BatchState
 from ..core.throttle import Throttle
@@ -74,8 +75,7 @@ log = get_logger("cli")
 
 
 def _write_index(lib_path: Path, doc: dict) -> None:
-    lib_path.parent.mkdir(parents=True, exist_ok=True)
-    lib_path.write_text(json.dumps(doc, ensure_ascii=False, indent=1))
+    atomic_write_text(lib_path, json.dumps(doc, ensure_ascii=False, indent=1))
 
 
 def cmd_search_mode_backfill(adapter_factory, account, out_root: Path, limit=None,

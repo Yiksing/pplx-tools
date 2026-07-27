@@ -53,9 +53,14 @@ def _run(out_root: Path):
     # 每次落盘时 records 的条目数快照
     writes: list[int] = []
     orig_write = Path.write_text
+    # Since V6 flushes go through fsio.atomic_write_text (hidden same-directory
+    # temp + os.replace); observe the temp write of out_path
+    # V6 起落盘经 fsio.atomic_write_text（同目录隐藏临时文件 + os.replace）；
+    # 探针改观测 out_path 的临时文件写入
+    tmp_path_of_out = out_path.with_name(f".{out_path.name}.tmp")
 
     def spy(self, data, *a, **kw):
-        if self == out_path:
+        if self == tmp_path_of_out:
             writes.append(len(json.loads(data)))
         return orig_write(self, data, *a, **kw)
 

@@ -9,6 +9,7 @@ import json
 import time
 from pathlib import Path
 
+from ..core.fsio import atomic_write_text
 from ..core.logging import get_logger
 
 log = get_logger("cli")
@@ -82,11 +83,9 @@ def cmd_usage_backfill(adapter, account, out_root: Path, limit):
         # 按实际处理数（ok+err，含 forbidden 记 records 的条目）触发中途落盘：
         # 跳过项在 i%25 前 continue，增量重跑（多数已记录）时全局 i 几乎不落在 25 倍数上
         if (ok + err) % 25 == 0:
-            idx_dir.mkdir(parents=True, exist_ok=True)
-            out_path.write_text(json.dumps(records, ensure_ascii=False, indent=1))
+            atomic_write_text(out_path, json.dumps(records, ensure_ascii=False, indent=1))
             log.info(f"[usage {i}/{len(thread_dirs)}] ok={ok} skip={skip} err={err}")
-    idx_dir.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(records, ensure_ascii=False, indent=1))
+    atomic_write_text(out_path, json.dumps(records, ensure_ascii=False, indent=1))
     log.info(f"[usage] 完成: ok={ok}（其中 0 用量 {zero}）skip={skip} err={err} → {out_path}")
 
 

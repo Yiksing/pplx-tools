@@ -98,6 +98,7 @@ from pathlib import Path
 
 from ..core.errors import (AuthTransportError, EntryDeletedError,
                            EntryExpiredError, TransportError)
+from ..core.fsio import atomic_write_text
 from ..core.logging import get_logger
 from ..core.state import BatchState
 from ..core.throttle import Throttle
@@ -239,7 +240,7 @@ def mark_thread_json_remote_deleted(thread_dirs: list[Path], ts: str) -> int:
         if tj.get("remote_deleted"):
             continue
         tj["remote_deleted"] = ts
-        tjp.write_text(json.dumps(tj, ensure_ascii=False, indent=1))
+        atomic_write_text(tjp, json.dumps(tj, ensure_ascii=False, indent=1))
         n += 1
     return n
 

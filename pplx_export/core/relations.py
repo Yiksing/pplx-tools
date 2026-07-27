@@ -84,6 +84,7 @@ import unicodedata
 from collections import defaultdict
 from pathlib import Path
 
+from .fsio import atomic_write_text
 from .models import Conversation, RelationEdge
 
 # Perplexity thread link shapes: /search/<uuid>, /thread/<uuid>, /computer/tasks/<uuid>
@@ -243,7 +244,7 @@ def write_relations(edges: list[RelationEdge], out_dir: Path) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     lines = [json.dumps({"src": e.src_uuid, "dst": e.dst_uuid, "kind": e.kind, "evidence": e.evidence},
                         ensure_ascii=False) for e in edges]
-    (out_dir / "edges.jsonl").write_text("\n".join(lines) + "\n")
+    atomic_write_text(out_dir / "edges.jsonl", "\n".join(lines) + "\n")
     # graph.md summary
     # graph.md 摘要
     by_kind: dict[str, int] = defaultdict(int)
@@ -280,5 +281,5 @@ def write_relations(edges: list[RelationEdge], out_dir: Path) -> Path:
     for e in edges:
         if e.kind == "subagent_of":
             md.append(f"- `{e.src_uuid[:8]}` → `{e.dst_uuid}`（{e.evidence}）")
-    (out_dir / "graph.md").write_text("\n".join(md) + "\n")
+    atomic_write_text(out_dir / "graph.md", "\n".join(md) + "\n")
     return out_dir

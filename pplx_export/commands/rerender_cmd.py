@@ -22,6 +22,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from ..core.fsio import atomic_write_text
 from ..core.logging import get_logger
 from ..core.models import Conversation
 from ..sites.perplexity import parsers, variant_log
@@ -166,8 +167,8 @@ def rerender(thread_dir: Path, update_thread_json: bool = False,
                                         conv.answer_variants, source="offline")
         new_tj = json.dumps(tj, ensure_ascii=False, indent=1)
         if tjp.read_text() != new_tj:
-            tjp.write_text(new_tj)
-    cm_path.write_text(render_conversation(conv, sub_map))
+            atomic_write_text(tjp, new_tj)
+    atomic_write_text(cm_path, render_conversation(conv, sub_map))
     turns_dir = thread_dir / "turns"
     turns_dir.mkdir(exist_ok=True)
     # N-12 fix: delete stale turn_*.md files numbered above the current turn count
@@ -186,7 +187,8 @@ def rerender(thread_dir: Path, update_thread_json: bool = False,
         if stale:
             p.unlink()
     for t in turns:
-        (turns_dir / f"turn_{t.index:04d}.md").write_text(render_turn(t, conv.mode, sub_map))
+        atomic_write_text(turns_dir / f"turn_{t.index:04d}.md",
+                          render_turn(t, conv.mode, sub_map))
     return True
 
 
