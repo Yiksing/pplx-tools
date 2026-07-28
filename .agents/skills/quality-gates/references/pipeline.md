@@ -6,12 +6,14 @@ Triggers on pull requests, pushes to `main`, and manual dispatch. Its validation
 job runs:
 
 1. full-history checkout, needed for changed-base comparisons;
-2. locked dependency verification and frozen synchronization;
-3. documentation audit in `allow-stale` mode, always with an exact changed
+2. sensitive-path tracking check: fail when `git ls-files` matches any tracked
+   `.cookies.json` or `web_archive/` path;
+3. locked dependency verification and frozen synchronization;
+4. documentation audit in `allow-stale` mode, always with an exact changed
    base: pull-request base SHA, push `before` SHA, or required manual input;
-4. simulated-fixture residue check;
-5. the complete offline test suite;
-6. strict MkDocs build for every configured locale.
+5. simulated-fixture residue check;
+6. the complete offline test suite;
+7. strict MkDocs build for every configured locale.
 
 The workflow needs read-only repository contents. Pull-request annotations use
 the audit's GitHub output format. No translation credential or external model

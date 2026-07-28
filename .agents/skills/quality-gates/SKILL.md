@@ -86,12 +86,16 @@ Do not convert these conditions into permissive fallbacks.
 
 ## Verification and output
 
-Run the local equivalent of `quality`:
+Run the local equivalent of `quality`, in workflow order. The first command
+mirrors the sensitive-path tracking gate and must produce no output; the audit
+command mirrors CI by always passing an exact ancestor SHA as the changed base:
 
 ```bash
+test -z "$(git ls-files | grep -E '(^|/)[.]cookies[.]json$|^web_archive/' || true)"
 uv lock --check
 uv sync --frozen
-uv run python scripts/audit_docs.py --format github --machine-mode allow-stale
+uv run python scripts/audit_docs.py --format github --machine-mode allow-stale \
+  --changed-base "$(git merge-base origin/main HEAD)"
 uv run python tests/scrub_fixtures.py --check
 uv run pytest -q
 uv run mkdocs build --strict

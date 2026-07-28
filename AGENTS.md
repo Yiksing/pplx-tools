@@ -7,8 +7,11 @@ Use progressive disclosure for repository skills:
 - Load a second repository skill only when the user-authorized change genuinely
   crosses two ownership surfaces.
 - Do not enumerate or preload every file under `.agents/skills/`.
-- Running tests, validation, review handoff, or Git handoff does not by itself
-  trigger another skill.
+- Running ordinary tests, validation, review handoff, or Git handoff does not
+  by itself trigger another skill, except for the release gates below.
+- Before publishing commits to the public remote, re-route to
+  `privacy-release-gate`; before full pipeline validation or workflow changes,
+  re-route to `quality-gates`.
 - Treat review, design, implementation, validation, and documentation as
   sequential phases. Re-route between phases instead of loading every phase at
   once.
