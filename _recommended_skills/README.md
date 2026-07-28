@@ -32,6 +32,9 @@ needed for a task.
   table.
 - Prefer source authority and relevance over arbitrary publication-date
   windows.
+- Budget wall-clock time for transport backoff (waits of up to 300 s per
+  retry); treat long silences as backoff, never wrap calls in short hard
+  timeouts.
 - Minimize private context before sending a prompt to an external service.
 - Distinguish sources returned by the platform, sources materially cited in a
   report, and sources independently opened and verified by the agent.

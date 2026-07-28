@@ -58,6 +58,22 @@ them. Do not request an exhaustive report from search mode.
 
 ## 4. Run and archive
 
+Before the first search call, run two preflight checks:
+
+1. Confirm the user-level config file exists: the explicit `--config` path
+   when one is used, otherwise `$PPLX_EXPORT_CONFIG`, otherwise
+   `~/.config/pplx-export/config.toml`.
+2. Run `pplx-ask models` as the Perplexity connectivity-and-session probe and
+   require the search-mode selectable-model table in its output.
+
+If the config file is missing, or the model table cannot be retrieved, pause
+and report to the user instead of proceeding.
+
+Run this preflight once per conversation, before the first call only. Do not
+re-probe between subsequent calls; repeat the connectivity probe only after a
+later call actually times out or fails with connectivity symptoms — backoff
+silence alone is not a trigger.
+
 Confirm the installed contract with `pplx-ask ask --help` when uncertain. Pass
 the prompt as one process argument without re-evaluating its contents as shell
 syntax.
@@ -72,13 +88,21 @@ pplx-ask --out "$PPLX_ARCHIVE_ROOT" ask "$PPLX_SEARCH_PROMPT" \
 Keep automatic export enabled. Never use `--no-export`.
 
 Search mode uses the platform's default "Best" choice when `--models` is
-omitted. If the user asks for a specific selectable model, run
-`pplx-ask models` and use a live model identifier; do not hardcode an
+omitted. If the user asks for a specific selectable model, take a live model
+identifier from the preflight `pplx-ask models` output; do not hardcode an
 identifier in the skill.
 
 Every `ask` command creates a new thread. Use separate calls only for genuinely
 distinct questions, and keep them sequential unless the surrounding
 environment explicitly establishes a safe concurrency policy.
+
+Budget wall-clock time generously: the transport retries 429 / 5xx / network
+errors with backoff waits of up to 300 s each, so even a search-mode call that
+normally finishes in minutes can legitimately stay silent much longer — give
+any wrapping task a budget of at least 15 minutes rather than a short hard
+timeout, and treat silence as a backoff wait, not a hang (see [runtime budget
+for
+callers](https://pplx.iekseng.com/guide/rate-limiting/#runtime-budget-for-callers)).
 
 ## 5. Verify the archive
 

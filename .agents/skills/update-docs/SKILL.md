@@ -42,6 +42,15 @@ description: Update reviewed English and Simplified Chinese documentation while 
    vendor guarantee.
 6. Keep generated locale files and `i18n/manifest.json` untouched.
 
+## Externally-copied skills
+
+When a canonical change touches the CLI invocation contract, runtime or
+backoff expectations, archive layout, or `pplx-ask` flags, review the two
+skills under `_recommended_skills/skills/` in the same change and sync them
+when affected. They are English-only (no `.zh-CN.md` twin) and are copied
+into external agent environments, so their links must be absolute public-site
+URLs, never repository-relative paths.
+
 ## Validate proportionally
 
 Run the offline canonical audit:

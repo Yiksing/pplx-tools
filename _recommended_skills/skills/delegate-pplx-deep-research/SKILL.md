@@ -73,12 +73,23 @@ The subagent must:
 
 1. Confirm that `pplx-ask` is available and inspect `pplx-ask ask --help` when
    the installed CLI contract is uncertain.
-2. Construct a detailed Perplexity-facing prompt from the applicable reference
+2. Confirm the user-level config file exists before any network call: the
+   explicit `--config` path when one is used, otherwise `$PPLX_EXPORT_CONFIG`,
+   otherwise `~/.config/pplx-export/config.toml`. If none exists, pause and
+   report to the user instead of proceeding in degraded mode.
+3. Run `pplx-ask models` as the Perplexity connectivity-and-session probe and
+   require the search-mode selectable-model table in its output. If the
+   command fails or that table cannot be retrieved, pause and report to the
+   user; do not launch the research run. This probe is needed once per
+   conversation, before the first call only; repeat it only after a later
+   call actually times out or fails with connectivity symptoms — backoff
+   silence alone is not a trigger.
+4. Construct a detailed Perplexity-facing prompt from the applicable reference
    pattern.
-3. Pass the prompt as one process argument without re-evaluating its contents
+5. Pass the prompt as one process argument without re-evaluating its contents
    as shell syntax.
-4. Use a private archive root outside any repository intended for publication.
-5. Run deep-research mode with agent telemetry disabled and automatic export
+6. Use a private archive root outside any repository intended for publication.
+7. Run deep-research mode with agent telemetry disabled and automatic export
    enabled:
 
    ```bash
@@ -86,8 +97,18 @@ The subagent must:
      --mode deep-research --no-telemetry
    ```
 
-6. Increase `--timeout` only when the expected run needs it.
-7. Never use `--no-export`.
+8. Increase `--timeout` only when the expected run needs it.
+9. Budget wall-clock time for the whole run, not just `--timeout`: that flag
+   only bounds the ask-side SSE stream, while the transport retries 429 / 5xx /
+   network errors with backoff waits of up to 300 s each, so a long silence
+   usually means a backoff wait, not a hang. Deep research alone can run tens
+   of minutes — never wrap the command in a task manager with a short hard
+   timeout (see [runtime budget for
+   callers](https://pplx.iekseng.com/guide/rate-limiting/#runtime-budget-for-callers)).
+   If a run is killed mid-stream anyway, the tool deliberately skips the
+   export; the platform-side thread survives and can be archived afterwards
+   with `pplx-export export <thread-uuid>`.
+10. Never use `--no-export`.
 
 Deep-research mode uses its platform-defined model. Do not pass `--models` or
 hardcode a model identifier for this mode.
