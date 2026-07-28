@@ -220,6 +220,32 @@ skips them (`pplx_export/commands/assets_backfill_cmd.py:356`).
 
 Manifest layout: [Archive layout](archive-layout.md).
 
+## Command seems hung / long silences
+
+**Symptom**: `index` / `batch` / `export` prints nothing for several minutes;
+an outer task manager may kill it as "timed out".
+
+**Cause**: almost always a backoff wait, not a hang. On 429 / 5xx / network
+errors the transport sleeps between attempts — up to 300 s per wait
+(`pplx_export/core/throttle.py:38-50`). At DEBUG level the wait is explicit:
+
+```
+19:39:31 GET www.perplexity.ai/rest/thread/<uuid> 网络错误: Remote end closed connection without response
+19:39:31 退避 200.9s（连续失败 2 次）
+```
+
+**How to tell**: run with `-v` (or `--log-file`) and look for the backoff
+lines; as long as the process is alive, no intervention is needed.
+Interrupting is safe at any point — state is written atomically and the next
+run repairs the gap.
+
+**Anti-pattern**: wrapping the CLI in a task manager with a short hard
+timeout (agent background tasks, `timeout(1)`-style cron wrappers) *while*
+chaining accounts with `&&` — the first account's backoff cascade burns the
+whole timeout and the chained account never runs. One account per
+invocation, generous budget: see
+[Runtime budget for callers](rate-limiting.md#runtime-budget-for-callers).
+
 ## Where are the logs?
 
 **Console**: INFO-level progress by default; `-v` / `--verbose` switches to DEBUG

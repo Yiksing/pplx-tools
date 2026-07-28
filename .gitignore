@@ -25,8 +25,8 @@ site/
 # 默认归档输出（本仓库只发布工具，不发布归档内容）
 web_archive/
 
-# 编辑器/代理本地工作数据（不入库）
-.qoder/
+# 编辑器/代理本地工作数据（不入库；无尾斜杠，兼容 .qoder 为目录或指向 .agents 的软链接）
+.qoder
 
 # macOS
 .DS_Store

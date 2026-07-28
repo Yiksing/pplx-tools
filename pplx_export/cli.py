@@ -82,6 +82,9 @@ def main():
 
 多账户: cookie 归属与 --account 登记 email 不符时，自动枚举浏览器中的
 账户会话令牌完成切换，无需手动操作浏览器。
+运行时预算: 网络不稳时单命令可因退避持续数分钟（单次退避封顶 300s），
+静默≠卡死，-v 可见退避日志；多账户请逐账户依次调用，勿用 && 串联进
+带超时的外层任务；命令幂等，中断后直接重跑即可（增量早停跳过已完成部分）。
 子命令帮助: pplx-export <cmd> --help
 """)
     ap.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
@@ -119,7 +122,8 @@ def main():
     p_b = sub.add_parser("batch", parents=[common],
                          help="批量导出（增量早停 + 断点续跑）",
                          description="批量导出账户线程。默认增量早停：列表从新到旧，跳过尾部"
-                                     "「已导出且未变」的连续段；中断/失败留下的缺口仍会被修复。")
+                                     "「已导出且未变」的连续段；中断/失败留下的缺口由下次运行"
+                                     "自动修复——重跑即补缺，随时中断都安全。")
     p_b.add_argument("--force", action="store_true",
                      help="重导全部线程（expired 平台已清除的终态除外）")
     p_b.add_argument("--full", action="store_true",

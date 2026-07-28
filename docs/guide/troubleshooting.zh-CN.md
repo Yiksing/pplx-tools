@@ -195,6 +195,28 @@ CODE_FILE / UNKNOWN）没有 API 下载通道：`GET /rest/assets/<asset_uuid>/d
 
 manifest 布局：[归档布局](archive-layout.md)。
 
+## 命令看似卡住 / 长时间无输出
+
+**症状**：`index` / `batch` / `export` 数分钟没有任何输出；外层任务管理器
+可能把它当「超时」杀掉。
+
+**原因**：几乎总是退避等待，不是卡死。429 / 5xx / 网络错误时传输层在
+尝试之间休眠——单次等待封顶 300 s（`pplx_export/core/throttle.py:38-50`）。
+DEBUG 级日志里等待是明示的：
+
+```
+19:39:31 GET www.perplexity.ai/rest/thread/<uuid> 网络错误: Remote end closed connection without response
+19:39:31 退避 200.9s（连续失败 2 次）
+```
+
+**判别法**：带 `-v`（或 `--log-file`）运行，看退避日志行；只要进程活着
+就无需干预。随时中断都安全——状态原子落盘，下次运行自动补缺。
+
+**反模式**：把 CLI 包进带短硬超时的任务管理器（agent 后台任务、
+`timeout(1)` 式 cron 包装）的同时还用 `&&` 串联多账户——第一个账户的
+退避级联会烧光整个超时，后面的账户根本不会跑。一次调用一个账户、
+留足预算：见[调用方运行时预算](rate-limiting.md#调用方运行时预算)。
+
 ## 日志在哪里？
 
 **控制台**：默认 INFO 级进度；`-v` / `--verbose` 切到 DEBUG（请求追踪、内部判定）；

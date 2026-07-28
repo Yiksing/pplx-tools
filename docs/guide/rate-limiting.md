@@ -89,6 +89,30 @@ Why each rule exists:
   right after creation (propagation delay); a terminal mark would bury a live
   thread that is only briefly invisible.
 
+## Runtime budget for callers
+
+The backoff discipline above trades wall-clock time for account safety, and
+callers must budget for that time: a single request makes up to 3 attempts
+with a backoff sleep between them — up to 300 s each
+(`pplx_export/core/throttle.py:38-50`) — so while the network flaps, one
+request can legitimately occupy on the order of 10 minutes. `index` / `batch`
+also start with a session probe that follows the same rules
+(`pplx_export/commands/common.py:126`). A long silence means a backoff wait is
+in progress, not a hang.
+
+Three rules for agents, cron jobs, and CI wrappers:
+
+1. **One account per invocation.** Run accounts serially as separate
+   processes; never chain them with `&&` inside an outer task that enforces a
+   hard timeout — the first account's backoff cascade eats the whole budget
+   and the chained account never runs.
+2. **Budget ≥ 15 minutes, or detach.** Give wrappers a generous timeout, or
+   run in the background and watch the log (`-v` / `--log-file`) to tell
+   backoff waits from real hangs.
+3. **Interrupting is always safe.** State is written atomically; a re-run is
+   idempotent and repairs whatever gap the interruption left (early-stop and
+   resume semantics: [Incremental sync](incremental-sync.md)).
+
 ## Auth fail-fast
 
 The batch layer counts consecutive auth failures (`_AUTH_FAIL_FAST = 3`,
