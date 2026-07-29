@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/guide/rate-limiting.zh-CN.md"
-translation_source_sha256: "85fe0d51fa87cae23e9dc3ac33331922bbf9343dcf94f76e86fa81fab2a08173"
+translation_source_sha256: "99df7903c53796ffecbad2e97c8861a728bbdb5789ccd249d61d12ebc8436e07"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -13,7 +13,7 @@ translation_prompt_version: "v1"
 限速策略裡的每個數字都服務於同一個目標：歸檔流量必須看起來像普通瀏覽。
 單執行緒導出只有 1–2 次請求——約等於一次頁面瀏覽——batch 運行再把這些請求
 攤到隨機間隔上，且無並發。這是明確要求的反風控紀律
-（`pplx_export/core/throttle.py:1-2`），不是可調的效能參數。
+（`pplx_export/core/throttle.py:1-2`），不是可調的性能參數。
 
 <a id="具体数字" data-pplx-source-anchor="true"></a>
 ## 具體數字
@@ -46,7 +46,7 @@ translation_prompt_version: "v1"
 - **塊補抓前 ≥4 s。** 否則 schematized 重抓會與 plain 抓取背靠背打到 API；
   這段停頓模擬重頁面加載完整負載前的延遲。
 - **資產下載 0.5 s。** 靜態小檔案，開銷遠低於 API 調用——但仍然有節奏。
-- **CDN 階段是唯一的放寬。** 簽名 URL 下載打到的是內容分發網路而非
+- **CDN 階段是唯一的放寬。** 簽名 URL 下載打到的是內容分發網絡而非
   Perplexity API，因此僅在此處允許 6 路並行。
 
 <a id="错误处理与退避" data-pplx-source-anchor="true"></a>
@@ -91,13 +91,33 @@ flowchart TD
 - **404 永不進終態** —— `pplx-ask` 新建的執行緒可能因傳播延遲瞬態 404；打上
   終態會把只是暫時不可見的活執行緒誤葬。
 
+<a id="调用方运行时预算" data-pplx-source-anchor="true"></a>
+## 調用方運行時預算
+
+上文的退避紀律是拿時鐘時間換帳號安全，調用方必須為這份時間留出預算：
+單個請求最多 3 次嘗試，嘗試之間退避等待——單次封頂 300 s
+（`pplx_export/core/throttle.py:38-50`）——網路翻覆時一個請求合理地
+佔用 10 分鐘量級。`index` / `batch` 起步還有 session 探測，同樣走這套
+規則（`pplx_export/commands/common.py:126`）。長時間靜默是退避等待中，
+不是卡死。
+
+面向 agent、cron、CI 包裝層的三條守則：
+
+1. **一次調用只跑一個帳戶。** 多帳戶逐個串行、各起一個進程；不要用 `&&`
+   串聯進帶硬超時的外層任務——第一個帳戶的退避級聯會吃光整個預算，
+   後面的帳戶根本沒機會跑。
+2. **超時預算 ≥ 15 分鐘，否則脫離前台。** 給包裝層留足超時，或後台運行 +
+   看日誌（`-v` / `--log-file`）區分退避等待與真卡死。
+3. **隨時中斷都安全。** 狀態原子落盤；重跑冪等，中斷留下的缺口自動修復
+   （早停/續跑語義見[增量同步](incremental-sync.md)）。
+
 <a id="鉴权-fail-fast" data-pplx-source-anchor="true"></a>
 ## 鑑權 fail-fast
 
 batch 層對連續鑑權失敗計數（`_AUTH_FAIL_FAST = 3`，
 `pplx_export/commands/batch_cmd.py:43`）。任何成功到達伺服器的響應——包括
 `ENTRY_DELETED` / `ENTRY_EXPIRED`——都證明 cookie 有效並將計數清零
-（`batch_cmd.py:170-182`）。連續 3 次 401/403：儲存狀態檔案後中止運行
+（`batch_cmd.py:170-182`）。連續 3 次 401/403：保存狀態檔案後中止運行
 （`batch_cmd.py:190-194`）——cookie 失效還繼續空轉，只會讓數百個執行緒各失敗
 一遍，浪費數小時。`sync-deleted` 遵循同一紀律
 （`pplx_export/commands/sync_deleted_cmd.py:111,333-337`）。處理辦法：更新

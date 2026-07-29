@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/guide/troubleshooting.zh-CN.md"
-translation_source_sha256: "dadb0d4e847c97d5c11b428f8e9b7e8ea0c5272322a5d3a6202214ba49b0c249"
+translation_source_sha256: "2ecc68fa7d02955edcb4baf4bdcfbfbdb1d35a08790030237e409c3a025a01bc"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -28,8 +28,8 @@ Cloudflare 質詢頁——即使帶上了從瀏覽器複製的 cookie——而�
 
 **修復**：
 
-- 不要繞過工具的 transport；用 `pplx-export` / `pplx-ask` 發起呼叫，不要寫臨時腳本。
-- 工具內部把 HTTP 200 但非 JSON 的回應體（Cloudflare 過場頁）歸類為傳輸錯誤而非資料
+- 不要繞過工具的 transport；用 `pplx-export` / `pplx-ask` 發起調用，不要寫臨時腳本。
+- 工具內部把 HTTP 200 但非 JSON 的響應體（Cloudflare 過場頁）歸類為傳輸錯誤而非數據
   （`pplx_export/core/http/cookie_transport.py:133`）。
 - 工具內若開始出現 403，先放慢節奏（見[限流](rate-limiting.md)）並重新整理 cookie；
   持續質詢則需在瀏覽器裡重新登入。
@@ -90,7 +90,7 @@ Python 的 `jeepney` 存取 D-Bus——它已隨工具安裝在 Linux 上，無�
 | 安裝方式 | snap / flatpak | auto-detect——內建 profile 註冊表覆蓋了 `~/snap/<name>/...` 與 `~/.var/app/<app-id>/...` 下的 profile（`pplx_export/core/cookies/profiles.py:37-67`） |
 | 桌面環境 | GNOME | 通常開箱即用（gnome-keyring） |
 | 桌面環境 | KDE | 在 KWallet 設定中勾選 **Use KWallet for the Secret Service interface** |
-| 桌面環境 | 無頭 / 最小化 | 無 D-Bus session 匯流排 → `peanuts` 路徑 |
+| 桌面環境 | 無頭 / 最小化 | 無 D-Bus session 總線 → `peanuts` 路徑 |
 | 發行版 | Debian / Ubuntu | 安裝 `libsecret-1-0` + `gnome-keyring` |
 | 發行版 | Fedora / RHEL | 安裝 `libsecret` + `gnome-keyring`；最小化 / server 安裝常常完全沒有 keyring——最常見的失敗原因 |
 | 發行版 | Arch | 機制相同，僅套件名不同 |
@@ -155,7 +155,7 @@ snap/flatpak 的 cookie 資料庫（`pplx_export/core/cookies/loaders.py:155-168
   （`pplx_export/commands/common.py:51`）。顯式 `--account` 則直接報錯。
 - `pplx-ask ask` 跳過自動移入 BOT 空間（結果 JSON 中 `moved_to_bot` 保持 `false`），
   遙測攜帶空 user id；發問與歸檔本身照常工作。
-- 歸檔落在按使用者名稱回退的帳戶目錄下。
+- 歸檔落在依使用者名稱回退的帳戶目錄下。
 
 **修復**：把 `config.example.toml` 複製為 `~/.config/pplx-export/config.toml`，填好
 `[accounts.<name>]`（`display_name` / `email` / `user_id`）、`[bot_space]` 與
@@ -210,6 +210,29 @@ CODE_FILE / UNKNOWN）沒有 API 下載通道：`GET /rest/assets/<asset_uuid>/d
   [API 發現路線圖](../reference/api/api-discovery-roadmap.md)。
 
 manifest 佈局：[歸檔佈局](archive-layout.md)。
+
+<a id="命令看似卡住-长时间无输出" data-pplx-source-anchor="true"></a>
+## 命令看似卡住 / 長時間無輸出
+
+**症狀**：`index` / `batch` / `export` 數分鐘沒有任何輸出；外層任務管理器
+可能把它當「逾時」殺掉。
+
+**原因**：幾乎總是退避等待，不是卡死。429 / 5xx / 網路錯誤時傳輸層在
+嘗試之間休眠——單次等待封頂 300 s（`pplx_export/core/throttle.py:38-50`）。
+DEBUG 級日誌裡等待是明示的：
+
+```
+19:39:31 GET www.perplexity.ai/rest/thread/<uuid> 网络错误: Remote end closed connection without response
+19:39:31 退避 200.9s（连续失败 2 次）
+```
+
+**判別法**：帶 `-v`（或 `--log-file`）執行，看退避日誌行；只要行程活著
+就無需干預。隨時中斷都安全——狀態原子落盤，下次執行自動補缺。
+
+**反模式**：把 CLI 包進帶短硬逾時的任務管理器（agent 背景任務、
+`timeout(1)` 式 cron 包裝）的同時還用 `&&` 串聯多帳戶——第一個帳戶的
+退避級聯會燒光整個逾時，後面的帳戶根本不會跑。一次呼叫一個帳戶、
+留足預算：見[呼叫端執行時預算](rate-limiting.md#调用方运行时预算)。
 
 <a id="日志在哪里" data-pplx-source-anchor="true"></a>
 ## 日誌在哪裡？
