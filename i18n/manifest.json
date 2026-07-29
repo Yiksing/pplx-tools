@@ -2590,11 +2590,11 @@
     "docs/guide/rate-limiting.md::ja": {
       "model": "deepseek-v4-flash",
       "output_path": "docs/guide/rate-limiting.ja.md",
-      "output_sha256": "c03bf8caec9b576dfb6ca282f659402832fd375e74988e38f6426dbe8f146e97",
+      "output_sha256": "1c391b431a7341776046783a9afdfa500739d657e095059df4d03a801646c905",
       "prompt_version": "v1",
       "source_locale": "zh-CN",
       "source_path": "docs/guide/rate-limiting.zh-CN.md",
-      "source_sha256": "85fe0d51fa87cae23e9dc3ac33331922bbf9343dcf94f76e86fa81fab2a08173",
+      "source_sha256": "99df7903c53796ffecbad2e97c8861a728bbdb5789ccd249d61d12ebc8436e07",
       "translation_fingerprint": "fdf61797fad7e6b209fa648fd05b5f7d95ce05b2c74bbac92003fc6256d6eb60",
       "warnings": []
     },
@@ -2700,11 +2700,11 @@
     "docs/guide/troubleshooting.md::ja": {
       "model": "deepseek-v4-flash",
       "output_path": "docs/guide/troubleshooting.ja.md",
-      "output_sha256": "e3a0a2b17a993d74766dd98451d4d201fe966ab051135f7c2fc6252529bf3bcb",
+      "output_sha256": "51c1508bf824afdb863f83dbb2584446a5b287f83712e222c26c7e5bbbfd189b",
       "prompt_version": "v1",
       "source_locale": "zh-CN",
       "source_path": "docs/guide/troubleshooting.zh-CN.md",
-      "source_sha256": "dadb0d4e847c97d5c11b428f8e9b7e8ea0c5272322a5d3a6202214ba49b0c249",
+      "source_sha256": "2ecc68fa7d02955edcb4baf4bdcfbfbdb1d35a08790030237e409c3a025a01bc",
       "translation_fingerprint": "fdf61797fad7e6b209fa648fd05b5f7d95ce05b2c74bbac92003fc6256d6eb60",
       "warnings": []
     },
