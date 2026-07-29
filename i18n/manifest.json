@@ -2535,11 +2535,11 @@
     "docs/guide/rate-limiting.md::ar": {
       "model": "deepseek-v4-flash",
       "output_path": "docs/guide/rate-limiting.ar.md",
-      "output_sha256": "ad682c31b8aee3936d7b12b1f634b325aa7c56ac63d65a13aba6b742088d09be",
+      "output_sha256": "cd6eaa9ea0527b7d59cb1ab1b9f77c28c5e580c80976a1c50a429c2a8e13485b",
       "prompt_version": "v1",
       "source_locale": "en",
       "source_path": "docs/guide/rate-limiting.md",
-      "source_sha256": "0f94f3ddbb3a7ac5ea7eef4a48ecd5479e5a834d8fda263c700df5ada0de3350",
+      "source_sha256": "5d2c127866c97b95edeb2938dabbcb2ce485b15f3d316a61c6057f7653a571d5",
       "translation_fingerprint": "fdf61797fad7e6b209fa648fd05b5f7d95ce05b2c74bbac92003fc6256d6eb60",
       "warnings": []
     },
@@ -2645,11 +2645,11 @@
     "docs/guide/troubleshooting.md::ar": {
       "model": "deepseek-v4-flash",
       "output_path": "docs/guide/troubleshooting.ar.md",
-      "output_sha256": "767e5eeda3c3ac9275f916cabced1f4f1787f2b786a3dfe3d246f58a00199ab8",
+      "output_sha256": "1ed423ab8e226bc663b3d58f014454c099cca413d51a08f4b795c99b8fe5186a",
       "prompt_version": "v1",
       "source_locale": "en",
       "source_path": "docs/guide/troubleshooting.md",
-      "source_sha256": "6eb13cb35b2da72789c46ad4bf63ba5a3ab0eca92581d51589ad8181748be600",
+      "source_sha256": "3feeb14ea77ad45275ccca583b2fbcbee34745db32dca749c70e0b7a77302623",
       "translation_fingerprint": "fdf61797fad7e6b209fa648fd05b5f7d95ce05b2c74bbac92003fc6256d6eb60",
       "warnings": []
     },
