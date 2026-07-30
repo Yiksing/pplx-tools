@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/architecture/rate-limiting-errors.zh-CN.md"
-translation_source_sha256: "9c19c03d4ae62113daaab5c670d6160363ca68fd7ec1684ae5bf842883da8754"
+translation_source_sha256: "8862ac055e64ad50ae8040283ae348b19913ee27457417be687f1b9edc200e48"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -55,8 +55,8 @@ flowchart TD
     end
 ```
 
-- **WebBridgeTransport** は429のバックオフ、成功時の`throttle.reset()`のクリア
-  （bridge_transport.py）を実装；エラー分類はCookieTransportと整合——401/403 →
+- **WebBridgeTransport** は429バックオフ、成功時に`throttle.reset()`をゼロクリア
+  （bridge_transport.py）；エラー分類はCookieTransportに合わせてある——401/403 →
   `AuthTransportError`、400かつbodyにENTRY_EXPIREDを含む → `EntryExpiredError`、
   5xxはバックオフ再試行、バッチの認証fail-fastとexpired終状態は
   `--transport webbridge`下でも同様に有効；デーモンの非JSON応答は
@@ -66,3 +66,12 @@ flowchart TD
   トランスポート層とバッチ層のバックオフカウントを統一；**アカウント自動切り替え後の再構築でも失われない**
   （common.py:139でも同様に渡す）；単一コマンドでは渡さない場合、CookieTransportがデフォルトインスタンスを自動作成
   （cookie_transport.py:49）。
+- **ハートビート（デフォルト設定）**。3か所の長時間待機——`Throttle.backoff`のスリープ、スタックした進行中リクエスト
+  （`CookieTransport._open_read`）、アイドル状態の`pplx-ask` SSEストリーム（`ask_api.post_stream`）
+  ——でINFO「まだ待機中」ハートビートを出力し、待機をスタックと誤認するのを防止。バックオフは分割スリープ
+  （`Throttle._sleep_with_heartbeat`）で行い、各断片の合計は同じ総時間になるため、リスク対策
+  のリズム/予算は変わらず、可視化されるだけ；`-v`には完全なDEBUGトレースを添付。
+- **`--skip-auth-check` + 遅延検証**。起動時のアカウント帰属セッション検出（`common.py`、
+  `make_transport`）はスキップ可能で、ネットワークが悪い場合の開始時の長時間待機を回避。セーフティネットとして、`batch`
+  は汎用エラーの蓄積後に一度だけ`report_account_status`（`common.py`；`batch_cmd.py`）を実行し、
+  cookieの無効化/アカウント不一致/アカウント正常（つまりエラーがネットワークまたはレート制限に起因する場合）を通知。
