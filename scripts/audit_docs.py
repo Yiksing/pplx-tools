@@ -728,9 +728,11 @@ def _machine_translation_findings(
                 isinstance(entry, dict)
                 and entry.get("source_sha256") == source_hash
             )
-            if (
-                machine_mode == "required" or source_was_current
-            ) and source_headings != output_headings:
+            check_current_shape = (
+                (machine_mode == "required" and locale.frozen_since is None)
+                or source_was_current
+            )
+            if check_current_shape and source_headings != output_headings:
                 findings.append(
                     _finding(
                         "DOC-I18N-006",
@@ -741,9 +743,7 @@ def _machine_translation_findings(
                         f"{output_headings} != {source_headings}",
                     )
                 )
-            if (
-                machine_mode == "required" or source_was_current
-            ) and source_fences != output_fences:
+            if check_current_shape and source_fences != output_fences:
                 findings.append(
                     _finding(
                         "DOC-I18N-006",
@@ -754,7 +754,7 @@ def _machine_translation_findings(
                         f"{output_fences} != {source_fences}",
                     )
                 )
-            if machine_mode == "required":
+            if machine_mode == "required" and locale.frozen_since is None:
                 source_text = source_path.read_text(encoding="utf-8")
                 output_text = output_path.read_text(encoding="utf-8")
                 if add_source_heading_anchors(
@@ -821,7 +821,7 @@ def _machine_translation_findings(
                         "generated output digest differs from manifest",
                     )
                 )
-            if machine_mode == "required":
+            if machine_mode == "required" and locale.frozen_since is None:
                 if (
                     entry.get("source_sha256") != source_hash
                     or metadata.get("translation_source_sha256") != source_hash
@@ -884,7 +884,7 @@ def _machine_translation_findings(
                     "localized catalog digest differs from manifest",
                 )
             )
-        if machine_mode == "required":
+        if machine_mode == "required" and locale.frozen_since is None:
             assert locale.source is not None
             source_path = i18n.canonical_catalogs[locale.source]
             if (

@@ -9,7 +9,7 @@ import json
 import time
 from pathlib import Path
 
-from ..core.fsio import atomic_write_text
+from ..core.fsio import atomic_write_bytes, atomic_write_text
 from ..core.logging import get_logger
 from ..core.models import Asset
 from ..sites.perplexity import parsers as px
@@ -197,8 +197,7 @@ def _fetch_missing_blocks(adapter, out_root: Path, limit, adapter_for_dir=None) 
                                 real = dl.resolve_ext(a, data)
                                 if real and real != "bin":
                                     dest = dest.with_suffix(f".{real}")
-                            dest.parent.mkdir(parents=True, exist_ok=True)
-                            dest.write_bytes(data)
+                            atomic_write_bytes(dest, data)
                             a.downloaded_to = str(dest)
                             n_new += 1
                         except Exception as e:
@@ -486,6 +485,5 @@ def cmd_assets_backfill(adapter, out_root: Path, online: bool, limit, adapter_fo
     log.info(f"[backfill] 内联提取 {inline_n}，句柄登记 {handle_n}"
           + (f"，在线刷新 ok={refresh_ok} fail={refresh_fail}" if online else "")
           + f"（遍历 {len(thread_dirs)} 线程）")
-
 
 

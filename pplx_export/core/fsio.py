@@ -37,6 +37,26 @@ import os
 from pathlib import Path
 
 
+def _tmp_path(path: Path) -> Path:
+    return path.with_name(f".{path.name}.tmp")
+
+
+def atomic_write_bytes(path: Path, data: bytes) -> None:
+    """Write bytes atomically: hidden same-directory temp file, then os.replace.
+
+    Creates parent directories as needed; on any failure before the final
+    replace, the pre-existing target stays byte-identical.
+
+    原子写二进制：同目录隐藏临时文件写毕后 os.replace 替换目标。
+
+    需要时自建父目录；最终替换前的任何失败都保持既有目标字节不变。"""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = _tmp_path(path)
+    tmp.write_bytes(data)
+    os.replace(tmp, path)
+
+
 def atomic_write_text(path: Path, text: str, encoding: str = "utf-8") -> None:
     """Write text atomically: hidden same-directory temp file, then os.replace.
 
@@ -48,6 +68,6 @@ def atomic_write_text(path: Path, text: str, encoding: str = "utf-8") -> None:
     需要时自建父目录；最终替换前的任何失败都保持既有目标字节不变。"""
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_name(f".{path.name}.tmp")
+    tmp = _tmp_path(path)
     tmp.write_text(text, encoding=encoding)
     os.replace(tmp, path)

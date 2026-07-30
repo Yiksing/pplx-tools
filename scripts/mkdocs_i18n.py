@@ -92,20 +92,41 @@ def on_page_markdown(
         _I18N.docs_dir / str(page.file.src_path),
         _I18N,
     )
-    catalog = _catalog(target_locale) or json.loads(
+    target = _I18N.locales.get(target_locale)
+    source_catalog = json.loads(
         _I18N.canonical_catalogs[source_locale].read_text(encoding="utf-8")
     )
-    title = str(catalog.get("machine_notice_title", "Machine translation"))
-    notice = str(
-        catalog.get(
-            "machine_notice_text",
-            "This page was translated automatically by AI and may contain errors.",
+    catalog = _catalog(target_locale) or source_catalog
+    if target is not None and target.frozen_since is not None:
+        title = str(
+            source_catalog.get(
+                "frozen_notice_title",
+                "Translation no longer maintained",
+            )
         )
-    )
-    source_label = str(catalog.get("source_link_label", "Source"))
-    report_label = str(
-        catalog.get("report_link_label", "Report a translation issue")
-    )
+        notice = str(
+            source_catalog.get(
+                "frozen_notice_text",
+                "For cost reasons, this translation is no longer maintained "
+                "as of {date}. Refer to the source language version.",
+            )
+        ).format(date=target.frozen_since)
+        source_label = str(
+            source_catalog.get("source_link_label", "Source")
+        )
+        report_label = ""
+    else:
+        title = str(catalog.get("machine_notice_title", "Machine translation"))
+        notice = str(
+            catalog.get(
+                "machine_notice_text",
+                "This page was translated automatically by AI and may contain errors.",
+            )
+        )
+        source_label = str(catalog.get("source_link_label", "Source"))
+        report_label = str(
+            catalog.get("report_link_label", "Report a translation issue")
+        )
     source_url = _source_url(source_path, source_locale)
     issue_query = urlencode(
         {
@@ -119,12 +140,19 @@ def on_page_markdown(
     )
     safe_title = title.replace('"', r"\"")
     issue_url = f"{_ISSUE_URL}?{issue_query}"
+    links = (
+        f'    <a href="{html.escape(source_url, quote=True)}">'
+        f"{html.escape(source_label)}</a>"
+    )
+    if report_label:
+        links += (
+            " · "
+            f'<a href="{html.escape(issue_url, quote=True)}">'
+            f"{html.escape(report_label)}</a>"
+        )
     banner = (
         f'!!! warning "{safe_title}"\n'
         f"    {html.escape(notice)}\n\n"
-        f'    <a href="{html.escape(source_url, quote=True)}">'
-        f"{html.escape(source_label)}</a> · "
-        f'<a href="{html.escape(issue_url, quote=True)}">'
-        f"{html.escape(report_label)}</a>\n\n"
+        f"{links}\n\n"
     )
     return banner + markdown

@@ -100,3 +100,27 @@ def test_spaces_link_robust_to_out_root(tmp_path, monkeypatch):
     assert links[0].startswith("../custom_out/")
     target = Path(os.path.normpath(Path("spaces") / links[0]))
     assert target.is_dir(), f"反链不可达: {links[0]}"
+
+
+def test_spaces_skips_index_rows_missing_entry_uuid(tmp_path, monkeypatch):
+    """Malformed library rows are skipped instead of crashing the whole space rebuild.
+
+    畸形 library 行会被跳过，而不是使整个空间索引重建崩溃。"""
+    out_root = _make_repo(tmp_path)
+    lib = out_root / "index" / "library_acc.json"
+    doc = json.loads(lib.read_text())
+    doc["threads"].append({
+        "title": "缺 UUID 行",
+        "authorUsername": "acc",
+        "mode_label": "SEARCH",
+        "lastUpdated": "2026-07-23T00:00:00Z",
+        "collection": {"uuid": "cuuid", "title": "测试空间", "slug": SLUG},
+    })
+    lib.write_text(json.dumps(doc, ensure_ascii=False))
+    monkeypatch.chdir(tmp_path)
+
+    cmd_spaces(out_root)
+
+    links = _exported_links(Path("spaces") / f"{SLUG}.md")
+    assert len(links) == 1
+    assert "缺 UUID 行" not in (Path("spaces") / f"{SLUG}.md").read_text()

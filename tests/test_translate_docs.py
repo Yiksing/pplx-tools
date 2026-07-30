@@ -435,6 +435,50 @@ def test_source_and_model_changes_invalidate_only_relevant_units(
     assert model_plan["catalog_translations_pending"] == 2
 
 
+def test_frozen_locale_is_not_scheduled_when_source_or_model_changes(
+    i18n_repo: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    client = EchoClient()
+    run(
+        root=i18n_repo,
+        check=False,
+        plan_only=False,
+        force=False,
+        jobs=2,
+        model_override=None,
+        client=client,
+    )
+    capsys.readouterr()
+    config_path = i18n_repo / "i18n/config.toml"
+    config_path.write_text(
+        config_path.read_text(encoding="utf-8").replace(
+            '[locales.fr]\nname = "français"\nsource = "en"\n',
+            '[locales.fr]\nname = "français"\nsource = "en"\n'
+            'frozen_since = "2026-07-30"\n',
+        ),
+        encoding="utf-8",
+    )
+    source = i18n_repo / "docs/index.md"
+    source.write_text(
+        source.read_text(encoding="utf-8") + "\nChanged source.\n",
+        encoding="utf-8",
+    )
+
+    assert run(
+        root=i18n_repo,
+        check=False,
+        plan_only=True,
+        force=False,
+        jobs=None,
+        model_override="deepseek-future-model",
+    ) == 0
+    plan = json.loads(capsys.readouterr().out)
+    assert plan["frozen_machine_locales"] == 1
+    assert plan["document_translations_pending"] == 1
+    assert plan["catalog_translations_pending"] == 1
+
+
 def test_structural_change_is_rejected_without_writing_outputs(
     i18n_repo: Path,
 ) -> None:
@@ -1156,6 +1200,11 @@ def test_repository_machine_documents_support_canonical_heading_aliases() -> Non
 def test_east_asian_locales_use_chinese_and_others_use_english() -> None:
     config = load_i18n_config(Path(__file__).resolve().parents[1])
     chinese_source = {"ja", "ko", "zh-Hant"}
+    assert all(
+        locale.frozen_since == "2026-07-30"
+        for locale in config.machine_locales
+    )
+    assert config.active_machine_locales == ()
     assert {
         locale.code
         for locale in config.machine_locales
@@ -1215,7 +1264,8 @@ def test_mkdocs_hook_localizes_navigation_and_machine_notice(
         },
     )()
     result = mkdocs_i18n.on_page_markdown("# Titre\n", page, None, None)
-    assert result.startswith('!!! warning "Traduction automatique"')
-    assert '<a href="/">Source anglaise</a>' in result
-    assert "Target+locale%3A+fr" in result
+    assert result.startswith('!!! warning "Translation no longer maintained"')
+    assert "no longer maintained as of 2026-07-30" in result
+    assert '<a href="/">English source</a>' in result
+    assert "Target+locale%3A+fr" not in result
     assert result.endswith("# Titre\n")

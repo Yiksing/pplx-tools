@@ -282,9 +282,14 @@ def cmd_spaces(out_root: Path, adapter=None, fetch_meta: bool = False, adapter_f
             threads.append(t)
     by_space: dict[str, dict] = {}
     for t in threads:
+        uuid = t.get("entryUUID")
+        if not uuid:
+            title = t.get("title") or "?"
+            log.warning(f"[spaces] 跳过缺少 entryUUID 的索引行: {title}")
+            continue
         c = t.get("collection") or t.get("space") or {}
         slug = c.get("slug") or "_no_space"
-        by_space.setdefault(slug, {})[t["entryUUID"]] = t
+        by_space.setdefault(slug, {})[uuid] = t
 
     # Metadata cache: refreshed first with --fetch-meta (1 request per space,
     # rate-limited interval)
@@ -387,5 +392,3 @@ def cmd_spaces(out_root: Path, adapter=None, fetch_meta: bool = False, adapter_f
         {"generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
          "count": len(registry), "spaces": registry}, ensure_ascii=False, indent=1))
     log.info(f"[spaces] {len(registry)} 个空间索引 → {spaces_dir}")
-
-

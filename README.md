@@ -122,18 +122,15 @@ and machine-translation configuration and manifests. The auditor and
 translation pipeline have isolated unit tests in `tests/test_audit_docs.py` and
 `tests/test_translate_docs.py`.
 
-After `quality` succeeds on `main`,
-[`translate-docs.yml`](.github/workflows/translate-docs.yml) incrementally
-refreshes generated languages through the configured DeepSeek model and
-checkpoints each completed locale in its own commit on a generated-only branch.
-It then repeats the manifest check, required-mode documentation audit, fixture
-scrub, tests, and strict multilingual build. Only that fully validated branch
-may fast-forward `main`, after which the same built artifact is uploaded and
-deployed. A failure preserves completed locale checkpoints for retry without
-placing a partial translation batch on `main`.
-
-Bot promotion commits are already covered by the translation workflow's full
-validation and intentionally do not start a recursive quality/translation run.
+The generated non-English/non-Simplified-Chinese pages are frozen as of
+2026-07-30 for cost reasons. The remote
+[`translate-docs.yml`](.github/workflows/translate-docs.yml) workflow has been
+manually disabled, so English and Simplified Chinese are the maintained
+documentation sources. Frozen generated pages remain in the site, render a
+notice that they are no longer maintained, and link readers back to the
+corresponding English or Simplified Chinese source. Local checks still verify
+that the frozen files and manifest have not been corrupted, but they no longer
+require those pages to be refreshed when canonical sources change.
 
 > `main` currently has no branch protection or repository ruleset. These are
 > workflow gates rather than a restriction on authorized direct pushes;

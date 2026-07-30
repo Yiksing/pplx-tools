@@ -3,6 +3,8 @@
   "site_description": "Perplexity conversation archive & interactive query toolkit",
   "machine_notice_title": "Machine translation",
   "machine_notice_text": "This page was translated automatically by AI and may contain errors. If anything is unclear, refer to the English source.",
+  "frozen_notice_title": "Translation no longer maintained",
+  "frozen_notice_text": "For cost reasons, this translation is no longer maintained as of {date}. Refer to the English source.",
   "source_link_label": "English source",
   "report_link_label": "Report a translation issue",
   "nav": {

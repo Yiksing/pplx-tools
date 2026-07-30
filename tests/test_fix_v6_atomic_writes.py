@@ -33,8 +33,9 @@ from pathlib import Path
 import pytest
 
 from pplx_export.core import fsio
-from pplx_export.core.fsio import atomic_write_text
-from pplx_export.core.models import Conversation, Turn
+from pplx_export.core.fsio import atomic_write_bytes, atomic_write_text
+from pplx_export.core.models import Asset, Conversation, Turn
+from pplx_export.sites.perplexity.assets import AssetDownloader
 from pplx_export.sites.perplexity.fs_writer import FilesystemWriter
 
 UUID = "abcdef12-3456-7890-abcd-ef1234567890"
@@ -107,6 +108,80 @@ class TestAtomicWriteText:
         atomic_write_text(p, "新内容")
         assert p.read_text() == "新内容"
         assert not (tmp_path / ".thread.json.tmp").exists()
+
+
+class TestAtomicWriteBytes:
+    def test_replace_failure_keeps_original_intact(self, tmp_path, monkeypatch):
+        """Binary archive products use the same replace-boundary guarantee as text.
+
+        二进制归档产物与文本归档产物使用同一替换边界保证。"""
+        p = tmp_path / "assets" / "files" / "report.md"
+        p.parent.mkdir(parents=True)
+        p.write_bytes(b"ORIGINAL_COMPLETE")
+
+        def _boom(src, dst):
+            raise OSError("simulated crash at replace")
+
+        monkeypatch.setattr(fsio.os, "replace", _boom)
+        with pytest.raises(OSError, match="simulated crash"):
+            atomic_write_bytes(p, b"NEW_COMPLETE")
+        assert p.read_bytes() == b"ORIGINAL_COMPLETE"
+
+    def test_tmp_write_failure_keeps_original_intact(self, tmp_path, monkeypatch):
+        """A partial temp-file write cannot truncate an existing asset.
+
+        临时文件写到一半失败不能截断既有资产。"""
+        p = tmp_path / "report.md"
+        p.write_bytes(b"ORIGINAL_COMPLETE")
+        real_write_bytes = Path.write_bytes
+
+        def _partial(self, data):
+            if self.name.endswith(".tmp"):
+                real_write_bytes(self, data[:3])
+                raise OSError("simulated disk full")
+            return real_write_bytes(self, data)
+
+        monkeypatch.setattr(Path, "write_bytes", _partial)
+        with pytest.raises(OSError, match="disk full"):
+            atomic_write_bytes(p, b"NEW_COMPLETE")
+        assert p.read_bytes() == b"ORIGINAL_COMPLETE"
+
+    def test_asset_download_failure_keeps_existing_file_intact(
+        self,
+        tmp_path,
+        monkeypatch,
+    ):
+        """AssetDownloader must not corrupt a previously archived asset when disk write fails.
+
+        AssetDownloader 写盘失败时不得破坏此前已归档资产。"""
+        dest_dir = tmp_path / "assets" / "files"
+        dest_dir.mkdir(parents=True)
+        existing = dest_dir / "report.md"
+        existing.write_bytes(b"ORIGINAL_COMPLETE")
+
+        class FakeTransport:
+            def download(self, url, timeout=120):
+                return b"NEW_COMPLETE"
+
+        real_write_bytes = Path.write_bytes
+
+        def _partial(self, data):
+            if self.name.endswith(".tmp"):
+                real_write_bytes(self, data[:3])
+                raise OSError("simulated disk full")
+            return real_write_bytes(self, data)
+
+        monkeypatch.setattr(Path, "write_bytes", _partial)
+        asset = Asset(
+            uuid="asset-1",
+            asset_type="RESEARCH_REPORT",
+            filename="report.md",
+            url="https://example.invalid/report.md",
+        )
+        n_ok = AssetDownloader(FakeTransport(), delay=0).download_all([asset], dest_dir)
+        assert n_ok == 0
+        assert asset.downloaded_to == ""
+        assert existing.read_bytes() == b"ORIGINAL_COMPLETE"
 
 
 class TestWriterLeavesNoResidue:

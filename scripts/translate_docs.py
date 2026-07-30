@@ -930,6 +930,8 @@ def build_plan(
             )
             key = _document_key(default_path, locale.code, config)
             expected_document_keys.add(key)
+            if locale.frozen_since is not None:
+                continue
             source_hash = sha256_file(source_path)
             if force or not _entry_current(
                 documents.get(key),
@@ -954,8 +956,10 @@ def build_plan(
         assert locale.source is not None
         source_path = config.canonical_catalogs[locale.source]
         output_path = config.generated_catalog_dir / f"{locale.code}.json"
-        source_hash = sha256_file(source_path)
         expected_catalog_keys.add(locale.code)
+        if locale.frozen_since is not None:
+            continue
+        source_hash = sha256_file(source_path)
         if force or not _entry_current(
             catalogs.get(locale.code),
             source_sha256=source_hash,
@@ -1404,6 +1408,10 @@ def run(
     plan = {
         "model": model,
         "machine_locales": len(config.machine_locales),
+        "frozen_machine_locales": sum(
+            1 for locale in config.machine_locales
+            if locale.frozen_since is not None
+        ),
         "canonical_documents": len(canonical_default_documents(config)),
         "document_translations_total": len(expected_document_keys),
         "document_translations_pending": len(document_tasks),

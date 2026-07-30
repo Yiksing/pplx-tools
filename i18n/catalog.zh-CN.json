@@ -3,6 +3,8 @@
   "site_description": "Perplexity 对话记录归档与交互查询工具",
   "machine_notice_title": "机器翻译",
   "machine_notice_text": "本页由 AI 自动翻译，可能存在错误。如有歧义，请以简体中文原文为准。",
+  "frozen_notice_title": "翻译不再维护",
+  "frozen_notice_text": "出于成本考量，本译文自 {date} 起不再维护。如有歧义，请参考简体中文原文。",
   "source_link_label": "简体中文原文",
   "report_link_label": "报告翻译问题",
   "nav": {

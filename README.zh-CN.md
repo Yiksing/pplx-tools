@@ -101,16 +101,11 @@ agent 讨论形成的设计背景、观察记录和决策。若文档表述与�
 来源契约，以及机器翻译配置和 manifest。审计器与翻译管线分别由
 `tests/test_audit_docs.py` 和 `tests/test_translate_docs.py` 中的隔离单元测试覆盖。
 
-`main` 上的 `quality` 成功后，
-[`translate-docs.yml`](.github/workflows/translate-docs.yml) 才会通过已配置的
-DeepSeek 模型增量更新机器翻译，并在 generated-only 分支上为每种完成的语言
-分别提交检查点。随后它会再次检查 manifest、以 required 模式审计文档、检查
-fixtures、运行测试并严格构建全部语言。只有完整验证过的分支才能 fast-forward
-推进 `main`，之后才上传并部署同一次构建产生的 GitHub Pages 制品。失败时已完成
-语言的检查点可供重试复用，但不完整的翻译批次不会进入 `main`。
-
-机器人提升提交已经由翻译工作流完成全套验证，因此会刻意避免递归触发新一轮
-质量检查与翻译。
+出于成本考量，所有非英文/非简体中文的生成页面自 2026-07-30 起冻结维护。
+远端 [`translate-docs.yml`](.github/workflows/translate-docs.yml) 工作流已手动
+禁用，因此英文和简体中文是继续维护的文档来源。冻结的生成页面仍保留在站点中，
+渲染时会提示不再维护，并引导读者参考对应的英文或简体中文来源。本地检查仍会
+验证冻结文件和 manifest 未被破坏，但规范来源变化时不再要求刷新这些页面。
 
 > `main` 当前没有分支保护或仓库 ruleset。这些机制属于工作流门禁，不会阻止有
 > 权限的用户直接推送；后续可在不改变验证命令的情况下启用分支保护。

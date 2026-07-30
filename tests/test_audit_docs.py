@@ -547,6 +547,50 @@ def test_required_machine_mode_detects_stale_and_modified_outputs(
     assert "DOC-I18N-004" in codes
 
 
+def test_required_machine_mode_allows_frozen_stale_outputs_but_not_modifications(
+    mini_repo: Path,
+) -> None:
+    _enable_machine_i18n(mini_repo)
+    run_translations(
+        root=mini_repo,
+        check=False,
+        plan_only=False,
+        force=False,
+        jobs=1,
+        model_override=None,
+        client=_EchoTranslationClient(),
+    )
+    config_path = mini_repo / "i18n/config.toml"
+    config_path.write_text(
+        config_path.read_text(encoding="utf-8").replace(
+            '[locales.fr]\nname = "français"\nsource = "en"\n',
+            '[locales.fr]\nname = "français"\nsource = "en"\n'
+            'frozen_since = "2026-07-30"\n',
+        ),
+        encoding="utf-8",
+    )
+    source = mini_repo / "docs/index.md"
+    source.write_text(
+        source.read_text(encoding="utf-8") + "\nChanged source.\n",
+        encoding="utf-8",
+    )
+    report = audit_repository(mini_repo, machine_mode="required")
+    assert "DOC-I18N-003" not in [finding.code for finding in report.findings]
+
+    generated = mini_repo / "docs/index.fr.md"
+    generated.write_text(
+        generated.read_text(encoding="utf-8") + "\nManual edit.\n",
+        encoding="utf-8",
+    )
+    assert "DOC-I18N-004" in [
+        finding.code
+        for finding in audit_repository(
+            mini_repo,
+            machine_mode="required",
+        ).findings
+    ]
+
+
 def test_allow_stale_mode_does_not_block_canonical_heading_change(
     mini_repo: Path,
 ) -> None:

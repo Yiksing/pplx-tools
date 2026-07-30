@@ -9,6 +9,7 @@ import time
 from pathlib import Path
 
 from ...core.http.transport import Transport
+from ...core.fsio import atomic_write_bytes
 from ...core.logging import get_logger
 from ...core.models import Asset
 from .normalize import safe_stem
@@ -94,7 +95,7 @@ class AssetDownloader:
                     # safe_stem 后同批重名：追加 uuid 短缀，避免互相覆盖
                     stem, dot, ext = dest.name.rpartition(".")
                     dest = dest_dir / f"{stem}_{(a.uuid or 'x')[:8]}{dot}{ext}"
-                dest.write_bytes(data)
+                atomic_write_bytes(dest, data)
                 used.add(dest.name)
                 a.downloaded_to = str(dest)
                 n_ok += 1

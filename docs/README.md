@@ -78,6 +78,7 @@ configuration, or private archives.
 
 The GitHub `quality / validate` job runs the audit together with the dependency
 lock check, fixture residue gate, complete pytest suite, and strict build of
-every configured locale. The translation workflow keeps per-locale commits on
-a generated-only checkpoint branch, promotes it only after complete
-validation, and deploys the artifact built from that validated commit.
+every configured locale. Non-English/non-Simplified-Chinese generated pages
+are frozen as of 2026-07-30 for cost reasons. The remote translation workflow
+is manually disabled; local checks preserve frozen output integrity without
+requiring stale generated pages to be refreshed.

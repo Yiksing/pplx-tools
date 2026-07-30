@@ -36,6 +36,7 @@ class Locale:
     source: str | None
     theme_language: str
     machine: bool
+    frozen_since: str | None
 
 
 @dataclass(frozen=True)
@@ -57,6 +58,14 @@ class I18nConfig:
             locale
             for locale in self.locales.values()
             if locale.machine
+        )
+
+    @property
+    def active_machine_locales(self) -> tuple[Locale, ...]:
+        return tuple(
+            locale
+            for locale in self.machine_locales
+            if locale.frozen_since is None
         )
 
     @property
@@ -177,6 +186,11 @@ def load_i18n_config(root: Path) -> I18nConfig:
                 item.get("theme_language", code)
             ),
             machine=machine,
+            frozen_since=(
+                str(item["frozen_since"])
+                if item.get("frozen_since") is not None
+                else None
+            ),
         )
 
     if default_locale not in locales:

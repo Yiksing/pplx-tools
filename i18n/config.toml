@@ -38,39 +38,49 @@ machine = false
 [locales.ar]
 name = "العربية"
 source = "en"
+frozen_since = "2026-07-30"
 
 [locales.de]
 name = "Deutsch"
 source = "en"
+frozen_since = "2026-07-30"
 
 [locales.es]
 name = "español"
 source = "en"
+frozen_since = "2026-07-30"
 
 [locales.fr]
 name = "français"
 source = "en"
+frozen_since = "2026-07-30"
 
 [locales.it]
 name = "italiano"
 source = "en"
+frozen_since = "2026-07-30"
 
 [locales.ja]
 name = "日本語"
 source = "zh-CN"
+frozen_since = "2026-07-30"
 
 [locales.ko]
 name = "한국어"
 source = "zh-CN"
+frozen_since = "2026-07-30"
 
 [locales.pt]
 name = "português"
 source = "en"
+frozen_since = "2026-07-30"
 
 [locales.ru]
 name = "русский"
 source = "en"
+frozen_since = "2026-07-30"
 
 [locales."zh-Hant"]
 name = "繁體中文"
 source = "zh-CN"
+frozen_since = "2026-07-30"
