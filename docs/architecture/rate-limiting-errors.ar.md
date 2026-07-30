@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/architecture/rate-limiting-errors.md"
-translation_source_sha256: "2f7be7898606995b419c6de2185ab87352f1469006180f11fff2d32ba7929597"
+translation_source_sha256: "91252ba3add326958d39759900774a7a4268b67820c65a36a4ae9e9b8eaa2ec3"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -55,14 +55,26 @@ flowchart TD
     end
 ```
 
-- **WebBridgeTransport** يضبط التراجع عند 429 و `throttle.reset()` عند النجاح
+- **WebBridgeTransport** يضبط التراجع 429 و `throttle.reset()` عند النجاح
   (bridge_transport.py)؛ تصنيف الأخطاء متوافق مع CookieTransport — 401/403 →
   `AuthTransportError`، 400 مع نص يحتوي على ENTRY_EXPIRED → `EntryExpiredError`،
-  5xx إعادة محاولة مع التراجع؛ الفشل السريع للمصادقة في الدفعة والحالات النهائية المنتهية تنطبق أيضًا تحت
+  5xx تراجع-إعادة محاولة؛ فشل المصادقة السريع للدفعة والحالات النهائية المنتهية تنطبق أيضًا تحت
   `--transport webbridge`؛ استجابات الخفي غير JSON تنهار إلى
-  TransportError (يتم التقاط URLError/JSONDecodeError/OSError بشكل موحد)؛ غير 200 الأخرى تذهب مباشرة إلى
+  TransportError (URLError/JSONDecodeError/OSError يتم التقاطها بشكل موحد)؛ غير 200 الأخرى تذهب مباشرة إلى
   TransportError.
-- **Shared Throttle**: الدفعة تمرر نفس المثيل إلى CookieTransport (cli.py:280-282)،
-  مما يوحد عدادات التراجع بين طبقة النقل وطبقة الدفعة؛ **إعادة البناء بعد التبديل التلقائي للحساب لا تفقده أيضًا**
-  (common.py:139 يمرره أيضًا)؛ الأوامر الفردية التي لا تمرر واحدًا تحصل على مثيل افتراضي يبنيه CookieTransport
+- **محدد السرعة المشترك**: تمرر الدفعة نفس المثيل إلى CookieTransport (cli.py:280-282)،
+  مما يوحد عدد التراجع بين طبقة النقل والدفعة؛ **إعادة البناء بعد التبديل التلقائي للحساب لا تفقده أيضًا**
+  (common.py:139 تمرره أيضًا)؛ الأوامر الفردية التي لا تمرر واحدًا تحصل على مثيل افتراضي مبني بواسطة CookieTransport
   (cookie_transport.py:49).
+- **نبضات القلب (المستوى الافتراضي للتفاصيل).** الانتظارات الثلاثة الطويلة — نوم `Throttle.backoff`،
+  طلب معلق قيد التنفيذ (`CookieTransport._open_read`)، وتدفق SSE خامل
+  `pplx-ask` (`ask_api.post_stream`) — تصدر الآن نبضات INFO "لا يزال ينتظر"
+  بحيث لا يُخلط بين الانتظار والتعليق. يتم النوم التراجعي في أجزاء
+  (`Throttle._sleep_with_heartbeat`) مجموعها يساوي نفس الإجمالي، لذا فإن
+  وتيرة/ميزانية مكافحة الحظر لم تتغير — فقط أصبحت مرئية؛ `-v` لا يزال يضيف
+  تتبع DEBUG الكامل.
+- **`--skip-auth-check` + الفحص المؤجل.** يمكن تخطي فحص جلسة إسناد الحساب عند بدء التشغيل
+  (`common.py`، `make_transport`) لتجنب انتظار طويل عند بدء التشغيل على شبكة ضعيفة. كشبكة أمان، يقوم `batch` بتشغيل
+  `report_account_status` لمرة واحدة (`common.py`) بمجرد تراكم الأخطاء العامة
+  (`batch_cmd.py`)، محذرًا ما إذا كانت الكوكي منتهية الصلاحية، أو الحساب غير متطابق،
+  أو الحساب سليم (لذا الأخطاء هي شبكة / تحديد معدل).
