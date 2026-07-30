@@ -51,33 +51,67 @@ def _step_best_effort(name: str, fn) -> tuple[bool, str | None]:
 
 
 def cmd_models(transport, *, refresh: bool = False, config_path=None):
-    """List the full model table and per-mode defaults from models/config/v2;
-    with refresh=True, also persist them into config.toml's [models] table.
+    """List the frontend model table from search_config; with refresh=True, also
+    persist the raw models/config/v2 response as models_cache.json.
 
-    列出 models/config/v2 的模型总表与模式默认值；refresh=True 时并写入 config.toml 的 [models]。"""
+    列出前端模型表（search_config）；refresh=True 时并写入 models_cache.json。"""
     j = fetch_models_config(transport)
-    models = j.get("models") or {}
     defaults = j.get("default_models") or {}
     council = j.get("agentic_research_compare_models") or []
+    search_cfg = j.get("search_config") or []
+
     log.info("== 模式默认模型 ==")
     for m, mid in defaults.items():
         log.info(f"  {m:20} {mid}")
     log.info(f"== 委员会默认三模型 ==\n  {', '.join(council)}")
-    log.info("== 可选模型（mode=search，搜索模式单选）==")
-    for k, v in models.items():
-        if v.get("mode") == "search":
-            log.info(f"  {k:28} {v.get('label', ''):28} {v.get('provider', '')}")
-    log.info("== 特殊模式（不可多选）==")
-    for k, v in models.items():
-        if v.get("mode") in ("research", "study", "agentic_research", "studio"):
-            log.info(f"  {k:28} {v.get('label', ''):28} mode={v.get('mode')}")
+
+    # Frontend model families (search_config)
+    # 前端模型族（search_config）
+    log.info("== 前端模型族（search/computer/council 通用）==")
+    for item in search_cfg:
+        tier = item.get("subscription_tier", "")
+        tier_str = f" [{tier}]" if tier == "max" else ""
+        nr = item.get("non_reasoning_model") or ""
+        r = item.get("reasoning_model") or ""
+        reasoning = ""
+        if nr and r:
+            reasoning = "  (双模式)"
+        elif r and not nr:
+            reasoning = "  (强制 reasoning)"
+        elif nr and not r:
+            reasoning = "  (无 reasoning)"
+        # Skip browser agent entries in the main list
+        # 主列表中跳过浏览器代理条目
+        if (item.get("non_reasoning_model") or "").startswith("comet_browser_agent"):
+            continue
+        log.info(f"  {item.get('label', ''):28}{tier_str}{reasoning}"
+                 + (f"\n    non-reasoning: {nr}" if nr else "")
+                 + (f"\n    reasoning:     {r}" if r else ""))
+
+    # Council-eligible: non-browser-agent entries from search_config
+    # Council 可选：search_config 中非浏览器代理条目
+    council_eligible = [
+        item for item in search_cfg
+        if not ((item.get("non_reasoning_model") or "").startswith("comet_browser_agent"))
+    ]
+    log.info(f"== Council 可选池（{len(council_eligible)} 个模型族）==")
+    for item in council_eligible:
+        ids = []
+        if item.get("non_reasoning_model"):
+            ids.append(item["non_reasoning_model"])
+        if item.get("reasoning_model"):
+            ids.append(item["reasoning_model"])
+        log.info(f"  {item.get('label', '')}: {', '.join(ids)}")
+
     if refresh:
         if not config_path:
-            raise SystemExit("[models][ERROR] 未加载用户级配置文件，无法写入 [models]——"
+            raise SystemExit("[models][ERROR] 未加载用户级配置文件，无法写入——"
                              "请先 `pplx-export init` 或创建 config.toml 后重试")
         section = refresh_models(transport, config_path, raw=j)
-        log.info(f"[models] 已刷新并写入 {config_path}"
-                 f"（last_refreshed={section['last_refreshed']}，目录 {len(section['catalog'])} 个模型）")
+        n_models = len(j.get("models") or {})
+        log.info(f"[models] 已刷新并写入 {config_path} 和 models_cache.json"
+                 f"（last_refreshed={section['last_refreshed']}，"
+                 f"缓存 {n_models} 个全量模型 + {len(search_cfg)} 个前端模型族）")
 
 
 def _resolve_space_uuid(adapter, slug_or_title: str) -> str:

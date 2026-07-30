@@ -820,20 +820,48 @@ def test_api_version_single_source():
     assert stray_block == [], f"block 列表只应在 platform.py，散落于: {stray_block}"
 
 
-def test_map_models_config_shapes():
+def test_refresh_models_extracts_frontend_fields(tmp_path, monkeypatch):
+    """refresh_models writes models_cache.json and config.toml metadata,
+    then populates MODEL_CONFIG with frontend-visible fields only.
+
+    refresh_models 写入 models_cache.json 与 config.toml 元数据，
+    并将 MODEL_CONFIG 仅填充前端可见字段。"""
+    from pplx_export import config as cfg
     from pplx_export.sites.perplexity import ask_api
+    import pplx_export.sites.perplexity.ask_api as mod
+
     raw = {
         "models": {"pplx_pro": {"label": "Best", "provider": "PERPLEXITY", "mode": "search"},
                    "pplx_alpha": {"label": "R", "provider": "P", "mode": "research"}},
         "default_models": {"research": "pplx_alpha", "search": "pplx_pro"},
         "agentic_research_compare_models": ["m1", "m2", "m3"],
+        "search_config": [],
+        "computer_config": [],
     }
-    m = ask_api.map_models_config(raw)
-    assert m["mode_defaults"]["deep-research"] == "pplx_alpha"  # research → deep-research
-    assert m["mode_defaults"]["search"] == "pplx_pro"
-    assert m["council_defaults"] == ["m1", "m2", "m3"]
-    assert m["search_models"] == ["pplx_pro"]
-    assert m["catalog"]["pplx_pro"] == {"label": "Best", "provider": "PERPLEXITY", "mode": "search"}
+    # Mock fetch_models_config to return our raw
+    # Mock fetch_models_config 返回原始数据
+    monkeypatch.setattr(mod, "fetch_models_config", lambda t: raw)
+    # Mock write_models_section (no real file write)
+    # Mock write_models_section（不实际写文件）
+    writes = []
+    monkeypatch.setattr(cfg, "write_models_section", lambda p, s: writes.append((str(p), s)))
+    monkeypatch.setattr(cfg, "write_models_cache", lambda r: None)
+    cfg.MODEL_CONFIG.clear()
+    config_path = tmp_path / "config.toml"
+    config_path.write_text("")
+
+    section = ask_api.refresh_models(object(), str(config_path))
+
+    assert section["default_models"] == {"research": "pplx_alpha", "search": "pplx_pro"}
+    assert section["council_defaults"] == ["m1", "m2", "m3"]
+    assert "search_config" in section
+    assert "computer_config" in section
+    # Metadata-only write
+    # 仅元数据写入
+    assert len(writes) == 1
+    assert "last_refreshed" in writes[0][1]
+    assert "catalog" not in writes[0][1]  # catalog NOT in config.toml anymore
+    cfg.MODEL_CONFIG.clear()
 
 
 def test_build_envelope_config_override_then_platform_fallback():
@@ -846,9 +874,9 @@ def test_build_envelope_config_override_then_platform_fallback():
         assert ask_api.build_envelope("q", "search")["params"]["model_preference"] == ask_api.MODE_MODEL["search"]
         assert (ask_api.build_envelope("q", "council")["params"]["compare_model_preferences"]
                 == list(ask_api.COUNCIL_DEFAULT_MODELS)[:3])
-        # override: config.toml [models] wins
-        # 覆盖：config.toml [models] 优先
-        cfg.MODEL_CONFIG.update({"mode_defaults": {"search": "XYZ"}, "council_defaults": ["m1", "m2"]})
+        # override: config default_models wins (API mode names)
+        # 覆盖：default_models 优先（API 模式名）
+        cfg.MODEL_CONFIG.update({"default_models": {"search": "XYZ"}, "council_defaults": ["m1", "m2"]})
         assert ask_api.build_envelope("q", "search")["params"]["model_preference"] == "XYZ"
         assert ask_api.build_envelope("q", "council")["params"]["compare_model_preferences"] == ["m1", "m2"]
     finally:

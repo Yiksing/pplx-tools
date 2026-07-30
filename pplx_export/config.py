@@ -57,10 +57,15 @@ SESSION_URL = "https://www.perplexity.ai/api/auth/session"
 # 默认归档根（相对 CWD；--out 可覆盖）
 DEFAULT_ARCHIVE_ROOT = Path("web_archive")
 
+# ── User-level config directory ──────────────────────────
+# 用户级配置目录
+DEFAULT_CONFIG_DIR = Path.home() / ".config" / "pplx-export"
+
 # ── User-level config (account registry + BOT space; externalized, not committed) ──
 # ── 用户级配置（账户注册表 + BOT 空间；外置，不入库）────────
 ENV_CONFIG_VAR = "PPLX_EXPORT_CONFIG"
-DEFAULT_CONFIG_PATH = Path.home() / ".config" / "pplx-export" / "config.toml"
+DEFAULT_CONFIG_PATH = DEFAULT_CONFIG_DIR / "config.toml"
+MODELS_CACHE_PATH = DEFAULT_CONFIG_DIR / "models_cache.json"
 
 # Account username -> full display name (used for archive directory naming;
 # falls back to the username itself when not registered)
@@ -97,6 +102,11 @@ LOADED_CONFIG_PATH: Path | None = None
 # 非手写）。缺失为空；覆盖 sites/perplexity/platform.py 的钉死兜底。重载就地更新
 # （`from ..config import MODEL_CONFIG` 绑定不失效）。
 MODEL_CONFIG: dict = {}
+# Timestamp of the last successful export (top-level `last_export` in the TOML;
+# ISO 8601 UTC). Empty when never exported. Rebound on configure() reload.
+# 上次成功导出的时间戳（TOML 顶层 `last_export`，ISO 8601 UTC）。未导出时为空。
+# configure() 重载会重新绑定。
+LAST_EXPORT = ""
 
 
 class ConfigError(Exception):
@@ -143,12 +153,12 @@ def configure(cli_path: str | os.PathLike | None = None,
     - 显式指定（--config/环境变量）但文件缺失：strict_explicit 时抛 ConfigError；
     - 文件存在但解析失败：一律抛 ConfigError（配置损坏不应静默降级）。
     """
-    global BOT_SPACE_UUID, BOT_SPACE_SLUG, DEFAULT_ACCOUNT, ARCHIVE_ROOT, LOADED_CONFIG_PATH
+    global BOT_SPACE_UUID, BOT_SPACE_SLUG, DEFAULT_ACCOUNT, ARCHIVE_ROOT, LOADED_CONFIG_PATH, LAST_EXPORT
     ACCOUNT_DISPLAY_NAMES.clear()
     ACCOUNT_EMAIL.clear()
     ACCOUNT_UID.clear()
     MODEL_CONFIG.clear()
-    BOT_SPACE_UUID = BOT_SPACE_SLUG = DEFAULT_ACCOUNT = ""
+    BOT_SPACE_UUID = BOT_SPACE_SLUG = DEFAULT_ACCOUNT = LAST_EXPORT = ""
     ARCHIVE_ROOT = None
     LOADED_CONFIG_PATH = None
 
@@ -186,11 +196,139 @@ def configure(cli_path: str | os.PathLike | None = None,
     ar = data.get("archive_root")
     if ar:
         ARCHIVE_ROOT = Path(str(ar)).expanduser()
+    le = data.get("last_export")
+    if le:
+        LAST_EXPORT = str(le)
     models_tbl = data.get("models")
     if isinstance(models_tbl, dict):
         MODEL_CONFIG.update(models_tbl)
+    # Load model cache from models_cache.json (new format), or fall back to
+    # legacy [models] data already loaded above.
+    # 从 models_cache.json 加载模型缓存（新格式），若缺失则回退到上方已加载的
+    # 旧格式 [models] 数据。
+    _load_models_cache()
     LOADED_CONFIG_PATH = path
     return path
+
+
+def _load_models_cache() -> None:
+    """Load frontend-visible model data from models_cache.json into MODEL_CONFIG.
+
+    Only extracts: default_models, council_defaults (from
+    agentic_research_compare_models), search_config, computer_config.
+    The ``models`` (raw 113-model catalog) field stays on disk only.
+
+    When models_cache.json is absent, fall back to legacy config.toml [models]
+    keys (mode_defaults → default_models, council_defaults, catalog) that were
+    already loaded above.
+
+    从 models_cache.json 加载前端可见的模型数据到 MODEL_CONFIG。
+
+    仅提取：default_models、council_defaults（来自
+    agentic_research_compare_models）、search_config、computer_config。
+    ``models``（原始 113 模型目录）字段仅保留在磁盘上。
+
+    当 models_cache.json 缺失时，回退到上方已加载的旧格式 config.toml [models]
+    键（mode_defaults → default_models、council_defaults、catalog）。
+    """
+    import json as _json
+
+    if not MODELS_CACHE_PATH.is_file():
+        # Fallback: migrate old-style MODEL_CONFIG keys to new field names
+        # 回退：将旧版 MODEL_CONFIG 键迁移到新字段名
+        if "mode_defaults" in MODEL_CONFIG:
+            # Old format: mode_defaults uses CLI names; convert back to API names
+            # 旧格式：mode_defaults 使用 CLI 名称；转换回 API 名称
+            defaults = {}
+            for api_mode, cli_mode in _API_MODE_TO_CLI_LEGACY.items():
+                mid = MODEL_CONFIG["mode_defaults"].get(cli_mode) or MODEL_CONFIG["mode_defaults"].get(api_mode)
+                if mid:
+                    defaults[api_mode] = mid
+            if defaults:
+                MODEL_CONFIG.setdefault("default_models", {}).update(defaults)
+        return
+
+    try:
+        raw = _json.loads(MODELS_CACHE_PATH.read_text(encoding="utf-8"))
+    except (OSError, _json.JSONDecodeError):
+        return
+
+    defaults = raw.get("default_models")
+    if isinstance(defaults, dict):
+        MODEL_CONFIG.setdefault("default_models", {}).update(defaults)
+    council = raw.get("agentic_research_compare_models")
+    if isinstance(council, list) and council:
+        if "council_defaults" not in MODEL_CONFIG or not MODEL_CONFIG["council_defaults"]:
+            MODEL_CONFIG["council_defaults"] = council
+    sc = raw.get("search_config")
+    if isinstance(sc, list) and sc:
+        MODEL_CONFIG["search_config"] = sc
+    cc = raw.get("computer_config")
+    if isinstance(cc, list) and cc:
+        MODEL_CONFIG["computer_config"] = cc
+
+
+# Reverse mapping: CLI mode name → API mode name, for legacy fallback.
+# 反向映射：CLI 模式名 → API 模式名，用于旧版回退。
+_API_MODE_TO_CLI_LEGACY = {
+    "search": "search", "pro": "search", "research": "deep-research",
+    "deep research": "deep-research", "agentic_research": "council",
+    "study": "study", "studio": "study",
+}
+
+
+def write_models_cache(raw: dict) -> None:
+    """Atomically write the raw models/config/v2 response to models_cache.json (0600).
+
+    原子写入 models_cache.json（0600），并存原始 models/config/v2 响应。
+    """
+    import json as _json
+    import tempfile
+
+    MODELS_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(dir=str(MODELS_CACHE_PATH.parent),
+                                prefix=".models_cache-", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            _json.dump(raw, f, ensure_ascii=False, separators=(",", ":"))
+        os.chmod(tmp, 0o600)
+        os.replace(tmp, MODELS_CACHE_PATH)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
+
+
+def write_last_export(config_path: str | os.PathLike, timestamp: str) -> None:
+    """Replace/insert the top-level `last_export` key in config.toml, preserving all
+    other tables, keys, and comments (tomlkit round-trip); atomic 0600 write.
+
+    替换/插入 config.toml 的顶层 `last_export` 键，其余表/键/注释原样保留
+    （tomlkit round-trip）；原子 0600 写入。
+    """
+    import tempfile
+
+    import tomlkit
+
+    path = Path(config_path)
+    text = path.read_text(encoding="utf-8") if path.is_file() else ""
+    doc = tomlkit.parse(text)
+    doc["last_export"] = timestamp
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix=".config-", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(tomlkit.dumps(doc))
+        os.chmod(tmp, 0o600)
+        os.replace(tmp, path)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
 
 
 def write_models_section(config_path: str | os.PathLike, models: dict) -> None:

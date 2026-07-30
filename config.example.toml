@@ -26,6 +26,11 @@ default_account = "alice"
 # 优先级：--out > archive_root > ./web_archive（相对当前目录）。
 # archive_root = "~/perplexity-archive/web_archive"
 
+# Timestamp of the last successful export (ISO 8601 UTC; machine-managed —
+# updated automatically by pplx-export after every successful export / batch).
+# 上次成功导出的时间戳（ISO 8601 UTC；机器托管——每次成功导出后自动更新）。
+# last_export = "2026-07-30T00:00:00Z"
+
 # Account registry: key = account username (the username in thread URLs / library)
 # 账户注册表：键 = 账户用户名（thread URL / library 中的 username）
 [accounts.alice]

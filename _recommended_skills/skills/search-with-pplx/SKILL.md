@@ -64,7 +64,22 @@ Before the first search call, run two preflight checks:
    when one is used, otherwise `$PPLX_EXPORT_CONFIG`, otherwise
    `~/.config/pplx-export/config.toml`.
 2. Run `pplx-ask models` as the Perplexity connectivity-and-session probe and
-   require the search-mode selectable-model table in its output.
+   require the frontend model-family table in its output (the section titled
+   "前端模型族（search/computer/council 通用）" or its English equivalent).
+
+   This command also checks the 7-day model-catalog TTL and prints a refresh
+   reminder when the cache is stale — no manual `--refresh` is needed.
+   If the cache is missing entirely (first run), the CLI falls back to the
+   pinned platform defaults in `pplx_export/sites/perplexity/platform.py`.
+
+In addition to verifying connectivity, this probe gives you:
+
+- the active default model per mode (search / deep-research / council / study);
+- the 10 frontend model families available in the search and council selectors,
+  each with its non-reasoning and reasoning model IDs, subscription tier
+  (`[max]` for Max-exclusive models), and reasoning classification (双模式 /
+  强制 reasoning / 无 reasoning);
+- the 3 council default comparison models.
 
 If the config file is missing, or the model table cannot be retrieved, pause
 and report to the user instead of proceeding.
@@ -92,9 +107,18 @@ visible and any failure is easy to locate.
 Keep automatic export enabled. Never use `--no-export`.
 
 Search mode uses the platform's default "Best" choice when `--models` is
-omitted. If the user asks for a specific selectable model, take a live model
-identifier from the preflight `pplx-ask models` output; do not hardcode an
-identifier in the skill.
+omitted. If the user asks for a specific model, pick its identifier from the
+preflight `pplx-ask models` output:
+
+- For non-reasoning mode use the `non_reasoning_model` ID (e.g. `gpt56_sol`);
+- For reasoning/thinking mode use the `reasoning_model` ID (e.g.
+  `gpt56_sol_thinking`);
+- For forced-reasoning models (no `non_reasoning_model`), only the
+  `reasoning_model` ID is available;
+- Avoid Max-tier models (`[max]`) unless the user confirms a Max subscription.
+
+Do not hardcode model identifiers in this skill — they drift with the
+platform and are refreshed from the live catalog.
 
 Every `ask` command creates a new thread. Use separate calls only for genuinely
 distinct questions, and keep them sequential unless the surrounding

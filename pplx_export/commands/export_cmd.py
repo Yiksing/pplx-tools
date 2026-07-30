@@ -13,6 +13,7 @@ from ..core.errors import EntryDeletedError, EntryExpiredError
 from ..core.logging import get_logger
 from ..core.state import BatchState
 from ..sites.perplexity.fs_writer import FilesystemWriter
+from .common import update_last_export
 
 log = get_logger("cli")
 
@@ -83,6 +84,7 @@ def cmd_export(adapter, writer: FilesystemWriter, url_or_uuid: str, account, for
     state = BatchState(out_root / "index" / "batch_state.json")
     state.mark_ok(uuid, conv.last_updated, conv.title)
     state.save()
+    update_last_export()
     log.info(f"[export] 完成 → {out}（{conv.mode}，{conv.n_turns} 轮，引文 {len(conv.citations)}，资产 {len(conv.assets)}）")
 
 

@@ -59,13 +59,18 @@ _BASE_PARAMS: dict[str, Any] = {
 
 
 def _mode_model(mode: str) -> str:
-    """Per-mode model_preference: config.toml [models].mode_defaults override, else the
-    pinned platform fallback.
+    """Per-mode model_preference: config.toml [models] (via default_models) override,
+    else the pinned platform fallback.
 
-    每模式 model_preference：优先 config.toml [models].mode_defaults，回退 platform 兜底。
+    每模式 model_preference：优先配置（经由 default_models），回退 platform 兜底。
     """
-    override = (config.MODEL_CONFIG.get("mode_defaults") or {}).get(mode)
-    return override or MODE_MODEL[mode]
+    defaults = config.MODEL_CONFIG.get("default_models") or {}
+    # Map API mode name → CLI mode name, then look up the model ID
+    # API 模式名 → CLI 模式名，再查 model ID
+    for api_mode, cli_mode in _API_MODE_TO_CLI.items():
+        if cli_mode == mode and api_mode in defaults:
+            return defaults[api_mode]
+    return MODE_MODEL[mode]
 
 
 def _council_defaults() -> list[str]:
@@ -123,53 +128,48 @@ def fetch_models_config(transport) -> dict:
     return transport.get_json(MODELS_CONFIG_URL, timeout=30)
 
 
-def map_models_config(raw: dict) -> dict:
-    """Map a models/config/v2 payload to the config.toml [models] schema pieces.
-
-    把 models/config/v2 负载映射为 config.toml [models] 各片段。
-    """
-    models = raw.get("models") or {}
-    defaults = raw.get("default_models") or {}
-    council = raw.get("agentic_research_compare_models") or []
-    mode_defaults = dict(MODE_MODEL)  # seed from pinned fallback
-    for api_mode, mid in defaults.items():
-        cli = _API_MODE_TO_CLI.get(api_mode)
-        if cli and mid:
-            mode_defaults[cli] = mid
-    catalog = {mid: {"label": m.get("label", ""), "provider": m.get("provider", ""),
-                     "mode": m.get("mode", "")}
-               for mid, m in models.items() if isinstance(m, dict)}
-    search_models = [mid for mid, m in models.items()
-                     if isinstance(m, dict) and m.get("mode") == "search"]
-    return {"mode_defaults": mode_defaults,
-            "council_defaults": list(council) or list(COUNCIL_DEFAULT_MODELS),
-            "search_models": search_models, "catalog": catalog}
-
-
 def refresh_models(transport, config_path, *, raw: dict | None = None,
                    auto_refresh: bool | None = None) -> dict:
-    """Fetch models/config/v2 (or use a pre-fetched `raw`), write the `[models]` table
-    into config_path (preserving all other content), stamp last_refreshed (UTC), and
-    update config.MODEL_CONFIG in memory. Returns the written section.
+    """Fetch models/config/v2 (or use a pre-fetched `raw`), write the raw response as
+    models_cache.json alongside the config, stamp last_refreshed into config.toml's
+    [models] table, and update config.MODEL_CONFIG in memory. Returns the loaded section.
 
-    拉取 models/config/v2（或复用已取的 `raw`），把 `[models]` 表写入 config_path
-    （其余内容保留），盖上 last_refreshed（UTC），并同步内存 config.MODEL_CONFIG。
+    拉取 models/config/v2（或复用已取的 `raw`），把原始响应写入 config 旁的
+    models_cache.json，在 config.toml 的 [models] 盖上 last_refreshed，并同步
+    内存 config.MODEL_CONFIG。
     """
-    mapped = map_models_config(raw if raw is not None else fetch_models_config(transport))
+    raw = raw if raw is not None else fetch_models_config(transport)
     if auto_refresh is None:
         auto_refresh = bool(config.MODEL_CONFIG.get("auto_refresh", False))
-    # Scalars/arrays first, sub-table dicts last → valid TOML ordering under [models].
-    # 标量/数组在前，子表 dict 在后 → [models] 下 TOML 顺序合法。
+
+    # 1. Write full raw response to models_cache.json (atomic, 0600)
+    # 1. 将完整原始响应写入 models_cache.json（原子写入，权限 0600）
+    config.write_models_cache(raw)
+
+    # 2. Extract frontend-visible fields into MODEL_CONFIG
+    # 2. 提取前端可见字段到 MODEL_CONFIG
+    defaults = raw.get("default_models") or {}
+    council = raw.get("agentic_research_compare_models") or []
     section = {
         "last_refreshed": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "source_version": API_VERSION,
         "auto_refresh": auto_refresh,
-        "council_defaults": mapped["council_defaults"],
-        "search_models": mapped["search_models"],
-        "mode_defaults": mapped["mode_defaults"],
-        "catalog": mapped["catalog"],
+        "default_models": defaults,
+        "council_defaults": list(council) or list(COUNCIL_DEFAULT_MODELS),
+        "search_config": raw.get("search_config") or [],
+        "computer_config": raw.get("computer_config") or [],
     }
-    config.write_models_section(config_path, section)
+
+    # 3. Update config.toml [models] with metadata only
+    # 3. 仅用元数据更新 config.toml [models]
+    config.write_models_section(config_path, {
+        "last_refreshed": section["last_refreshed"],
+        "source_version": section["source_version"],
+        "auto_refresh": section["auto_refresh"],
+    })
+
+    # 4. Sync in-memory MODEL_CONFIG
+    # 4. 同步内存中的 MODEL_CONFIG
     config.MODEL_CONFIG.clear()
     config.MODEL_CONFIG.update(section)
     return section

@@ -78,9 +78,21 @@ The subagent must:
    otherwise `~/.config/pplx-export/config.toml`. If none exists, pause and
    report to the user instead of proceeding in degraded mode.
 3. Run `pplx-ask models` as the Perplexity connectivity-and-session probe and
-   require the search-mode selectable-model table in its output. If the
-   command fails or that table cannot be retrieved, pause and report to the
-   user; do not launch the research run. This probe is needed once per
+   require the frontend model-family table in its output (the section titled
+   "前端模型族（search/computer/council 通用）" or its English equivalent).
+
+   This command also checks the 7-day model-catalog TTL and prints a refresh
+   reminder when the cache is stale — no manual `--refresh` is needed.
+   If the cache is missing entirely (first run), the CLI falls back to the
+   pinned platform defaults in `pplx_export/sites/perplexity/platform.py`.
+
+   In addition to verifying connectivity, this probe gives you the council
+   model pool: the "Council 可选池" section lists every model family eligible
+   for council comparison, with both non-reasoning and reasoning IDs when a
+   family offers both.
+
+   If the command fails or the table cannot be retrieved, pause and report to
+   the user; do not launch the research run. This probe is needed once per
    conversation, before the first call only; repeat it only after a later
    call actually times out or fails with connectivity symptoms — backoff
    silence alone is not a trigger.

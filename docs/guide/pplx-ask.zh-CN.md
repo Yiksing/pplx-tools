@@ -30,7 +30,7 @@ pplx-ask space-create "My Space"                 # 创建空间
 
 | 参数 | 默认 | 说明 |
 |---|---|---|
-| `--refresh` | 关 | 把拉取到的目录写入配置的 `[models]` 表（机器托管）：`last_refreshed`、`mode_defaults`、`council_defaults`、`search_models` 及完整 `[models.catalog]`。此后 `pplx-ask` 从 `[models]` 组装请求，回退到 `pplx_export/sites/perplexity/platform.py` 的钉死兜底。需已加载配置文件（先 `pplx-export init`）。见[配置](configuration.md)。 |
+| `--refresh` | 关 | 把拉取到的模型目录写入配置文件旁的 `models_cache.json`，并在 config 的 `[models]` 表盖上 `last_refreshed`（机器托管）。此后 `pplx-ask` 从缓存数据组装请求，回退到 `pplx_export/sites/perplexity/platform.py` 的钉死兜底。需已加载配置文件（先 `pplx-export init`）。见[配置](configuration.md)。 |
 
 ### `ask`
 

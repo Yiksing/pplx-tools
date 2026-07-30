@@ -320,3 +320,21 @@ def add_common_args(ap, *, with_site: bool = False, with_transport: bool = False
     ap.add_argument("--log-file", nargs="?", const="AUTO", default=None, metavar="PATH",
                     help="全量日志落盘：不带值自动落 web_archive/index/logs/<cmd>-<时间戳>.log")
     return ap
+
+
+def update_last_export() -> None:
+    """Stamp last_export in config.toml after a successful export (best-effort).
+    
+    导出成功后更新 config.toml 的 last_export（best-effort）。
+    """
+    import time
+
+    from .. import config as _cfg
+    path = _cfg.LOADED_CONFIG_PATH
+    if not path:
+        return
+    try:
+        ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        _cfg.write_last_export(path, ts)
+    except Exception:
+        pass

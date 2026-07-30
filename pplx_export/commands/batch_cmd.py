@@ -17,7 +17,7 @@ from ..hooks.incremental import plan_incremental
 from ..sites.perplexity import variant_log
 from ..sites.perplexity.fs_writer import FilesystemWriter
 from ..sites.perplexity.normalize import SEARCH_MODE_MAP
-from .common import report_account_status
+from .common import report_account_status, update_last_export
 
 log = get_logger("cli")
 
@@ -230,6 +230,8 @@ def cmd_batch(adapter, writer: FilesystemWriter, account, out_root: Path, limit,
                  f"(ok={ok} skip={skip} fail={fail}；--full 可强制全量)")
     state.save()
     log.info(f"[batch] 完成。ok={ok} skip={skip} fail={fail} / 共 {total}")
+    if ok > 0:
+        update_last_export()
     if variant_threads:
         # Rewritten-answer variant hit reminder (kept separate from the summary
         # format above): alternative answers may be cleaned up by the platform, and

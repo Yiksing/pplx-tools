@@ -34,7 +34,7 @@ selectable in search mode, and the special modes (`research` / `study` /
 
 | Option | Default | Description |
 |---|---|---|
-| `--refresh` | off | Persist the fetched catalog into the config's `[models]` table (auto-managed): `last_refreshed`, `mode_defaults`, `council_defaults`, `search_models`, and the full `[models.catalog]`. `pplx-ask` then builds requests from `[models]`, falling back to the pinned baseline in `pplx_export/sites/perplexity/platform.py`. Requires a loaded config file (run `pplx-export init` first). See [Configuration](configuration.md). |
+| `--refresh` | off | Persist the fetched model catalog into `models_cache.json` alongside the config, and stamp `last_refreshed` in config's `[models]` table (auto-managed). `pplx-ask` then builds requests from the cached data, falling back to the pinned baseline in `pplx_export/sites/perplexity/platform.py`. Requires a loaded config file (run `pplx-export init` first). See [Configuration](configuration.md). |
 
 ### `ask`
 

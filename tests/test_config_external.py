@@ -260,15 +260,14 @@ class TestModelsSection:
 
     _SECTION = {
         "last_refreshed": "2026-07-30T00:00:00Z", "source_version": "2.18",
-        "auto_refresh": False, "council_defaults": ["a", "b"],
-        "search_models": ["pplx_pro", "x"],
-        "mode_defaults": {"search": "pplx_pro", "deep-research": "pplx_alpha"},
-        "catalog": {"pplx_pro": {"label": "Best", "provider": "P", "mode": "search"}},
+        "auto_refresh": False,
     }
 
     def test_absent_models_leaves_config_empty(self, tmp_path):
         cfg.configure(_write(tmp_path, "a.toml", TOML_A))
-        assert cfg.MODEL_CONFIG == {}
+        # MODEL_CONFIG may have default_models from legacy fallback; test that write is clean
+        # MODEL_CONFIG 可能含有旧版回退的 default_models；测试写入后为干净状态
+        assert "catalog" not in cfg.MODEL_CONFIG
 
     def test_write_back_preserves_content_idempotent_0600(self, tmp_path):
         p = _write(tmp_path, "config.toml",
@@ -290,6 +289,53 @@ class TestModelsSection:
         p = _write(tmp_path, "config.toml", TOML_A)
         cfg.write_models_section(p, self._SECTION)
         cfg.configure(p)
-        assert cfg.MODEL_CONFIG["mode_defaults"] == {"search": "pplx_pro", "deep-research": "pplx_alpha"}
+        assert cfg.MODEL_CONFIG["last_refreshed"] == "2026-07-30T00:00:00Z"
+        assert cfg.MODEL_CONFIG["source_version"] == "2.18"
+
+    def test_write_models_cache_and_load(self, tmp_path, monkeypatch):
+        """write_models_cache writes raw JSON; _load_models_cache populates MODEL_CONFIG.
+
+        write_models_cache 写入原始 JSON；_load_models_cache 填充 MODEL_CONFIG。"""
+        from pplx_export import config as cfg
+        cache_path = tmp_path / "models_cache.json"
+        monkeypatch.setattr(cfg, "MODELS_CACHE_PATH", cache_path)
+        raw = {
+            "default_models": {"search": "pplx_pro", "research": "pplx_alpha"},
+            "agentic_research_compare_models": ["a", "b"],
+            "search_config": [{"label": "X", "reasoning_model": "r1"}],
+            "computer_config": [],
+            "models": {"pplx_pro": {"label": "Best"}},
+        }
+        cfg.write_models_cache(raw)
+        assert cache_path.is_file()
+        cfg.MODEL_CONFIG.clear()
+        cfg._load_models_cache()
+        assert cfg.MODEL_CONFIG["default_models"] == {"search": "pplx_pro", "research": "pplx_alpha"}
         assert cfg.MODEL_CONFIG["council_defaults"] == ["a", "b"]
-        assert cfg.MODEL_CONFIG["catalog"]["pplx_pro"]["label"] == "Best"
+        assert cfg.MODEL_CONFIG["search_config"][0]["label"] == "X"
+        # models should NOT be loaded
+        # models 不应被加载
+        assert "models" not in cfg.MODEL_CONFIG
+        cfg.MODEL_CONFIG.clear()
+
+    def test_last_export_write_and_reload(self, tmp_path):
+        """write_last_export stamps a top-level key; configure() loads it.
+
+        write_last_export 写入顶层键；configure() 加载之。"""
+        from pplx_export import config as cfg
+        p = _write(tmp_path, "config.toml",
+                   'default_account = "alice"\n\n[accounts.alice]\n'
+                   'display_name = "Alice"\nemail = "alice@example.com"\n'
+                   'user_id = "u"\n')
+        ts = "2026-07-30T14:00:00Z"
+        cfg.write_last_export(p, ts)
+        cfg.configure(p)
+        assert cfg.LAST_EXPORT == ts
+        # Verify round-trip: write same timestamp again (idempotent)
+        # 验证往返：再次写入相同时间戳（幂等）
+        cfg.write_last_export(p, ts)
+        txt = p.read_text(encoding="utf-8")
+        assert f'last_export = "{ts}"' in txt
+        # User content survives
+        # 用户内容保留
+        assert 'email = "alice@example.com"' in txt

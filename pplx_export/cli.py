@@ -50,7 +50,9 @@ from .core.http.bridge_transport import WebBridgeTransport
 # Reserved: cookie fallback channel (not wired in)
 # 预留：cookie 降级通道（未接线）
 from .core.http.fallback import FallbackTransport  # noqa: F401
-from .core.logging import setup_logging
+from .core.logging import get_logger, setup_logging
+
+log = get_logger("cli")
 from .core.registry import get_adapter
 from .core.throttle import Throttle
 from .sites.perplexity.fs_writer import FilesystemWriter
