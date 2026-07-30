@@ -302,11 +302,11 @@
     "docs/architecture/data-model.md::pt": {
       "model": "deepseek-v4-flash",
       "output_path": "docs/architecture/data-model.pt.md",
-      "output_sha256": "0003b702d56c2add5b2f4a47273ddda960df0a99ee474048e99d2f711f4fd1f4",
+      "output_sha256": "d8af1a92fad237cc46d086c009a7e502e335f41f47967e4b5b1f04f81d6d5b4f",
       "prompt_version": "v1",
       "source_locale": "en",
       "source_path": "docs/architecture/data-model.md",
-      "source_sha256": "ebbd890c8e9a8cb69494f0010e99d6d70af5012ad421eb3a62958335a7f25908",
+      "source_sha256": "a40066b8ef67c0aeddfe0728fb8e513deeda5617004a164716230d2bb0865dea",
       "translation_fingerprint": "fdf61797fad7e6b209fa648fd05b5f7d95ce05b2c74bbac92003fc6256d6eb60",
       "warnings": []
     },
@@ -1732,11 +1732,11 @@
     "docs/guide/configuration.md::pt": {
       "model": "deepseek-v4-flash",
       "output_path": "docs/guide/configuration.pt.md",
-      "output_sha256": "2361837931a9e111b51095baac52f6f8e6f33c46718a53e9903c75791bde51b9",
+      "output_sha256": "98298a0e107f3303fa28564a636e5d7740502aa9d3aedca5905e2a80902a1db7",
       "prompt_version": "v1",
       "source_locale": "en",
       "source_path": "docs/guide/configuration.md",
-      "source_sha256": "f1c8a88b5af574cb313e0ed7430a4c3bc70e3f2edc6c4a8490eb6246006c5ede",
+      "source_sha256": "0c5f1be9b103913deee332caa4397a3dc356027148beac491834f6791f3b73db",
       "translation_fingerprint": "fdf61797fad7e6b209fa648fd05b5f7d95ce05b2c74bbac92003fc6256d6eb60",
       "warnings": []
     },
@@ -2392,11 +2392,11 @@
     "docs/guide/pplx-ask.md::pt": {
       "model": "deepseek-v4-flash",
       "output_path": "docs/guide/pplx-ask.pt.md",
-      "output_sha256": "84675517ede9623200ba4a6ea978c0c552a445edfab6585ea9d25e1e65542ed0",
+      "output_sha256": "270c9ca4e53b32e91e1817f1e5da096b90cf89edd0ad18c75fb47e554dd7ea87",
       "prompt_version": "v1",
       "source_locale": "en",
       "source_path": "docs/guide/pplx-ask.md",
-      "source_sha256": "2068f1ed34cbfa9591947ed9426263b130c8e98e4a7c4edff98ba092f447d756",
+      "source_sha256": "f19a18e17c054d036b2d89d65c540a630a6516cb08334131acf14664f470165c",
       "translation_fingerprint": "fdf61797fad7e6b209fa648fd05b5f7d95ce05b2c74bbac92003fc6256d6eb60",
       "warnings": []
     },
@@ -2502,11 +2502,11 @@
     "docs/guide/pplx-export.md::pt": {
       "model": "deepseek-v4-flash",
       "output_path": "docs/guide/pplx-export.pt.md",
-      "output_sha256": "040c4ff02a8fdd0a71ad40a20844c593f5491c2fd9b65394286af8703c5e001c",
+      "output_sha256": "112d5e2aba4f593b80332653739c3d3766369438d6be4588b35e16fcfbefd7fc",
       "prompt_version": "v1",
       "source_locale": "en",
       "source_path": "docs/guide/pplx-export.md",
-      "source_sha256": "1eca86e36ffab4e4b66fcc9b085d4214dd72d8e796a90827c2589178f0197f4b",
+      "source_sha256": "09f79a39d95641d1816d529b4471c245bb60e11c49266417504b27a495c90231",
       "translation_fingerprint": "fdf61797fad7e6b209fa648fd05b5f7d95ce05b2c74bbac92003fc6256d6eb60",
       "warnings": []
     },
