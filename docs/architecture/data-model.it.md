@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/architecture/data-model.md"
-translation_source_sha256: "ebbd890c8e9a8cb69494f0010e99d6d70af5012ad421eb3a62958335a7f25908"
+translation_source_sha256: "a40066b8ef67c0aeddfe0728fb8e513deeda5617004a164716230d2bb0865dea"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -13,7 +13,8 @@ translation_prompt_version: "v1"
 <a id="data-model-coremodelspy" data-pplx-source-anchor="true"></a>
 ## Modello dati (core/models.py)
 
-Tutto il JSON grezzo del sito viene mappato dai parser in queste dataclass; i componenti a valle (render/writer/relations) dipendono solo da questo livello. `Conversation._blocks/_plain` sono montature fedeli delle risposte grezze (repr=False).
+Tutto il JSON grezzo del sito viene mappato dai parser in queste dataclass; i componenti a valle (render/writer/relations)
+dipendono solo da questo livello. `Conversation._blocks/_plain` sono montature fedeltà delle risposte grezze (repr=False).
 
 ```mermaid
 classDiagram
@@ -101,22 +102,36 @@ classDiagram
 
 Note sulle responsabilità (numeri di riga relativi a `core/models.py`):
 
-- **`Turn.wf_block`** (models.py:127): il blocco di workflow schematizzato di computer/council, montato da `parsers.attach_workflow_blocks` per entry uuid (parsers.py:231-256); il rendering e il fallback della risposta (`_turn_answer`, render.py:489) dipendono da esso; writer è in sola lettura.
-- **`Turn.stub_wfs`** (models.py:131): payload di background associati ai stub turn subagent_result tramite la finestra di 10s (montati da parsers.match_stub_workflows).
-- **`Turn.metadata`** (models.py:134): tre chiavi — `report_info` (passo RESEARCH_ANSWER, parsers.py:199-204), `locked_reason` (parsers.py:205-208), `wf_status` (parsers.py:256).
-- **`Conversation.unconsumed_bgs`** (models.py:165-170): la fonte dati del fallback di terzo livello della cascata di attribuzione, `[{wp, locked_reason, updated, bg_uuid}]`, renderizzata come appendice alla fine di conversation.md.
-- **`Conversation.answer_variants`** (models.py:171-177): registrazione delle varianti di riscrittura della risposta (fonte dati di thread.json.answer_variants); `parsers.collect_answer_variants` (parsers.py:589) estrae da `entries[].side_by_side_metadata` con criteri di restrizione — catena di rilevamento in [§18](offline-operations.md).
-- **`Conversation.sub_agents`** (models.py:178-182): elenco delle esecuzioni subagent a livello di conversazione, popolato da `adapter.sub_agents` solo durante la ricostruzione offline `cmd_relations`; la pipeline di esportazione non retropropaga questo campo (writer renderizza con una sub_map locale; relations legge qui) — vedere [§15](offline-operations.md).
-- **`Conversation._blocks/_plain`** (models.py:183-190): fedeltà della risposta grezza; `fs_writer` le persiste verbatim come raw_*.json (fs_writer.py:257-266); `get_report/get_assets/sub_agents` and offline re-render all read from them. `PerplexityAdapter(None)` può essere costruito con un trasporto None per riutilizzare l'assemblaggio puro dei dati (rerender_cmd.py:138).
-- **Dual ID**: `web_uuid` = web entryUUID (URL thread); `psc_uuid` = UUID della piattaforma `past_session_contexts`, preso dal primo turno non vuoto di `context_uuid` (adapter.py:99).
+- **`Turn.wf_block`** (models.py:127): il blocco di workflow schematizzato di computer/council,
+  montato da `parsers.attach_workflow_blocks` per uuid di entry (parsers.py:231-256);
+  il rendering e il fallback delle risposte (`_turn_answer`, render.py:489) dipendono da esso; writer è in sola lettura.
+- **`Turn.stub_wfs`** (models.py:131): payload di background associati agli stub di subagent_result tramite la finestra di 10s
+  (montati da parsers.match_stub_workflows).
+- **`Turn.metadata`** (models.py:134): tre chiavi — `report_info` (passo RESEARCH_ANSWER,
+  parsers.py:199-204), `locked_reason` (parsers.py:205-208), `wf_status`
+  (parsers.py:256).
+- **`Conversation.unconsumed_bgs`** (models.py:165-170): la fonte dati del fallback di terzo livello della cascata di attribuzione,
+  `[{wp, locked_reason, updated, bg_uuid}]`, renderizzato come appendice alla fine di conversation.md.
+- **`Conversation.answer_variants`** (models.py:171-177): registrazione delle varianti di riscrittura delle risposte
+  (fonte dati di thread.json.answer_variants); `parsers.collect_answer_variants`
+  (parsers.py:589) estrae da `entries[].side_by_side_metadata` con criteri di restrizione — catena di rilevamento in [§18](offline-operations.md).
+- **`Conversation.sub_agents`** (models.py:178-182): elenco delle esecuzioni di subagent a livello di conversazione, popolato da
+  `adapter.sub_agents` solo durante la ricostruzione offline di `cmd_relations`; la pipeline di esportazione non retropropaga questo campo
+  (writer renderizza con una sub_map locale; relations legge qui) — vedere [§15](offline-operations.md).
+- **`Conversation._blocks/_plain`** (models.py:183-190): fedeltà della risposta grezza;
+  `fs_writer` li persiste verbatim come raw_*.json (fs_writer.py:257-266); `get_report/get_assets/
+  sub_agents` and offline re-render all read from them. `PerplexityAdapter(None)` può essere
+  costruito con un trasporto None per riutilizzare l'assemblaggio puro dei dati (rerender_cmd.py:138).
+- **Dual ID**: `web_uuid` = web entryUUID (URL thread); `psc_uuid` = UUID della piattaforma
+  `past_session_contexts`, preso dal primo turno non vuoto di `context_uuid` (adapter.py:99).
 
 ---
 
 <a id="write-boundaries-and-directory-contract" data-pplx-source-anchor="true"></a>
-## Confini di scrittura e contratto di directory
+## Limiti di scrittura e contratto di directory
 
 <a id="the-web_archive-thread-archive-tool-generated-content-files-not-hand-edited" data-pplx-source-anchor="true"></a>
-### L'archivio thread web_archive (generato da strumenti; file di contenuto non modificati a mano)
+### L'archivio thread di web_archive (generato da strumenti; file di contenuto non modificati a mano)
 
 ```
 web_archive/
@@ -146,23 +161,47 @@ web_archive/
 
 | File | Writer | Semantica |
 |---|---|---|
-| `library_<account>.json` | `cmd_index` (index_cmd.py) | indice thread dell'account (GraphQL); unito incrementalmente per default (`--full` riscrive); contiene anche `last_full_index_at` / `incremental_runs_since_full`; input per indici batch/scheduling/space |
-| `batch_state.json` | `BatchState` (state.py) | checkpoint: uuid → stato(ok/error/expired/deleted) + lastUpdated; scritture atomiche; file corrotti automaticamente salvati come `.corrupt-<ts>` |
-| `.cookies.json` | `CookieCache` (common.py:111, 150) | cache dei cookie (freschezza 12h), con source e email account; scrittura atomica: file temporaneo creato con 0o600 poi os.replace (cookies/cache.py:59-67 — credenziali di sessione leggibili solo dal proprietario; nell'ambito gitignore) |
-| `space_<slug>.json` | `cmd_space_index` (spaces_cmd.py:106-167) | elenco thread "tutti" per spazio (incl. mappatura dual-ID context_uuid) |
-| `space_meta.json` | `cmd_spaces --fetch-meta` (spaces_cmd.py:299-330) | cache proprietario/membro dello spazio (riutilizzata durante la ricostruzione degli indici, evitando un nuovo recupero) |
+| `library_<account>.json` | `cmd_index` (index_cmd.py) | indice thread dell'account (GraphQL); merge incrementale per default (`--full` riscrive); contiene anche `last_full_index_at` / `incremental_runs_since_full`; input per indici batch/scheduling/space |
+| `batch_state.json` | `BatchState` (state.py) | checkpoint: uuid → stato(ok/error/expired/deleted) + lastUpdated; scritture atomiche; file corrotti salvati automaticamente come `.corrupt-<ts>` |
+| `.cookies.json` | `CookieCache` (common.py:111, 150) | cache dei cookie (freschezza 12h), con fonte ed email dell'account; scrittura atomica: file temporaneo creato con 0o600 poi os.replace (cookies/cache.py:59-67 — credenziali di sessione leggibili solo dal proprietario; nell'ambito di gitignore) |
+| `space_<slug>.json` | `cmd_space_index` (spaces_cmd.py:106-167) | elenco thread "tutti" per space (incl. mappatura dual-ID context_uuid) |
+| `space_meta.json` | `cmd_spaces --fetch-meta` (spaces_cmd.py:299-330) | cache proprietario/membro dello space (riutilizzata durante la ricostruzione degli indici, evitando un nuovo recupero) |
 | `credit_usage_<account>.json` | `cmd_usage_backfill` (usage_backfill_cmd.py:17) | utilizzo crediti per thread (idempotente e riprendibile, scaricato ogni 25 voci) |
-| `cron_snippet.txt` | `cmd_schedule` (scheduler.py:48-78) | frammento di invocazione cron (percorsi assoluti) |
-| `answer_variants_log.jsonl` | `variant_log.append_registry` (variant_log.py:76) | registro centrale delle varianti di riscrittura della risposta (deduplicato per thread+entry, idempotente; file tracciato, non logs/) — catena di rilevamento in [§18](offline-operations.md) |
+| `cron_snippet.txt` | `cmd_schedule` (scheduler.py:48-78) | snippet di invocazione cron (percorsi assoluti) |
+| `answer_variants_log.jsonl` | `variant_log.append_registry` (variant_log.py:76) | registro centrale delle varianti di riscrittura delle risposte (deduplicato per thread+entry, idempotente; file tracciato, non logs/) — catena di rilevamento in [§18](offline-operations.md) |
 | `logs/` | `--log-file` (common.py:218-229) | log DEBUG completi (gitignorati) |
+
+Il `config.toml` a livello utente contiene inoltre una tabella `[models]` gestita automaticamente
+(il catalogo dei modelli più `last_refreshed`), scritta da `pplx-ask models --refresh` e
+inizializzata da `pplx-export init` attraverso un round-trip `tomlkit` che preserva le
+altre tabelle e i commenti dell'utente — schema in [Configurazione](../guide/configuration.md).
+
+**Nota per il manutentore — costanti di protocollo fissate.** I fatti del protocollo wire Perplexity che
+sono accoppiati al parser/renderer — l'API `version`, l'envelope ask
+`supported_block_use_cases`, `supported_features`, e la lettura thread
+`SCHEMATIZED_BLOCK_USE_CASES` — sono a fonte singola in
+`pplx_export/sites/perplexity/platform.py` e devono essere aggiornati in sincronia con
+`parsers.py` / `render.py` quando l'API della piattaforma cambia (fissato manualmente, mai
+aggiornato automaticamente; un test vieta copie spurie del letterale di versione). Gli ID dei modelli, al
+contrario, sono dati lato server disaccoppiati e risiedono nel catalogo `[models]` aggiornabile
+sopra.
 
 <a id="the-spaces-index-layer-repository-root-tool-generated" data-pplx-source-anchor="true"></a>
 ### Il livello indice spaces/ (radice del repository, generato da strumenti)
 
-`cmd_spaces` ricostruisce aggregando `index/library_*.json` (spaces_cmd.py:259-389): un `<slug>.md` per spazio (aggregazione account partecipanti + intestazione proprietario/membro + tabella thread + backlink posizione esportazione) più il registro `spaces.json`. **Nota**: la directory di output è `spaces/` relativa a CWD (spaces_cmd.py:332) — non segue `--out`; le informazioni sugli account partecipanti sono aggregate puramente localmente, mentre proprietari/membri provengono dalla cache `index/space_meta.json`. Non modificare a mano — la prossima ricostruzione sovrascrive.
+`cmd_spaces` ricostruisce aggregando `index/library_*.json` (spaces_cmd.py:259-389):
+un `<slug>.md` per space (aggregazione account partecipanti + intestazione proprietario/membro +
+tabella thread + backlink alla posizione di esportazione) più il registro `spaces.json`. **Nota**: la directory
+di output è `spaces/` relativa a CWD (spaces_cmd.py:332) — non segue `--out`;
+le informazioni sugli account partecipanti sono aggregate puramente localmente, mentre proprietari/membri provengono
+dalla cache `index/space_meta.json`. Non modificare a mano — la prossima ricostruzione sovrascrive.
 
 <a id="hand-editable-vs-tool-managed" data-pplx-source-anchor="true"></a>
 ### Modificabile a mano vs gestito da strumenti
 
-- **Modificabile a mano**: il [documento di progettazione del sistema](overview.md), il [riferimento API](../reference/api/api-authentication.md), il README del progetto e altri documenti di specifica, e i report di revisione `web_archive/crosscheck/` (documenti di specifica e artefatti di revisione).
-- **Gestito da strumenti (non modificare a mano i file di contenuto)**: tutti gli artefatti nelle directory thread `web_archive/`, `index/`, `spaces/`, `relations/` — quando sono necessarie modifiche, modificare lo strumento e rieseguire (le correzioni di rendering passano attraverso un re-render, le correzioni dei dati attraverso il corrispondente comando di backfill), mantenendo un'unica fonte di artefatti riproducibili.
+- **Modificabile a mano**: il [documento di progettazione del sistema](overview.md), il [riferimento API](../reference/api/api-authentication.md), il README del progetto e altri
+documenti di specifica, e i report di revisione `web_archive/crosscheck/` (documenti di specifica e artefatti di revisione).
+- **Gestito da strumenti (non modificare a mano i file di contenuto)**: tutti gli artefatti nelle directory thread
+  `web_archive/`, `index/`, `spaces/`, `relations/` — quando sono necessarie modifiche, modificare lo strumento e
+  rieseguire (le correzioni di rendering passano attraverso un re-render, le correzioni dei dati attraverso il corrispondente comando
+  di backfill), mantenendo una singola fonte di artefatti riproducibili.

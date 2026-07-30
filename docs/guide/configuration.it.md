@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/guide/configuration.md"
-translation_source_sha256: "f1c8a88b5af574cb313e0ed7430a4c3bc70e3f2edc6c4a8490eb6246006c5ede"
+translation_source_sha256: "0c5f1be9b103913deee332caa4397a3dc356027148beac491834f6791f3b73db"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -10,14 +10,14 @@ translation_prompt_version: "v1"
 <a id="configuration" data-pplx-source-anchor="true"></a>
 # Configurazione
 
-pplx-export conserva i tuoi dati di identità — il registro degli account (nomi visualizzati, email di login, ID utente) e lo spazio BOT — in un file TOML a livello utente che risiede al di fuori del repository. Questa pagina copre dove si trova quel file, ogni campo che accetta, cosa succede quando manca e come il registro gestisce la gestione dei cookie multi-account.
+pplx-export conserva i tuoi dati identificativi — il registro degli account (nomi visualizzati, email di login, ID utente) e lo spazio BOT — in un file TOML a livello utente che risiede al di fuori del repository. Questa pagina copre dove si trova quel file, ogni campo che accetta, cosa succede quando manca e come il registro gestisce i cookie multi-account.
 
 <a id="why-the-config-lives-outside-the-repo" data-pplx-source-anchor="true"></a>
 ## Perché la configurazione risiede fuori dal repository
 
-Il registro degli account e lo spazio BOT sono dati personali e **non vengono mai committati** nel repository (`pplx_export/config.py:7-12`). Il repository fornisce solo un modello segnaposto, `config.example.toml`; i tuoi valori reali vanno in una copia privata. Tutto il resto di cui lo strumento ha bisogno — il dominio del sito, gli URL delle API, la radice di archivio predefinita — è una costante del codice (`pplx_export/config.py:50-58`), non una configurazione utente.
+Il registro degli account e lo spazio BOT sono dati personali e **non vengono mai committati** nel repository (`pplx_export/config.py:7-12`). Il repository fornisce solo un template placeholder, `config.example.toml`; i tuoi valori reali vanno in una copia privata. Tutto il resto di cui lo strumento ha bisogno — il dominio del sito, gli URL delle API, la radice dell'archivio predefinita — è una costante del codice (`pplx_export/config.py:50-58`), non una configurazione utente.
 
-Il TOML contiene solo dati di identità. La selezione della fonte dei cookie e del trasporto sono flag CLI per invocazione, non campi di configurazione — vedi [Flag CLI, non campi di configurazione](#cli-flags-not-config-fields) più avanti.
+Il TOML trasporta solo dati identificativi. La selezione della fonte dei cookie e del trasporto sono flag CLI per invocazione, non campi di configurazione — vedi [Flag CLI, non campi di configurazione](#cli-flags-not-config-fields) sotto.
 
 <a id="location-and-load-priority" data-pplx-source-anchor="true"></a>
 ## Posizione e priorità di caricamento
@@ -30,10 +30,10 @@ Il TOML contiene solo dati di identità. La selezione della fonte dei cookie e d
 | 2 | Variabile d'ambiente `PPLX_EXPORT_CONFIG` | sì |
 | 3 | `~/.config/pplx-export/config.toml` (percorso predefinito) | no |
 
-"Esplicito" è rilevante per il comportamento di errore quando il file manca — vedi [modalità degradata](#missing-config-degraded-mode). Entrambe le voci CLI ricaricano la configurazione in modalità rigorosa dopo l'analisi degli argomenti (`pplx_export/cli.py:223`, `pplx_export/ask_cli.py:278`); il caricamento al momento dell'importazione (`pplx_export/config.py:174-179`) è tollerante ai guasti, quindi l'importazione del pacchetto non fallisce mai su un file mancante.
+"Esplicito" è rilevante per il comportamento di errore quando il file manca — vedi [modalità degradata](#missing-config-degraded-mode). Entrambe le voci CLI ricaricano la configurazione in modalità rigorosa dopo l'analisi degli argomenti (`pplx_export/cli.py:223`, `pplx_export/ask_cli.py:278`); il caricamento al momento dell'import (`pplx_export/config.py:174-179`) è tollerante ai guasti, quindi importare il pacchetto non fallisce mai per un file mancante.
 
 <a id="creating-your-config" data-pplx-source-anchor="true"></a>
-## Creare la tua configurazione
+## Creazione della tua configurazione
 
 !!! tip "Alternativa automatica"
     `pplx-export init` può generare questo file automaticamente — scopre gli account con accesso effettuato dai tuoi cookie del browser e scrive il TOML con permessi 0600. Vedi [pplx-export → init](pplx-export.md#init).
@@ -44,7 +44,7 @@ cp config.example.toml ~/.config/pplx-export/config.toml
 chmod 600 ~/.config/pplx-export/config.toml
 ```
 
-Poi modifica la copia. Il modello usa segnaposto puri — copia la struttura, sostituisci ogni valore:
+Poi modifica la copia. Il template usa placeholder puri — copia la struttura, sostituisci ogni valore:
 
 ```toml
 # Default account used when --account is not given (a key of [accounts.<name>] below)
@@ -70,13 +70,13 @@ uuid = "00000000-0000-4000-8000-0000000000b0"
 slug = "bot-EXAMPLE"
 ```
 
-Stile segnaposto: `alice`/`bob` sono nomi utente di account inventati, le email usano `example.com` e gli UUID usano la forma `00000000-0000-4000-8000-…` con tutti zeri. Nel tuo file reale, la chiave della tabella **deve essere il nome utente effettivo dell'account** così come appare negli URL dei thread e nella tua libreria.
+Stile dei placeholder: `alice`/`bob` sono nomi utente fittizi, le email usano `example.com` e gli UUID usano la forma `00000000-0000-4000-8000-…` con tutti zeri. Nel tuo file reale, la chiave della tabella **deve essere il nome utente effettivo dell'account** come appare negli URL dei thread e nella tua libreria.
 
 !!! warning "Mantienilo privato"
     La configurazione reale contiene dati personali (email, ID utente). Il permesso raccomandato è `0o600`; non committarlo mai in alcun repository git (`config.example.toml:4-6`).
 
 <a id="field-reference" data-pplx-source-anchor="true"></a>
-## Riferimento ai campi
+## Riferimento dei campi
 
 <a id="top-level" data-pplx-source-anchor="true"></a>
 ### Livello superiore
@@ -85,16 +85,17 @@ Stile segnaposto: `alice`/`bob` sono nomi utente di account inventati, le email 
 |---|---|---|
 | `default_account` | stringa | Chiave di una tabella `[accounts.<name>]`, usata quando `--account` non è fornito (`pplx_export/commands/common.py:84-85`). Vuoto/mancante = modalità degradata. |
 | `archive_root` | stringa | Opzionale. Radice di output dell'archivio usata come fallback di `--out`, così i comandi quotidiani possono omettere `--out`. Precedenza: `--out` > `archive_root` > `./web_archive` (`pplx_export/config.py`, caricato in `ARCHIVE_ROOT`; risolto in `cli.py` / `ask_cli.py`). `~` viene espanso. |
+| `[models]` (tabella) | tabella | **Auto-gestito, non scritto a mano.** Catalogo dei modelli aggiornabile scritto da `pplx-ask models --refresh` e inizializzato da `pplx-export init`; sovrascrive la baseline fissata in `pplx_export/sites/perplexity/platform.py`. Chiavi: `last_refreshed` (UTC), `source_version`, `auto_refresh` (booleano), `mode_defaults`, `council_defaults`, `search_models` e un `[models.catalog]` completo (`id → {label, provider, mode}`). Le richieste lo leggono (con la baseline `platform.py` come fallback); un TTL di 7 giorni stampa un promemoria di aggiornamento, o si aggiorna automaticamente quando `auto_refresh = true`. La scrittura round-trip preserva le altre tabelle e i commenti (tramite la dipendenza runtime `tomlkit`) e rimane `0600`. |
 
 ### `[accounts.<name>]`
 
-Una tabella per account; `<name>` è il nome utente dell'account. Il registro viene caricato in tre dizionari indicizzati per nome utente: `ACCOUNT_DISPLAY_NAMES`, `ACCOUNT_EMAIL`, `ACCOUNT_UID` (`pplx_export/config.py:65-75`).
+Una tabella per account; `<name>` è il nome utente dell'account. Il registro carica in tre dizionari indicizzati per nome utente: `ACCOUNT_DISPLAY_NAMES`, `ACCOUNT_EMAIL`, `ACCOUNT_UID` (`pplx_export/config.py:65-75`).
 
 | Campo | Tipo | Obbligatorio | Significato |
 |---|---|---|---|
 | `display_name` | stringa | no | Nome visualizzato completo, usato per la denominazione delle directory dell'archivio (`web_archive/<display name>/…`); ricade al nome utente quando omesso. Vedi [Struttura dell'archivio](archive-layout.md). |
 | `email` | stringa | raccomandato | Email di login. Il trasporto verifica la proprietà del cookie rispetto ad essa, impedendo "un'esportazione per l'account B che trasporta la sessione dell'account A" (`pplx_export/config.py:69-72`). In caso di mancata corrispondenza, lo strumento enumera i token di sessione per account nel browser e passa automaticamente — vedi [Modello cookie multi-account](#multi-account-cookie-model). |
-| `user_id` | stringa | per la telemetria di `pplx-ask` | UID dell'account, richiesto dalla telemetria di visualizzazione thread (`pplx_export/config.py:73-75`). Leggilo da `GET /api/auth/linked-accounts`, che restituisce `user_id` / `email` / `display_name` di ogni account con accesso effettuato — vedi [Autenticazione API](../reference/api/api-authentication.md). |
+| `user_id` | stringa | per telemetria `pplx-ask` | UID dell'account, richiesto dalla telemetria di visualizzazione thread (`pplx_export/config.py:73-75`). Leggilo da `GET /api/auth/linked-accounts`, che restituisce per ogni account con accesso effettuato `user_id` / `email` / `display_name` — vedi [Autenticazione API](../reference/api/api-authentication.md). |
 
 ### `[bot_space]`
 
@@ -103,7 +104,7 @@ Lo spazio BOT è il punto di raccolta per i thread creati da `pplx-ask` dopo il 
 | Campo | Tipo | Significato |
 |---|---|---|
 | `uuid` | stringa | UUID dello spazio. `pplx-ask` sposta qui i thread completati (`pplx_export/ask_cli.py:156-158`); quando vuoto, il passaggio di spostamento viene saltato. |
-| `slug` | stringa | Slug URL dello spazio. Caricato in `BOT_SPACE_SLUG` (`pplx_export/config.py:79`); la CLI runtime non lo legge — lo strumento di manutenzione dei fixture lo consuma, costruendo da esso una coppia di sostituzione dell'identità (`tests/scrub_fixtures.py:446-447`). |
+| `slug` | stringa | Slug URL dello spazio. Caricato in `BOT_SPACE_SLUG` (`pplx_export/config.py:79`); la CLI runtime non lo legge — lo strumento di manutenzione delle fixture lo consuma, costruendo da esso una coppia di sostituzione dell'identità (`tests/scrub_fixtures.py:446-447`). |
 
 <a id="cli-flags-not-config-fields" data-pplx-source-anchor="true"></a>
 ### Flag CLI, non campi di configurazione
@@ -115,9 +116,9 @@ Il TOML non ha impostazioni di trasporto o cookie. Queste vengono scelte per inv
 | Percorso del file di configurazione | `--config PATH`, o `PPLX_EXPORT_CONFIG` |
 | Fonte dei cookie | `--cookies-from BROWSER` / `--cookies FILE` |
 | Trasporto | `--transport cookie\|webbridge` (solo `pplx-export`; predefinito `cookie`) |
-| Salta il controllo dell'account all'avvio | `--skip-auth-check` (entrambe le voci) — vedi [Modello cookie multi-account](#multi-account-cookie-model) |
+| Salta il controllo account all'avvio | `--skip-auth-check` (entrambe le voci) — vedi [Modello cookie multi-account](#multi-account-cookie-model) |
 
-Vedi [pplx-export](pplx-export.md) per il riferimento completo ai flag.
+Vedi [pplx-export](pplx-export.md) per il riferimento completo dei flag.
 
 <a id="missing-config-degraded-mode" data-pplx-source-anchor="true"></a>
 ## Configurazione mancante: modalità degradata
@@ -126,7 +127,7 @@ Quando non viene caricato nulla, i registri a livello di modulo rimangono vuoti 
 
 | Scenario | Comportamento |
 |---|---|
-| Nessuna configurazione nel percorso predefinito, `--account` non fornito | Modalità degradata: viene registrato un avviso e i comandi vengono eseguiti con un account segnaposto (`username='default'`); il controllo di proprietà dell'email viene saltato. I comandi offline quotidiani non sono influenzati (`pplx_export/commands/common.py:86-90`). |
+| Nessuna configurazione nel percorso predefinito, `--account` non fornito | Modalità degradata: viene registrato un avviso e i comandi vengono eseguiti con un account placeholder (`username='default'`); il controllo di proprietà dell'email viene saltato. I comandi offline quotidiani non vengono influenzati (`pplx_export/commands/common.py:86-90`). |
 | Nessuna configurazione, `--account` esplicito | `SystemExit` che nomina l'ordine di ricerca e punta a `config.example.toml` (`pplx_export/commands/common.py:67-74`). |
 | Configurazione caricata, `--account` non registrato | `SystemExit` che nomina il file caricato, chiedendoti di aggiungere `[accounts.<name>]` (`pplx_export/commands/common.py:77-82`). |
 | Percorso esplicito (`--config` / variabile d'ambiente) non esiste | `ConfigError` in modalità rigorosa (`pplx_export/config.py:140-146`). |
@@ -138,10 +139,10 @@ Cosa coprono i "comandi offline" e come le esecuzioni degradate interagiscono co
 <a id="multi-account-cookie-model" data-pplx-source-anchor="true"></a>
 ## Modello cookie multi-account
 
-Con diversi account che hanno effettuato l'accesso allo stesso browser, il deposito contiene un cookie di sessione **per account**, e il campo `email` della configurazione dice allo strumento quale gli serve:
+Con diversi account che hanno effettuato l'accesso allo stesso browser, il negozio contiene un cookie di sessione **per account**, e il campo `email` della configurazione dice allo strumento quale gli serve:
 
 - Ogni account con accesso effettuato ha un cookie `__Secure-pplx.session.<uid>` (`ACCOUNT_SESSION_PREFIX`, `pplx_export/core/cookies/loaders.py:171`); il suffisso `<uid>` è l'`user_id` dell'account.
-- L'account **attivo** è quello il cui token si trova attualmente in `__Secure-next-auth.session-token` (`ACTIVE_SESSION_COOKIE`, `pplx_export/core/cookies/loaders.py:172`). Cambiare account = scrivere il valore del cookie per account dell'account di destinazione in quel cookie — nessuna interfaccia browser necessaria (`pplx_export/core/cookies/loaders.py:180-187`).
+- L'account **attivo** è qualunque token si trovi attualmente in `__Secure-next-auth.session-token` (`ACTIVE_SESSION_COOKIE`, `pplx_export/core/cookies/loaders.py:172`). Cambiare account = scrivere il valore del cookie per account dell'account di destinazione in quel cookie — nessuna interfaccia browser necessaria (`pplx_export/core/cookies/loaders.py:180-187`).
 - All'avvio, il trasporto sonda `GET https://www.perplexity.ai/api/auth/session` e confronta l'email restituita con `accounts.<name>.email` (`pplx_export/commands/common.py:126-130`).
 - In caso di mancata corrispondenza, `_try_switch_account` (`pplx_export/commands/common.py:190-215`) enumera ogni token di account nel browser tramite `list_account_tokens` (`pplx_export/core/cookies/loaders.py:175-206`, preferendo le voci sul sottodominio `www.`), prova ciascuno in `__Secure-next-auth.session-token` e ricostruisce il trasporto al primo che corrisponde.
 - Se nessun token corrisponde, il comando termina nominando entrambe le email e chiedendoti di effettuare l'accesso dell'account di destinazione nel browser prima (`pplx_export/commands/common.py:142-145`) — vedi [Risoluzione dei problemi](troubleshooting.md).
@@ -149,10 +150,9 @@ Con diversi account che hanno effettuato l'accesso allo stesso browser, il depos
 
 Per il flusso completo di cambio e la semantica degli endpoint di sessione, vedi [Ask e account](../architecture/ask-and-accounts.md) e [Autenticazione API](../reference/api/api-authentication.md).
 
-**Saltare il controllo (`--skip-auth-check`).** La sonda di sessione all'avvio sopra scambia
-pochi secondi — a volte minuti su una rete scadente — per la protezione di proprietà "account B
-usato come account A". Quando sai che il browser ha effettuato l'accesso con l'account
-giusto, `--skip-auth-check` (condiviso da `pplx-export` e `pplx-ask`) salta
+**Saltare il controllo (`--skip-auth-check`).** La sonda di sessione all'avvio sopra
+scambia alcuni secondi — a volte minuti su una rete scadente — per la protezione di proprietà "account B usato
+come account A". Quando sai che il browser ha effettuato l'accesso con l'account giusto, `--skip-auth-check` (condiviso da `pplx-export` e `pplx-ask`) salta
 completamente quella sonda e va direttamente al lavoro (`pplx_export/commands/common.py`,
 `make_transport`):
 
@@ -163,17 +163,17 @@ completamente quella sonda e va direttamente al lavoro (`pplx_export/commands/co
   eseguiti.
 - **Rete di sicurezza differita**: in `batch`, una volta che gli errori di esportazione generici si accumulano
   (tre fallimenti), viene eseguito un controllo dell'account una tantum e ti avvisa di ciò che ha trovato —
-  il cookie è scaduto, l'account non corrisponde al target, o l'account è
-  a posto (quindi gli errori sono di rete / limite di velocità, non di autenticazione)
+  il cookie è scaduto, l'account non corrisponde al target o l'account è
+  a posto (quindi gli errori sono di rete / limiti di velocità, non di autenticazione)
   (`pplx_export/commands/common.py`, `report_account_status`;
   `pplx_export/commands/batch_cmd.py`).
 - **Compromesso**: il controllo differito rileva un cookie scaduto, ma non può
-  rilevare un account *sbagliato ma valido* che esporta senza errori — con
-  `--skip-auth-check` ti assumi la responsabilità che l'account connesso sia quello
+  rilevare un account *sbagliato-ma-valido* che esporta senza errori — con
+  `--skip-auth-check` ti prendi la responsabilità che l'account connesso sia quello
   previsto.
 
-Usalo per esecuzioni rapide e non presidiate su un login noto come buono; omettilo quando fai affidamento
-sulla protezione preventiva di proprietà o sul cambio automatico dell'account.
+Usalo per esecuzioni rapide e non presidiate su un login noto come valido; omettilo quando fai affidamento
+sulla protezione di proprietà preventiva o sul cambio automatico dell'account.
 
 <a id="cookie-cache" data-pplx-source-anchor="true"></a>
 ## Cache dei cookie
@@ -183,7 +183,7 @@ Dopo la convalida riuscita, i cookie risolti vengono memorizzati nella cache in 
 | Proprietà | Valore |
 |---|---|
 | Percorso | `<archive root>/index/.cookies.json` — segue `--out` (`pplx_export/commands/common.py:111`) |
-| Freschezza | 12 ore (`CACHE_MAX_AGE_S = 12 * 3600`, `pplx_export/core/cookies/cache.py:22`); una cache scaduta o corrotta viene considerata assente |
+| Freschezza | 12 ore (`CACHE_MAX_AGE_S = 12 * 3600`, `pplx_export/core/cookies/cache.py:22`); una cache obsoleta o corrotta viene considerata assente |
 | Contenuto | `fetched_at`, `source`, `account_email`, `cookies` (`pplx_export/core/cookies/cache.py:62-66`) |
 | Scrittura | Atomica: file temporaneo creato con modalità `0o600`, poi `os.replace` (`pplx_export/core/cookies/cache.py:49-67`) |
 | Git | Coperto da `.gitignore` (`**/index/.cookies.json`) |
@@ -200,4 +200,4 @@ Ordine di risoluzione dei cookie (`cookies.resolve`, `pplx_export/core/cookies/l
 <a id="when-authentication-fails" data-pplx-source-anchor="true"></a>
 ## Quando l'autenticazione fallisce
 
-Cookie scaduti, un account che il cambio automatico non trova, errori di permessi del portachiavi del browser e altri fallimenti di autenticazione sono coperti in [Risoluzione dei problemi](troubleshooting.md).
+Cookie scaduti, un account che il cambio automatico non trova, errori di permesso del portachiavi del browser e altri fallimenti di autenticazione sono coperti in [Risoluzione dei problemi](troubleshooting.md).
