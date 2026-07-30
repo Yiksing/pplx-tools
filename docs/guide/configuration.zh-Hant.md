@@ -2,19 +2,19 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/guide/configuration.zh-CN.md"
-translation_source_sha256: "7c8d2eeef457a30c2f98ec601bba33597670c85fc80de28b31cc10be41ec3f14"
+translation_source_sha256: "0e237ed1c2465d1d1496878708fadd64d1f0459788f85ba8063dffbca1c5329d"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
 
 # 配置
 
-pplx-export 把身份資料——帳戶註冊表（顯示名、登入 email、使用者 ID）與 BOT 空間——放在倉庫之外的使用者級 TOML 檔案中。本頁說明該檔案的位置、全部欄位、檔案缺失時的行為，以及註冊表如何驅動多帳戶 cookie 處理。
+pplx-export 把身份資料——帳戶註冊表（顯示名稱、登入 email、使用者 ID）與 BOT 空間——放在倉庫之外的使用者級 TOML 檔案中。本頁說明該檔案的位置、所有欄位、檔案缺失時的行為，以及註冊表如何驅動多帳戶 cookie 處理。
 
 <a id="为什么配置外置在仓库之外" data-pplx-source-anchor="true"></a>
 ## 為什麼配置外置在倉庫之外
 
-帳戶註冊表與 BOT 空間屬個人隱私資料，**絕不提交**進倉庫（`pplx_export/config.py:7-12`）。倉庫只附帶佔位模板 `config.example.toml`；真實值寫進你的私有副本。工具所需的其餘內容——站點域名、API URL、預設歸檔根——都是程式碼常數（`pplx_export/config.py:50-58`），不屬於使用者配置。
+帳戶註冊表與 BOT 空間屬個人隱私資料，**絕不提交**進倉庫（`pplx_export/config.py:7-12`）。倉庫只附帶佔位範本 `config.example.toml`；真實值寫進你的私有副本。工具所需的其餘內容——站點域名、API URL、預設歸檔根——都是程式碼常數（`pplx_export/config.py:50-58`），不屬於使用者配置。
 
 TOML 只承載身份資料。cookie 來源與資料通路選擇是每次呼叫的 CLI 標誌，不是配置欄位——見 [CLI 標誌而非配置欄位](#cli-标志而非配置字段)。
 
@@ -43,7 +43,7 @@ cp config.example.toml ~/.config/pplx-export/config.toml
 chmod 600 ~/.config/pplx-export/config.toml
 ```
 
-然後編輯該副本。模板全部為佔位符——照抄結構、替換每個值：
+然後編輯該副本。範本全部為佔位符——照抄結構、替換每個值：
 
 ```toml
 # --account 未给出时使用的默认账户（对应下方 [accounts.<名>] 的键）
@@ -83,6 +83,7 @@ slug = "bot-EXAMPLE"
 | 欄位 | 類型 | 含義 |
 |---|---|---|
 | `default_account` | string | 某個 `[accounts.<name>]` 表的鍵，`--account` 未給出時取用（`pplx_export/commands/common.py:84-85`）。為空/缺失 = 降級模式。 |
+| `archive_root` | string | 可選。歸檔輸出根，作為 `--out` 的回退，日常命令可省略 `--out`。優先級：`--out` > `archive_root` > `./web_archive`（`pplx_export/config.py`，載入 `ARCHIVE_ROOT`；在 `cli.py` / `ask_cli.py` 解析）。`~` 會展開。 |
 
 ### `[accounts.<name>]`
 
@@ -90,8 +91,8 @@ slug = "bot-EXAMPLE"
 
 | 欄位 | 類型 | 是否必需 | 含義 |
 |---|---|---|---|
-| `display_name` | string | 否 | 完整顯示名，用於歸檔目錄命名（`web_archive/<显示名>/…`）；缺省回退使用者名稱本身。見[歸檔佈局](archive-layout.md)。 |
-| `email` | string | 建議 | 登入 email。transport 據此校驗 cookie 歸屬，防止「帳戶 B 的匯出帶著帳戶 A 的工作階段」（`pplx_export/config.py:69-72`）。不匹配時自動列舉瀏覽器中的帳戶工作階段令牌並切換——見 [多帳戶 cookie 模型](#多账户-cookie-模型)。 |
+| `display_name` | string | 否 | 完整顯示名稱，用於歸檔目錄命名（`web_archive/<显示名>/…`）；缺省回退使用者名稱本身。見[歸檔佈局](archive-layout.md)。 |
+| `email` | string | 建議 | 登入 email。transport 據此校驗 cookie 歸屬，防止「帳戶 B 的匯出帶著帳戶 A 的會話」（`pplx_export/config.py:69-72`）。不匹配時自動列舉瀏覽器中的帳戶會話令牌並切換——見 [多帳戶 cookie 模型](#多账户-cookie-模型)。 |
 | `user_id` | string | `pplx-ask` 遙測需要 | 帳戶 uid，thread viewed 遙測所需（`pplx_export/config.py:73-75`）。可經 `GET /api/auth/linked-accounts` 查看，該介面返回每個已登入帳戶的 `user_id` / `email` / `display_name`——見 [API 認證](../reference/api/api-authentication.md)。 |
 
 ### `[bot_space]`
@@ -113,6 +114,7 @@ TOML 沒有任何通路或 cookie 設定。這些按呼叫選擇：
 | 配置檔案路徑 | `--config PATH`，或 `PPLX_EXPORT_CONFIG` |
 | cookie 來源 | `--cookies-from BROWSER` / `--cookies FILE` |
 | 資料通路 | `--transport cookie\|webbridge`（僅 `pplx-export`；預設 `cookie`） |
+| 跳過啟動帳戶校驗 | `--skip-auth-check`（兩個入口）——見[多帳戶 cookie 模型](#多账户-cookie-模型) |
 
 完整標誌參考見 [pplx-export](pplx-export.md)。
 
@@ -135,16 +137,34 @@ TOML 沒有任何通路或 cookie 設定。這些按呼叫選擇：
 <a id="多账户-cookie-模型" data-pplx-source-anchor="true"></a>
 ## 多帳戶 cookie 模型
 
-多個帳戶同登一個瀏覽器時，cookie 庫為**每個帳戶**各存一條工作階段 cookie，配置裡的 `email` 欄位告訴工具它需要哪一個：
+多個帳戶同登一個瀏覽器時，cookie 庫為**每個帳戶**各存一條會話 cookie，配置裡的 `email` 欄位告訴工具它需要哪一個：
 
 - 每個已登入帳戶有一條 `__Secure-pplx.session.<uid>` cookie（`ACCOUNT_SESSION_PREFIX`，`pplx_export/core/cookies/loaders.py:171`）；`<uid>` 後綴即帳戶的 `user_id`。
-- **目前活躍**帳戶就是令牌當前寫在 `__Secure-next-auth.session-token` 裡的那個（`ACTIVE_SESSION_COOKIE`，`pplx_export/core/cookies/loaders.py:172`）。切換帳戶 = 把目標帳戶的按帳戶 cookie 值寫進該 cookie——無需瀏覽器 UI（`pplx_export/core/cookies/loaders.py:180-187`）。
+- **目前活躍**帳戶就是令牌目前寫在 `__Secure-next-auth.session-token` 裡的那個（`ACTIVE_SESSION_COOKIE`，`pplx_export/core/cookies/loaders.py:172`）。切換帳戶 = 把目標帳戶的按帳戶 cookie 值寫進該 cookie——無需瀏覽器 UI（`pplx_export/core/cookies/loaders.py:180-187`）。
 - 啟動時 transport 探測 `GET https://www.perplexity.ai/api/auth/session`，把返回的 email 與 `accounts.<name>.email` 比對（`pplx_export/commands/common.py:126-130`）。
 - 不匹配時，`_try_switch_account`（`pplx_export/commands/common.py:190-215`）經 `list_account_tokens`（`pplx_export/core/cookies/loaders.py:175-206`，優先 `www.` 子域上的條目）列舉瀏覽器中全部帳戶令牌，逐個寫進 `__Secure-next-auth.session-token` 試配，首個匹配即用它重建 transport。
 - 全部不匹配時命令退出，列出兩個 email 並請你先在瀏覽器登入目標帳戶（`pplx_export/commands/common.py:142-145`）——見[故障排查](troubleshooting.md)。
 - 未登記 `email` 的帳戶不做校驗直接放行，並 warning 請你自行確認瀏覽器登入的是正確帳戶（`pplx_export/commands/common.py:146-149`）。
 
 完整切換流程與 session 端點語義見[提問與帳戶](../architecture/ask-and-accounts.md)與 [API 認證](../reference/api/api-authentication.md)。
+
+**跳過校驗（`--skip-auth-check`）。** 上面的啟動會話探測，用幾秒（網路差時甚至
+數分鐘）換來「帳戶 B 當 A 用」的歸屬保護。當你確定瀏覽器登入的就是目標帳戶時，
+`--skip-auth-check`（`pplx-export` 與 `pplx-ask` 共用）會完全跳過這次探測、直接
+開工（`pplx_export/commands/common.py`，`make_transport`）：
+
+- 啟動時不發 `GET /api/auth/session`，網路抖動不再在首個真實請求前造成長時間
+  靜默等待（現已有心跳）。
+- 工具信任目前登入的帳戶；上面的啟動 email 歸屬校驗與多帳戶自動切換都不執行。
+- **延遲安全網**：`batch` 中，通用匯出錯誤累計（3 次失敗）後，會做一次性帳戶
+  校驗並告知結果——cookie 失效、帳戶與目標不符、或帳戶正常（說明報錯源於
+  網路 / 限流而非鑑權）（`pplx_export/commands/common.py`，`report_account_status`；
+  `pplx_export/commands/batch_cmd.py`）。
+- **權衡**：延遲校驗能抓到 cookie 失效，但抓不到**帳戶有效但用錯**卻能無錯匯出
+  的情況——用 `--skip-auth-check` 即由你自行確保登入的是目標帳戶。
+
+適合在已知登入正確時做快速、無人值守的執行；若你依賴啟動歸屬保護或自動切換
+帳戶，則不要用它。
 
 <a id="cookie-缓存" data-pplx-source-anchor="true"></a>
 ## cookie 快取
@@ -165,7 +185,7 @@ cookie 解析順序（`cookies.resolve`，`pplx_export/core/cookies/loaders.py:2
 ## 保護你的檔案
 
 - 對 `config.toml` 執行 `chmod 600`——它含個人資料（email、使用者 ID）。
-- cookie 快取由工具以 `0o600` 寫入；工作階段 cookie 等價於登入憑證。
+- cookie 快取由工具以 `0o600` 寫入；會話 cookie 等價於登入憑證。
 - 如果你手工製作 `--cookies` 用的 cookie 檔案，同樣執行 `chmod 600`。
 
 <a id="认证失败时" data-pplx-source-anchor="true"></a>

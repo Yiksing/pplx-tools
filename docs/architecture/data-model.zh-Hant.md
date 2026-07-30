@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/architecture/data-model.zh-CN.md"
-translation_source_sha256: "8e466095d72aab11a5c5f9e443057cff894a6b28aa34374e8d85022ddbcaa38d"
+translation_source_sha256: "b598d455a6bf170a69bc2c7c878f1bd6249c16fdee4adb16851e84c9c58cdcea"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -110,14 +110,14 @@ classDiagram
 - **`Turn.metadata`**（models.py:134）：`report_info`（RESEARCH_ANSWER 步驟，
   parsers.py:199-204）、`locked_reason`（parsers.py:205-208）、`wf_status`
   （parsers.py:256）三個鍵。
-- **`Conversation.unconsumed_bgs`**（models.py:165-170）：歸屬瀑布第三級備援資料來源，
+- **`Conversation.unconsumed_bgs`**（models.py:165-170）：歸屬瀑布第三級備援資料源，
   `[{wp, locked_reason, updated, bg_uuid}]`，渲染為 conversation.md 末尾附錄。
 - **`Conversation.answer_variants`**（models.py:171-177）：答案改寫變體登記
-  （thread.json.answer_variants 資料來源），`parsers.collect_answer_variants`
-  （parsers.py:589）從 `entries[].side_by_side_metadata` 收窄判據提取——偵測鏈見 [§18](offline-operations.md)。
+  （thread.json.answer_variants 資料源），`parsers.collect_answer_variants`
+  （parsers.py:589）從 `entries[].side_by_side_metadata` 收窄判據提取——檢測鏈見 [§18](offline-operations.md)。
 - **`Conversation.sub_agents`**（models.py:178-182）：會話級子代理執行列表，僅
   `cmd_relations` 離線重建時由 `adapter.sub_agents` 填入；匯出管線不回填本欄位
-  （writer 用局部 sub_map 渲染，relations 讀這裡）——見 [§15](offline-operations.md)。
+  （writer 用區域 sub_map 渲染，relations 讀這裡）——見 [§15](offline-operations.md)。
 - **`Conversation._blocks/_plain`**（models.py:183-190）：原始回應保真，
   `fs_writer` 原樣落盤 raw_*.json（fs_writer.py:257-266）；`get_report/get_assets/
   sub_agents` 与离线 re-render 均从其取数。`PerplexityAdapter(None)` 可用
@@ -128,10 +128,10 @@ classDiagram
 ---
 
 <a id="写边界与目录契约" data-pplx-source-anchor="true"></a>
-## 寫入邊界與目錄契約
+## 寫邊界與目錄契約
 
 <a id="web_archive-线程归档工具生成不手工编辑内容文件" data-pplx-source-anchor="true"></a>
-### web_archive 執行緒歸檔（工具生成，不手工編輯內容檔案）
+### web_archive 執行緒歸檔（工具產生，不手工編輯內容檔案）
 
 ```
 web_archive/
@@ -159,20 +159,20 @@ web_archive/
 <a id="web_archiveindex-状态文件工具托管勿手改" data-pplx-source-anchor="true"></a>
 ### web_archive/index/ 狀態檔案（工具託管，勿手改）
 
-| 檔案 | 寫入方 | 語義 |
+| 檔案 | 寫入方 | 語意 |
 |---|---|---|
-| `library_<account>.json` | `cmd_index`（index_cmd.py:17-43） | 帳戶全量執行緒索引（GraphQL），batch/排程/空間索引的輸入 |
+| `library_<account>.json` | `cmd_index`（index_cmd.py） | 帳戶執行緒索引（GraphQL）；預設增量合併（`--full` 整體重寫）；另帶 `last_full_index_at` / `incremental_runs_since_full`；batch/排程/空間索引的輸入 |
 | `batch_state.json` | `BatchState`（state.py） | 斷點：uuid → status(ok/error/expired/deleted) + lastUpdated；原子寫入；損壞自動備份 `.corrupt-<ts>` |
-| `.cookies.json` | `CookieCache`（common.py:111,150） | cookie 快取（12h 新鮮期），含來源與帳戶 email；原子寫入：暫存檔以 0o600 建立後 os.replace（cookies/cache.py:59-67，會話憑證僅屬主可讀；gitignore 範圍內） |
+| `.cookies.json` | `CookieCache`（common.py:111,150） | cookie 快取（12h 新鮮期），含來源與帳戶 email；原子寫入：暫存檔以 0o600 建立後 os.replace（cookies/cache.py:59-67，會話憑證僅擁有者可讀；gitignore 範圍內） |
 | `space_<slug>.json` | `cmd_space_index`（spaces_cmd.py:106-167） | 單空間「全部」執行緒列表（含 context_uuid 雙 ID 映射） |
-| `space_meta.json` | `cmd_spaces --fetch-meta`（spaces_cmd.py:299-330） | 空間擁有者/成員快取（重建索引時複用，避免重複擷取） |
-| `credit_usage_<account>.json` | `cmd_usage_backfill`（usage_backfill_cmd.py:17） | 逐執行緒積分用量（冪等可續跑，每 25 條落盤一次） |
+| `space_meta.json` | `cmd_spaces --fetch-meta`（spaces_cmd.py:299-330） | 空間擁有者/成員快取（重建索引時重複使用，避免重複抓取） |
+| `credit_usage_<account>.json` | `cmd_usage_backfill`（usage_backfill_cmd.py:17） | 逐執行緒積分用量（等冪可續跑，每 25 條落盤一次） |
 | `cron_snippet.txt` | `cmd_schedule`（scheduler.py:48-78） | cron 呼叫片段（絕對路徑） |
-| `answer_variants_log.jsonl` | `variant_log.append_registry`（variant_log.py:76） | 答案改寫變體集中登記（按 thread+entry 去重冪等；入庫檔案，非 logs/）——偵測鏈見 [§18](offline-operations.md) |
+| `answer_variants_log.jsonl` | `variant_log.append_registry`（variant_log.py:76） | 答案改寫變體集中登記（按 thread+entry 去重等冪；入庫檔案，非 logs/）——檢測鏈見 [§18](offline-operations.md) |
 | `logs/` | `--log-file`（common.py:218-229） | 全量 DEBUG 日誌（已 gitignore） |
 
 <a id="spaces-索引层仓库根工具生成" data-pplx-source-anchor="true"></a>
-### spaces/ 索引層（倉庫根，工具生成）
+### spaces/ 索引層（倉庫根，工具產生）
 
 `cmd_spaces` 從 `index/library_*.json` 聚合重建（spaces_cmd.py:259-389）：
 每空間一個 `<slug>.md`（參與帳戶聚合 + 擁有者/成員頭 + 執行緒表 + 匯出位置反鏈）
@@ -184,7 +184,7 @@ web_archive/
 ### 可手改 vs 工具託管
 
 - **可手改**：[系統設計文件](overview.md)、[API 參考](../reference/api/api-authentication.md)、專案 README 等規範文件、
-  `web_archive/crosscheck/` 稽核報告（規範文件與稽核產物）。
+  `web_archive/crosscheck/` 審核報告（規範文件與審核產物）。
 - **工具託管（勿手改內容檔案）**：`web_archive/` 執行緒目錄全部產物、`index/`、
   `spaces/`、`relations/`——需要變更時改工具後重跑（渲染修復走 re-render，
   資料修復走對應 backfill 命令），保證產物可再生的單一來源。

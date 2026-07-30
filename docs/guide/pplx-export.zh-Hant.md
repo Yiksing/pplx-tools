@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/guide/pplx-export.zh-CN.md"
-translation_source_sha256: "cfcbe706189f0fab04bbc01ac4a17e4fc93919d8ae48dc59a755f266447953c1"
+translation_source_sha256: "034e8bd756bb6d23543186e05d426b609a314dad13d0a0e288257175956f0753"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -20,8 +20,9 @@ translation_prompt_version: "v1"
 |---|---|---|
 | `--account NAME` | 目標帳戶。cookie 歸屬 email 與登記 email 不符時，自動列舉瀏覽器中的各帳戶工作階段令牌完成切換 | 使用者級配置的 `default_account` |
 | `--config PATH` | 使用者級配置檔（帳戶註冊表）。優先級：`--config` > 環境變數 `PPLX_EXPORT_CONFIG` > `~/.config/pplx-export/config.toml` | 預設查找鏈 |
+| `--skip-auth-check` | 跳過啟動時的帳戶歸屬工作階段探測、信任當前登入，避免網路差時開頭長時間等待；`batch` 在報錯累積時會做延遲帳戶校驗——見[配置](configuration.md) | 關閉 |
 | `--site NAME` | 站點配接器 | `perplexity` |
-| `--out DIR` | 歸檔輸出根目錄 | `./web_archive` |
+| `--out DIR` | 歸檔輸出根目錄 | `--out` > 配置 `archive_root` > `./web_archive` |
 | `--cookies-from BROWSER` | 從指定瀏覽器匯入 cookie（`edge`/`chrome`/`firefox`/`safari`/`brave`…） | — |
 | `--cookies FILE` | Netscape cookie 檔案或 JSON cookie 檔案 | — |
 | `--transport MODE` | `cookie` = cookie 直連請求；`webbridge` = 在瀏覽器頁面上下文內發 fetch | `cookie` |
@@ -39,9 +40,9 @@ translation_prompt_version: "v1"
 | 參數 | 含義 | 預設值 |
 |---|---|---|
 | `--force` | 覆蓋已存在的配置檔 | 關（拒絕覆蓋） |
-| `--create-bot-space [标题]` | 無空間標題匹配時經 API 建立 BOT 空間（對帳戶的一次寫操作）；附顯式標題時匹配與建立均用該標題，否則標題取自 `--bot-title`；不加此旗標則 `[bot_space]` 留空寫入 | 關 |
+| `--create-bot-space [标题]` | 無空間標題匹配時經 API 建立 BOT 空間（對帳戶的一次寫操作）；附顯式標題時匹配與建立均用該標題，否則標題取自 `--bot-title`；不加此標誌則 `[bot_space]` 留空寫入 | 關 |
 | `--bot-title TITLE` | 既用於匹配既有空間、也用於建立時命名的空間標題 | `BOT` |
-| *（通用選項適用）* | cookie 來源旗標決定帳戶發現的位置；僅對 `init`，`--config` 是**寫入**路徑（跳過 strict 配置載入） | |
+| *（通用選項適用）* | cookie 來源標誌決定帳戶發現的位置；僅對 `init`，`--config` 是**寫入**路徑（跳過 strict 配置載入） | |
 
 關鍵行為：
 
@@ -49,7 +50,7 @@ translation_prompt_version: "v1"
 - 工作階段探測：每個令牌逐個請求 `GET /api/auth/session` 取得帳戶 email / 顯示名；失敗或未返回 email 的令牌 warning 跳過。
 - 註冊表裝配：帳戶鍵由 email 本地部分派生（撞名加 `-2`/`-3`… 後綴）；`default_account` 取當前活躍帳戶，否則取首個發現的帳戶。
 - BOT 空間：經 `list_user_collections` 按標題精確匹配（大小寫不敏感）；無匹配時 `--create-bot-space [标题]` 當場建立（顯式標題覆蓋 `--bot-title`，匹配與建立均用之），否則 `[bot_space]` 留空。
-- TOML 原子寫入（暫存檔 + 改名），權限 0600；已存在的檔案不加 `--force` 絕不覆蓋。命令結尾列印一行彙總 JSON：配置路徑、帳戶鍵、預設帳戶、BOT 空間 uuid/slug。
+- TOML 原子寫入（暫存檔案 + 改名），權限 0600；已存在的檔案不加 `--force` 絕不覆蓋。命令結尾列印一行彙總 JSON：配置路徑、帳戶鍵、預設帳戶、BOT 空間 uuid/slug。
 - `--transport webbridge` 會被拒絕——頁面上下文通道無法列舉各帳戶令牌。
 
 ```bash
@@ -60,24 +61,50 @@ pplx-export init --config /path/to/config.toml --force   # 自定义路径，允
 
 ## index
 
-拉取帳戶全量對話列表（GraphQL）並寫入主索引 `index/library_<account>.json`——其他所有命令的比對基線。
+重新整理帳戶對話列表主索引 `index/library_<account>.json`——其他所有命令的比對基線。
 
 | 參數 | 含義 | 預設值 |
 |---|---|---|
-| *（僅通用選項）* | | |
+| `--full` | 全量翻頁並整體重寫索引；復位增量計數 | 增量 |
 
 關鍵行為：
 
-- 保留 `search-mode-backfill` 寫入的 `search_mode` 富化結果：索引行本身不攜帶該欄位，重新整理時按 `entryUUID` 從舊索引合併回來。
-- 在跑 `batch`、`sync-space`、`sync-deleted` 之前先跑它——這些命令的比對結果取決於索引的新鮮度。
+- **預設增量**：按最新翻頁，遇到「連續一整頁（`_STOP_RUN`）已知且未變」即停，把抓到的頭部合併到既有索引上——更舊的行原樣保留（不遺失）。首次執行或無既有索引時按全量。
+- **`--full`** 全量翻頁並整體重寫索引；作為定期對帳的前置。
+- **增量路徑的盲區**：舊執行緒的遠端*刪除*與*空間變更*不會出現在抓取的頭部，因此看不到。刪除權威仍是 `sync-deleted --online`。索引文件記錄 `incremental_runs_since_full`；連續多次增量後會提醒你跑一次 `--full`（並配合 `sync-deleted --online`）。
+- 保留 `search-mode-backfill` 寫入的 `search_mode` 富化，按 `entryUUID` 合併回來。
+- 在跑 `batch`、`sync-space`、`sync-deleted` 之前先跑它——它們的比對結果取決於索引的新鮮度。
 
 ```bash
-pplx-export index --account alice
+pplx-export index --account alice          # 增量刷新
+pplx-export index --account alice --full   # 全量对账前置
+```
+
+## sync
+
+高頻同步便捷入口：**增量 `index` + 增量 `batch`**，只關注對話。
+
+| 參數 | 含義 | 預設值 |
+|---|---|---|
+| `--full` | 全量對帳：全量 `index` + `batch` 全掃（並執行下方刪除/空間步驟） | 關閉 |
+| `--check-deleted` | 附帶 `sync-deleted --online`：核驗並標記遠端已刪除執行緒 | 關閉 |
+| `--refresh-spaces` | 附帶 `spaces --fetch-meta` 與 `sync-space` | 關閉 |
+| `--limit N` / `--mode X` / `--delay-min` / `--delay-max` | 透傳給 `batch` 階段 | — |
+
+關鍵行為：
+
+- 預設只抓新增/更新的對話，**跳過刪除檢測與空間重新整理**——高頻同步下最省。
+- 刪除/空間對帳為可選（`--check-deleted` / `--refresh-spaces`）或由 `--full` 一併完成。`index` 的計數（`incremental_runs_since_full`）是兜底：到期會提醒你做一次 `--full` 對帳。
+
+```bash
+pplx-export sync --account alice                     # 只关注对话（快）
+pplx-export sync --account alice --full              # 定期全量对账
+pplx-export sync --account alice --check-deleted     # 顺带标记远端删除
 ```
 
 ## space-index
 
-提取某空間「全部」對話列表——含共享空間其他成員的執行緒——寫入 `index/space_<slug>.json`。
+提取某空間「全部」工作階段列表——含共享空間其他成員的執行緒——寫入 `index/space_<slug>.json`。
 
 | 參數 | 含義 | 預設值 |
 |---|---|---|
@@ -180,7 +207,7 @@ pplx-export index --account alice && pplx-export sync-space
 
 ## schedule
 
-計算本輪增量匯出計劃，並生成可被系統 cron 直接呼叫的命令片段。
+計算本輪增量匯出計畫，並生成可被系統 cron 直接呼叫的命令片段。
 
 | 參數 | 含義 | 預設值 |
 |---|---|---|
@@ -188,7 +215,7 @@ pplx-export index --account alice && pplx-export sync-space
 
 關鍵行為：
 
-- 拉取即時索引，按總數/新增/更新報告計劃，用的是與 `batch` 相同的早停純函數（`plan_incremental`）——見 [incremental-sync.zh-CN.md](incremental-sync.md)。
+- 拉取即時索引，按總數/新增/更新報告計畫，用的是與 `batch` 相同的早停純函式（`plan_incremental`）——見 [incremental-sync.zh-CN.md](incremental-sync.md)。
 - 寫 `<out>/index/cron_snippet.txt`，內容為一條 `17 3 * * *` 行，形如 `cd '<archive-parent>' && '<abs-path-to-pplx-export>' batch --account '<account>' --out '<abs-archive-root>'`——路徑用絕對路徑並加引號，因為 cron 的 cwd 與 PATH 不可預測。可執行檔路徑經 `shutil.which` 解析，解析失敗時回退為裸命令名 `pplx-export`。
 - 定時跑批按設計只跑增量；`batch --full` 作為定期兜底手動執行。
 

@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/guide/rate-limiting.zh-CN.md"
-translation_source_sha256: "99df7903c53796ffecbad2e97c8861a728bbdb5789ccd249d61d12ebc8436e07"
+translation_source_sha256: "e759bf90b6527b2ce26ffcf5078e8f07c833e2034a3bf1f732091879b0336753"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -81,6 +81,14 @@ flowchart TD
 封頂 300 s。最後一次失敗不再白睡；首次成功即 `throttle.reset()` 清零
 （`throttle.py:52`）。
 
+**心跳（預設檔即可見）。** 退避不再靜默等待：先打一條起始行，隨後每
+`Throttle.heartbeat_interval`（預設 10 s）打一次倒數計時，分片睡眠之和等於
+同一總時長——所以節奏與反風控預算不變，只是變得可見
+（`pplx_export/core/throttle.py`，`Throttle._sleep_with_heartbeat`）。同樣的
+思路覆蓋另外兩處長等待：每個在途請求在響應前卡住時會打「仍在等待響應」
+（`CookieTransport._open_read`），`pplx-ask` 在深研 / 聯席靜默期間會打
+「仍在等待響應流」（`ask_api.post_stream`）。這些都無需 `-v`。
+
 每條規則的理由：
 
 - **429 退避** —— 伺服器明確要求減速，指數式地照辦。
@@ -98,8 +106,11 @@ flowchart TD
 單個請求最多 3 次嘗試，嘗試之間退避等待——單次封頂 300 s
 （`pplx_export/core/throttle.py:38-50`）——網路翻覆時一個請求合理地
 佔用 10 分鐘量級。`index` / `batch` 起步還有 session 探測，同樣走這套
-規則（`pplx_export/commands/common.py:126`）。長時間靜默是退避等待中，
-不是卡死。
+規則（`pplx_export/commands/common.py`，`make_transport`）；傳
+`--skip-auth-check` 可跳過該探測、立即開工（見
+[配置](configuration.md)）。
+長時間靜默是等待中、不是卡死——而且該等待現在已由預設檔的 INFO 心跳
+呈現（退避倒數計時、在途請求、SSE 流）。
 
 面向 agent、cron、CI 包裝層的三條守則：
 
@@ -107,7 +118,8 @@ flowchart TD
    串聯進帶硬超時的外層任務——第一個帳戶的退避級聯會吃光整個預算，
    後面的帳戶根本沒機會跑。
 2. **超時預算 ≥ 15 分鐘，否則脫離前台。** 給包裝層留足超時，或後台運行 +
-   看日誌（`-v` / `--log-file`）區分退避等待與真卡死。
+   看心跳（現已在預設檔；`-v` / `--log-file` 附完整追蹤）區分退避等待與
+   真卡死。
 3. **隨時中斷都安全。** 狀態原子落盤；重跑冪等，中斷留下的缺口自動修復
    （早停/續跑語義見[增量同步](incremental-sync.md)）。
 
@@ -117,7 +129,7 @@ flowchart TD
 batch 層對連續鑑權失敗計數（`_AUTH_FAIL_FAST = 3`，
 `pplx_export/commands/batch_cmd.py:43`）。任何成功到達伺服器的響應——包括
 `ENTRY_DELETED` / `ENTRY_EXPIRED`——都證明 cookie 有效並將計數清零
-（`batch_cmd.py:170-182`）。連續 3 次 401/403：保存狀態檔案後中止運行
+（`batch_cmd.py:170-182`）。連續 3 次 401/403：儲存狀態檔案後中止運行
 （`batch_cmd.py:190-194`）——cookie 失效還繼續空轉，只會讓數百個執行緒各失敗
 一遍，浪費數小時。`sync-deleted` 遵循同一紀律
 （`pplx_export/commands/sync_deleted_cmd.py:111,333-337`）。處理辦法：更新

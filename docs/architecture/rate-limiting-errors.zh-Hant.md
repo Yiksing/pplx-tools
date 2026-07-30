@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/architecture/rate-limiting-errors.zh-CN.md"
-translation_source_sha256: "9c19c03d4ae62113daaab5c670d6160363ca68fd7ec1684ae5bf842883da8754"
+translation_source_sha256: "8862ac055e64ad50ae8040283ae348b19913ee27457417be687f1b9edc200e48"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -66,3 +66,12 @@ flowchart TD
   傳輸層與批量層的退避計數統一；**帳戶自動切換後重建也不丟**
   （common.py:139 同樣傳入）；單條命令不傳時 CookieTransport 自建默認實例
   （cookie_transport.py:49）。
+- **心跳（默認檔）**。三處長等待——`Throttle.backoff` 睡眠、卡住的在途請求
+  （`CookieTransport._open_read`）、空閒的 `pplx-ask` SSE 流（`ask_api.post_stream`）
+  ——現在都會打 INFO「仍在等待」心跳，避免把等待誤當卡死。退避按分片睡眠
+  （`Throttle._sleep_with_heartbeat`），各片之和等於同一總時長，所以反風控
+  節奏 / 預算不變，只是變得可見；`-v` 仍附完整 DEBUG 追蹤。
+- **`--skip-auth-check` + 延遲校驗**。啟動時的帳戶歸屬會話探測（`common.py`，
+  `make_transport`）可跳過，避免網路差時開頭長時間等待。作為安全網，`batch`
+  在通用報錯累積後會做一次性 `report_account_status`（`common.py`；`batch_cmd.py`），
+  告知 cookie 失效 / 帳戶不符 / 帳戶正常（即報錯源於網路或限流）。

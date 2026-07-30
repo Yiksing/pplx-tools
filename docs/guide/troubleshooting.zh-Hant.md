@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/guide/troubleshooting.zh-CN.md"
-translation_source_sha256: "2ecc68fa7d02955edcb4baf4bdcfbfbdb1d35a08790030237e409c3a025a01bc"
+translation_source_sha256: "acbc884bfd36c355b9390405dcc2875b1bfb8d762e0fd7cf01f740fd3f2edc7c"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -24,17 +24,17 @@ Cloudflare 質詢頁——即使帶上了從瀏覽器複製的 cookie——而�
 綁定。裸客戶端指紋不匹配，質詢即觸發。工具能過是因為用 Python `urllib` + 從瀏覽器
 導入的 cookie + 桌面 Chrome `User-Agent`
 （`pplx_export/core/http/cookie_transport.py:29`）。Cloudflare 在風控限流時也可能
-403——那時響應帶同樣的質詢形態。
+403——那時回應帶同樣的質詢形態。
 
 **修復**：
 
-- 不要繞過工具的 transport；用 `pplx-export` / `pplx-ask` 發起調用，不要寫臨時腳本。
-- 工具內部把 HTTP 200 但非 JSON 的響應體（Cloudflare 過場頁）歸類為傳輸錯誤而非數據
+- 不要繞過工具的 transport；用 `pplx-export` / `pplx-ask` 發起呼叫，不要寫臨時腳本。
+- 工具內部把 HTTP 200 但非 JSON 的回應體（Cloudflare 過場頁）歸類為傳輸錯誤而非資料
   （`pplx_export/core/http/cookie_transport.py:133`）。
 - 工具內若開始出現 403，先放慢節奏（見[限流](rate-limiting.md)）並重新整理 cookie；
   持續質詢則需在瀏覽器裡重新登入。
 - 注意 403 的兩副面孔：Cloudflare 風控質詢（放慢即可消退）與 API 級 403（cookie
-  失效——立即拋出、不退避，見下一節）。設計頁映射的是後者
+  失效——立即丟出、不退避，見下一節）。設計頁映射的是後者
   （[rate-limiting-errors.md](../architecture/rate-limiting-errors.md)）。
 
 背景：[API 認證](../reference/api/api-authentication.md)。
@@ -45,7 +45,7 @@ Cloudflare 質詢頁——即使帶上了從瀏覽器複製的 cookie——而�
 **問題**：命令因鑑權錯誤失敗——`pplx-export` 拋 `AuthTransportError: 鉴权失败 401`，
 或 `pplx-ask ask` 以 HTTP 401/403 的「更新 cookie」提示退出。
 
-**原因**：會話 cookie 已過期或失效。`401`/`403` 被視為鑑權失敗並立即拋出——不退避，
+**原因**：會話 cookie 已過期或失效。`401`/`403` 被視為鑑權失敗並立即丟出——不退避，
 因為退避無法自癒死掉的會話（`pplx_export/core/http/cookie_transport.py:82`；
 `pplx_export/core/errors.py:68`）。`batch` 在連續 3 次鑑權失敗後還會 fail-fast，
 避免死 cookie 燒穿整個佇列。
@@ -113,15 +113,15 @@ snap/flatpak 的 cookie 資料庫（`pplx_export/core/cookies/loaders.py:155-168
 **問題**：歸檔執行緒是用錯誤帳戶的會話抓取的——例如 `--account alice` 的執行實際以
 `bob` 拉資料，或歸檔裡出現不屬於目標帳戶的執行緒。
 
-**原因**：同一瀏覽器登入多個帳戶時，活躍的會話令牌
+**原因**：同一瀏覽器登入多個帳戶時，活躍的會話權杖
 （`__Secure-next-auth.session-token`）可能屬於另一個帳戶。若目標帳戶的 `email`
 未在使用者級設定中登記，工具無法識別，只能記一條 warning。
 
 **工具的預防機制**（`pplx_export/commands/common.py:93`）：啟動時 transport 調
 `GET /api/auth/session`，把即時 email 與登記值比對。不匹配時自動列舉瀏覽器裡各帳戶
-的會話 cookie（`__Secure-pplx.session.<user_id>`），逐個替換活躍令牌並探測 session，
+的會話 cookie（`__Secure-pplx.session.<user_id>`），逐個替換活躍權杖並探測 session，
 直到命中目標 email（`pplx_export/commands/common.py:190`；
-`pplx_export/core/cookies/loaders.py:175`）。無令牌匹配時命令帶清晰報錯中止——絕不以錯誤
+`pplx_export/core/cookies/loaders.py:175`）。無權杖匹配時命令帶清晰報錯中止——絕不以錯誤
 帳戶靜默繼續。
 
 **修復**：
@@ -155,7 +155,7 @@ snap/flatpak 的 cookie 資料庫（`pplx_export/core/cookies/loaders.py:155-168
   （`pplx_export/commands/common.py:51`）。顯式 `--account` 則直接報錯。
 - `pplx-ask ask` 跳過自動移入 BOT 空間（結果 JSON 中 `moved_to_bot` 保持 `false`），
   遙測攜帶空 user id；發問與歸檔本身照常工作。
-- 歸檔落在依使用者名稱回退的帳戶目錄下。
+- 歸檔落在按使用者名稱回退的帳戶目錄下。
 
 **修復**：把 `config.example.toml` 複製為 `~/.config/pplx-export/config.toml`，填好
 `[accounts.<name>]`（`display_name` / `email` / `user_id`）、`[bot_space]` 與
@@ -214,25 +214,37 @@ manifest 佈局：[歸檔佈局](archive-layout.md)。
 <a id="命令看似卡住-长时间无输出" data-pplx-source-anchor="true"></a>
 ## 命令看似卡住 / 長時間無輸出
 
-**症狀**：`index` / `batch` / `export` 數分鐘沒有任何輸出；外層任務管理器
-可能把它當「逾時」殺掉。
+**症狀**：`index` / `batch` / `export` 看似停住；外層任務管理器可能把它
+當「逾時」殺掉。
 
-**原因**：幾乎總是退避等待，不是卡死。429 / 5xx / 網路錯誤時傳輸層在
-嘗試之間休眠——單次等待封頂 300 s（`pplx_export/core/throttle.py:38-50`）。
-DEBUG 級日誌裡等待是明示的：
+**原因**：幾乎總是退避或在途請求等待，不是卡死。429 / 5xx / 網路錯誤時
+傳輸層在嘗試之間休眠——單次等待封頂 300 s（`pplx_export/core/throttle.py`，
+`Throttle.backoff`）。
+
+**現在你會看到（預設檔，無需 `-v`）**：等待會以 INFO 心跳呈現。退避先打
+一條起始行，隨後每約 10 s 打一次倒數計時（`Throttle.heartbeat_interval`）；
+單個請求在回應前卡住會打「仍在等待回應」；`pplx-ask` 在深研 / 聯席靜默期間
+會打「仍在等待回應串流」：
 
 ```
-19:39:31 GET www.perplexity.ai/rest/thread/<uuid> 网络错误: Remote end closed connection without response
-19:39:31 退避 200.9s（连续失败 2 次）
+22:27:24 [auth] 正在校验账户 cookie（来源 cache）…
+22:27:40 退避 ~51s（连续失败 1 次，网络异常重试中）
+22:27:50 仍在等待重试，剩余 ~41s
+22:28:00 仍在等待重试，剩余 ~31s
 ```
 
-**判別法**：帶 `-v`（或 `--log-file`）執行，看退避日誌行；只要行程活著
-就無需干預。隨時中斷都安全——狀態原子落盤，下次執行自動補缺。
+總等待時長不變——心跳只是讓它可見；隨時中斷都安全（狀態原子落盤，下次
+執行自動補缺）。`-v` / `--log-file` 仍會附帶完整 DEBUG 請求追蹤。
+
+**跳過啟動探測**：`index` / `batch` 會以一次會話探測開頭，它遵循同樣的
+退避規則，所以網路差時第一段等待可能正是這一步帳戶校驗。傳
+`--skip-auth-check` 可跳過它、直接開工，信任當前登入帳戶——見
+[設定](configuration.md)。
 
 **反模式**：把 CLI 包進帶短硬逾時的任務管理器（agent 背景任務、
 `timeout(1)` 式 cron 包裝）的同時還用 `&&` 串聯多帳戶——第一個帳戶的
 退避級聯會燒光整個逾時，後面的帳戶根本不會跑。一次呼叫一個帳戶、
-留足預算：見[呼叫端執行時預算](rate-limiting.md#调用方运行时预算)。
+留足預算：見[呼叫方執行時預算](rate-limiting.md#调用方运行时预算)。
 
 <a id="日志在哪里" data-pplx-source-anchor="true"></a>
 ## 日誌在哪裡？
@@ -252,7 +264,7 @@ warning 與 error 始終顯示。
 |---|---|
 | `.cookies.json` | cookie 快取（12 小時新鮮期；0o600 原子寫入——屬登入等價憑證，注意保密） |
 | `batch_state.json` | 逐執行緒匯出狀態，含 `expired` / `deleted` 終態標記 |
-| `answer_variants_log.jsonl` | 答案改寫變體登記處 |
+| `answer_variants_log.jsonl` | 答案重寫變體登記處 |
 | `library_*.json` | 各帳戶的 library 索引快照 |
 
 <a id="参见" data-pplx-source-anchor="true"></a>

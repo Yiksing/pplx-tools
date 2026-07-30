@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/guide/pplx-ask.zh-CN.md"
-translation_source_sha256: "4eb0050d6517065a9ac54c1c65e16b917ee6ac06e596d94896ccbf403f2d3a3e"
+translation_source_sha256: "a4505100ddf6d33d8317814226d9bf79cb001fc9e15f6bf4b508d70bb20764ea"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -10,9 +10,9 @@ translation_prompt_version: "v1"
 <a id="pplx-ask交互式查询" data-pplx-source-anchor="true"></a>
 # pplx-ask：互動式查詢
 
-`pplx-ask` 是本專案的第二個 CLI 入口：透過 SSE 串流向 Perplexity 提問，然後對產生的
-執行緒進行後處理——移入 BOT 空間、可選傳送已讀回執與人性化閱讀遙測，並使用與
-`pplx-export` 相同的匯出管線自動歸檔。它與 `pplx-export` 共享核心
+`pplx-ask` 是本專案的第二個 CLI 入口：透過 SSE 串流向 Perplexity 發問，然後對生成的
+執行緒做後處理——移入 BOT 空間、可選傳送已讀回執與人性化閱讀遙測，並用與
+`pplx-export` 相同的匯出管線自動歸檔。它與 `pplx-export` 共享 core
 （transport / cookies / state / logging），所有 API 形態均經實測。
 
 原始碼：`pplx_export/ask_cli.py`（CLI）、`pplx_export/sites/perplexity/ask_api.py`（API 層）。
@@ -39,33 +39,33 @@ pplx-ask space-create "My Space"                 # 创建空间
 
 ### `ask`
 
-提問（`pplx_export/ask_cli.py:86`）。SSE 串流顯示進度，完成後執行後處理管線
-（見[提問流程](#发问流程)），並在 stdout 結尾輸出一個機器可讀 JSON 物件。
+發問（`pplx_export/ask_cli.py:86`）。SSE 串流顯示進度，完成後執行後處理管線
+（見[發問流程](#发问流程)），並在 stdout 末尾輸出一個機器可讀 JSON 物件。
 
 | 選項 | 預設值 | 說明 |
 |---|---|---|
 | `prompt`（位置參數） | — | 提問內容。長而有意義的 prompt 效果更好。 |
-| `--mode` | `search` | `search` = 一般搜尋（可選模型）；`deep-research` = 深度研究（固定模型）；`council` = 模型委員會（2–3 模型並行 + 綜合）；`study` = 逐步學習 |
+| `--mode` | `search` | `search` = 普通搜尋（可選模型）；`deep-research` = 深度研究（固定模型）；`council` = 模型委員會（2–3 模型並行 + 綜合）；`study` = 逐步學習 |
 | `--models` | 無 | `council`：逗號分隔 2–3 個模型 id（預設 `gpt55_thinking,claude48opusthinking,gemini31pro_high`）；`search`：單個模型 id；`deep-research` / `study` 忽略此項 |
 | `--space` | `home` | `home` = 從首頁建立後移入 BOT 空間；`<slug>` = 直接在該空間建立，完成後也移入 BOT 空間 |
-| `--mark-read` | 關 | 完成後傳送已讀回執（`mark_viewed`） |
+| `--mark-read` | 關 | 完成後發已讀回執（`mark_viewed`） |
 | `--no-telemetry` | 關 | 不傳送人性化閱讀遙測（預設傳送：`ask context pane viewed` / `thread viewed` / `thread entry exited`，隨機時序） |
 | `--no-export` | 關 | 不自動歸檔到 `web_archive` |
 | `--timeout` | `600` | SSE 串流逾時秒數 |
 
 `ask` 輸出的 HTTP 錯誤提示（`pplx_export/ask_cli.py:124`）：`401`/`403` = cookie
-失效或被風控（請更新 cookie），`429` = 觸發速率限制（稍後重試），`5xx` = 伺服器端錯誤
+失效或被風控（請更新 cookie），`429` = 觸發限流（稍後重試），`5xx` = 伺服器端錯誤
 （稍後重試）。見[故障排除](troubleshooting.md)。
 
 ### `mark-read`
 
-給既有執行緒傳送已讀回執（`pplx_export/ask_cli.py:201`）：接受執行緒 URL 或裸 UUID，先經
+給既有執行緒發已讀回執（`pplx_export/ask_cli.py:201`）：接受執行緒 URL 或裸 UUID，先經
 `GET /rest/thread/<uuid>` 解析出執行緒的 `context_uuid`，再以
 `{"context_uuids": [ctx]}` 呼叫 `POST /rest/thread/mark_viewed`
 （`pplx_export/sites/perplexity/ask_api.py:190`）。unread 立即翻轉。輸出 JSON
 `{"uuid", "context_uuid", "result"}`。
 
-注意：analytics 的 `thread viewed` 事件**不翻轉** unread——真正的已讀回執是此端點。
+注意：analytics 的 `thread viewed` 事件**不翻轉** unread——真正的已讀回執是本端點。
 
 ### `space-create`
 
@@ -78,8 +78,8 @@ pplx-ask space-create "My Space"                 # 创建空间
 | `title`（位置參數） | — | 空間標題 |
 | `--description` | `""` | 空間描述 |
 
-要把新空間用作 BOT 空間，把它的 `uuid`/`slug` 登記到使用者層級設定的 `[bot_space]`
-表中（見[設定](configuration.md)）。
+要把新空間用作 BOT 空間，把它的 `uuid`/`slug` 登記到使用者級配置的 `[bot_space]`
+表中（見[配置](configuration.md)）。
 
 <a id="通用选项" data-pplx-source-anchor="true"></a>
 ## 通用選項
@@ -88,20 +88,20 @@ pplx-ask space-create "My Space"                 # 创建空间
 
 | 選項 | 預設值 | 說明 |
 |---|---|---|
-| `--account` | 設定 `default_account` | 目標帳戶；cookie 歸屬與登記 email 不符時自動列舉瀏覽器中的帳戶階段權杖切換 |
-| `--config PATH` | `~/.config/pplx-export/config.toml` | 使用者層級設定（帳戶註冊表 / BOT 空間）；優先順序：`--config` > 環境變數 `PPLX_EXPORT_CONFIG` > 預設路徑 |
+| `--account` | 配置 `default_account` | 目標帳戶；cookie 歸屬與登記 email 不符時自動列舉瀏覽器中的帳戶會話令牌切換 |
+| `--config PATH` | `~/.config/pplx-export/config.toml` | 使用者級配置（帳戶註冊表 / BOT 空間）；優先級：`--config` > 環境變數 `PPLX_EXPORT_CONFIG` > 預設路徑 |
 | `--out` | `./web_archive` | 歸檔輸出根目錄 |
 | `--cookies-from BROWSER` | 自動偵測 | 從指定瀏覽器匯入 cookie（`edge`/`chrome`/`firefox`/`safari`/`brave`…） |
 | `--cookies FILE` | — | Netscape cookie 檔案或 JSON cookie 檔案 |
 | `-v` / `--verbose` | 關 | DEBUG 輸出（請求追蹤 / 內部判定） |
-| `--log-file [PATH]` | 關 | 完整 DEBUG 日誌寫入磁碟；不帶值時寫入 `<out>/index/logs/<cmd>-<timestamp>.log` |
+| `--log-file [PATH]` | 關 | 全量 DEBUG 日誌落盤；不帶值時落 `<out>/index/logs/<cmd>-<timestamp>.log` |
 
-cookie 來源優先順序：`--cookies-from` / `--cookies` > 新鮮快取
+cookie 來源優先級：`--cookies-from` / `--cookies` > 新鮮快取
 （`<out>/index/.cookies.json`，12 小時）> 瀏覽器自動偵測。首次設定見
-[快速入門](getting-started.md)。
+[快速上手](getting-started.md)。
 
 <a id="发问流程" data-pplx-source-anchor="true"></a>
-## 提問流程
+## 發問流程
 
 ```mermaid
 flowchart TD
@@ -116,19 +116,21 @@ flowchart TD
 ```
 
 1. **envelope 組裝** —— `build_envelope`（`pplx_export/sites/perplexity/ask_api.py:71`）
-   填入實測參數範本：`mode` 恆為 `"copilot"`，`query_source` 為 `"home"`
-   （每次 `ask` 都開啟**新對話**；CLI 不暴露接續追問）。帶 `--space <slug>` 時先把
+   填充實測參數模板：`mode` 恆為 `"copilot"`，`query_source` 為 `"home"`
+   （每次 `ask` 都開啟**新對話**；CLI 不暴露續接追問）。帶 `--space <slug>` 時先把
    slug 解析為 uuid，envelope 攜帶 `target_collection_uuid` +
    `target_thread_access_level: 1`。
-2. **SSE 串流提問** —— `sse_ask`（`pplx_export/sites/perplexity/ask_api.py:153`）POST 到
+2. **SSE 串流發問** —— `sse_ask`（`pplx_export/sites/perplexity/ask_api.py:153`）POST 到
    `https://www.perplexity.ai/rest/sse/perplexity_ask` 並逐事件消費，記錄執行緒建立
    （`https://www.perplexity.ai/search/<uuid>`）、狀態遷移與生成進度。串流在
-   `final_sse_message` 時結束。
+   `final_sse_message` 時結束。串流空閒超過一個間隔時（深研 / 聯席可靜默數分鐘；
+   open 逾時 600 s），`post_stream` 會在預設檔打一條「仍在等待回應串流」INFO 心跳，
+   避免把活躍執行誤當卡死。
 3. **完成閘門** —— 只有最終狀態為 `COMPLETED` 才執行後處理
    （`pplx_export/ask_cli.py:134`）。串流異常結束時後續動作全部跳過（不移入、不發遙測、
    不匯出），半成品狀態絕不外洩進歸檔。
-4. **移入 BOT 空間**（best-effort）—— 以執行緒的 `context_uuid` 呼叫
-   `batch_move_threads` 移入設定的 `[bot_space]` uuid。未設定 BOT 空間、或執行緒本就
+4. **移入 BOT 空間**（best-effort）—— 以執行緒的 `context_uuid` 調
+   `batch_move_threads` 移入配置的 `[bot_space]` uuid。未配置 BOT 空間、或執行緒本就
    建立於 BOT 空間時跳過。
 5. **已讀回執**（best-effort，`--mark-read`）—— `POST /rest/thread/mark_viewed`；
    unread 立即翻轉。
@@ -138,13 +140,13 @@ flowchart TD
    → `thread entry exited`（隨機 `timeOnEntryMs` 12–45 秒，事件間停頓 0.6–2.4 秒，
    裝置從裝置池隨機選取）。
 7. **自動歸檔**（核心步驟，`--no-export` 關閉）—— 執行緒經與 `pplx-export export`
-   相同的管線匯出（force 模式），寫入磁碟到
+   相同的管線匯出（force 模式），落盤到
    `<out>/<账户>/<模式>/<日期>_<标题>_<uuid8>/` —— 見[歸檔佈局](archive-layout.md)
    與[匯出管線](../architecture/export-pipeline.md)。與 best-effort 步驟不同，歸檔失敗會
    如實上拋並使命令失敗。
 
 **失敗隔離**：第 4–6 步逐項隔離為 best-effort（`pplx_export/ask_cli.py:36`）：任一
-失敗只記錄 warning、把該步驟的 JSON 鍵設為 `false`、詳情記入 `step_errors`，絕不阻斷
+失敗只記 warning、把該步驟的 JSON 鍵置為 `false`、詳情記入 `step_errors`，絕不阻斷
 歸檔。歸檔（第 7 步）是核心步驟，失敗從不被吞掉。
 
 <a id="模式与模型选择" data-pplx-source-anchor="true"></a>
@@ -171,12 +173,12 @@ flowchart TD
 <a id="从其他-agent-调用-pplx-ask" data-pplx-source-anchor="true"></a>
 ## 從其他 agent 呼叫 pplx-ask
 
-`pplx-ask` 的設計目標之一就是讓其他 agent 取得即時資訊：提問、等待完成、歸檔執行緒，
+`pplx-ask` 的設計目標之一就是讓其他 agent 獲取即時資訊：發問、等待完成、歸檔執行緒，
 並輸出機器可讀契約。
 
 - **stdout 恰好只有一個 JSON 物件**（最後一行）；全部日誌走 stderr，呼叫方可以把
   stdout 直接餵給 JSON 解析器。
-- **退出碼**：成功為 `0`；失敗以非零退出並在 stderr 給出錯誤訊息——提問階段失敗經
+- **退出碼**：成功為 `0`；失敗以非零退出並在 stderr 給出錯誤訊息——發問階段失敗經
   `SystemExit` 中止並帶 `[ask][ERROR]` 訊息，歸檔失敗則原樣上拋（見第 7 步）。
 
 結果 JSON 結構（`pplx_export/ask_cli.py:194`）：
@@ -196,15 +198,15 @@ flowchart TD
 
 - 嚴格按布林鍵判斷步驟成敗——失敗絕不用 truthy 值表示；詳情查 `step_errors`。
 - 只要答案不要過程時，`--no-telemetry` 可跳過 12–45 秒的人性化停留。
-- 未設定 BOT 空間（降級模式）時 `moved_to_bot` 保持 `false`，其餘功能照常——見
+- 未配置 BOT 空間（降級模式）時 `moved_to_bot` 保持 `false`，其餘功能照常——見
   [故障排除](troubleshooting.md)。
 - 無頭 agent 的帳戶 / cookie 設定見 [API 認證](../reference/api/api-authentication.md)；
-  多帳戶行為見[提問與帳戶](../architecture/ask-and-accounts.md)。
+  多帳戶行為見[發問與帳戶](../architecture/ask-and-accounts.md)。
 
 <a id="参见" data-pplx-source-anchor="true"></a>
 ## 參見
 
-- [快速入門](getting-started.md) —— 安裝、cookie、首次執行
-- [設定](configuration.md) —— 帳戶、BOT 空間、降級模式
+- [快速上手](getting-started.md) —— 安裝、cookie、首次執行
+- [配置](configuration.md) —— 帳戶、BOT 空間、降級模式
 - [pplx-export](pplx-export.md) —— 歸檔 CLI
 - [故障排除](troubleshooting.md) —— 401/403、帳戶串號、日誌位置
