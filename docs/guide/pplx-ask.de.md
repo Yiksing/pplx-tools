@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/guide/pplx-ask.md"
-translation_source_sha256: "01eede19356c18b7769f76a4a88c4cf86a543fc0852203e11051a6bacb17dc7e"
+translation_source_sha256: "2068f1ed34cbfa9591947ed9426263b130c8e98e4a7c4edff98ba092f447d756"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -10,11 +10,11 @@ translation_prompt_version: "v1"
 <a id="pplx-ask-interactive-queries" data-pplx-source-anchor="true"></a>
 # pplx-ask: Interaktive Abfragen
 
-`pplx-ask` ist der zweite CLI-Einstiegspunkt des Projekts: Es stellt Perplexity Fragen
-interaktiv über SSE-Streaming, verarbeitet den resultierenden Thread nach – verschiebt ihn
+`pplx-ask` ist der zweite CLI-Einstiegspunkt des Projekts: Es stellt Perplexity-Fragen
+interaktiv über SSE-Streaming, verarbeitet den resultierenden Thread nach — verschiebt ihn
 in den BOT-Bereich, sendet optional eine Lesebestätigung und menschenähnliche Ansichtstelemetrie und
 archiviert ihn automatisch mit derselben Export-Pipeline wie `pplx-export`. Es teilt sich den
-Kern (Transport / Cookies / Zustand / Protokollierung) mit `pplx-export`, und alle API-Formen werden
+Kern (Transport / Cookies / Zustand / Logging) mit `pplx-export`, und alle API-Formen werden
 gegen die Live-Plattform verifiziert.
 
 Quelle: `pplx_export/ask_cli.py` (CLI), `pplx_export/sites/perplexity/ask_api.py` (API-Ebene).
@@ -36,21 +36,22 @@ pplx-ask space-create "My Space"                 # create a space
 
 ### `models`
 
-Gibt die aktuelle, maßgebliche Modelltabelle aus
-`GET https://www.perplexity.ai/rest/models/config/v2` (`pplx_export/ask_cli.py:51`):
-Standardmodelle pro Modus, die drei Standardmodelle des Councils, die im Suchmodus auswählbaren Modelle und die speziellen Modi (`research` / `study` / `agentic_research` / `studio`).
+Gibt die aktuelle, autoritative Modelltabelle von
+`GET https://www.perplexity.ai/rest/models/config/v2` (`pplx_export/ask_cli.py:51`) aus:
+Standardmodelle pro Modus, die drei Standardmodelle des Councils, die im Suchmodus auswählbaren Modelle
+und die speziellen Modi (`research` / `study` / `agentic_research` / `studio`).
 Keine Optionen.
 
 ### `ask`
 
-Stellt eine Frage (`pplx_export/ask_cli.py:86`). Streamt SSE-Fortschritt an die Konsole,
+Stellt eine Frage (`pplx_export/ask_cli.py:86`). Streamt den Fortschritt per SSE an die Konsole,
 führt die Nachbearbeitungspipeline aus (siehe [Der Ask-Ablauf](#the-ask-flow)) und gibt am Ende ein
 maschinenlesbares JSON-Objekt auf stdout aus.
 
 | Option | Standard | Beschreibung |
 |---|---|---|
-| `prompt` (positionsabhängig) | — | Die Frage. Lange, aussagekräftige Eingabeaufforderungen funktionieren besser. |
-| `--mode` | `search` | `search` = normale Suche (Modell auswählbar); `deep-research` = Deep Research (festes Modell); `council` = Modell-Council (2–3 Modelle parallel + Synthese); `study` = Schritt-für-Schritt-Studie |
+| `prompt` (positionsabhängig) | — | Die Frage. Lange, aussagekräftige Prompts funktionieren besser. |
+| `--mode` | `search` | `search` = normale Suche (Modell auswählbar); `deep-research` = Deep Research (festes Modell); `council` = Modell-Council (2–3 Modelle parallel + Synthese); `study` = Schritt-für-Schritt-Studium |
 | `--models` | keine | `council`: Komma-getrennte 2–3 Modell-IDs (Standard `gpt55_thinking,claude48opusthinking,gemini31pro_high`); `search`: eine einzelne Modell-ID; wird von `deep-research` / `study` ignoriert |
 | `--space` | `home` | `home` = von der Startseite aus erstellen, dann in den BOT-Bereich verschieben; `<slug>` = direkt in diesem Bereich erstellen, dann in den BOT-Bereich verschieben |
 | `--mark-read` | aus | Sende eine Lesebestätigung (`mark_viewed`) nach Abschluss |
@@ -59,7 +60,7 @@ maschinenlesbares JSON-Objekt auf stdout aus.
 | `--timeout` | `600` | SSE-Stream-Timeout in Sekunden |
 
 HTTP-Fehlerhinweise, ausgegeben von `ask` (`pplx_export/ask_cli.py:124`): `401`/`403` = das
-Cookie ist abgelaufen oder risikokontrolliert (Cookie aktualisieren), `429` = Ratenbegrenzung (später
+Cookie ist abgelaufen oder risikogesteuert (Cookie aktualisieren), `429` = Ratenbegrenzung (später
 wiederholen), `5xx` = Serverfehler (später wiederholen). Siehe [Fehlerbehebung](troubleshooting.md).
 
 ### `mark-read`
@@ -67,10 +68,10 @@ wiederholen), `5xx` = Serverfehler (später wiederholen). Siehe [Fehlerbehebung]
 Sendet eine Lesebestätigung für einen vorhandenen Thread (`pplx_export/ask_cli.py:201`): akzeptiert eine
 Thread-URL oder eine reine UUID, löst die `context_uuid` des Threads über
 `GET /rest/thread/<uuid>` auf, ruft dann `POST /rest/thread/mark_viewed` mit
-`{"context_uuids": [ctx]}` (`pplx_export/sites/perplexity/ask_api.py:190`) auf. Das Ungelesen-
-Flag wird sofort umgeschaltet. Gibt `{"uuid", "context_uuid", "result"}` als JSON aus.
+`{"context_uuids": [ctx]}` (`pplx_export/sites/perplexity/ask_api.py:190`) auf. Das „Ungelesen“-Flag
+kippt sofort. Gibt `{"uuid", "context_uuid", "result"}` als JSON aus.
 
-Hinweis: Das Analytics-`thread viewed`-Ereignis schaltet **nicht** auf gelesen um – die echte Lesebestätigung
+Hinweis: Das Analytics-`thread viewed`-Ereignis kippt **nicht** „Ungelesen“ — die echte Lesebestätigung
 ist dieser Endpunkt.
 
 ### `space-create`
@@ -85,7 +86,7 @@ Erstellt einen Bereich über `POST /rest/collections/create_collection`
 | `--description` | `""` | Bereichsbeschreibung |
 
 Um den neuen Bereich als BOT-Bereich zu verwenden, registrieren Sie seine `uuid`/`slug` unter `[bot_space]`
-in der Benutzerkonfiguration (siehe [Konfiguration](configuration.md)).
+in der benutzerspezifischen Konfiguration (siehe [Konfiguration](configuration.md)).
 
 <a id="common-options" data-pplx-source-anchor="true"></a>
 ## Gemeinsame Optionen
@@ -95,12 +96,12 @@ Geteilt mit `pplx-export` (identische Namen und Standardwerte, `pplx_export/comm
 | Option | Standard | Beschreibung |
 |---|---|---|
 | `--account` | Konfiguration `default_account` | Zielkonto; bei Cookie/E-Mail-Konflikt werden die browserbezogenen Sitzungstoken pro Konto aufgelistet und automatisch umgeschaltet |
-| `--config PATH` | `~/.config/pplx-export/config.toml` | Benutzerkonfiguration (Kontoregistrierung / BOT-Bereich); Priorität: `--config` > `PPLX_EXPORT_CONFIG` Umgebungsvariable > Standardpfad |
-| `--out` | `./web_archive` | Archivausgabeverzeichnis |
+| `--config PATH` | `~/.config/pplx-export/config.toml` | Benutzerspezifische Konfiguration (Konto-Registry / BOT-Bereich); Priorität: `--config` > `PPLX_EXPORT_CONFIG`-Umgebungsvariable > Standardpfad |
+| `--out` | `./web_archive` | Archiv-Ausgabeverzeichnis |
 | `--cookies-from BROWSER` | automatisch erkennen | Cookies aus dem genannten Browser importieren (`edge`/`chrome`/`firefox`/`safari`/`brave`…) |
 | `--cookies FILE` | — | Netscape-Cookie-Datei oder JSON-Cookie-Datei |
-| `-v` / `--verbose` | aus | DEBUG-Ausgabe (Anfrageverfolgung / interne Entscheidungen) |
-| `--log-file [PATH]` | aus | Vollständiges DEBUG-Protokoll in Datei; ohne Wert landet es unter `<out>/index/logs/<cmd>-<timestamp>.log` |
+| `-v` / `--verbose` | aus | DEBUG-Ausgabe (Anfrage-Tracing / interne Entscheidungen) |
+| `--log-file [PATH]` | aus | Vollständiges DEBUG-Log in Datei; ohne Wert landet es unter `<out>/index/logs/<cmd>-<timestamp>.log` |
 
 Cookie-Quellpriorität: `--cookies-from` / `--cookies` > frischer Cache
 (`<out>/index/.cookies.json`, 12 h) > Browser-Automatik. Siehe
@@ -121,75 +122,79 @@ flowchart TD
     G --> H["stdout: result JSON"]
 ```
 
-1. **Umschlag zusammenbauen** — `build_envelope` (`pplx_export/sites/perplexity/ask_api.py:71`)
+1. **Envelope-Zusammenstellung** — `build_envelope` (`pplx_export/sites/perplexity/ask_api.py:71`)
    füllt die verifizierte Parametervorlage: `mode` ist immer `"copilot"` und
-   `query_source` ist `"home"` (jedes `ask` startet eine **neue** Unterhaltung; Folge-
-   fortsetzung wird vom CLI nicht bereitgestellt). Mit `--space <slug>` wird die Bereichs-Slug
-   zuerst in eine UUID aufgelöst, und der Umschlag trägt `target_collection_uuid` +
+   `query_source` ist `"home"` (jeder `ask` startet eine **neue** Unterhaltung; Folge-
+   Fortsetzung wird vom CLI nicht bereitgestellt). Mit `--space <slug>` wird der Bereichs-Slug
+   zuerst in eine UUID aufgelöst, und der Envelope trägt `target_collection_uuid` +
    `target_thread_access_level: 1`.
 2. **SSE-Streaming** — `sse_ask` (`pplx_export/sites/perplexity/ask_api.py:153`) sendet POST an
    `https://www.perplexity.ai/rest/sse/perplexity_ask` und konsumiert den Ereignisstrom,
    protokolliert Thread-Erstellung (`https://www.perplexity.ai/search/<uuid>`), Status-
-   übergänge und Generierungsfortschritt. Der Strom endet bei `final_sse_message`.
-3. **Abschlussprüfung** — Die Nachbearbeitung läuft nur, wenn der endgültige Status `COMPLETED` ist
-   (`pplx_export/ask_cli.py:134`). Bei einem abnormalen Stromende wird alles nach
-   diesem Punkt übersprungen (keine Verschiebung, keine Telemetrie, kein Export), sodass ein halbfertiger Zustand nie
+   Übergänge und Generierungsfortschritt. Der Strom endet bei `final_sse_message`.
+   Wenn der Strom für ein Intervall inaktiv wird (Deep Research / Council können minutenlang
+   still sein; das offene Timeout beträgt 600 s), gibt `post_stream` einen „warte immer noch auf
+   den Antwortstrom“-INFO-Herzschlag bei Standard-Ausführlichkeit aus, sodass eine Live-Ausführung nie
+   mit einem Hängenbleiben verwechselt wird.
+3. **Abschluss-Gatter** — die Nachbearbeitung läuft nur, wenn der endgültige Status `COMPLETED` ist
+   (`pplx_export/ask_cli.py:134`). Bei einem abnormalen Stromende wird alles nach diesem
+   Punkt übersprungen (keine Verschiebung, keine Telemetrie, kein Export), sodass ein halbfertiger Zustand nie
    in das Archiv gelangt.
-4. **In den BOT-Bereich verschieben** (Best-Effort) — `batch_move_threads` mit der `context_uuid` des Threads
+4. **Verschieben in den BOT-Bereich** (Best-Effort) — `batch_move_threads` mit der `context_uuid` des Threads
    in die konfigurierte `[bot_space]`-UUID. Übersprungen, wenn kein BOT-Bereich konfiguriert ist
    oder der Thread bereits im BOT-Bereich erstellt wurde.
 5. **Lesebestätigung** (Best-Effort, `--mark-read`) — `POST /rest/thread/mark_viewed`;
-   das Ungelesen-Flag wird sofort umgeschaltet.
-6. **Menschenähnliche Ansichtstelemetrie** (Best-Effort, standardmäßig aktiviert) —
+   das „Ungelesen“-Flag kippt sofort.
+6. **Menschenähnliche Ansichtstelemetrie** (Best-Effort, standardmäßig an) —
    `send_view_telemetry` (`pplx_export/sites/perplexity/ask_api.py:234`) ahmt reale
    Browsing-Zeiten nach: `ask context pane viewed` → `thread viewed` → `ask context pane
    viewed` → `thread entry exited` (random `timeOnEntryMs` von 12–45 s, 0,6–2,4 s Pausen
    zwischen Ereignissen, Gerät zufällig aus einem kleinen Pool ausgewählt).
-7. **Automatische Archivierung** (Kernschritt, außer wenn `--no-export`) — der Thread wird über
-   dieselbe Pipeline wie `pplx-export export` exportiert (erzwungener Modus) und landet unter
+7. **Automatische Archivierung** (Kernschritt, es sei denn `--no-export`) — der Thread wird exportiert
+   durch dieselbe Pipeline wie `pplx-export export` (Force-Modus), landet unter
    `<out>/<account>/<mode>/<date>_<title>_<uuid8>/` — siehe
    [Archiv-Layout](archive-layout.md) und [Export-Pipeline](../architecture/export-pipeline.md).
-   Anders als bei den Best-Effort-Schritten führt ein Archivierungsfehler zur Weitergabe und zum Fehlschlagen des Befehls.
+   Anders als die Best-Effort-Schritte führt ein Archivierungsfehler zur Weitergabe und lässt den Befehl fehlschlagen.
 
-**Fehlerisolierung**: Die Schritte 4–6 sind als Best-Effort isoliert (`pplx_export/ask_cli.py:36`):
+**Fehlerisolierung**: Schritte 4–6 sind als Best-Effort isoliert (`pplx_export/ask_cli.py:36`):
 ein Fehler protokolliert eine Warnung, setzt den JSON-Schlüssel des Schritts auf `false`, zeichnet das Detail unter
 `step_errors` auf und blockiert niemals die Archivierung. Die Archivierung (Schritt 7) ist der Kernschritt und ihre
-Fehler werden niemals geschluckt.
+Fehler werden niemals verschluckt.
 
 <a id="modes-and-model-selection" data-pplx-source-anchor="true"></a>
 ## Modi und Modellauswahl
 
-Die maßgebliche Modelltabelle der Plattform ist `GET /rest/models/config/v2` (was
-`pplx-ask models` ausgibt). Die Unterscheidung erfolgt im Feld `model_preference` – der
-Umschlag-`mode` ist immer `"copilot"`.
+Die autoritative Modelltabelle der Plattform ist `GET /rest/models/config/v2` (was
+`pplx-ask models` ausgibt). Die Unterscheidung liegt im `model_preference`-Feld — der Envelope
+`mode` ist immer `"copilot"`.
 
 | Modus | `--mode`-Wert | `model_preference` | Modellauswahl |
 |---|---|---|---|
-| Suche | `search` | `pplx_pro` ("Best" in der UI) standardmäßig | Einzelne Modell-ID über `--models` (siehe `pplx-ask models` für die auswählbare Liste) |
-| Deep Research | `deep-research` | `pplx_alpha` | Fest – kein Auswahlfeld |
+| Suche | `search` | `pplx_pro` („Best“ in der UI) standardmäßig | Einzelne Modell-ID über `--models` (siehe `pplx-ask models` für die auswählbare Liste) |
+| Deep Research | `deep-research` | `pplx_alpha` | Fest — kein Auswähler |
 | Modell-Council | `council` | `pplx_agentic_research` + `compare_model_preferences` | 2–3 komma-getrennte IDs über `--models`; Standard `gpt55_thinking,claude48opusthinking,gemini31pro_high` |
-| Schritt-für-Schritt-Studie | `study` | `pplx_study` | Fest – kein Auswahlfeld |
-| Computer | *(nicht verfügbar)* | `pplx_asi*`-Familie | Wird von `pplx-ask` nicht unterstützt |
+| Schritt-für-Schritt-Studium | `study` | `pplx_study` | Fest — kein Auswähler |
+| Computer | *(nicht bereitgestellt)* | `pplx_asi*`-Familie | Nicht von `pplx-ask` unterstützt |
 
 Hinweise:
 
-- Council führt die Modelle parallel aus und synthetisiert; die beobachtete Latenz bis zum ersten Token kann
-  3 Minuten überschreiten, daher `--timeout` für Council-/Deep-Research-Läufe erhöhen.
-- Die modusseitige Modell-Taxonomie (wie exportierte Threads klassifiziert werden, einschließlich
-  `computer`) ist in [Modi](modes.md) dokumentiert; die Details des Anforderungsumschlags finden Sie in
+- Council führt die Modelle parallel aus und synthetisiert; beobachtete Latenz bis zum ersten Token kann
+  3 Minuten überschreiten, daher `--timeout` für Council / Deep-Research-Läufe erhöhen.
+- Die archivseitige Modus-Taxonomie (wie exportierte Threads klassifiziert werden, einschließlich
+  `computer`) ist dokumentiert in [Modi](modes.md); die Details des Request-Envelopes finden sich in
   [REST-Endpunkte](../reference/api/api-rest-endpoints.md).
 
 <a id="using-pplx-ask-from-other-agents" data-pplx-source-anchor="true"></a>
-## pplx-ask von anderen Agenten verwenden
+## Verwendung von pplx-ask durch andere Agenten
 
-`pplx-ask` ist so konzipiert, dass andere Agenten Echtzeitinformationen abrufen können: Es stellt eine
-Frage, wartet auf den Abschluss, archiviert den Thread und gibt einen maschinenlesbaren
+`pplx-ask` ist so gebaut, dass andere Agenten Echtzeitinformationen abrufen können: Es stellt eine
+Frage, wartet auf Abschluss, archiviert den Thread und gibt einen maschinenlesbaren
 Vertrag aus.
 
-- **stdout enthält genau ein JSON-Objekt** (die letzte Zeile); alle Protokolle gehen an stderr, sodass
-  Aufrufer stdout direkt an einen JSON-Parser weiterleiten können.
+- **stdout enthält genau ein JSON-Objekt** (die letzte Zeile); alle Logs gehen nach stderr, sodass
+  Aufrufer stdout direkt in einen JSON-Parser leiten können.
 - **Exit-Status**: `0` bei Erfolg; Fehler beenden mit einem Nicht-Null-Exit-Code und einer Fehlermeldung auf
-  stderr – Fehler in der Ask-Phase brechen über `SystemExit` mit einer `[ask][ERROR]`-Nachricht ab,
+  stderr — Fehler in der Ask-Phase brechen über `SystemExit` mit einer `[ask][ERROR]`-Nachricht ab,
   während Archivierungsfehler unverändert weitergegeben werden (siehe Schritt 7).
 
 Ergebnis-JSON-Form (`pplx_export/ask_cli.py:194`):
@@ -198,7 +203,7 @@ Ergebnis-JSON-Form (`pplx_export/ask_cli.py:194`):
 |---|---|---|
 | `thread_uuid` | string | Backend-UUID des erstellten Threads |
 | `thread_url` | string | `https://www.perplexity.ai/search/<thread_uuid>` |
-| `context_uuid` | string | Die `context_uuid` des Threads (verwendet für Verschieben / Als gelesen markieren / Telemetrie) |
+| `context_uuid` | string | Die `context_uuid` des Threads (verwendet für Verschieben / Markieren als gelesen / Telemetrie) |
 | `moved_to_bot` | boolean | `true` = die Verschiebung in den BOT-Bereich wurde ausgeführt und war erfolgreich; `false` = nicht ausgeführt oder fehlgeschlagen |
 | `mark_read` | boolean | Gleicher Vertrag für die Lesebestätigung |
 | `telemetry` | boolean | Gleicher Vertrag für die Ansichtstelemetrie |
@@ -207,19 +212,19 @@ Ergebnis-JSON-Form (`pplx_export/ask_cli.py:194`):
 
 Automatisierungstipps:
 
-- Behandeln Sie die Schritt-Booleans strikt – ein Fehler wird niemals durch einen Wahrheitswert dargestellt;
+- Behandeln Sie die Schritt-Booleans streng — ein Fehler wird niemals durch einen Wahrheitswert dargestellt;
   prüfen Sie `step_errors` für Details.
 - `--no-telemetry` überspringt die 12–45 s menschenähnliche Verweildauer, wenn nur die Antwort zählt.
-- Ohne konfigurierten BOT-Bereich (Degradierter Modus) bleibt `moved_to_bot` `false` und
-  alles andere funktioniert trotzdem – siehe [Fehlerbehebung](troubleshooting.md).
+- Ohne konfigurierten BOT-Bereich (Degraded Mode) bleibt `moved_to_bot` `false` und
+  alles andere funktioniert trotzdem — siehe [Fehlerbehebung](troubleshooting.md).
 - Für die Konto-/Cookie-Einrichtung sollten kopflose Agenten
-  [API-Authentifizierung](../reference/api/api-authentication.md) lesen; das Verhalten bei mehreren Konten ist in
+  [API-Authentifizierung](../reference/api/api-authentication.md) lesen; das Multi-Konto-Verhalten ist in
   [Ask und Konten](../architecture/ask-and-accounts.md) beschrieben.
 
 <a id="see-also" data-pplx-source-anchor="true"></a>
 ## Siehe auch
 
 - [Erste Schritte](getting-started.md) — Installation, Cookies, erster Start
-- [Konfiguration](configuration.md) — Konten, BOT-Bereich, degradierter Modus
+- [Konfiguration](configuration.md) — Konten, BOT-Bereich, Degraded Mode
 - [pplx-export](pplx-export.md) — die Archivierungs-CLI
-- [Fehlerbehebung](troubleshooting.md) — 401/403, falsches Konto, Protokolle
+- [Fehlerbehebung](troubleshooting.md) — 401/403, falsches Konto, Logs

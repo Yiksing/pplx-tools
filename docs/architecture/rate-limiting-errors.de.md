@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/architecture/rate-limiting-errors.md"
-translation_source_sha256: "2f7be7898606995b419c6de2185ab87352f1469006180f11fff2d32ba7929597"
+translation_source_sha256: "91252ba3add326958d39759900774a7a4268b67820c65a36a4ae9e9b8eaa2ec3"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -55,14 +55,27 @@ flowchart TD
     end
 ```
 
-- **WebBridgeTransport** gleicht 429-Backoff und `throttle.reset()` bei Erfolg ab
-  (bridge_transport.py); Fehlerklassifizierung abgestimmt mit CookieTransport — 401/403 →
+- **WebBridgeTransport** gleicht 429-Backoff und `throttle.reset()` bei Erfolg an
+  (bridge_transport.py); Fehlerklassifizierung angeglichen an CookieTransport — 401/403 →
   `AuthTransportError`, 400 mit Body, der ENTRY_EXPIRED enthält → `EntryExpiredError`,
-  5xx-Backoff-Retry; Fail-Fast bei Auth und abgelaufene Terminalzustände des Batches gelten ebenfalls unter
+  5xx Backoff-Retry; Batch-Auth-Fail-Fast und abgelaufene Endzustände gelten ebenfalls unter
   `--transport webbridge`; Nicht-JSON-Antworten des Daemons werden zu
-  TransportError zusammengefasst (URLError/JSONDecodeError/OSError einheitlich abgefangen); andere Nicht-200er gehen direkt zu
+  TransportError zusammengefasst (URLError/JSONDecodeError/OSError einheitlich abgefangen); andere Nicht-200 gehen direkt zu
   TransportError.
 - **Geteilter Throttle**: Batch übergibt dieselbe Instanz an CookieTransport (cli.py:280-282),
-  wodurch Backoff-Zählungen zwischen Transport- und Batch-Ebene vereinheitlicht werden; **Neuerstellung nach automatischem Kontowechsel verliert sie ebenfalls nicht**
-  (common.py:139 übergibt sie ebenfalls); Einzelbefehle, die keine übergeben, erhalten eine Standardinstanz, die von CookieTransport erstellt wird
+  wodurch Backoff-Zähler zwischen Transport- und Batch-Ebene vereinheitlicht werden; **wird auch nach automatischem Account-Wechsel nicht verloren**
+  (common.py:139 übergibt ihn ebenfalls); Einzelbefehle, die keinen übergeben, erhalten eine Standardinstanz, die von CookieTransport erstellt wird
   (cookie_transport.py:49).
+- **Heartbeats (Standard-Ausführlichkeit).** Die drei langen Wartezeiten — ein `Throttle.backoff`-
+  Schlaf, eine hängende In-Flight-Anfrage (`CookieTransport._open_read`) und ein leerer
+  `pplx-ask`-SSE-Stream (`ask_api.post_stream`) — geben jetzt INFO-"still waiting"-
+  Heartbeats aus, sodass eine Wartezeit nie mit einem Hängenbleiben verwechselt wird. Backoff-Schläfe in Blöcken
+  (`Throttle._sleep_with_heartbeat`), deren Summe der gleichen Gesamtzeit entspricht, sodass das
+  Anti-Ban-Tempo/-Budget unverändert bleibt — nur sichtbar gemacht; `-v` fügt weiterhin die
+  vollständige DEBUG-Spur hinzu.
+- **`--skip-auth-check` + verzögerte Prüfung.** Der Startup-Account-Zuordnungs-
+  Session-Probe (`common.py`, `make_transport`) kann übersprungen werden, um eine lange
+  Startwartezeit bei schlechtem Netzwerk zu vermeiden. Als Sicherheitsnetz führt `batch` eine einmalige
+  `report_account_status` (`common.py`) durch, sobald sich generische Fehler ansammeln
+  (`batch_cmd.py`), und warnt, ob das Cookie abgelaufen ist, der Account
+  nicht übereinstimmt oder der Account in Ordnung ist (die Fehler also Netzwerk-/Ratenbegrenzungsfehler sind).

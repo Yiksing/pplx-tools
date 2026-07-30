@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/guide/configuration.md"
-translation_source_sha256: "39f85a86f94a3b326e9d3b9a74e9452a379a4745667b57c124c9512bfd1d9755"
+translation_source_sha256: "f1c8a88b5af574cb313e0ed7430a4c3bc70e3f2edc6c4a8490eb6246006c5ede"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -15,14 +15,14 @@ pplx-export speichert Ihre Identitätsdaten – die Kontoregistrierung (Anzeigen
 <a id="why-the-config-lives-outside-the-repo" data-pplx-source-anchor="true"></a>
 ## Warum die Konfiguration außerhalb des Repositorys liegt
 
-Die Kontoregistrierung und der BOT-Bereich sind persönliche Daten und werden **niemals** in das Repository übertragen (`pplx_export/config.py:7-12`). Das Repository enthält nur eine Platzhaltervorlage, `config.example.toml`; Ihre tatsächlichen Werte gehen in eine private Kopie. Alles andere, was das Tool benötigt – die Site-Domain, API-URLs, das Standard-Archivverzeichnis – ist eine Code-Konstante (`pplx_export/config.py:50-58`), keine Benutzerkonfiguration.
+Die Kontoregistrierung und der BOT-Bereich sind persönliche Daten und werden **niemals** in das Repository übertragen (`pplx_export/config.py:7-12`). Das Repository enthält nur eine Platzhaltervorlage, `config.example.toml`; Ihre tatsächlichen Werte kommen in eine private Kopie. Alles andere, was das Tool benötigt – die Site-Domain, API-URLs, das Standard-Archivverzeichnis – ist eine Code-Konstante (`pplx_export/config.py:50-58`), keine Benutzerkonfiguration.
 
-Die TOML-Datei enthält nur Identitätsdaten. Die Cookie-Quelle und die Transportauswahl sind pro Aufruf festgelegte CLI-Flags, keine Konfigurationsfelder – siehe [CLI-Flags, keine Konfigurationsfelder](#cli-flags-not-config-fields) unten.
+Die TOML enthält nur Identitätsdaten. Die Cookie-Quelle und die Transportauswahl erfolgen pro Aufruf über CLI-Flags, nicht über Konfigurationsfelder – siehe [CLI-Flags, keine Konfigurationsfelder](#cli-flags-not-config-fields) unten.
 
 <a id="location-and-load-priority" data-pplx-source-anchor="true"></a>
 ## Speicherort und Ladepriorität
 
-`configure()` (`pplx_export/config.py:113`) ermittelt den Konfigurationspfad mit folgender Priorität (`pplx_export/config.py:95-110`):
+`configure()` (`pplx_export/config.py:113`) ermittelt den Konfigurationspfad mit dieser Priorität (`pplx_export/config.py:95-110`):
 
 | Priorität | Quelle | Zählt als explizit |
 |---|---|---|
@@ -36,7 +36,7 @@ Die TOML-Datei enthält nur Identitätsdaten. Die Cookie-Quelle und die Transpor
 ## Erstellen Ihrer Konfiguration
 
 !!! tip "Automatische Alternative"
-    `pplx-export init` kann diese Datei automatisch generieren – es erkennt die angemeldeten Konten aus Ihren Browser-Cookies und schreibt die TOML-Datei mit 0600-Berechtigungen. Siehe [pplx-export → init](pplx-export.md#init).
+    `pplx-export init` kann diese Datei automatisch generieren – es erkennt die angemeldeten Konten aus Ihren Browser-Cookies und schreibt die TOML mit 0600-Berechtigungen. Siehe [pplx-export → init](pplx-export.md#init).
 
 ```bash
 mkdir -p ~/.config/pplx-export
@@ -70,7 +70,7 @@ uuid = "00000000-0000-4000-8000-0000000000b0"
 slug = "bot-EXAMPLE"
 ```
 
-Platzhalter-Stil: `alice`/`bob` sind erfundene Kontobenutzernamen, E-Mails verwenden `example.com` und UUIDs verwenden die `00000000-0000-4000-8000-…`-Form mit lauter Nullen. In Ihrer echten Datei **muss** der Tabellenschlüssel der tatsächliche Kontobenutzername sein, wie er in Thread-URLs und Ihrer Bibliothek erscheint.
+Platzhalter-Stil: `alice`/`bob` sind erfundene Kontobenutzernamen, E-Mails verwenden `example.com` und UUIDs verwenden die Null-Form `00000000-0000-4000-8000-…`. In Ihrer echten Datei **muss** der Tabellenschlüssel der tatsächliche Kontobenutzername sein, wie er in Thread-URLs und Ihrer Bibliothek erscheint.
 
 !!! warning "Privat halten"
     Die echte Konfiguration enthält persönliche Daten (E-Mails, Benutzer-IDs). Empfohlene Berechtigung ist `0o600`; übertragen Sie sie niemals in ein Git-Repository (`config.example.toml:4-6`).
@@ -84,6 +84,7 @@ Platzhalter-Stil: `alice`/`bob` sind erfundene Kontobenutzernamen, E-Mails verwe
 | Feld | Typ | Bedeutung |
 |---|---|---|
 | `default_account` | string | Schlüssel einer `[accounts.<name>]`-Tabelle, verwendet wenn `--account` nicht angegeben ist (`pplx_export/commands/common.py:84-85`). Leer/fehlend = degradierter Modus. |
+| `archive_root` | string | Optional. Archiv-Ausgabeverzeichnis, das als `--out`-Fallback dient, sodass tägliche Befehle `--out` weglassen können. Priorität: `--out` > `archive_root` > `./web_archive` (`pplx_export/config.py`, geladen in `ARCHIVE_ROOT`; aufgelöst in `cli.py` / `ask_cli.py`). `~` wird expandiert. |
 
 ### `[accounts.<name>]`
 
@@ -92,60 +93,87 @@ Eine Tabelle pro Konto; `<name>` ist der Kontobenutzername. Die Registrierung l�
 | Feld | Typ | Erforderlich | Bedeutung |
 |---|---|---|---|
 | `display_name` | string | nein | Vollständiger Anzeigename, verwendet für die Archivverzeichnisbenennung (`web_archive/<display name>/…`); fällt auf den Benutzernamen zurück, wenn nicht angegeben. Siehe [Archiv-Layout](archive-layout.md). |
-| `email` | string | empfohlen | Login-E-Mail. Der Transport überprüft den Cookie-Besitz daran und verhindert „einen Export für Konto B, der die Sitzung von Konto A trägt“ (`pplx_export/config.py:69-72`). Bei Nichtübereinstimmung zählt das Tool die kontospezifischen Sitzungstoken im Browser auf und wechselt automatisch – siehe [Multi-Account-Cookie-Modell](#multi-account-cookie-model). |
-| `user_id` | string | für `pplx-ask`-Telemetrie | Konto-UID, erforderlich für die Thread-View-Telemetrie (`pplx_export/config.py:73-75`). Lesen Sie sie aus `GET /api/auth/linked-accounts`, das für jedes angemeldete Konto `user_id` / `email` / `display_name` zurückgibt – siehe [API-Authentifizierung](../reference/api/api-authentication.md). |
+| `email` | string | empfohlen | Login-E-Mail. Der Transport überprüft den Cookie-Besitz daran und verhindert „einen Export für Konto B, der die Sitzung von Konto A trägt“ (`pplx_export/config.py:69-72`). Bei Nichtübereinstimmung zählt das Tool die Sitzungstoken pro Konto im Browser auf und wechselt automatisch – siehe [Multi-Account-Cookie-Modell](#multi-account-cookie-model). |
+| `user_id` | string | für `pplx-ask`-Telemetrie | Konto-UID, erforderlich für die Thread-Ansichts-Telemetrie (`pplx_export/config.py:73-75`). Lesen Sie sie aus `GET /api/auth/linked-accounts`, das für jedes angemeldete Konto `user_id` / `email` / `display_name` zurückgibt – siehe [API-Authentifizierung](../reference/api/api-authentication.md). |
 
 ### `[bot_space]`
 
-Der BOT-Bereich ist der Sammelpunkt für Threads, die von `pplx-ask` nach deren Abschluss erstellt wurden (`pplx_export/config.py:76-79`). Erstellen Sie den Bereich selbst mit `pplx-ask space-create` (siehe [pplx-ask](pplx-ask.md)), und registrieren Sie ihn dann hier.
+Der BOT-Bereich ist der Sammelpunkt für Threads, die von `pplx-ask` nach Abschluss erstellt wurden (`pplx_export/config.py:76-79`). Erstellen Sie den Bereich selbst mit `pplx-ask space-create` (siehe [pplx-ask](pplx-ask.md)), und registrieren Sie ihn dann hier.
 
 | Feld | Typ | Bedeutung |
 |---|---|---|
-| `uuid` | string | Bereichs-UUID. `pplx-ask` verschiebt abgeschlossene Threads hierher (`pplx_export/ask_cli.py:156-158`); wenn leer, wird der Verschiebungsschritt übersprungen. |
-| `slug` | string | Der URL-Slug des Bereichs. Geladen in `BOT_SPACE_SLUG` (`pplx_export/config.py:79`); die Laufzeit-CLI liest ihn nicht – das Fixture-Wartungstool konsumiert ihn und erstellt daraus ein Identitätsersatzpaar (`tests/scrub_fixtures.py:446-447`). |
+| `uuid` | string | Bereichs-UUID. `pplx-ask` verschiebt abgeschlossene Threads hierher (`pplx_export/ask_cli.py:156-158`); wenn leer, wird der Verschiebeschritt übersprungen. |
+| `slug` | string | Der URL-Slug des Bereichs. Geladen in `BOT_SPACE_SLUG` (`pplx_export/config.py:79`); das Laufzeit-CLI liest es nicht – das Fixture-Wartungstool verbraucht es und erstellt daraus ein Identitätsersatzpaar (`tests/scrub_fixtures.py:446-447`). |
 
 <a id="cli-flags-not-config-fields" data-pplx-source-anchor="true"></a>
 ### CLI-Flags, keine Konfigurationsfelder
 
-Die TOML-Datei enthält keine Transport- oder Cookie-Einstellungen. Diese werden pro Aufruf gewählt:
+Die TOML enthält keine Transport- oder Cookie-Einstellungen. Diese werden pro Aufruf gewählt:
 
-| Bereich | Wo festgelegt |
+| Anliegen | Wo es gesetzt wird |
 |---|---|
 | Konfigurationsdateipfad | `--config PATH` oder `PPLX_EXPORT_CONFIG` |
 | Cookie-Quelle | `--cookies-from BROWSER` / `--cookies FILE` |
 | Transport | `--transport cookie\|webbridge` (nur `pplx-export`; Standard `cookie`) |
+| Start-Kontoprüfung überspringen | `--skip-auth-check` (beide Einträge) – siehe [Multi-Account-Cookie-Modell](#multi-account-cookie-model) |
 
 Siehe [pplx-export](pplx-export.md) für die vollständige Flag-Referenz.
 
 <a id="missing-config-degraded-mode" data-pplx-source-anchor="true"></a>
 ## Fehlende Konfiguration: Degradierter Modus
 
-Wenn nichts geladen ist, bleiben die modulebene Registrierungen leer und `LOADED_CONFIG_PATH` ist `None` (`pplx_export/config.py:83-85`). Verhalten nach Szenario (`resolve_cli_account`, `pplx_export/commands/common.py:51-90`):
+Wenn nichts geladen ist, bleiben die Registrierungen auf Modulebene leer und `LOADED_CONFIG_PATH` ist `None` (`pplx_export/config.py:83-85`). Verhalten nach Szenario (`resolve_cli_account`, `pplx_export/commands/common.py:51-90`):
 
 | Szenario | Verhalten |
 |---|---|
 | Keine Konfiguration am Standardpfad, `--account` nicht angegeben | Degradierter Modus: eine Warnung wird protokolliert und Befehle laufen mit einem Platzhalterkonto (`username='default'`); die E-Mail-Besitzprüfung wird übersprungen. Tägliche Offline-Befehle sind nicht betroffen (`pplx_export/commands/common.py:86-90`). |
-| Keine Konfiguration, explizites `--account` | `SystemExit`, das die Suchreihenfolge nennt und auf `config.example.toml` verweist (`pplx_export/commands/common.py:67-74`). |
-| Konfiguration geladen, `--account` nicht registriert | `SystemExit`, das die geladene Datei nennt und Sie auffordert, `[accounts.<name>]` hinzuzufügen (`pplx_export/commands/common.py:77-82`). |
+| Keine Konfiguration, explizites `--account` | `SystemExit` nennt die Suchreihenfolge und verweist auf `config.example.toml` (`pplx_export/commands/common.py:67-74`). |
+| Konfiguration geladen, `--account` nicht registriert | `SystemExit` nennt die geladene Datei und bittet Sie, `[accounts.<name>]` hinzuzufügen (`pplx_export/commands/common.py:77-82`). |
 | Expliziter Pfad (`--config` / Umgebungsvariable) existiert nicht | `ConfigError` im strikten Modus (`pplx_export/config.py:140-146`). |
-| Datei existiert, kann aber nicht geparst werden | Immer `ConfigError` – eine beschädigte Konfiguration darf nicht still degradieren (`pplx_export/config.py:147-150`). |
-| `--account` ausgelassen, Konfiguration geladen | `default_account` wird verwendet (`pplx_export/commands/common.py:84-85`). |
+| Datei existiert, kann aber nicht geparst werden | Immer `ConfigError` – eine beschädigte Konfiguration darf nicht stillschweigend degradieren (`pplx_export/config.py:147-150`). |
+| `--account` weggelassen, Konfiguration geladen | `default_account` wird verwendet (`pplx_export/commands/common.py:84-85`). |
 
-Welche „Offline-Befehle“ abdecken und wie degradierte Läufe mit dem Archiv interagieren, wird in [Offline-Operationen](../architecture/offline-operations.md) beschrieben.
+Was „Offline-Befehle“ abdecken und wie degradierte Läufe mit dem Archiv interagieren, wird in [Offline-Operationen](../architecture/offline-operations.md) beschrieben.
 
 <a id="multi-account-cookie-model" data-pplx-source-anchor="true"></a>
 ## Multi-Account-Cookie-Modell
 
-Wenn mehrere Konten im selben Browser angemeldet sind, enthält der Speicher ein Sitzungs-Cookie **pro Konto**, und das `email`-Feld der Konfiguration teilt dem Tool mit, welches es benötigt:
+Wenn mehrere Konten im selben Browser angemeldet sind, enthält der Speicher ein Sitzungscookie **pro Konto**, und das Feld `email` der Konfiguration teilt dem Tool mit, welches es benötigt:
 
-- Jedes angemeldete Konto hat ein `__Secure-pplx.session.<uid>`-Cookie (`ACCOUNT_SESSION_PREFIX`, `pplx_export/core/cookies/loaders.py:171`); das `<uid>`-Suffix ist die `user_id` des Kontos.
-- Das **aktive** Konto ist dasjenige, dessen Token sich derzeit in `__Secure-next-auth.session-token` befindet (`ACTIVE_SESSION_COOKIE`, `pplx_export/core/cookies/loaders.py:172`). Konten wechseln = den kontospezifischen Cookie-Wert des Zielkontos in dieses Cookie schreiben – keine Browser-UI erforderlich (`pplx_export/core/cookies/loaders.py:180-187`).
+- Jedes angemeldete Konto hat ein `__Secure-pplx.session.<uid>`-Cookie (`ACCOUNT_SESSION_PREFIX`, `pplx_export/core/cookies/loaders.py:171`); das Suffix `<uid>` ist die `user_id` des Kontos.
+- Das **aktive** Konto ist dasjenige, dessen Token sich derzeit in `__Secure-next-auth.session-token` befindet (`ACTIVE_SESSION_COOKIE`, `pplx_export/core/cookies/loaders.py:172`). Kontenwechsel = Schreiben des konto-spezifischen Cookie-Werts des Zielkontos in dieses Cookie – keine Browser-UI erforderlich (`pplx_export/core/cookies/loaders.py:180-187`).
 - Beim Start prüft der Transport `GET https://www.perplexity.ai/api/auth/session` und vergleicht die zurückgegebene E-Mail mit `accounts.<name>.email` (`pplx_export/commands/common.py:126-130`).
-- Bei Nichtübereinstimmung zählt `_try_switch_account` (`pplx_export/commands/common.py:190-215`) jedes Konto-Token im Browser über `list_account_tokens` auf (`pplx_export/core/cookies/loaders.py:175-206`, bevorzugt Einträge auf der `www.`-Subdomain), versucht jedes in `__Secure-next-auth.session-token` und baut den Transport bei der ersten Übereinstimmung neu auf.
-- Wenn kein Token übereinstimmt, beendet sich der Befehl, nennt beide E-Mails und fordert Sie auf, das Zielkonto zuerst im Browser anzumelden (`pplx_export/commands/common.py:142-145`) – siehe [Fehlerbehebung](troubleshooting.md).
-- Ein Konto ohne registriertes `email` wird ungeprüft fortgesetzt, mit einer Warnung, die Sie auffordert, den Browser-Login selbst zu bestätigen (`pplx_export/commands/common.py:146-149`).
+- Bei Nichtübereinstimmung zählt `_try_switch_account` (`pplx_export/commands/common.py:190-215`) jedes Konto-Token im Browser über `list_account_tokens` auf (`pplx_export/core/cookies/loaders.py:175-206`, bevorzugt Einträge auf der Subdomain `www.`), versucht jedes in `__Secure-next-auth.session-token` und baut den Transport bei der ersten Übereinstimmung neu auf.
+- Wenn kein Token übereinstimmt, beendet sich der Befehl mit Nennung beider E-Mails und der Aufforderung, das Zielkonto zuerst im Browser anzumelden (`pplx_export/commands/common.py:142-145`) – siehe [Fehlerbehebung](troubleshooting.md).
+- Ein Konto ohne registrierte `email` wird ungeprüft fortgesetzt, mit einer Warnung, die Sie auffordert, den Browser-Login selbst zu bestätigen (`pplx_export/commands/common.py:146-149`).
 
-Den vollständigen Wechselablauf und die Semantik der Sitzungsendpunkte finden Sie unter [Ask und Konten](../architecture/ask-and-accounts.md) und [API-Authentifizierung](../reference/api/api-authentication.md).
+Für den vollständigen Wechselablauf und die Semantik der Sitzungsendpunkte siehe [Ask und Konten](../architecture/ask-and-accounts.md) und [API-Authentifizierung](../reference/api/api-authentication.md).
+
+**Prüfung überspringen (`--skip-auth-check`).** Die obige Start-Sitzungsprüfung tauscht
+wenige Sekunden – manchmal Minuten bei schlechtem Netzwerk – gegen den Besitzschutz „Konto B
+wird als Konto A verwendet“. Wenn Sie wissen, dass der Browser im richtigen Konto angemeldet ist,
+überspringt `--skip-auth-check` (gemeinsam von `pplx-export` und `pplx-ask`) diese
+Prüfung vollständig und geht direkt zur Arbeit (`pplx_export/commands/common.py`,
+`make_transport`):
+
+- Kein `GET /api/auth/session` beim Start, sodass ein unzuverlässiges Netzwerk nicht mehr
+  eine lange stille Wartezeit (jetzt mit Heartbeat) vor der ersten echten Anfrage erzeugt.
+- Das Tool vertraut dem aktuell angemeldeten Konto; die vorgelagerte
+  E-Mail-Besitzprüfung und das automatische Multi-Account-Wechseln oben werden nicht
+  ausgeführt.
+- **Aufgeschobenes Sicherheitsnetz**: in `batch`, sobald sich generische Exportfehler
+  ansammeln (drei Fehlschläge), wird eine einmalige Kontoprüfung durchgeführt und warnt Sie,
+  was gefunden wurde – das Cookie ist abgelaufen, das Konto stimmt nicht mit dem Ziel überein,
+  oder das Konto ist in Ordnung (die Fehler sind also Netzwerk-/Ratenbegrenzungs-, nicht Auth-Fehler)
+  (`pplx_export/commands/common.py`, `report_account_status`;
+  `pplx_export/commands/batch_cmd.py`).
+- **Kompromiss**: Die aufgeschobene Prüfung fängt ein abgelaufenes Cookie, aber sie kann
+  kein *falsches, aber gültiges* Konto erkennen, das fehlerfrei exportiert – mit
+  `--skip-auth-check` übernehmen Sie die Verantwortung, dass das angemeldete Konto das
+  beabsichtigte ist.
+
+Verwenden Sie es für schnelle, unbeaufsichtigte Läufe mit einem bekanntermaßen guten Login; lassen Sie es weg, wenn Sie
+auf die vorgelagerte Besitzprüfung oder das automatische Kontenwechseln angewiesen sind.
 
 ## Cookie-Cache
 
@@ -165,8 +193,8 @@ Cookie-Auflösungsreihenfolge (`cookies.resolve`, `pplx_export/core/cookies/load
 ## Schützen Ihrer Dateien
 
 - `chmod 600` Ihre `config.toml` – sie enthält persönliche Daten (E-Mails, Benutzer-IDs).
-- Der Cookie-Cache wird vom Tool bereits mit Modus `0o600` geschrieben; Sitzungs-Cookies sind anmeldeäquivalente Anmeldeinformationen.
-- Wenn Sie eine Cookie-Datei für `--cookies` manuell erstellen, wenden Sie auch `chmod 600` darauf an.
+- Der Cookie-Cache wird bereits mit Modus `0o600` vom Tool geschrieben; Sitzungscookies sind anmeldeäquivalente Anmeldeinformationen.
+- Wenn Sie eine Cookie-Datei manuell für `--cookies` erstellen, wenden Sie auch `chmod 600` darauf an.
 
 <a id="when-authentication-fails" data-pplx-source-anchor="true"></a>
 ## Wenn die Authentifizierung fehlschlägt
