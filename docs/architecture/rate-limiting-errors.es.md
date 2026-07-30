@@ -2,19 +2,19 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/architecture/rate-limiting-errors.md"
-translation_source_sha256: "2f7be7898606995b419c6de2185ab87352f1469006180f11fff2d32ba7929597"
+translation_source_sha256: "91252ba3add326958d39759900774a7a4268b67820c65a36a4ae9e9b8eaa2ec3"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
 
 <a id="rate-limiting-and-error-handling" data-pplx-source-anchor="true"></a>
-# Límite de velocidad y manejo de errores
+# Límite de tasa y manejo de errores
 
 <a id="rate-limiting-and-error-handling_1" data-pplx-source-anchor="true"></a>
-## Límite de velocidad y manejo de errores
+## Límite de tasa y manejo de errores
 
 Dos capas: `Throttle` (core/throttle.py:15) + enrutamiento de errores en `CookieTransport._request`
-(core/http/cookie_transport.py:63-126); más fail-fast en la capa de lotes.
+(core/http/cookie_transport.py:63-126); más fail-fast en la capa de lote.
 
 ```mermaid
 flowchart TD
@@ -55,14 +55,27 @@ flowchart TD
     end
 ```
 
-- **WebBridgeTransport** alinea el backoff 429 y `throttle.reset()` en éxito
+- **WebBridgeTransport** alinea la retroalimentación 429 y `throttle.reset()` en éxito
   (bridge_transport.py); clasificación de errores alineada con CookieTransport — 401/403 →
   `AuthTransportError`, 400 con cuerpo que contiene ENTRY_EXPIRED → `EntryExpiredError`,
-  backoff-reintento 5xx; el fail-fast de autenticación del lote y los estados terminales expirados también aplican bajo
+  5xx retroalimentación-reintento; el fail-fast de autenticación del lote y los estados terminales expirados también aplican bajo
   `--transport webbridge`; las respuestas no JSON del daemon colapsan en
   TransportError (URLError/JSONDecodeError/OSError capturados uniformemente); otros no-200 van directamente a
   TransportError.
 - **Throttle compartido**: el lote pasa la misma instancia a CookieTransport (cli.py:280-282),
-  unificando los contadores de backoff entre las capas de transporte y lote; **las reconstrucciones después del cambio automático de cuenta no lo pierden**
+  unificando los contadores de retroalimentación entre las capas de transporte y lote; **las reconstrucciones después del cambio automático de cuenta tampoco lo pierden**
   (common.py:139 también lo pasa); los comandos de una sola ejecución que no pasan uno obtienen una instancia predeterminada construida por CookieTransport
   (cookie_transport.py:49).
+- **Heartbeats (verbosidad predeterminada).** Las tres largas esperas — un sueño de `Throttle.backoff`,
+  una solicitud en vuelo estancada (`CookieTransport._open_read`), y un flujo SSE `pplx-ask` inactivo
+  (`ask_api.post_stream`) — ahora emiten heartbeats INFO "still waiting"
+  para que una espera nunca se confunda con un bloqueo. Las retroalimentaciones duermen en fragmentos
+  (`Throttle._sleep_with_heartbeat`) cuya suma es igual al mismo total, por lo que
+  el ritmo/presupuesto anti-baneo no cambia — solo se hace visible; `-v` todavía agrega el
+  rastro DEBUG completo.
+- **`--skip-auth-check` + verificación diferida.** La sonda de sesión de atribución de cuenta al inicio
+  (`common.py`, `make_transport`) se puede omitir para evitar una larga
+  espera de inicio en una red deficiente. Como red de seguridad, `batch` ejecuta una
+  `report_account_status` única (`common.py`) una vez que los errores genéricos se acumulan
+  (`batch_cmd.py`), advirtiendo si la cookie ha expirado, la cuenta
+  no coincide, o la cuenta está bien (por lo que los errores son de red / límite de tasa).

@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/guide/pplx-ask.md"
-translation_source_sha256: "01eede19356c18b7769f76a4a88c4cf86a543fc0852203e11051a6bacb17dc7e"
+translation_source_sha256: "2068f1ed34cbfa9591947ed9426263b130c8e98e4a7c4edff98ba092f447d756"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -10,14 +10,14 @@ translation_prompt_version: "v1"
 <a id="pplx-ask-interactive-queries" data-pplx-source-anchor="true"></a>
 # pplx-ask: Consultas interactivas
 
-`pplx-ask` es el segundo punto de entrada CLI del proyecto: hace preguntas a Perplexity
-de forma interactiva a través de streaming SSE, luego procesa el hilo resultante — moviéndolo
+`pplx-ask` es el segundo punto de entrada CLI del proyecto: realiza preguntas a Perplexity
+de forma interactiva mediante streaming SSE, luego posprocesa el hilo resultante — moviéndolo
 al espacio BOT, enviando un recibo de lectura opcional y telemetría de vista similar a la humana, y
 archivándolo automáticamente con el mismo pipeline de exportación que `pplx-export`. Comparte el
-núcleo (transporte / cookies / estado / registro) con `pplx-export`, y todas las formas de API son
-verificadas contra la plataforma en vivo.
+núcleo (transporte / cookies / estado / registro) con `pplx-export`, y todas las formas de API se
+verifican contra la plataforma en vivo.
 
-Fuente: `pplx_export/ask_cli.py` (CLI), `pplx_export/sites/perplexity/ask_api.py` (capa API).
+Fuente: `pplx_export/ask_cli.py` (CLI), `pplx_export/sites/perplexity/ask_api.py` (capa de API).
 
 ```bash
 pplx-ask models                                  # list the authoritative model table
@@ -38,21 +38,21 @@ pplx-ask space-create "My Space"                 # create a space
 
 Imprime la tabla de modelos autoritativa y en vivo desde
 `GET https://www.perplexity.ai/rest/models/config/v2` (`pplx_export/ask_cli.py:51`):
-modelos predeterminados por modo, los tres modelos predeterminados del consejo, los modelos seleccionables en
+modelos predeterminados por modo, el consejo predeterminado de tres modelos, los modelos seleccionables en
 modo de búsqueda y los modos especiales (`research` / `study` / `agentic_research` / `studio`).
 Sin opciones.
 
 ### `ask`
 
-Hace una pregunta (`pplx_export/ask_cli.py:86`). Transmite el progreso por SSE a la consola,
-ejecuta el pipeline de posprocesamiento (ver [El flujo de consulta](#the-ask-flow)) e imprime un
-objeto JSON legible por máquina en la salida estándar al final.
+Realiza una pregunta (`pplx_export/ask_cli.py:86`). Transmite el progreso por SSE a la consola,
+ejecuta el pipeline de posprocesamiento (ver [El flujo ask](#the-ask-flow)) e imprime un
+objeto JSON legible por máquina en stdout al final.
 
 | Opción | Predeterminado | Descripción |
 |---|---|---|
 | `prompt` (posicional) | — | La pregunta. Los mensajes largos y significativos funcionan mejor. |
 | `--mode` | `search` | `search` = búsqueda normal (modelo seleccionable); `deep-research` = investigación profunda (modelo fijo); `council` = consejo de modelos (2–3 modelos en paralelo + síntesis); `study` = estudio paso a paso |
-| `--models` | ninguno | `council`: IDs de modelo separados por comas (2–3) (predeterminado `gpt55_thinking,claude48opusthinking,gemini31pro_high`); `search`: un solo ID de modelo; ignorado por `deep-research` / `study` |
+| `--models` | ninguno | `council`: 2–3 ids de modelo separados por comas (predeterminado `gpt55_thinking,claude48opusthinking,gemini31pro_high`); `search`: un solo id de modelo; ignorado por `deep-research` / `study` |
 | `--space` | `home` | `home` = crear desde la página de inicio, luego mover al espacio BOT; `<slug>` = crear directamente dentro de ese espacio, luego mover al espacio BOT |
 | `--mark-read` | desactivado | Enviar un recibo de lectura (`mark_viewed`) después de la finalización |
 | `--no-telemetry` | desactivado | No enviar telemetría de vista similar a la humana (predeterminado: enviar — `ask context pane viewed` / `thread viewed` / `thread entry exited` con tiempos aleatorios) |
@@ -60,13 +60,13 @@ objeto JSON legible por máquina en la salida estándar al final.
 | `--timeout` | `600` | Tiempo de espera del stream SSE en segundos |
 
 Pistas de error HTTP emitidas por `ask` (`pplx_export/ask_cli.py:124`): `401`/`403` = la
-cookie ha expirado o está controlada por riesgo (actualizar la cookie), `429` = límite de tasa alcanzado (reintentar
-más tarde), `5xx` = error del servidor (reintentar más tarde). Ver [Solución de problemas](troubleshooting.md).
+cookie ha expirado o está controlada por riesgo (actualice la cookie), `429` = límite de tasa alcanzado (reintente
+más tarde), `5xx` = error del servidor (reintente más tarde). Ver [Solución de problemas](troubleshooting.md).
 
 ### `mark-read`
 
 Envía un recibo de lectura para un hilo existente (`pplx_export/ask_cli.py:201`): acepta una
-URL de hilo o un UUID simple, resuelve el `context_uuid` del hilo a través de
+URL de hilo o un UUID simple, resuelve el `context_uuid` del hilo mediante
 `GET /rest/thread/<uuid>`, luego llama a `POST /rest/thread/mark_viewed` con
 `{"context_uuids": [ctx]}` (`pplx_export/sites/perplexity/ask_api.py:190`). La bandera de no leído
 cambia inmediatamente. Imprime `{"uuid", "context_uuid", "result"}` como JSON.
@@ -76,7 +76,7 @@ es este endpoint.
 
 ### `space-create`
 
-Crea un espacio a través de `POST /rest/collections/create_collection`
+Crea un espacio mediante `POST /rest/collections/create_collection`
 (`pplx_export/sites/perplexity/ask_api.py:179`) con los campos fijos verificados
 (`emoji: "1f4c1"`, `access: 1`). Imprime `{"uuid", "slug", "url"}` como JSON.
 
@@ -108,7 +108,7 @@ Prioridad de fuente de cookies: `--cookies-from` / `--cookies` > caché reciente
 [Primeros pasos](getting-started.md) para la configuración inicial.
 
 <a id="the-ask-flow" data-pplx-source-anchor="true"></a>
-## El flujo de consulta
+## El flujo ask
 
 ```mermaid
 flowchart TD
@@ -123,37 +123,41 @@ flowchart TD
 ```
 
 1. **Ensamblaje del sobre** — `build_envelope` (`pplx_export/sites/perplexity/ask_api.py:71`)
-   llena la plantilla de parámetros verificada: `mode` es siempre `"copilot"` y
-   `query_source` es `"home"` (cada `ask` inicia una conversación **nueva**; la continuación
+   llena la plantilla de parámetros verificada: `mode` siempre es `"copilot"` y
+   `query_source` es `"home"` (cada `ask` inicia una **nueva** conversación; la continuación
    de seguimiento no está expuesta por la CLI). Con `--space <slug>`, el slug del espacio se
    resuelve a un uuid primero, y el sobre lleva `target_collection_uuid` +
    `target_thread_access_level: 1`.
 2. **Streaming SSE** — `sse_ask` (`pplx_export/sites/perplexity/ask_api.py:153`) hace POST a
    `https://www.perplexity.ai/rest/sse/perplexity_ask` y consume el flujo de eventos,
-   registrando la creación del hilo (`https://www.perplexity.ai/search/<uuid>`), transiciones de
-   estado y progreso de generación. El flujo termina en `final_sse_message`.
+   registrando la creación del hilo (`https://www.perplexity.ai/search/<uuid>`), transiciones
+   de estado y progreso de generación. El flujo termina en `final_sse_message`.
+   Cuando el flujo permanece inactivo durante un intervalo (investigación profunda / consejo pueden estar en silencio
+   durante minutos; el tiempo de espera abierto es de 600 s), `post_stream` emite un latido INFO "aún esperando
+   el flujo de respuesta" en la verbosidad predeterminada para que una ejecución en vivo nunca se
+   confunda con un bloqueo.
 3. **Puerta de finalización** — el posprocesamiento solo se ejecuta cuando el estado final es `COMPLETED`
-   (`pplx_export/ask_cli.py:134`). En caso de finalización anormal del flujo, todo después de este
+   (`pplx_export/ask_cli.py:134`). En un final de flujo anormal, todo después de este
    punto se omite (sin movimiento, sin telemetría, sin exportación) para que un estado a medio terminar nunca
    se filtre al archivo.
 4. **Mover al espacio BOT** (mejor esfuerzo) — `batch_move_threads` con el `context_uuid` del hilo
    al uuid de `[bot_space]` configurado. Se omite cuando no hay espacio BOT
-   configurado, o cuando el hilo ya fue creado dentro del espacio BOT.
+   configurado, o cuando el hilo ya se creó dentro del espacio BOT.
 5. **Recibo de lectura** (mejor esfuerzo, `--mark-read`) — `POST /rest/thread/mark_viewed`;
    la bandera de no leído cambia inmediatamente.
 6. **Telemetría de vista similar a la humana** (mejor esfuerzo, activada por defecto) —
    `send_view_telemetry` (`pplx_export/sites/perplexity/ask_api.py:234`) imita los tiempos de
-   navegación reales: `ask context pane viewed` → `thread viewed` → `ask context pane
+   navegación real: `ask context pane viewed` → `thread viewed` → `ask context pane
    viewed` → `thread entry exited` (random `timeOnEntryMs` de 12–45 s, pausas de 0.6–2.4 s
    entre eventos, dispositivo elegido aleatoriamente de un grupo pequeño).
 7. **Archivado automático** (paso central, a menos que `--no-export`) — el hilo se exporta
-   a través del mismo pipeline que `pplx-export export` (modo forzado), guardándose en
+   a través del mismo pipeline que `pplx-export export` (modo forzado), y se guarda en
    `<out>/<account>/<mode>/<date>_<title>_<uuid8>/` — ver
    [Estructura del archivo](archive-layout.md) y [Pipeline de exportación](../architecture/export-pipeline.md).
    A diferencia de los pasos de mejor esfuerzo, un fallo de archivado se propaga y hace fallar el comando.
 
 **Aislamiento de fallos**: los pasos 4–6 están aislados como mejor esfuerzo (`pplx_export/ask_cli.py:36`):
-un fallo registra una advertencia, establece la clave JSON del paso a `false`, registra el detalle bajo
+un fallo registra una advertencia, establece la clave JSON del paso en `false`, registra el detalle en
 `step_errors` y nunca bloquea el archivado. El archivado (paso 7) es el paso central y sus
 fallos nunca se omiten.
 
@@ -162,13 +166,13 @@ fallos nunca se omiten.
 
 La tabla de modelos autoritativa de la plataforma es `GET /rest/models/config/v2` (lo que
 `pplx-ask models` imprime). La discriminación reside en el campo `model_preference` — el
-`mode` del sobre es siempre `"copilot"`.
+`mode` del sobre siempre es `"copilot"`.
 
 | Modo | Valor de `--mode` | `model_preference` | Selección de modelo |
 |---|---|---|---|
-| Búsqueda | `search` | `pplx_pro` ("Mejor" en la interfaz) por defecto | ID de modelo único a través de `--models` (ver `pplx-ask models` para la lista seleccionable) |
+| Búsqueda | `search` | `pplx_pro` ("Mejor" en la interfaz) por defecto | Id de modelo único mediante `--models` (ver `pplx-ask models` para la lista seleccionable) |
 | Investigación profunda | `deep-research` | `pplx_alpha` | Fijo — sin selector |
-| Consejo de modelos | `council` | `pplx_agentic_research` + `compare_model_preferences` | 2–3 IDs separados por comas a través de `--models`; predeterminado `gpt55_thinking,claude48opusthinking,gemini31pro_high` |
+| Consejo de modelos | `council` | `pplx_agentic_research` + `compare_model_preferences` | 2–3 ids separados por comas mediante `--models`; predeterminado `gpt55_thinking,claude48opusthinking,gemini31pro_high` |
 | Estudio paso a paso | `study` | `pplx_study` | Fijo — sin selector |
 | Computer | *(no expuesto)* | Familia `pplx_asi*` | No compatible con `pplx-ask` |
 
@@ -183,23 +187,23 @@ Notas:
 <a id="using-pplx-ask-from-other-agents" data-pplx-source-anchor="true"></a>
 ## Uso de pplx-ask desde otros agentes
 
-`pplx-ask` está construido para que otros agentes puedan obtener información en tiempo real: hace una
+`pplx-ask` está construido para que otros agentes puedan obtener información en tiempo real: realiza una
 pregunta, espera la finalización, archiva el hilo y emite un contrato
 legible por máquina.
 
 - **stdout lleva exactamente un objeto JSON** (la última línea); todos los registros van a stderr, por lo que
   los llamadores pueden canalizar stdout directamente a un analizador JSON.
-- **Estado de salida**: `0` en éxito; los fallos salen con código distinto de cero y un mensaje de error en
-  stderr — los fallos en la etapa de consulta abortan a través de `SystemExit` con un mensaje `[ask][ERROR]`,
+- **Estado de salida**: `0` en caso de éxito; los fallos salen con código distinto de cero y un mensaje de error en
+  stderr — los fallos en la etapa ask abortan mediante `SystemExit` con un mensaje `[ask][ERROR]`,
   mientras que los fallos de archivado se propagan tal cual (ver paso 7).
 
 Forma del JSON de resultado (`pplx_export/ask_cli.py:194`):
 
 | Clave | Tipo | Significado |
 |---|---|---|
-| `thread_uuid` | string | UUID del hilo creado en el backend |
+| `thread_uuid` | string | UUID interno del hilo creado |
 | `thread_url` | string | `https://www.perplexity.ai/search/<thread_uuid>` |
-| `context_uuid` | string | El `context_uuid` del hilo (usado por mover/marcar-leído/telemetría) |
+| `context_uuid` | string | El `context_uuid` del hilo (usado por mover / marcar como leído / telemetría) |
 | `moved_to_bot` | boolean | `true` = el movimiento al espacio BOT se ejecutó y tuvo éxito; `false` = no se ejecutó o falló |
 | `mark_read` | boolean | Mismo contrato para el recibo de lectura |
 | `telemetry` | boolean | Mismo contrato para la telemetría de vista |
@@ -209,13 +213,13 @@ Forma del JSON de resultado (`pplx_export/ask_cli.py:194`):
 Consejos de automatización:
 
 - Trate los booleanos de paso estrictamente — un fallo nunca se representa con un valor verdadero;
-  verifique `step_errors` para detalles.
+  verifique `step_errors` para obtener detalles.
 - `--no-telemetry` omite la pausa similar a la humana de 12–45 s cuando solo importa la respuesta.
 - Sin un espacio BOT configurado (modo degradado), `moved_to_bot` permanece `false` y
   todo lo demás sigue funcionando — ver [Solución de problemas](troubleshooting.md).
-- Para la configuración de cuenta/cookie, los agentes sin cabeza deben leer
-  [Autenticación de API](../reference/api/api-authentication.md); el comportamiento de múltiples cuentas está en
-  [Consultas y cuentas](../architecture/ask-and-accounts.md).
+- Para la configuración de cuenta/cookie, los agentes sin interfaz deben leer
+  [Autenticación de API](../reference/api/api-authentication.md); el comportamiento con múltiples cuentas está en
+  [Ask y cuentas](../architecture/ask-and-accounts.md).
 
 <a id="see-also" data-pplx-source-anchor="true"></a>
 ## Ver también
