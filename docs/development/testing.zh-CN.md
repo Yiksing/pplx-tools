@@ -50,7 +50,7 @@ pytest 是已声明的开发依赖。测试套件保证：
 | 配置、认证与初始化 | `test_config_external.py`<br/>`test_cookie_profiles.py`<br/>`test_credential.py`<br/>`test_init.py` | 外置配置隔离、cookie 来源配置、凭证选择与初始化 |
 | 渲染与工作流语义 | `test_interruptions.py`<br/>`test_stub_workflows.py`<br/>`test_answer_variants.py`<br/>`test_answer_variant_logging.py`<br/>`test_relations.py` | 工作流归属、中断状态、答案变体、审计日志与关系边 |
 | 离线归档与索引维护 | `test_search_mode_backfill.py`<br/>`test_sync_deleted.py`<br/>`test_status.py` | 富化、续跑/幂等行为、跨账户删除判定、终态，以及离线状态账/变更报告的分层输出 |
-| 评审回归 | 下表所列 16 个 `test_fix_*.py` 模块 | 源自评审发现的修复；模块名保留评审 lineage |
+| 评审回归 | 下表所列 17 个 `test_fix_*.py` 模块 | 源自评审发现的修复；模块名保留评审 lineage |
 
 ### 评审回归 lineage
 
@@ -64,6 +64,7 @@ pytest 是已声明的开发依赖。测试套件保证：
 | V4 轮评审 | `test_fix_v401_thread_dir_migration.py`、`test_fix_v402_manifest_count.py`、`test_fix_v403_handle_assets_idempotency.py`、`test_fix_v405_ask_post_steps.py` |
 | V5 轮评审 | `test_fix_v5_review.py`，以及既有专题模块中的定点增补 |
 | V6 轮评审 | `test_fix_v6_atomic_writes.py` |
+| Harness 轮评审 | `test_fix_h01_ci_residue_report.py` |
 
 <!-- /audit:inventory test-modules -->
 

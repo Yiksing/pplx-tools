@@ -70,6 +70,7 @@ jobs:
           echo "CHECKPOINT_BRANCH=${checkpoint_branch}" >> "${GITHUB_ENV}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          resumed_current="false"
           if git ls-remote --exit-code --heads origin \
              "refs/heads/${checkpoint_branch}" >/dev/null 2>&1; then
             git fetch origin \
@@ -80,9 +81,48 @@ jobs:
               --checkpoint-branch "${checkpoint_branch}"
             git switch --create "${checkpoint_branch}" \
               --track "origin/${checkpoint_branch}"
+            resumed_current="true"
           else
             git switch --create "${checkpoint_branch}" "${BASE_SHA}"
           fi
+          # Close the loop on checkpoints left behind by aborted runs: reuse
+          # their verified generated-only artifacts, then remove the branch.
+          stale_refs="$(git ls-remote origin \
+            'refs/heads/automation/i18n-checkpoints/*')"
+          while read -r -u 3 _remote_sha stale_ref; do
+            [[ -n "${stale_ref}" ]] || continue
+            stale_branch="${stale_ref#refs/heads/}"
+            [[ "${stale_branch}" != "${checkpoint_branch}" ]] || continue
+            stale_base="${stale_branch#automation/i18n-checkpoints/}"
+            if [[ ! "${stale_base}" =~ ^[0-9a-f]{40}$ ]]; then
+              echo "::error title=Unexpected checkpoint branch::${stale_branch} does not embed a 40-character base SHA"
+              exit 1
+            fi
+            if ! git merge-base --is-ancestor "${stale_base}" "${BASE_SHA}"; then
+              echo "::error title=Unexpected checkpoint base::${stale_branch} is not based on superseded main history"
+              exit 1
+            fi
+            git fetch origin \
+              "refs/heads/${stale_branch}:refs/remotes/origin/${stale_branch}"
+            uv run python scripts/translate_docs.py \
+              --verify-checkpoint \
+              --checkpoint-base "${stale_base}" \
+              --checkpoint-branch "${stale_branch}"
+            if [[ "${resumed_current}" != "true" ]]; then
+              git diff --name-only --diff-filter=ACMR \
+                "${stale_base}" "refs/remotes/origin/${stale_branch}" -- |
+              while IFS= read -r reusable_path; do
+                git checkout "refs/remotes/origin/${stale_branch}" -- \
+                  "${reusable_path}"
+              done
+              git add docs i18n/generated i18n/manifest.json
+              if ! git diff --cached --quiet; then
+                git commit -m "chore(i18n): reuse checkpoint ${stale_base} [skip ci]"
+                git push origin "HEAD:refs/heads/${checkpoint_branch}"
+              fi
+            fi
+            git push origin --delete "${stale_branch}"
+          done 3<<< "${stale_refs}"
 
       - name: Refresh stable translated heading anchors
         run: >-
@@ -161,7 +201,20 @@ jobs:
         run: uv run python scripts/audit_docs.py --format github --machine-mode required
 
       - name: Check simulated fixture residue
-        run: uv run python tests/scrub_fixtures.py --check
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/scrub-check.log"
+          uv run python tests/scrub_fixtures.py --check | tee "${log}"
+          unexecuted="$(sed -n 's/^unexecuted-check-classes: //p' "${log}")"
+          if [[ -n "${unexecuted}" && "${unexecuted}" != "none" ]]; then
+            {
+              echo "## Simulated fixture residue check"
+              echo ""
+              echo "Unexecuted pattern classes on this runner: \`${unexecuted}\`"
+              echo ""
+              echo "Green status covers only the executed classes; identity and content replacement sources are unavailable in CI."
+            } >> "${GITHUB_STEP_SUMMARY}"
+          fi
 
       - name: Run complete test suite
         run: uv run pytest -q

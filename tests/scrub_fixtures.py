@@ -28,6 +28,10 @@ Design principles:
 - After replacement, golden/ is **regenerated** via the pplx_export offline
   rerender (keeping snapshots byte-identical), then a zero-residue gate runs.
   Repeatable and idempotent.
+- Every run prints a machine-readable **check-class report**: identity /
+  content pattern classes whose external sources are absent are listed as
+  `unexecuted` (with a final `unexecuted-check-classes:` summary line) instead
+  of passing silently; token / path / signed-URL gating is unaffected.
 
 Replacement scope: positional pairs apply only inside their fixture directory;
 local content pairs and identity / token / UUID / toolu_ mappings apply globally.
@@ -53,6 +57,9 @@ tests/fixtures/ 的确定性维护工具：位置式替换、标识符重映射�
 - **read_write_token** → 统一固定占位值；CloudFront/S3 签名 URL 剥离查询串。
 - 替换完成后用 pplx_export 离线 rerender **重生成 golden/**（保证快照逐字节一致），
   最后跑零残留门禁。可重复运行，幂等。
+- 每次运行打印机器可读的**检查类执行报告**：外部来源缺失的身份/内容类模式
+  显式列为 `unexecuted`（末行输出 `unexecuted-check-classes:` 汇总），而非
+  静默通过；token/路径/签名 URL 门禁不受影响。
 
 替换作用域：位置式对只作用于所属 fixture 目录；本地内容对与身份/token/UUID/toolu_ 映射全局作用。
 """
@@ -516,12 +523,40 @@ def main() -> int:
         cfg = FIXTURE_TEXT.get(d.name, {})
         scoped_pairs[d.name] = collect_fixture_pairs(d.name, d, cfg)
 
-    identity_pairs, missing = collect_identity_pairs()
-    for m in missing:
-        print(f"[warn] {m}", file=sys.stderr)
+    identity_pairs, identity_missing = collect_identity_pairs()
     local_pairs = collect_local_pairs()
-    if not local_pairs:
-        print("[warn] 未找到 tests/scrub_pairs.local.json，内容类字面量替换跳过", file=sys.stderr)
+
+    # ── Check-class execution report (machine-readable): identity/content
+    # sources live outside the repo; when absent the class is reported as
+    # unexecuted instead of passing silently. token/path/signed-URL gating
+    # below is unaffected.
+    # ── 检查类执行报告（机器可读）：身份/内容源在仓库之外，缺失时该类显式
+    # 报告为未执行而非静默通过。下方 token/路径/签名 URL 门禁不受影响。
+    if not identity_pairs:
+        identity_status = "unexecuted"
+    elif identity_missing:
+        identity_status = "partial"
+    else:
+        identity_status = "executed"
+    content_status = "executed" if PAIRS_LOCAL.is_file() else "unexecuted"
+    check_classes: list[tuple[str, str, str]] = [
+        ("positional", "executed", ""),
+        ("identity", identity_status, "；".join(identity_missing)),
+        ("content", content_status,
+         "" if content_status == "executed"
+         else "未找到 tests/scrub_pairs.local.json，内容类字面量模式未评估"),
+        ("token", "executed", ""),
+        ("path", "executed", ""),
+        ("signed-url", "executed", ""),
+    ]
+    for cname, status, reason in check_classes:
+        line = f"[check-class] {cname} {status}"
+        if reason:
+            line += f"  {reason}"
+        print(line)
+    unexecuted = [c for c, s, _ in check_classes if s != "executed"]
+    print("unexecuted-check-classes: "
+          + (",".join(unexecuted) if unexecuted else "none"))
 
     files_of = {d.name: [d / fn for fn in RAW_NAMES if (d / fn).exists()] for d in fixture_dirs}
     all_raw = [p for ps in files_of.values() for p in ps]
@@ -630,7 +665,7 @@ def main() -> int:
         return 1
     if problems:
         return 1
-    print("\n门禁通过：fixtures 零残留。")
+    print("\n门禁通过：已执行检查类在 fixtures 零残留。")
     return 0
 
 

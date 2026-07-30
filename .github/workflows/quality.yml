@@ -71,7 +71,20 @@ jobs:
           args+=(--changed-base "${changed_base}")
           uv run python scripts/audit_docs.py "${args[@]}"
       - name: Check simulated fixture residue
-        run: uv run python tests/scrub_fixtures.py --check
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/scrub-check.log"
+          uv run python tests/scrub_fixtures.py --check | tee "${log}"
+          unexecuted="$(sed -n 's/^unexecuted-check-classes: //p' "${log}")"
+          if [[ -n "${unexecuted}" && "${unexecuted}" != "none" ]]; then
+            {
+              echo "## Simulated fixture residue check"
+              echo ""
+              echo "Unexecuted pattern classes on this runner: \`${unexecuted}\`"
+              echo ""
+              echo "Green status covers only the executed classes; identity and content replacement sources are unavailable in CI."
+            } >> "${GITHUB_STEP_SUMMARY}"
+          fi
       - name: Run tests
         run: uv run pytest -q
       - name: Build all configured documentation locales strictly

@@ -1138,6 +1138,17 @@ def test_translation_workflow_binds_validation_and_checkpoints_before_main() -> 
     assert "git push origin HEAD:main" in translation
     assert "git push origin --delete \"${CHECKPOINT_BRANCH}\"" in translation
     assert "--jobs 8" not in translation
+    assert "'refs/heads/automation/i18n-checkpoints/*'" in translation
+    assert (
+        'git merge-base --is-ancestor "${stale_base}" "${BASE_SHA}"'
+        in translation
+    )
+    assert "--checkpoint-base \"${stale_base}\"" in translation
+    assert "--checkpoint-branch \"${stale_branch}\"" in translation
+    assert "git push origin --delete \"${stale_branch}\"" in translation
+    assert translation.index("--checkpoint-base \"${stale_base}\"") < (
+        translation.index("git push origin --delete \"${stale_branch}\"")
+    )
 
     secret_binding = (
         f"{config.translation.api_key_env}: "
@@ -1150,7 +1161,7 @@ def test_translation_workflow_binds_validation_and_checkpoints_before_main() -> 
     assert translation.index(
         "Reconfirm current main before API access"
     ) < translation.index(secret_binding)
-    assert translation.count("--verify-checkpoint") == 2
+    assert translation.count("--verify-checkpoint") == 3
     assert translation.index(
         "Promote the fully validated checkpoint to main"
     ) < translation.index("Upload validated GitHub Pages artifact")

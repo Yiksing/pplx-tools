@@ -55,7 +55,7 @@ Inventory synchronized with the repository on **2026-07-27**:
 | Configuration, authentication, and bootstrap | `test_config_external.py`<br/>`test_cookie_profiles.py`<br/>`test_credential.py`<br/>`test_init.py` | external configuration isolation, cookie-source profiles, credential selection, and initialization |
 | Rendering and workflow semantics | `test_interruptions.py`<br/>`test_stub_workflows.py`<br/>`test_answer_variants.py`<br/>`test_answer_variant_logging.py`<br/>`test_relations.py` | workflow attribution, interruption states, answer variants, audit logging, and relation edges |
 | Offline archive and index maintenance | `test_search_mode_backfill.py`<br/>`test_sync_deleted.py`<br/>`test_status.py` | enrichment, resume/idempotency behavior, cross-account deletion detection, terminal states, and the offline state-account/change report tiers |
-| Review regressions | 16 `test_fix_*.py` modules listed below | fixes derived from review findings; module names retain review lineage |
+| Review regressions | 17 `test_fix_*.py` modules listed below | fixes derived from review findings; module names retain review lineage |
 
 ### Review-regression lineage
 
@@ -71,6 +71,7 @@ existing topical module.
 | V4 review | `test_fix_v401_thread_dir_migration.py`, `test_fix_v402_manifest_count.py`, `test_fix_v403_handle_assets_idempotency.py`, `test_fix_v405_ask_post_steps.py` |
 | V5 review | `test_fix_v5_review.py`, plus focused additions to existing topical modules |
 | V6 review | `test_fix_v6_atomic_writes.py` |
+| Harness review | `test_fix_h01_ci_residue_report.py` |
 
 <!-- /audit:inventory test-modules -->
 
