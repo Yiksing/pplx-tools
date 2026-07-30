@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/architecture/data-model.md"
-translation_source_sha256: "a7be52ef4f99700bd001a6c17ca2bc9799b8287d5311a00de620380f6d659fc6"
+translation_source_sha256: "ebbd890c8e9a8cb69494f0010e99d6d70af5012ad421eb3a62958335a7f25908"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -13,7 +13,7 @@ translation_prompt_version: "v1"
 <a id="data-model-coremodelspy" data-pplx-source-anchor="true"></a>
 ## Modello dati (core/models.py)
 
-Tutti i JSON grezzi del sito vengono mappati dai parser in queste dataclass; i componenti a valle (render/writer/relations) dipendono solo da questo livello. `Conversation._blocks/_plain` sono montature fedeli delle risposte grezze (repr=False).
+Tutto il JSON grezzo del sito viene mappato dai parser in queste dataclass; i componenti a valle (render/writer/relations) dipendono solo da questo livello. `Conversation._blocks/_plain` sono montature fedeli delle risposte grezze (repr=False).
 
 ```mermaid
 classDiagram
@@ -101,14 +101,14 @@ classDiagram
 
 Note sulle responsabilità (numeri di riga relativi a `core/models.py`):
 
-- **`Turn.wf_block`** (models.py:127): il blocco del flusso di lavoro schematizzato di computer/council, montato da `parsers.attach_workflow_blocks` per UUID di entry (parsers.py:231-256); il rendering e il fallback della risposta (`_turn_answer`, render.py:489) dipendono da esso; writer è in sola lettura.
-- **`Turn.stub_wfs`** (models.py:131): payload di background associati agli stub di subagent_result tramite la finestra di 10s (montati da parsers.match_stub_workflows).
+- **`Turn.wf_block`** (models.py:127): il blocco di workflow schematizzato di computer/council, montato da `parsers.attach_workflow_blocks` per entry uuid (parsers.py:231-256); il rendering e il fallback della risposta (`_turn_answer`, render.py:489) dipendono da esso; writer è in sola lettura.
+- **`Turn.stub_wfs`** (models.py:131): payload di background associati ai stub turn subagent_result tramite la finestra di 10s (montati da parsers.match_stub_workflows).
 - **`Turn.metadata`** (models.py:134): tre chiavi — `report_info` (passo RESEARCH_ANSWER, parsers.py:199-204), `locked_reason` (parsers.py:205-208), `wf_status` (parsers.py:256).
-- **`Conversation.unconsumed_bgs`** (models.py:165-170): la fonte dati del terzo livello di fallback della cascata di attribuzione, `[{wp, locked_reason, updated, bg_uuid}]`, renderizzato come appendice alla fine di conversation.md.
+- **`Conversation.unconsumed_bgs`** (models.py:165-170): la fonte dati del fallback di terzo livello della cascata di attribuzione, `[{wp, locked_reason, updated, bg_uuid}]`, renderizzata come appendice alla fine di conversation.md.
 - **`Conversation.answer_variants`** (models.py:171-177): registrazione delle varianti di riscrittura della risposta (fonte dati di thread.json.answer_variants); `parsers.collect_answer_variants` (parsers.py:589) estrae da `entries[].side_by_side_metadata` con criteri di restrizione — catena di rilevamento in [§18](offline-operations.md).
-- **`Conversation.sub_agents`** (models.py:178-182): elenco di esecuzione dei subagent a livello di conversazione, popolato da `adapter.sub_agents` solo durante la ricostruzione offline `cmd_relations`; la pipeline di esportazione non retropropaga questo campo (writer renderizza con una sub_map locale; relations legge qui) — vedere [§15](offline-operations.md).
-- **`Conversation._blocks/_plain`** (models.py:183-190): fedeltà della risposta grezza; `fs_writer` le persiste verbatim come raw_*.json (fs_writer.py:257-266); `get_report/get_assets/sub_agents` and offline re-render all read from them. `PerplexityAdapter(None)` può essere costruito con un trasporto None per riutilizzare l'assemblaggio dati puro (rerender_cmd.py:138).
-- **ID duale**: `web_uuid` = web entryUUID (URL thread); `psc_uuid` = UUID della piattaforma `past_session_contexts`, preso dal primo turno non vuoto di `context_uuid` (adapter.py:99).
+- **`Conversation.sub_agents`** (models.py:178-182): elenco delle esecuzioni subagent a livello di conversazione, popolato da `adapter.sub_agents` solo durante la ricostruzione offline `cmd_relations`; la pipeline di esportazione non retropropaga questo campo (writer renderizza con una sub_map locale; relations legge qui) — vedere [§15](offline-operations.md).
+- **`Conversation._blocks/_plain`** (models.py:183-190): fedeltà della risposta grezza; `fs_writer` le persiste verbatim come raw_*.json (fs_writer.py:257-266); `get_report/get_assets/sub_agents` and offline re-render all read from them. `PerplexityAdapter(None)` può essere costruito con un trasporto None per riutilizzare l'assemblaggio puro dei dati (rerender_cmd.py:138).
+- **Dual ID**: `web_uuid` = web entryUUID (URL thread); `psc_uuid` = UUID della piattaforma `past_session_contexts`, preso dal primo turno non vuoto di `context_uuid` (adapter.py:99).
 
 ---
 
@@ -146,18 +146,18 @@ web_archive/
 
 | File | Writer | Semantica |
 |---|---|---|
-| `library_<account>.json` | `cmd_index` (index_cmd.py:17-43) | indice completo dei thread dell'account (GraphQL); input per indici batch/scheduling/spazi |
-| `batch_state.json` | `BatchState` (state.py) | checkpoint: uuid → stato(ok/error/expired/deleted) + lastUpdated; scritture atomiche; file corrotti automaticamente sottoposti a backup come `.corrupt-<ts>` |
-| `.cookies.json` | `CookieCache` (common.py:111, 150) | cache dei cookie (freschezza 12h), con sorgente ed email account; scrittura atomica: file temporaneo creato con 0o600 poi os.replace (cookies/cache.py:59-67 — credenziali di sessione leggibili solo dal proprietario; nell'ambito di gitignore) |
-| `space_<slug>.json` | `cmd_space_index` (spaces_cmd.py:106-167) | elenco "all" thread per spazio (incl. mappatura ID duale context_uuid) |
-| `space_meta.json` | `cmd_spaces --fetch-meta` (spaces_cmd.py:299-330) | cache proprietario/membro dello spazio (riutilizzata durante la ricostruzione degli indici, evitando rifetch) |
+| `library_<account>.json` | `cmd_index` (index_cmd.py) | indice thread dell'account (GraphQL); unito incrementalmente per default (`--full` riscrive); contiene anche `last_full_index_at` / `incremental_runs_since_full`; input per indici batch/scheduling/space |
+| `batch_state.json` | `BatchState` (state.py) | checkpoint: uuid → stato(ok/error/expired/deleted) + lastUpdated; scritture atomiche; file corrotti automaticamente salvati come `.corrupt-<ts>` |
+| `.cookies.json` | `CookieCache` (common.py:111, 150) | cache dei cookie (freschezza 12h), con source e email account; scrittura atomica: file temporaneo creato con 0o600 poi os.replace (cookies/cache.py:59-67 — credenziali di sessione leggibili solo dal proprietario; nell'ambito gitignore) |
+| `space_<slug>.json` | `cmd_space_index` (spaces_cmd.py:106-167) | elenco thread "tutti" per spazio (incl. mappatura dual-ID context_uuid) |
+| `space_meta.json` | `cmd_spaces --fetch-meta` (spaces_cmd.py:299-330) | cache proprietario/membro dello spazio (riutilizzata durante la ricostruzione degli indici, evitando un nuovo recupero) |
 | `credit_usage_<account>.json` | `cmd_usage_backfill` (usage_backfill_cmd.py:17) | utilizzo crediti per thread (idempotente e riprendibile, scaricato ogni 25 voci) |
-| `cron_snippet.txt` | `cmd_schedule` (scheduler.py:48-78) | snippet di invocazione cron (percorsi assoluti) |
-| `answer_variants_log.jsonl` | `variant_log.append_registry` (variant_log.py:76) | registro centrale delle varianti di riscrittura della risposta (dedup per thread+entry, idempotente; file tracciato, non logs/) — catena di rilevamento in [§18](offline-operations.md) |
+| `cron_snippet.txt` | `cmd_schedule` (scheduler.py:48-78) | frammento di invocazione cron (percorsi assoluti) |
+| `answer_variants_log.jsonl` | `variant_log.append_registry` (variant_log.py:76) | registro centrale delle varianti di riscrittura della risposta (deduplicato per thread+entry, idempotente; file tracciato, non logs/) — catena di rilevamento in [§18](offline-operations.md) |
 | `logs/` | `--log-file` (common.py:218-229) | log DEBUG completi (gitignorati) |
 
 <a id="the-spaces-index-layer-repository-root-tool-generated" data-pplx-source-anchor="true"></a>
-### Il livello indice spaces/ (radice repository, generato da strumenti)
+### Il livello indice spaces/ (radice del repository, generato da strumenti)
 
 `cmd_spaces` ricostruisce aggregando `index/library_*.json` (spaces_cmd.py:259-389): un `<slug>.md` per spazio (aggregazione account partecipanti + intestazione proprietario/membro + tabella thread + backlink posizione esportazione) più il registro `spaces.json`. **Nota**: la directory di output è `spaces/` relativa a CWD (spaces_cmd.py:332) — non segue `--out`; le informazioni sugli account partecipanti sono aggregate puramente localmente, mentre proprietari/membri provengono dalla cache `index/space_meta.json`. Non modificare a mano — la prossima ricostruzione sovrascrive.
 

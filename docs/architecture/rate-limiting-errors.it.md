@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/architecture/rate-limiting-errors.md"
-translation_source_sha256: "2f7be7898606995b419c6de2185ab87352f1469006180f11fff2d32ba7929597"
+translation_source_sha256: "91252ba3add326958d39759900774a7a4268b67820c65a36a4ae9e9b8eaa2ec3"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -58,11 +58,24 @@ flowchart TD
 - **WebBridgeTransport** allinea il backoff 429 e `throttle.reset()` al successo
   (bridge_transport.py); classificazione degli errori allineata con CookieTransport — 401/403 →
   `AuthTransportError`, 400 con corpo contenente ENTRY_EXPIRED → `EntryExpiredError`,
-  5xx backoff-riprova; fail-fast dell'autenticazione batch e stati terminali scaduti si applicano anche sotto
+  5xx backoff-retry; anche il fail-fast dell'autenticazione batch e gli stati terminali scaduti si applicano sotto
   `--transport webbridge`; le risposte non JSON del demone collassano in
   TransportError (URLError/JSONDecodeError/OSError catturati uniformemente); altri non-200 vanno direttamente a
   TransportError.
 - **Throttle condiviso**: batch passa la stessa istanza a CookieTransport (cli.py:280-282),
-  unificando i conteggi di backoff tra i livelli di trasporto e batch; **viene ricostruito dopo il cambio automatico dell'account senza perderlo**
+  unificando i conteggi di backoff tra i livelli di trasporto e batch; **le ricostruzioni dopo il cambio automatico dell'account non lo perdono**
   (common.py:139 lo passa anch'esso); i comandi singoli che non ne passano uno ottengono un'istanza predefinita costruita da CookieTransport
   (cookie_transport.py:49).
+- **Heartbeat (verbosità predefinita).** Le tre lunghe attese — un sonno `Throttle.backoff`,
+  una richiesta in volo bloccata (`CookieTransport._open_read`), e uno stream SSE `pplx-ask`
+  inattivo (`ask_api.post_stream`) — ora emettono heartbeat INFO "ancora in attesa"
+  in modo che un'attesa non venga mai scambiata per un blocco. I sonni di backoff in blocchi
+  (`Throttle._sleep_with_heartbeat`) la cui somma equivale allo stesso totale, quindi il
+  ritmo/budget anti-ban è invariato — solo reso visibile; `-v` aggiunge ancora la
+  traccia DEBUG completa.
+- **`--skip-auth-check` + controllo differito.** Il probe di sessione di attribuzione account all'avvio
+  (`common.py`, `make_transport`) può essere saltato per evitare una lunga
+  attesa all'avvio su una rete scadente. Come rete di sicurezza, `batch` esegue un
+  `report_account_status` una tantum (`common.py`) una volta che gli errori generici si accumulano
+  (`batch_cmd.py`), avvertendo se il cookie è scaduto, l'account
+  non corrisponde, o l'account è a posto (quindi gli errori sono di rete / limitazione della velocità).

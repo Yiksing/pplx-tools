@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/guide/pplx-ask.md"
-translation_source_sha256: "01eede19356c18b7769f76a4a88c4cf86a543fc0852203e11051a6bacb17dc7e"
+translation_source_sha256: "2068f1ed34cbfa9591947ed9426263b130c8e98e4a7c4edff98ba092f447d756"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -14,7 +14,7 @@ translation_prompt_version: "v1"
 in modo interattivo tramite streaming SSE, quindi post-elabora il thread risultante — spostandolo
 nello spazio BOT, inviando una ricevuta di lettura opzionale e telemetria di visualizzazione simile a quella umana, e
 archiviandolo automaticamente con la stessa pipeline di esportazione di `pplx-export`. Condivide il
-nucleo (trasporto / cookie / stato / logging) con `pplx-export`, e tutte le forme API sono
+core (trasporto / cookie / stato / logging) con `pplx-export`, e tutte le forme API sono
 verificate rispetto alla piattaforma live.
 
 Fonte: `pplx_export/ask_cli.py` (CLI), `pplx_export/sites/perplexity/ask_api.py` (livello API).
@@ -36,7 +36,7 @@ pplx-ask space-create "My Space"                 # create a space
 
 ### `models`
 
-Stampa la tabella dei modelli autorevole e live da
+Stampa la tabella dei modelli live e autorevole da
 `GET https://www.perplexity.ai/rest/models/config/v2` (`pplx_export/ask_cli.py:51`):
 modelli predefiniti per modalità, i tre modelli predefiniti del council, i modelli selezionabili in
 modalità di ricerca e le modalità speciali (`research` / `study` / `agentic_research` / `studio`).
@@ -44,7 +44,7 @@ Nessuna opzione.
 
 ### `ask`
 
-Pone una domanda (`pplx_export/ask_cli.py:86`). Trasmette in streaming SSE l'avanzamento sulla console,
+Pone una domanda (`pplx_export/ask_cli.py:86`). Trasmette in streaming SSE l'avanzamento alla console,
 esegue la pipeline di post-elaborazione (vedi [Il flusso ask](#the-ask-flow)) e stampa un
 oggetto JSON leggibile dalla macchina su stdout alla fine.
 
@@ -52,15 +52,15 @@ oggetto JSON leggibile dalla macchina su stdout alla fine.
 |---|---|---|
 | `prompt` (posizionale) | — | La domanda. Prompt lunghi e significativi funzionano meglio. |
 | `--mode` | `search` | `search` = ricerca normale (modello selezionabile); `deep-research` = deep research (modello fisso); `council` = model council (2–3 modelli in parallelo + sintesi); `study` = studio passo-passo |
-| `--models` | nessuno | `council`: 2–3 ID modello separati da virgola (predefinito `gpt55_thinking,claude48opusthinking,gemini31pro_high`); `search`: un singolo ID modello; ignorato da `deep-research` / `study` |
+| `--models` | nessuno | `council`: ID modello separati da virgola, 2–3 (predefinito `gpt55_thinking,claude48opusthinking,gemini31pro_high`); `search`: un singolo ID modello; ignorato da `deep-research` / `study` |
 | `--space` | `home` | `home` = crea dalla home page, quindi sposta nello spazio BOT; `<slug>` = crea direttamente all'interno di quello spazio, quindi sposta nello spazio BOT |
 | `--mark-read` | off | Invia una ricevuta di lettura (`mark_viewed`) dopo il completamento |
-| `--no-telemetry` | off | Non inviare telemetria di visualizzazione simile a quella umana (predefinito: invia — `ask context pane viewed` / `thread viewed` / `thread entry exited` con tempistiche randomizzate) |
+| `--no-telemetry` | off | Non inviare telemetria di visualizzazione simile a quella umana (predefinito: invia — `ask context pane viewed` / `thread viewed` / `thread entry exited` con tempistica randomizzata) |
 | `--no-export` | off | Non archiviare automaticamente in `web_archive` |
 | `--timeout` | `600` | Timeout del flusso SSE in secondi |
 
 Suggerimenti di errore HTTP emessi da `ask` (`pplx_export/ask_cli.py:124`): `401`/`403` = il
-cookie è scaduto o soggetto a controllo del rischio (aggiorna il cookie), `429` = limitazione della frequenza (riprova
+cookie è scaduto o controllato dal rischio (aggiorna il cookie), `429` = limitazione di frequenza (riprova
 più tardi), `5xx` = errore del server (riprova più tardi). Vedi [Risoluzione dei problemi](troubleshooting.md).
 
 ### `mark-read`
@@ -69,10 +69,10 @@ Invia una ricevuta di lettura per un thread esistente (`pplx_export/ask_cli.py:2
 URL del thread o un UUID nudo, risolve l'`context_uuid` del thread tramite
 `GET /rest/thread/<uuid>`, quindi chiama `POST /rest/thread/mark_viewed` con
 `{"context_uuids": [ctx]}` (`pplx_export/sites/perplexity/ask_api.py:190`). Il flag
-non letto si inverte immediatamente. Stampa `{"uuid", "context_uuid", "result"}` come JSON.
+non letto si capovolge immediatamente. Stampa `{"uuid", "context_uuid", "result"}` come JSON.
 
-Nota: l'evento di analisi `thread viewed` **non** inverte il flag non letto — la vera ricevuta
-di lettura è questo endpoint.
+Nota: l'evento di analisi `thread viewed` **non** capovolge il non letto — la vera ricevuta di
+lettura è questo endpoint.
 
 ### `space-create`
 
@@ -86,7 +86,7 @@ Crea uno spazio tramite `POST /rest/collections/create_collection`
 | `--description` | `""` | Descrizione dello spazio |
 
 Per utilizzare il nuovo spazio come spazio BOT, registra il suo `uuid`/`slug` sotto `[bot_space]`
-nel config a livello utente (vedi [Configurazione](configuration.md)).
+nel file di configurazione a livello utente (vedi [Configurazione](configuration.md)).
 
 <a id="common-options" data-pplx-source-anchor="true"></a>
 ## Opzioni comuni
@@ -95,13 +95,13 @@ Condivise con `pplx-export` (nomi e predefiniti identici, `pplx_export/commands/
 
 | Opzione | Predefinito | Descrizione |
 |---|---|---|
-| `--account` | config `default_account` | Account di destinazione; in caso di disallineamento cookie/email i token di sessione per account del browser vengono enumerati e cambiati automaticamente |
-| `--config PATH` | `~/.config/pplx-export/config.toml` | Config a livello utente (registro account / spazio BOT); priorità: `--config` > variabile d'ambiente `PPLX_EXPORT_CONFIG` > percorso predefinito |
-| `--out` | `./web_archive` | Directory radice di output dell'archivio |
+| `--account` | config `default_account` | Account di destinazione; in caso di disallineamento cookie/email, i token di sessione per account del browser vengono enumerati e commutati automaticamente |
+| `--config PATH` | `~/.config/pplx-export/config.toml` | Configurazione a livello utente (registro account / spazio BOT); priorità: `--config` > variabile d'ambiente `PPLX_EXPORT_CONFIG` > percorso predefinito |
+| `--out` | `./web_archive` | Directory di output dell'archivio |
 | `--cookies-from BROWSER` | rilevamento automatico | Importa cookie dal browser nominato (`edge`/`chrome`/`firefox`/`safari`/`brave`…) |
-| `--cookies FILE` | — | File cookie in formato Netscape o JSON |
+| `--cookies FILE` | — | File cookie Netscape o file cookie JSON |
 | `-v` / `--verbose` | off | Output DEBUG (tracciamento richieste / decisioni interne) |
-| `--log-file [PATH]` | off | Log DEBUG completo su file; senza un valore finisce in `<out>/index/logs/<cmd>-<timestamp>.log` |
+| `--log-file [PATH]` | off | Log DEBUG completo su file; senza valore finisce in `<out>/index/logs/<cmd>-<timestamp>.log` |
 
 Priorità fonte cookie: `--cookies-from` / `--cookies` > cache recente
 (`<out>/index/.cookies.json`, 12 h) > rilevamento automatico browser. Vedi
@@ -123,37 +123,41 @@ flowchart TD
 ```
 
 1. **Assemblaggio busta** — `build_envelope` (`pplx_export/sites/perplexity/ask_api.py:71`)
-   riempie il template di parametri verificato: `mode` è sempre `"copilot"` e
-   `query_source` è `"home"` (ogni `ask` avvia una **nuova** conversazione; il proseguimento
-   di follow-up non è esposto dalla CLI). Con `--space <slug>`, lo slug dello spazio viene
-   risolto in un uuid prima, e la busta porta `target_collection_uuid` +
+   riempie il modello di parametri verificato: `mode` è sempre `"copilot"` e
+   `query_source` è `"home"` (ogni `ask` avvia una **nuova** conversazione; la continuazione
+   di follow-up non è esposta dalla CLI). Con `--space <slug>`, lo slug dello spazio viene
+   prima risolto in un uuid, e la busta trasporta `target_collection_uuid` +
    `target_thread_access_level: 1`.
 2. **Streaming SSE** — `sse_ask` (`pplx_export/sites/perplexity/ask_api.py:153`) invia una POST a
    `https://www.perplexity.ai/rest/sse/perplexity_ask` e consuma il flusso di eventi,
    registrando la creazione del thread (`https://www.perplexity.ai/search/<uuid>`), le transizioni
    di stato e l'avanzamento della generazione. Il flusso termina su `final_sse_message`.
+   Quando il flusso rimane inattivo per un intervallo (deep-research / council può essere silenzioso
+   per minuti; il timeout aperto è 600 s), `post_stream` emette un heartbeat INFO "ancora in attesa del
+   flusso di risposta" alla verbosità predefinita in modo che un'esecuzione live non venga mai
+   scambiata per un blocco.
 3. **Cancello di completamento** — la post-elaborazione viene eseguita solo quando lo stato finale è `COMPLETED`
-   (`pplx_export/ask_cli.py:134`). In caso di terminazione anomala del flusso, tutto dopo
-   questo punto viene saltato (nessuno spostamento, nessuna telemetria, nessuna esportazione) in modo che uno stato
-   non finito non venga mai inserito nell'archivio.
+   (`pplx_export/ask_cli.py:134`). In caso di terminazione anomala del flusso, tutto ciò che segue questo
+   punto viene saltato (nessuno spostamento, nessuna telemetria, nessuna esportazione) in modo che uno stato
+   non finito non venga mai introdotto nell'archivio.
 4. **Spostamento nello spazio BOT** (best-effort) — `batch_move_threads` con l'`context_uuid` del thread
-   nello uuid `[bot_space]` configurato. Saltato quando nessuno spazio BOT è
+   nell'uuid `[bot_space]` configurato. Saltato quando nessuno spazio BOT è
    configurato, o quando il thread è già stato creato all'interno dello spazio BOT.
 5. **Ricevuta di lettura** (best-effort, `--mark-read`) — `POST /rest/thread/mark_viewed`;
-   il flag non letto si inverte immediatamente.
+   il flag non letto si capovolge immediatamente.
 6. **Telemetria di visualizzazione simile a quella umana** (best-effort, attiva per impostazione predefinita) —
-   `send_view_telemetry` (`pplx_export/sites/perplexity/ask_api.py:234`) imita la tempistica
-   di navigazione reale: `ask context pane viewed` → `thread viewed` → `ask context pane
+   `send_view_telemetry` (`pplx_export/sites/perplexity/ask_api.py:234`) imita la tempistica di
+   navigazione reale: `ask context pane viewed` → `thread viewed` → `ask context pane
    viewed` → `thread entry exited` (random `timeOnEntryMs` di 12–45 s, pause di 0,6–2,4 s
    tra gli eventi, dispositivo scelto casualmente da un piccolo pool).
 7. **Archiviazione automatica** (passaggio principale, a meno che `--no-export`) — il thread viene esportato
    attraverso la stessa pipeline di `pplx-export export` (modalità forzata), finendo sotto
    `<out>/<account>/<mode>/<date>_<title>_<uuid8>/` — vedi
    [Struttura dell'archivio](archive-layout.md) e [Pipeline di esportazione](../architecture/export-pipeline.md).
-   A differenza dei passaggi best-effort, un fallimento dell'archiviazione si propaga e fa fallire il comando.
+   A differenza dei passaggi best-effort, un fallimento di archiviazione si propaga e fa fallire il comando.
 
 **Isolamento dei fallimenti**: i passaggi 4–6 sono isolati come best-effort (`pplx_export/ask_cli.py:36`):
-un fallimento registra un avviso, imposta la chiave JSON del passaggio a `false`, registra il dettaglio sotto
+un fallimento registra un avviso, imposta la chiave JSON del passaggio su `false`, registra il dettaglio sotto
 `step_errors` e non blocca mai l'archiviazione. L'archiviazione (passaggio 7) è il passaggio principale e i suoi
 fallimenti non vengono mai ignorati.
 
@@ -161,16 +165,16 @@ fallimenti non vengono mai ignorati.
 ## Modalità e selezione del modello
 
 La tabella dei modelli autorevole della piattaforma è `GET /rest/models/config/v2` (ciò che
-`pplx-ask models` stampa). La discriminazione risiede nel campo `model_preference` — l'`mode` della busta
-è sempre `"copilot"`.
+`pplx-ask models` stampa). La discriminazione risiede nel campo `model_preference` — la
+`mode` della busta è sempre `"copilot"`.
 
 | Modalità | Valore `--mode` | `model_preference` | Selezione modello |
 |---|---|---|---|
-| Ricerca | `search` | `pplx_pro` ("Best" nell'interfaccia utente) per impostazione predefinita | Singolo ID modello tramite `--models` (vedi `pplx-ask models` per l'elenco selezionabile) |
+| Ricerca | `search` | `pplx_pro` ("Migliore" nell'interfaccia) per impostazione predefinita | Singolo ID modello tramite `--models` (vedi `pplx-ask models` per l'elenco selezionabile) |
 | Deep research | `deep-research` | `pplx_alpha` | Fisso — nessun selettore |
 | Model council | `council` | `pplx_agentic_research` + `compare_model_preferences` | 2–3 ID separati da virgola tramite `--models`; predefinito `gpt55_thinking,claude48opusthinking,gemini31pro_high` |
 | Studio passo-passo | `study` | `pplx_study` | Fisso — nessun selettore |
-| Computer | *(non esposto)* | Famiglia `pplx_asi*` | Non supportato da `pplx-ask` |
+| Computer | *(non esposta)* | Famiglia `pplx_asi*` | Non supportato da `pplx-ask` |
 
 Note:
 
@@ -188,18 +192,18 @@ domanda, attende il completamento, archivia il thread ed emette un contratto
 leggibile dalla macchina.
 
 - **stdout trasporta esattamente un oggetto JSON** (l'ultima riga); tutti i log vanno su stderr, quindi
-  i chiamanti possono reindirizzare stdout direttamente in un parser JSON.
+  i chiamanti possono inviare stdout direttamente a un parser JSON.
 - **Stato di uscita**: `0` in caso di successo; i fallimenti escono con codice non zero e un messaggio di errore su
-  stderr — i fallimenti in fase ask terminano tramite `SystemExit` con un messaggio `[ask][ERROR]`,
+  stderr — i fallimenti in fase ask vengono interrotti tramite `SystemExit` con un messaggio `[ask][ERROR]`,
   mentre i fallimenti di archiviazione si propagano così come sono (vedi passaggio 7).
 
-Forma del JSON risultante (`pplx_export/ask_cli.py:194`):
+Forma JSON del risultato (`pplx_export/ask_cli.py:194`):
 
 | Chiave | Tipo | Significato |
 |---|---|---|
-| `thread_uuid` | stringa | UUID lato backend del thread creato |
+| `thread_uuid` | stringa | UUID backend del thread creato |
 | `thread_url` | stringa | `https://www.perplexity.ai/search/<thread_uuid>` |
-| `context_uuid` | stringa | L'`context_uuid` del thread (usato da spostamento / segna come letto / telemetria) |
+| `context_uuid` | stringa | L'`context_uuid` del thread (usato da sposta / segna-come-letto / telemetria) |
 | `moved_to_bot` | booleano | `true` = lo spostamento nello spazio BOT è stato eseguito e ha avuto successo; `false` = non eseguito o fallito |
 | `mark_read` | booleano | Stesso contratto per la ricevuta di lettura |
 | `telemetry` | booleano | Stesso contratto per la telemetria di visualizzazione |
@@ -208,9 +212,9 @@ Forma del JSON risultante (`pplx_export/ask_cli.py:194`):
 
 Suggerimenti per l'automazione:
 
-- Considera i booleani dei passaggi in modo rigoroso — un fallimento non è mai rappresentato da un valore truthy;
+- Tratta i booleani dei passaggi in modo rigoroso — un fallimento non è mai rappresentato da un valore truthy;
   controlla `step_errors` per i dettagli.
-- `--no-telemetry` salta la sosta umana di 12–45 s quando conta solo la risposta.
+- `--no-telemetry` salta la sosta simile a quella umana di 12–45 s quando conta solo la risposta.
 - Senza uno spazio BOT configurato (modalità degradata), `moved_to_bot` rimane `false` e
   tutto il resto funziona comunque — vedi [Risoluzione dei problemi](troubleshooting.md).
 - Per la configurazione account/cookie, gli agenti headless dovrebbero leggere
