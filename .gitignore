@@ -27,6 +27,9 @@ web_archive/
 
 # 编辑器/代理本地工作数据（不入库；无尾斜杠，兼容 .qoder 为目录或指向 .agents 的软链接）
 .qoder
+# Per-machine agent permission grants (local tool state, contains an absolute path)
+# 本机 agent 权限授予（本地工具状态，含绝对路径）
+.agents/settings.local.json
 
 # macOS
 .DS_Store

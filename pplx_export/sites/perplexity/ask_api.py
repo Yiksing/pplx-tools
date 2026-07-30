@@ -19,9 +19,12 @@ import time
 import uuid as uuidlib
 from typing import Any, Iterator
 
+from ... import config
 from ...config import ACCOUNT_UID
 from ...core.http.cookie_transport import CookieTransport, UA
 from ...core.logging import get_logger
+from . import platform as _plat
+from .platform import API_VERSION, COUNCIL_DEFAULT_MODELS, MODE_MODEL
 
 log = get_logger("ask")
 
@@ -30,16 +33,12 @@ ANALYTICS_URL = "https://www.perplexity.ai/rest/event/analytics"
 CREATE_COLLECTION_URL = "https://www.perplexity.ai/rest/collections/create_collection"
 MOVE_THREADS_URL = "https://www.perplexity.ai/rest/collections/batch_move_threads"
 MARK_VIEWED_URL = "https://www.perplexity.ai/rest/thread/mark_viewed"
+MODELS_CONFIG_URL = (f"https://www.perplexity.ai/rest/models/config/v2"
+                     f"?version={API_VERSION}&source=default")
 
-# mode → model_preference (deep-research/study offer no model choice; council needs compare_model_preferences).
-# mode → model_preference（深度研究/学习不可选模型；委员会需 compare_model_preferences）
-MODE_MODEL = {
-    "search": "pplx_pro",
-    "deep-research": "pplx_alpha",
-    "council": "pplx_agentic_research",
-    "study": "pplx_study",
-}
-COUNCIL_DEFAULT_MODELS = ["gpt55_thinking", "claude48opusthinking", "gemini31pro_high"]
+# MODE_MODEL / COUNCIL_DEFAULT_MODELS are the pinned fallback baseline; the live
+# defaults come from config.toml [models] (see _mode_model / _council_defaults).
+# 模型默认的钉死兜底在 platform；线上默认取自 config.toml [models]（见下方解析）。
 
 _BASE_PARAMS: dict[str, Any] = {
     "attachments": [], "language": "zh-CN", "timezone": "Europe/Stockholm",
@@ -48,24 +47,33 @@ _BASE_PARAMS: dict[str, Any] = {
     "prompt_source": "user", "is_incognito": False,
     "local_search_enabled": False, "use_schematized_api": True,
     "send_back_text_in_streaming_api": False,
-    "supported_block_use_cases": [
-        "answer_modes", "media_items", "knowledge_cards", "inline_entity_cards",
-        "place_widgets", "finance_widgets", "sports_widgets", "news_widgets",
-        "shopping_widgets", "jobs_widgets", "search_result_widgets", "inline_images",
-        "inline_assets", "placeholder_cards", "diff_blocks", "inline_knowledge_cards",
-        "entity_group_v2", "refinement_filters", "canvas_mode", "maps_preview",
-        "answer_tabs", "price_comparison_widgets", "preserve_latex",
-        "generic_onboarding_widgets", "in_context_suggestions", "pending_followups",
-        "inline_claims", "unified_assets", "workflow_steps", "workflow_widgets",
-        "navigation_results", "background_agents"],
+    "supported_block_use_cases": list(_plat.SUPPORTED_BLOCK_USE_CASES),
     "client_coordinates": None, "mentions": [], "skip_search_enabled": True,
     "is_nav_suggestions_disabled": False, "source": "default",
     "always_search_override": False, "override_no_search": False,
     "should_ask_for_mcp_tool_confirmation": True, "supports_tool_approval_modal": True,
     "force_enable_browser_agent": False,
-    "supported_features": ["browser_agent_permission_banner_v1.1"],
-    "version": "2.18",
+    "supported_features": list(_plat.SUPPORTED_FEATURES),
+    "version": API_VERSION,
 }
+
+
+def _mode_model(mode: str) -> str:
+    """Per-mode model_preference: config.toml [models].mode_defaults override, else the
+    pinned platform fallback.
+
+    每模式 model_preference：优先 config.toml [models].mode_defaults，回退 platform 兜底。
+    """
+    override = (config.MODEL_CONFIG.get("mode_defaults") or {}).get(mode)
+    return override or MODE_MODEL[mode]
+
+
+def _council_defaults() -> list[str]:
+    """Council default compare models: config.toml override, else platform fallback.
+
+    委员会默认对比模型：优先 config.toml，回退 platform 兜底。
+    """
+    return list(config.MODEL_CONFIG.get("council_defaults") or COUNCIL_DEFAULT_MODELS)
 
 
 def build_envelope(prompt: str, mode: str = "search", models: list[str] | None = None,
@@ -86,16 +94,85 @@ def build_envelope(prompt: str, mode: str = "search", models: list[str] | None =
         if models is not None and not (2 <= len(models) <= 3):
             raise ValueError(f"council 模式需 2-3 个模型（逗号分隔），收到 {len(models)} 个: "
                              f"{','.join(models)}")
-        p["model_preference"] = MODE_MODEL["council"]
-        p["compare_model_preferences"] = list(models or COUNCIL_DEFAULT_MODELS)[:3]
+        p["model_preference"] = _mode_model("council")
+        p["compare_model_preferences"] = list(models or _council_defaults())[:3]
     elif mode == "search" and models:
         p["model_preference"] = models[0]
     else:
-        p["model_preference"] = MODE_MODEL[mode]
+        p["model_preference"] = _mode_model(mode)
     if target_collection_uuid:
         p["target_collection_uuid"] = target_collection_uuid
         p["target_thread_access_level"] = 1
     return {"params": p, "query_str": prompt}
+
+
+# API mode name (models/config/v2) → our CLI mode name, for default_models mapping.
+# API 模式名（models/config/v2）→ 本工具 CLI 模式名，用于 default_models 映射。
+_API_MODE_TO_CLI = {
+    "search": "search", "pro": "search", "research": "deep-research",
+    "deep research": "deep-research", "agentic_research": "council",
+    "study": "study", "studio": "study",
+}
+
+
+def fetch_models_config(transport) -> dict:
+    """GET /rest/models/config/v2 (raw payload) via the given transport.
+
+    经给定 transport GET /rest/models/config/v2（原始负载）。
+    """
+    return transport.get_json(MODELS_CONFIG_URL, timeout=30)
+
+
+def map_models_config(raw: dict) -> dict:
+    """Map a models/config/v2 payload to the config.toml [models] schema pieces.
+
+    把 models/config/v2 负载映射为 config.toml [models] 各片段。
+    """
+    models = raw.get("models") or {}
+    defaults = raw.get("default_models") or {}
+    council = raw.get("agentic_research_compare_models") or []
+    mode_defaults = dict(MODE_MODEL)  # seed from pinned fallback
+    for api_mode, mid in defaults.items():
+        cli = _API_MODE_TO_CLI.get(api_mode)
+        if cli and mid:
+            mode_defaults[cli] = mid
+    catalog = {mid: {"label": m.get("label", ""), "provider": m.get("provider", ""),
+                     "mode": m.get("mode", "")}
+               for mid, m in models.items() if isinstance(m, dict)}
+    search_models = [mid for mid, m in models.items()
+                     if isinstance(m, dict) and m.get("mode") == "search"]
+    return {"mode_defaults": mode_defaults,
+            "council_defaults": list(council) or list(COUNCIL_DEFAULT_MODELS),
+            "search_models": search_models, "catalog": catalog}
+
+
+def refresh_models(transport, config_path, *, raw: dict | None = None,
+                   auto_refresh: bool | None = None) -> dict:
+    """Fetch models/config/v2 (or use a pre-fetched `raw`), write the `[models]` table
+    into config_path (preserving all other content), stamp last_refreshed (UTC), and
+    update config.MODEL_CONFIG in memory. Returns the written section.
+
+    拉取 models/config/v2（或复用已取的 `raw`），把 `[models]` 表写入 config_path
+    （其余内容保留），盖上 last_refreshed（UTC），并同步内存 config.MODEL_CONFIG。
+    """
+    mapped = map_models_config(raw if raw is not None else fetch_models_config(transport))
+    if auto_refresh is None:
+        auto_refresh = bool(config.MODEL_CONFIG.get("auto_refresh", False))
+    # Scalars/arrays first, sub-table dicts last → valid TOML ordering under [models].
+    # 标量/数组在前，子表 dict 在后 → [models] 下 TOML 顺序合法。
+    section = {
+        "last_refreshed": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "source_version": API_VERSION,
+        "auto_refresh": auto_refresh,
+        "council_defaults": mapped["council_defaults"],
+        "search_models": mapped["search_models"],
+        "mode_defaults": mapped["mode_defaults"],
+        "catalog": mapped["catalog"],
+    }
+    config.write_models_section(config_path, section)
+    config.MODEL_CONFIG.clear()
+    config.MODEL_CONFIG.update(section)
+    return section
 
 
 def _parse_sse(raw: bytes) -> dict | None:
@@ -198,7 +275,7 @@ def move_threads(transport: CookieTransport, context_uuids: list[str], to_collec
     batch_move_threads：把线程移入目标空间（context_uuid 维度）。
     """
     return transport.post_json(
-        f"{MOVE_THREADS_URL}?version=2.18&source=default",
+        f"{MOVE_THREADS_URL}?version={API_VERSION}&source=default",
         {"context_uuids": context_uuids, "new_collection_uuid": to_collection_uuid}, timeout=30)
 
 
@@ -208,7 +285,7 @@ def create_space(transport: CookieTransport, title: str, description: str = "") 
     create_collection：创建空间（实测端点与字段）。
     """
     return transport.post_json(
-        f"{CREATE_COLLECTION_URL}?version=2.18&source=default",
+        f"{CREATE_COLLECTION_URL}?version={API_VERSION}&source=default",
         {"title": title, "description": description, "emoji": "1f4c1",
          "appearance": None, "instructions": "", "access": 1}, timeout=30)
 
@@ -227,7 +304,7 @@ def mark_read(transport: CookieTransport, context_uuid: str, account_username: s
     真正的已读回执是本端点，body 为 context_uuids 列表（可批量）。
     """
     return transport.post_json(
-        f"{MARK_VIEWED_URL}?version=2.18&source=default",
+        f"{MARK_VIEWED_URL}?version={API_VERSION}&source=default",
         {"context_uuids": [context_uuid]}, timeout=30)
 
 

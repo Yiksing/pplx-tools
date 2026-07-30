@@ -12,7 +12,7 @@ from ...core.logging import get_logger
 from ...core.models import Account, Conversation, RelationEdge, Report, Space, SubAgent, Turn
 from ...core.http.transport import Transport
 from ..base import SiteAdapter
-from . import parsers, variant_log
+from . import parsers, platform as _plat, variant_log
 from .assets import AssetDownloader
 from .graphql import GraphQLClient
 from .normalize import detect_mode, normalize_math_delims, ts_us_to_iso, ts_us_to_iso_full
@@ -297,7 +297,7 @@ class PerplexityAdapter(SiteAdapter):
             j = self.transport.get_json(
                 "https://www.perplexity.ai/rest/collections/list_collection_threads"
                 f"?collection_slug={urllib.parse.quote(slug, safe='')}&offset={offset}"
-                "&version=2.18&source=default", timeout=30)
+                f"&version={_plat.API_VERSION}&source=default", timeout=30)
             items = j if isinstance(j, list) else (j.get("threads") or [])
             if not items:
                 break
@@ -324,7 +324,7 @@ class PerplexityAdapter(SiteAdapter):
         import urllib.parse
         j = self.transport.get_json(
             "https://www.perplexity.ai/rest/assets/"
-            f"{urllib.parse.quote(asset_uuid, safe='')}/data?version=2.18&source=default",
+            f"{urllib.parse.quote(asset_uuid, safe='')}/data?version={_plat.API_VERSION}&source=default",
             timeout=30)
         urls = []
         ad = j.get("asset_data") or {}

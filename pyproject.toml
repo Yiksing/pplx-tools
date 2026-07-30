@@ -11,6 +11,7 @@ requires-python = ">=3.11"
 license = { text = "GPL-3.0-or-later" }
 dependencies = [
     "browser_cookie3>=0.19",
+    "tomlkit>=0.15.1",
 ]
 
 [project.scripts]

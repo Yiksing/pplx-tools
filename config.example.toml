@@ -55,3 +55,24 @@ user_id = "00000000-0000-4000-8000-0000000000bb"
 [bot_space]
 uuid = "00000000-0000-4000-8000-0000000000b0"
 slug = "bot-EXAMPLE"
+
+# ── [models] — auto-managed model catalog (DO NOT hand-edit) ──────────────────
+# Written/refreshed by `pplx-ask models --refresh` and seeded by `pplx-export init`;
+# overrides the pinned fallback in pplx_export/sites/perplexity/platform.py. After 7
+# days the CLI reminds you to refresh (set auto_refresh = true to refresh on demand).
+# The shape below is an illustrative 2026-07-30 snapshot (real files carry the full
+# ~100-model catalog).
+# ── [models] —— 机器托管的模型目录（勿手改）──────────────────────────────
+# 由 `pplx-ask models --refresh` 写入/刷新、`pplx-export init` 播种；覆盖
+# platform.py 的钉死兜底。超过 7 天 CLI 会提醒刷新（auto_refresh=true 则自动刷新）。
+# 下方为 2026-07-30 示意快照（真实文件含完整 ~100 个模型目录）。
+# [models]
+# last_refreshed = "2026-07-30T00:00:00Z"
+# source_version = "2.18"
+# auto_refresh = false
+# council_defaults = ["gpt56_sol_thinking", "claude50opusthinking", "gemini31pro_high"]
+# search_models = ["pplx_pro", "gpt56_terra_thinking", "claude50opusthinking", "gemini31pro_high"]
+# mode_defaults = { search = "pplx_pro", deep-research = "pplx_alpha", council = "pplx_agentic_research", study = "pplx_study" }
+# [models.catalog]
+# pplx_pro = { label = "Best", provider = "PERPLEXITY", mode = "search" }
+# gpt56_terra_thinking = { label = "GPT-5.6 Terra", provider = "OPENAI", mode = "search" }

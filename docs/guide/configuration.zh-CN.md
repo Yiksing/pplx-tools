@@ -70,6 +70,7 @@ slug = "bot-EXAMPLE"
 |---|---|---|
 | `default_account` | string | 某个 `[accounts.<name>]` 表的键，`--account` 未给出时取用（`pplx_export/commands/common.py:84-85`）。为空/缺失 = 降级模式。 |
 | `archive_root` | string | 可选。归档输出根，作为 `--out` 的回退，日常命令可省略 `--out`。优先级：`--out` > `archive_root` > `./web_archive`（`pplx_export/config.py`，载入 `ARCHIVE_ROOT`；在 `cli.py` / `ask_cli.py` 解析）。`~` 会展开。 |
+| `[models]`（表） | table | **机器托管，非手写。** 可刷新的模型目录，由 `pplx-ask models --refresh` 写入、`pplx-export init` 播种；覆盖 `pplx_export/sites/perplexity/platform.py` 的钉死兜底。键：`last_refreshed`（UTC）、`source_version`、`auto_refresh`（bool）、`mode_defaults`、`council_defaults`、`search_models`，及完整 `[models.catalog]`（`id → {label, provider, mode}`）。请求读取它（以 `platform.py` 兜底）；7 天 TTL 打刷新提醒，或 `auto_refresh = true` 时自动刷新。回写经 `tomlkit`（运行时依赖）round-trip，保留你的其余表与注释，保持 `0600`。 |
 
 ### `[accounts.<name>]`
 

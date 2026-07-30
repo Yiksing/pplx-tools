@@ -22,17 +22,11 @@ import urllib.parse
 from typing import Any
 
 from ...core.http.transport import Transport
+from . import platform as _plat
 
-SCHEMATIZED_USE_CASES = (
-    "supported_block_use_cases=workflow_steps"
-    "&supported_block_use_cases=unified_assets"
-    "&supported_block_use_cases=asset_diff_assets"
-    "&supported_block_use_cases=write_delta"
-    "&supported_block_use_cases=bash_delta"
-    "&supported_block_use_cases=run_subagent_delta"
-    "&supported_block_use_cases=background_agents"
-    "&supported_block_use_cases=markdown"
-)
+# Query fragment for schematized thread reads — single source in platform.py.
+# schematized 线程读取的查询片段——单一来源在 platform.py。
+SCHEMATIZED_USE_CASES = _plat.schematized_query()
 
 
 class ThreadFetcher:
@@ -58,7 +52,7 @@ class ThreadFetcher:
 
     def get_thread(self, uuid: str, max_pages: int = 20) -> dict:
         def make(cursor):
-            p = f"https://www.perplexity.ai/rest/thread/{uuid}?version=2.18&source=default"
+            p = f"https://www.perplexity.ai/rest/thread/{uuid}?version={_plat.API_VERSION}&source=default"
             if cursor:
                 p += "&cursor=" + urllib.parse.quote(cursor, safe="")
             return p
@@ -67,7 +61,7 @@ class ThreadFetcher:
     def get_thread_blocks(self, uuid: str, max_pages: int = 10) -> dict:
         def make(cursor):
             p = (f"https://www.perplexity.ai/rest/thread/{uuid}?with_parent_info=true"
-                 f"&with_schematized_response=true&version=2.18&source=default"
+                 f"&with_schematized_response=true&version={_plat.API_VERSION}&source=default"
                  f"&limit=100&offset=0&from_first=false&{SCHEMATIZED_USE_CASES}")
             if cursor:
                 p += "&cursor=" + urllib.parse.quote(cursor, safe="")
@@ -80,5 +74,5 @@ class ThreadFetcher:
         空间元数据（owner_user/contributor_users/access/max_contributors，cookie 直连）。
         """
         p = ("https://www.perplexity.ai/rest/collections/get_collection"
-             f"?collection_slug={urllib.parse.quote(slug, safe='')}&version=2.18&source=default")
+             f"?collection_slug={urllib.parse.quote(slug, safe='')}&version={_plat.API_VERSION}&source=default")
         return self.transport.get_json(p, timeout=30)

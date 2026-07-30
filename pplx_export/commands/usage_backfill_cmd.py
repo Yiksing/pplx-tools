@@ -11,6 +11,7 @@ from pathlib import Path
 
 from ..core.fsio import atomic_write_text
 from ..core.logging import get_logger
+from ..sites.perplexity.platform import API_VERSION
 
 log = get_logger("cli")
 
@@ -56,7 +57,7 @@ def cmd_usage_backfill(adapter, account, out_root: Path, limit):
         try:
             j = adapter.transport.get_json(
                 f"https://www.perplexity.ai/rest/billing/credits/thread-usage"
-                f"?thread_id={psc}&version=2.18&source=default", timeout=30)
+                f"?thread_id={psc}&version={API_VERSION}&source=default", timeout=30)
             records[wu] = {"psc_uuid": psc, "usage_cents": j.get("usage_cents"),
                            "meter_usage": j.get("meter_usage") or [],
                            "mode": d.get("mode"), "title": (d.get("title") or "")[:80],

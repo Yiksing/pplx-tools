@@ -795,3 +795,92 @@ def test_index_incremental_preserves_uuidless_old_rows(tmp_path):
     assert adapter.consumed == _STOP_RUN  # early-stopped at the known boundary
     doc = json.loads(idx.read_text())
     assert "legacy-no-uuid" in [t.get("title") for t in doc["threads"]]
+
+
+# ---------------------------------------------------------------- models config (soft-coded)
+# ------------------------------------------------- 模型配置（软编码）
+
+def test_api_version_single_source():
+    """2.18 and the ask block-list literal live only in platform.py (no drift).
+
+    2.18 与 ask 块列表字面量仅存在于 platform.py（不散落）。"""
+    import pathlib
+    root = pathlib.Path(__file__).resolve().parents[1] / "pplx_export"
+    stray_ver, stray_block = [], []
+    for pyf in root.rglob("*.py"):
+        if pyf.name == "platform.py":
+            continue
+        text = pyf.read_text(encoding="utf-8")
+        rel = str(pyf.relative_to(root))
+        if "2.18" in text:
+            stray_ver.append(rel)
+        if '"answer_modes"' in text:  # first entry of the ask block list
+            stray_block.append(rel)
+    assert stray_ver == [], f"2.18 只应在 platform.py，散落于: {stray_ver}"
+    assert stray_block == [], f"block 列表只应在 platform.py，散落于: {stray_block}"
+
+
+def test_map_models_config_shapes():
+    from pplx_export.sites.perplexity import ask_api
+    raw = {
+        "models": {"pplx_pro": {"label": "Best", "provider": "PERPLEXITY", "mode": "search"},
+                   "pplx_alpha": {"label": "R", "provider": "P", "mode": "research"}},
+        "default_models": {"research": "pplx_alpha", "search": "pplx_pro"},
+        "agentic_research_compare_models": ["m1", "m2", "m3"],
+    }
+    m = ask_api.map_models_config(raw)
+    assert m["mode_defaults"]["deep-research"] == "pplx_alpha"  # research → deep-research
+    assert m["mode_defaults"]["search"] == "pplx_pro"
+    assert m["council_defaults"] == ["m1", "m2", "m3"]
+    assert m["search_models"] == ["pplx_pro"]
+    assert m["catalog"]["pplx_pro"] == {"label": "Best", "provider": "PERPLEXITY", "mode": "search"}
+
+
+def test_build_envelope_config_override_then_platform_fallback():
+    from pplx_export import config as cfg
+    from pplx_export.sites.perplexity import ask_api
+    cfg.MODEL_CONFIG.clear()
+    try:
+        # fallback: pinned platform values
+        # 回退：platform 钉死值
+        assert ask_api.build_envelope("q", "search")["params"]["model_preference"] == ask_api.MODE_MODEL["search"]
+        assert (ask_api.build_envelope("q", "council")["params"]["compare_model_preferences"]
+                == list(ask_api.COUNCIL_DEFAULT_MODELS)[:3])
+        # override: config.toml [models] wins
+        # 覆盖：config.toml [models] 优先
+        cfg.MODEL_CONFIG.update({"mode_defaults": {"search": "XYZ"}, "council_defaults": ["m1", "m2"]})
+        assert ask_api.build_envelope("q", "search")["params"]["model_preference"] == "XYZ"
+        assert ask_api.build_envelope("q", "council")["params"]["compare_model_preferences"] == ["m1", "m2"]
+    finally:
+        cfg.MODEL_CONFIG.clear()
+
+
+def test_maybe_refresh_models_ttl(monkeypatch, tmp_path, caplog):
+    import logging
+    from pplx_export import config as cfg
+    import pplx_export.ask_cli as ac
+    calls = []
+    monkeypatch.setattr(ac, "refresh_models", lambda *a, **k: calls.append(1))
+    try:
+        # no config loaded → no-op (rely on pinned fallback)
+        # 未加载配置 → 空操作（用钉死兜底）
+        monkeypatch.setattr(cfg, "LOADED_CONFIG_PATH", None)
+        cfg.MODEL_CONFIG.clear()
+        ac._maybe_refresh_models(object())
+        assert calls == []
+        # loaded + stale (no last_refreshed) + auto_refresh → refresh runs
+        # 已加载 + 过期（无 last_refreshed）+ auto_refresh → 触发刷新
+        monkeypatch.setattr(cfg, "LOADED_CONFIG_PATH", tmp_path / "c.toml")
+        cfg.MODEL_CONFIG.update({"auto_refresh": True})
+        ac._maybe_refresh_models(object())
+        assert calls == [1]
+        # loaded + stale + no auto_refresh → warn, no refresh
+        # 已加载 + 过期 + 无 auto_refresh → 仅告警，不刷新
+        calls.clear()
+        cfg.MODEL_CONFIG.clear()
+        with caplog.at_level(logging.WARNING, logger="pplx_export.ask-cli"):
+            ac._maybe_refresh_models(object())
+        assert calls == []
+        assert any("模型表" in r.getMessage() for r in caplog.records)
+    finally:
+        cfg.MODEL_CONFIG.clear()

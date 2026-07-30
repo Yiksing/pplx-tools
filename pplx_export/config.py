@@ -89,6 +89,14 @@ ARCHIVE_ROOT: Path | None = None
 # Path of the config file actually loaded (None = not loaded, degraded mode)
 # 实际加载的配置文件路径（None=未加载，降级模式）
 LOADED_CONFIG_PATH: Path | None = None
+# Refreshable model catalog loaded from the [models] table (auto-managed by
+# `pplx-ask models --refresh` / init — not hand-authored). Empty when absent;
+# overrides the pinned fallback in sites/perplexity/platform.py. Updated IN PLACE
+# on reload (a `from ..config import MODEL_CONFIG` binding stays valid).
+# 从 [models] 表加载的可刷新模型目录（由 `pplx-ask models --refresh` / init 自动维护，
+# 非手写）。缺失为空；覆盖 sites/perplexity/platform.py 的钉死兜底。重载就地更新
+# （`from ..config import MODEL_CONFIG` 绑定不失效）。
+MODEL_CONFIG: dict = {}
 
 
 class ConfigError(Exception):
@@ -139,6 +147,7 @@ def configure(cli_path: str | os.PathLike | None = None,
     ACCOUNT_DISPLAY_NAMES.clear()
     ACCOUNT_EMAIL.clear()
     ACCOUNT_UID.clear()
+    MODEL_CONFIG.clear()
     BOT_SPACE_UUID = BOT_SPACE_SLUG = DEFAULT_ACCOUNT = ""
     ARCHIVE_ROOT = None
     LOADED_CONFIG_PATH = None
@@ -177,8 +186,45 @@ def configure(cli_path: str | os.PathLike | None = None,
     ar = data.get("archive_root")
     if ar:
         ARCHIVE_ROOT = Path(str(ar)).expanduser()
+    models_tbl = data.get("models")
+    if isinstance(models_tbl, dict):
+        MODEL_CONFIG.update(models_tbl)
     LOADED_CONFIG_PATH = path
     return path
+
+
+def write_models_section(config_path: str | os.PathLike, models: dict) -> None:
+    """Replace/insert the `[models]` table in an existing config.toml, preserving
+    every other table, key, and comment (tomlkit round-trip); atomic 0600 write.
+
+    Only the `[models]` table is machine-managed; the user's accounts/bot_space and
+    hand-written comments are carried over verbatim. An absent file starts empty.
+
+    替换/插入既有 config.toml 的 `[models]` 表，其余表/键/注释原样保留（tomlkit
+    round-trip）；原子 0600 写入。仅 `[models]` 为机器托管；用户账户/BOT 空间/手写
+    注释逐字沿用。文件不存在则从空起。
+    """
+    import tempfile
+
+    import tomlkit
+
+    path = Path(config_path)
+    text = path.read_text(encoding="utf-8") if path.is_file() else ""
+    doc = tomlkit.parse(text)
+    doc["models"] = models
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix=".config-", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(tomlkit.dumps(doc))
+        os.chmod(tmp, 0o600)
+        os.replace(tmp, path)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
 
 
 # Fault-tolerant load at import time (default path / env var; a missing file means

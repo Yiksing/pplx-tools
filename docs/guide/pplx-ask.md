@@ -11,9 +11,10 @@ Source: `pplx_export/ask_cli.py` (CLI), `pplx_export/sites/perplexity/ask_api.py
 
 ```bash
 pplx-ask models                                  # list the authoritative model table
+pplx-ask models --refresh                         # refresh + persist the catalog into config.toml [models]
 pplx-ask ask "What is the time resolution of an example parameter?"   # search mode (default)
 pplx-ask ask "<long prompt>" --mode council      # model council (default three models)
-pplx-ask ask "<prompt>" --mode council --models gpt55_thinking,claude48opusthinking
+pplx-ask ask "<prompt>" --mode council --models gpt56_sol_thinking,claude50opusthinking
 pplx-ask ask "<prompt>" --mode deep-research     # deep research (fixed pplx_alpha)
 pplx-ask ask "<prompt>" --space some-space-slug  # create inside a space, then move into BOT
 pplx-ask ask "<prompt>" --mark-read              # send a read receipt after completion
@@ -26,10 +27,14 @@ pplx-ask space-create "My Space"                 # create a space
 ### `models`
 
 Prints the live, authoritative model table from
-`GET https://www.perplexity.ai/rest/models/config/v2` (`pplx_export/ask_cli.py:51`):
-per-mode default models, the council default three models, the models selectable in
-search mode, and the special modes (`research` / `study` / `agentic_research` / `studio`).
-No options.
+`GET https://www.perplexity.ai/rest/models/config/v2` (`pplx_export/ask_cli.py`,
+`cmd_models`): per-mode default models, the council default three models, the models
+selectable in search mode, and the special modes (`research` / `study` /
+`agentic_research` / `studio`).
+
+| Option | Default | Description |
+|---|---|---|
+| `--refresh` | off | Persist the fetched catalog into the config's `[models]` table (auto-managed): `last_refreshed`, `mode_defaults`, `council_defaults`, `search_models`, and the full `[models.catalog]`. `pplx-ask` then builds requests from `[models]`, falling back to the pinned baseline in `pplx_export/sites/perplexity/platform.py`. Requires a loaded config file (run `pplx-export init` first). See [Configuration](configuration.md). |
 
 ### `ask`
 
@@ -41,12 +46,19 @@ machine-readable JSON object on stdout at the end.
 |---|---|---|
 | `prompt` (positional) | — | The question. Long, meaningful prompts work better. |
 | `--mode` | `search` | `search` = normal search (model selectable); `deep-research` = deep research (fixed model); `council` = model council (2–3 models in parallel + synthesis); `study` = step-by-step study |
-| `--models` | none | `council`: comma-separated 2–3 model ids (default `gpt55_thinking,claude48opusthinking,gemini31pro_high`); `search`: a single model id; ignored by `deep-research` / `study` |
+| `--models` | none | `council`: comma-separated 2–3 model ids (default: the council models from the `[models]` catalog, or the pinned `platform.py` fallback; refresh with `pplx-ask models --refresh`); `search`: a single model id; ignored by `deep-research` / `study` |
 | `--space` | `home` | `home` = create from the home page, then move into the BOT space; `<slug>` = create directly inside that space, then move into the BOT space |
 | `--mark-read` | off | Send a read receipt (`mark_viewed`) after completion |
 | `--no-telemetry` | off | Do not send human-like view telemetry (default: send — `ask context pane viewed` / `thread viewed` / `thread entry exited` with randomized timing) |
 | `--no-export` | off | Do not auto-archive into `web_archive` |
 | `--timeout` | `600` | SSE stream timeout in seconds |
+
+Model resolution is offline: the per-mode `model_preference` and the council compare
+models come from the config's `[models]` table when present, falling back to the pinned
+baseline in `pplx_export/sites/perplexity/platform.py` (request assembly never hits the
+network). When `[models]` is missing or older than 7 days
+(`platform.MODELS_REFRESH_TTL_DAYS`), `ask` warns you to run `pplx-ask models --refresh`
+(default) — or refreshes automatically when the `[models].auto_refresh` flag is `true`.
 
 HTTP error hints emitted by `ask` (`pplx_export/ask_cli.py:124`): `401`/`403` = the
 cookie is expired or risk-controlled (update the cookie), `429` = rate limited (retry
@@ -158,7 +170,7 @@ envelope `mode` is always `"copilot"`.
 |---|---|---|---|
 | Search | `search` | `pplx_pro` ("Best" in the UI) by default | Single model id via `--models` (see `pplx-ask models` for the selectable list) |
 | Deep research | `deep-research` | `pplx_alpha` | Fixed — no selector |
-| Model council | `council` | `pplx_agentic_research` + `compare_model_preferences` | 2–3 comma-separated ids via `--models`; default `gpt55_thinking,claude48opusthinking,gemini31pro_high` |
+| Model council | `council` | `pplx_agentic_research` + `compare_model_preferences` | 2–3 comma-separated ids via `--models`; default from the `[models]` catalog (or the `platform.py` fallback), refreshable via `pplx-ask models --refresh` |
 | Step-by-step study | `study` | `pplx_study` | Fixed — no selector |
 | Computer | *(not exposed)* | `pplx_asi*` family | Not supported by `pplx-ask` |
 

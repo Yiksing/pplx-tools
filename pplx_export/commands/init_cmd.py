@@ -26,11 +26,12 @@ from pathlib import Path
 from ..config import DEFAULT_CONFIG_PATH, SESSION_URL
 from ..core import cookies as ck
 from ..core.logging import get_logger
+from ..sites.perplexity.platform import API_VERSION
 
 log = get_logger("cli")
 
 LIST_COLLECTIONS_URL = ("https://www.perplexity.ai/rest/collections/list_user_collections"
-                        "?version=2.18&source=default")
+                        f"?version={API_VERSION}&source=default")
 # Title shared by BOT-space matching and --create-bot-space creation
 # 匹配既有 BOT 空间与 --create-bot-space 创建共用的标题
 BOT_TITLE = "BOT"
@@ -269,6 +270,18 @@ def cmd_init(args, *, transport_factory=None, create_space_fn=None):
                  force=args.force)
     log.info(f"[init] 已写入 {out_path}（0600）：{len(accounts)} 个账户，default={default}"
              + (f"，BOT={bot_uuid[:8]}" if bot_uuid else ""))
+
+    # Seed the [models] table best-effort so a fresh config already carries current
+    # model defaults/catalog (refreshable later via `pplx-ask models --refresh`).
+    # best-effort 播种 [models]，让新配置即带当前模型默认/目录（后续可 `pplx-ask models --refresh`）。
+    try:
+        from ..sites.perplexity.ask_api import refresh_models
+        section = refresh_models(tf(base), out_path)
+        log.info(f"[init] 已播种 [models]（{len(section.get('catalog') or {})} 模型，"
+                 f"last_refreshed={section.get('last_refreshed')}）")
+    except Exception as e:
+        log.warning(f"[init] [models] 播种跳过（可稍后 `pplx-ask models --refresh`）: {e}")
+
     print(json.dumps({"config": str(out_path), "accounts": sorted(accounts),
                       "default_account": default,
                       "bot_space_uuid": bot_uuid, "bot_space_slug": bot_slug},

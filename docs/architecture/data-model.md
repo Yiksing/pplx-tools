@@ -157,6 +157,21 @@ web_archive/
 | `answer_variants_log.jsonl` | `variant_log.append_registry` (variant_log.py:76) | central answer-rewrite variant registry (dedup by thread+entry, idempotent; a checked-in file, not logs/) — detection chain in [§18](offline-operations.md) |
 | `logs/` | `--log-file` (common.py:218-229) | full DEBUG logs (gitignored) |
 
+The user-level `config.toml` additionally carries a machine-managed `[models]` table
+(the model catalog plus `last_refreshed`), written by `pplx-ask models --refresh` and
+seeded by `pplx-export init` through a `tomlkit` round-trip that preserves the user's
+other tables and comments — schema in [Configuration](../guide/configuration.md).
+
+**Maintainer note — pinned protocol constants.** Perplexity wire-protocol facts that
+are coupled to the parser/renderer — the API `version`, the ask-envelope
+`supported_block_use_cases`, `supported_features`, and the thread-read
+`SCHEMATIZED_BLOCK_USE_CASES` — are single-sourced in
+`pplx_export/sites/perplexity/platform.py` and must be updated in lockstep with
+`parsers.py` / `render.py` when the platform API changes (human-pinned, never
+auto-refreshed; a test forbids stray copies of the version literal). Model ids, by
+contrast, are decoupled server-side data and live in the refreshable `[models]`
+catalog above.
+
 ### The spaces/ index layer (repository root, tool-generated)
 
 `cmd_spaces` rebuilds by aggregating `index/library_*.json` (spaces_cmd.py:259-389):

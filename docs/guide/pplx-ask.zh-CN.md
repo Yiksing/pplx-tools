@@ -9,9 +9,10 @@
 
 ```bash
 pplx-ask models                                  # 列出权威模型总表
+pplx-ask models --refresh                         # 刷新并把目录写入 config.toml 的 [models]
 pplx-ask ask "示例参数的时间分辨率是多少？"   # 搜索模式（默认）
 pplx-ask ask "<long prompt>" --mode council      # 模型委员会（默认三模型）
-pplx-ask ask "<prompt>" --mode council --models gpt55_thinking,claude48opusthinking
+pplx-ask ask "<prompt>" --mode council --models gpt56_sol_thinking,claude50opusthinking
 pplx-ask ask "<prompt>" --mode deep-research     # 深度研究（固定 pplx_alpha）
 pplx-ask ask "<prompt>" --space some-space-slug  # 在该空间创建，完成后移入 BOT
 pplx-ask ask "<prompt>" --mark-read              # 完成后发已读回执
@@ -24,8 +25,12 @@ pplx-ask space-create "My Space"                 # 创建空间
 ### `models`
 
 打印来自 `GET https://www.perplexity.ai/rest/models/config/v2` 的实时权威模型总表
-（`pplx_export/ask_cli.py:51`）：各模式默认模型、委员会默认三模型、搜索模式可选模型，
-以及特殊模式（`research` / `study` / `agentic_research` / `studio`）。无选项。
+（`pplx_export/ask_cli.py`，`cmd_models`）：各模式默认模型、委员会默认三模型、搜索模式可选模型，
+以及特殊模式（`research` / `study` / `agentic_research` / `studio`）。
+
+| 参数 | 默认 | 说明 |
+|---|---|---|
+| `--refresh` | 关 | 把拉取到的目录写入配置的 `[models]` 表（机器托管）：`last_refreshed`、`mode_defaults`、`council_defaults`、`search_models` 及完整 `[models.catalog]`。此后 `pplx-ask` 从 `[models]` 组装请求，回退到 `pplx_export/sites/perplexity/platform.py` 的钉死兜底。需已加载配置文件（先 `pplx-export init`）。见[配置](configuration.md)。 |
 
 ### `ask`
 
@@ -36,12 +41,17 @@ pplx-ask space-create "My Space"                 # 创建空间
 |---|---|---|
 | `prompt`（位置参数） | — | 提问内容。长而有意义的 prompt 效果更好。 |
 | `--mode` | `search` | `search` = 普通搜索（可选模型）；`deep-research` = 深度研究（固定模型）；`council` = 模型委员会（2–3 模型并行 + 综合）；`study` = 逐步学习 |
-| `--models` | 无 | `council`：逗号分隔 2–3 个模型 id（默认 `gpt55_thinking,claude48opusthinking,gemini31pro_high`）；`search`：单个模型 id；`deep-research` / `study` 忽略此项 |
+| `--models` | 无 | `council`：逗号分隔 2–3 个模型 id（默认取 `[models]` 目录中的委员会模型，或 `platform.py` 钉死兜底；用 `pplx-ask models --refresh` 刷新）；`search`：单个模型 id；`deep-research` / `study` 忽略此项 |
 | `--space` | `home` | `home` = 从首页创建后移入 BOT 空间；`<slug>` = 直接在该空间创建，完成后也移入 BOT 空间 |
 | `--mark-read` | 关 | 完成后发已读回执（`mark_viewed`） |
 | `--no-telemetry` | 关 | 不发送人性化阅读遥测（默认发送：`ask context pane viewed` / `thread viewed` / `thread entry exited`，随机时序） |
 | `--no-export` | 关 | 不自动归档到 `web_archive` |
 | `--timeout` | `600` | SSE 流超时秒数 |
+
+模型解析在离线完成：各模式 `model_preference` 与委员会对比模型优先取配置的 `[models]` 表，
+缺失时回退到 `pplx_export/sites/perplexity/platform.py` 的钉死兜底（组装请求全程不联网）。
+当 `[models]` 缺失或超过 7 天（`platform.MODELS_REFRESH_TTL_DAYS`）时，`ask` 会提醒你运行
+`pplx-ask models --refresh`（默认）——或在 `[models].auto_refresh = true` 时自动刷新。
 
 `ask` 输出的 HTTP 错误提示（`pplx_export/ask_cli.py:124`）：`401`/`403` = cookie
 失效或被风控（请更新 cookie），`429` = 触发限流（稍后重试），`5xx` = 服务端错误
@@ -146,7 +156,7 @@ flowchart TD
 |---|---|---|---|
 | 搜索 | `search` | 默认 `pplx_pro`（UI 名 "Best"） | 经 `--models` 给单个模型 id（可选列表见 `pplx-ask models`） |
 | 深度研究 | `deep-research` | `pplx_alpha` | 固定——无选择器 |
-| 模型委员会 | `council` | `pplx_agentic_research` + `compare_model_preferences` | 经 `--models` 给 2–3 个逗号分隔 id；默认 `gpt55_thinking,claude48opusthinking,gemini31pro_high` |
+| 模型委员会 | `council` | `pplx_agentic_research` + `compare_model_preferences` | 经 `--models` 给 2–3 个逗号分隔 id；默认取 `[models]` 目录（或 `platform.py` 兜底），用 `pplx-ask models --refresh` 刷新 |
 | 逐步学习 | `study` | `pplx_study` | 固定——无选择器 |
 | Computer | *（未暴露）* | `pplx_asi*` 家族 | `pplx-ask` 不支持 |
 

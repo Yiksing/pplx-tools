@@ -23,9 +23,11 @@ from . import config as _cfg
 from .commands.common import (add_common_args, make_transport,
                               resolve_cli_account, resolve_log_file, resolve_out_root)
 from .commands.export_cmd import cmd_export
-from .sites.perplexity.ask_api import (COUNCIL_DEFAULT_MODELS, MODE_MODEL,
-                                       build_envelope, create_space, mark_read, move_threads,
-                                       send_view_telemetry, sse_ask)
+from .sites.perplexity.ask_api import (API_VERSION, COUNCIL_DEFAULT_MODELS, MODE_MODEL,
+                                       MODELS_CONFIG_URL, build_envelope, create_space,
+                                       fetch_models_config, mark_read, move_threads,
+                                       refresh_models, send_view_telemetry, sse_ask)
+from .sites.perplexity import platform as _plat
 from .core.logging import get_logger, setup_logging
 from .core.registry import get_adapter
 from .sites.perplexity.fs_writer import FilesystemWriter
@@ -48,12 +50,12 @@ def _step_best_effort(name: str, fn) -> tuple[bool, str | None]:
         return False, f"{type(e).__name__}: {e}"
 
 
-def cmd_models(transport):
-    """List the full model table and per-mode defaults from models/config/v2.
+def cmd_models(transport, *, refresh: bool = False, config_path=None):
+    """List the full model table and per-mode defaults from models/config/v2;
+    with refresh=True, also persist them into config.toml's [models] table.
 
-    列出 models/config/v2 的模型总表与模式默认值。"""
-    j = transport.get_json("https://www.perplexity.ai/rest/models/config/v2"
-                           "?version=2.18&source=default", timeout=30)
+    列出 models/config/v2 的模型总表与模式默认值；refresh=True 时并写入 config.toml 的 [models]。"""
+    j = fetch_models_config(transport)
     models = j.get("models") or {}
     defaults = j.get("default_models") or {}
     council = j.get("agentic_research_compare_models") or []
@@ -69,6 +71,13 @@ def cmd_models(transport):
     for k, v in models.items():
         if v.get("mode") in ("research", "study", "agentic_research", "studio"):
             log.info(f"  {k:28} {v.get('label', ''):28} mode={v.get('mode')}")
+    if refresh:
+        if not config_path:
+            raise SystemExit("[models][ERROR] 未加载用户级配置文件，无法写入 [models]——"
+                             "请先 `pplx-export init` 或创建 config.toml 后重试")
+        section = refresh_models(transport, config_path, raw=j)
+        log.info(f"[models] 已刷新并写入 {config_path}"
+                 f"（last_refreshed={section['last_refreshed']}，目录 {len(section['catalog'])} 个模型）")
 
 
 def _resolve_space_uuid(adapter, slug_or_title: str) -> str:
@@ -78,12 +87,56 @@ def _resolve_space_uuid(adapter, slug_or_title: str) -> str:
     if meta.get("uuid"):
         return meta["uuid"]
     j = adapter.transport.get_json("https://www.perplexity.ai/rest/collections/get_collection"
-                                   f"?collection_slug={slug_or_title}&version=2.18&source=default",
+                                   f"?collection_slug={slug_or_title}&version={API_VERSION}&source=default",
                                    timeout=30)
     return j.get("uuid") or ""
 
 
+def _models_days_old() -> float | None:
+    """Days since config.toml [models].last_refreshed; None when missing/unparseable.
+
+    距 config.toml [models].last_refreshed 的天数；缺失/无法解析时 None。
+    """
+    lr = _cfg.MODEL_CONFIG.get("last_refreshed")
+    if not lr:
+        return None
+    try:
+        import datetime as _dt
+        t = _dt.datetime.strptime(lr, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=_dt.timezone.utc)
+        return (_dt.datetime.now(_dt.timezone.utc) - t).total_seconds() / 86400.0
+    except Exception:
+        return None
+
+
+def _maybe_refresh_models(transport) -> None:
+    """7-day TTL: when a config file is loaded and its [models] snapshot is missing or
+    stale, either auto-refresh (auto_refresh=true) or warn. No network in the default
+    (warn) path; no-op in degraded mode (no config file → pinned fallback is used).
+
+    7 天 TTL：已加载配置且 [models] 缺失/过期时，auto_refresh=true 则自动刷新，否则提醒。
+    默认（提醒）路径不联网；降级（无配置）时空操作，直接用钉死兜底。
+    """
+    path = _cfg.LOADED_CONFIG_PATH
+    if not path:
+        return
+    days = _models_days_old()
+    if days is not None and days < _plat.MODELS_REFRESH_TTL_DAYS:
+        return
+    age = "尚无 [models] 缓存" if days is None else f"已 {days:.0f} 天未刷新"
+    if _cfg.MODEL_CONFIG.get("auto_refresh"):
+        log.info(f"[models] {age}，auto_refresh 已开——自动刷新中…")
+        try:
+            refresh_models(transport, path)
+        except Exception as e:
+            log.warning(f"[models] 自动刷新失败（继续用现值/兜底）: {e}")
+    else:
+        log.warning(f"[models] 模型表{age}（TTL {_plat.MODELS_REFRESH_TTL_DAYS} 天）——"
+                    f"建议 `pplx-ask models --refresh`；或在 config.toml 的 [models] "
+                    f"设 auto_refresh=true 自动刷新")
+
+
 def cmd_ask(args, account, transport, writer, out_root: Path):
+    _maybe_refresh_models(transport)
     adapter = get_adapter("perplexity", transport=transport)
     target_uuid = None
     if args.space and args.space != "home":
@@ -205,7 +258,7 @@ def cmd_mark_read(args, account, transport):
         raise SystemExit(f"[ERROR] 无法解析 UUID: {args.target}")
     uuid = m.group(1)
     th = transport.get_json(f"https://www.perplexity.ai/rest/thread/{uuid}"
-                            "?version=2.18&source=default", timeout=30)
+                            f"?version={API_VERSION}&source=default", timeout=30)
     entries = th.get("entries") or []
     ctx = (entries[0].get("context_uuid") if entries else None) or uuid
     r = mark_read(transport, ctx, account.username, f"/search/{uuid}")
@@ -244,7 +297,9 @@ def main():
     add_common_args(ap)
     sub = ap.add_subparsers(dest="cmd", required=True, metavar="<cmd>")
 
-    sub.add_parser("models", help="列出各模式可选模型（models/config/v2 权威模型总表）")
+    p_models = sub.add_parser("models", help="列出各模式可选模型（models/config/v2 权威模型总表）")
+    p_models.add_argument("--refresh", action="store_true",
+                          help="把拉取到的模型目录写入 config.toml 的 [models] 表（含 last_refreshed，供离线/请求复用）")
 
     p_ask = sub.add_parser("ask", help="发问（SSE 流式，自动归档+BOT 空间+人性化遥测）",
                            description="向 Perplexity 发问：SSE 流式显示进度，完成后自动移入 BOT 空间、"
@@ -291,7 +346,7 @@ def main():
     writer = FilesystemWriter(args.out)
 
     if args.cmd == "models":
-        cmd_models(transport)
+        cmd_models(transport, refresh=args.refresh, config_path=_cfg.LOADED_CONFIG_PATH)
     elif args.cmd == "ask":
         cmd_ask(args, account, transport, writer, args.out)
     elif args.cmd == "mark-read":

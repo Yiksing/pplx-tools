@@ -70,6 +70,7 @@ Placeholder style: `alice`/`bob` are made-up account usernames, emails use `exam
 |---|---|---|
 | `default_account` | string | Key of one `[accounts.<name>]` table, used when `--account` is not given (`pplx_export/commands/common.py:84-85`). Empty/missing = degraded mode. |
 | `archive_root` | string | Optional. Archive output root used as the `--out` fallback, so daily commands can omit `--out`. Precedence: `--out` > `archive_root` > `./web_archive` (`pplx_export/config.py`, loaded into `ARCHIVE_ROOT`; resolved in `cli.py` / `ask_cli.py`). `~` is expanded. |
+| `[models]` (table) | table | **Auto-managed, not hand-authored.** Refreshable model catalog written by `pplx-ask models --refresh` and seeded by `pplx-export init`; it overrides the pinned baseline in `pplx_export/sites/perplexity/platform.py`. Keys: `last_refreshed` (UTC), `source_version`, `auto_refresh` (bool), `mode_defaults`, `council_defaults`, `search_models`, and a full `[models.catalog]` (`id → {label, provider, mode}`). Requests read it (with the `platform.py` baseline as fallback); a 7-day TTL prints a refresh reminder, or auto-refreshes when `auto_refresh = true`. The round-trip write preserves your other tables and comments (via the `tomlkit` runtime dependency) and stays `0600`. |
 
 ### `[accounts.<name>]`
 

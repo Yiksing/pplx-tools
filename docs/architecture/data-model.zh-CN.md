@@ -157,6 +157,17 @@ web_archive/
 | `answer_variants_log.jsonl` | `variant_log.append_registry`（variant_log.py:76） | 答案重写变体集中登记（按 thread+entry 去重幂等；入库文件，非 logs/）——检测链见 [§18](offline-operations.md) |
 | `logs/` | `--log-file`（common.py:218-229） | 全量 DEBUG 日志（已 gitignore） |
 
+用户级 `config.toml` 另带一个机器托管的 `[models]` 表（模型目录 + `last_refreshed`），
+由 `pplx-ask models --refresh` 写入、`pplx-export init` 播种，经 `tomlkit` round-trip
+保留用户其余表与注释——结构见[配置](../guide/configuration.md)。
+
+**维护者须知——钉死的协议常量。** 与 parser/renderer 强耦合的 Perplexity wire 协议
+事实——API `version`、ask 信封的 `supported_block_use_cases`、`supported_features`、
+线程读取的 `SCHEMATIZED_BLOCK_USE_CASES`——单一来源于
+`pplx_export/sites/perplexity/platform.py`，平台 API 变更时须与 `parsers.py` /
+`render.py` 一并更新（人工钉死、绝不自动刷新；有测试禁止版本字面量散落）。而模型 id
+是解耦的服务端数据，存于上文可刷新的 `[models]` 目录。
+
 ### spaces/ 索引层（仓库根，工具生成）
 
 `cmd_spaces` 从 `index/library_*.json` 聚合重建（spaces_cmd.py:259-389）：

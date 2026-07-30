@@ -41,6 +41,7 @@
 - 注册表装配：账户键由 email 本地部分派生（撞名加 `-2`/`-3`… 后缀）；`default_account` 取当前活跃账户，否则取首个发现的账户。
 - BOT 空间：经 `list_user_collections` 按标题精确匹配（大小写不敏感）；无匹配时 `--create-bot-space [标题]` 当场创建（显式标题覆盖 `--bot-title`，匹配与创建均用之），否则 `[bot_space]` 留空。
 - TOML 原子写入（临时文件 + 改名），权限 0600；已存在的文件不加 `--force` 绝不覆盖。命令结尾打印一行汇总 JSON：配置路径、账户键、默认账户、BOT 空间 uuid/slug。
+- 模型播种（best-effort）：写完配置后，`init` 拉取 `models/config/v2` 播种机器托管的 `[models]` 表，让新配置即带当前模型默认/目录；失败则 warning 跳过（稍后用 `pplx-ask models --refresh` 刷新）。见[配置](configuration.md)。
 - `--transport webbridge` 会被拒绝——页面上下文通道无法枚举各账户令牌。
 
 ```bash

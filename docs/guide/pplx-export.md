@@ -41,6 +41,7 @@ Key behaviors:
 - Registry assembly: each account key is derived from the email local part (collisions get `-2`/`-3`… suffixes); `default_account` is set to the currently active account, else the first one discovered.
 - BOT space: a space is matched by exact title (case-insensitive) via `list_user_collections`; when nothing matches, `--create-bot-space [TITLE]` creates it on the spot (an explicit TITLE overrides `--bot-title` for both matching and creation), otherwise `[bot_space]` is left empty.
 - The TOML is written atomically (temp file + rename) with 0600 permissions, and an existing file is never overwritten without `--force`. The command ends with a summary JSON line: config path, account keys, default account, BOT space uuid/slug.
+- Model seeding (best-effort): after writing the config, `init` fetches `models/config/v2` and seeds the machine-managed `[models]` table so a fresh config already carries the current model defaults/catalog; on failure it is skipped with a warning (refresh later with `pplx-ask models --refresh`). See [Configuration](configuration.md).
 - `--transport webbridge` is rejected — the page-context channel cannot enumerate per-account tokens.
 
 ```bash

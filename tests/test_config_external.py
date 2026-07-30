@@ -251,3 +251,45 @@ class TestArchiveRoot:
         # 重载不含该键的配置 → 必须重新绑定回 None（不留残值）
         cfg.configure(_write(tmp_path, "b.toml", TOML_B))
         assert cfg.ARCHIVE_ROOT is None
+
+
+class TestModelsSection:
+    """[models] table: tomlkit write-back preserves user content; configure() loads it.
+
+    [models] 表：tomlkit 回写保留用户内容；configure() 加载之。"""
+
+    _SECTION = {
+        "last_refreshed": "2026-07-30T00:00:00Z", "source_version": "2.18",
+        "auto_refresh": False, "council_defaults": ["a", "b"],
+        "search_models": ["pplx_pro", "x"],
+        "mode_defaults": {"search": "pplx_pro", "deep-research": "pplx_alpha"},
+        "catalog": {"pplx_pro": {"label": "Best", "provider": "P", "mode": "search"}},
+    }
+
+    def test_absent_models_leaves_config_empty(self, tmp_path):
+        cfg.configure(_write(tmp_path, "a.toml", TOML_A))
+        assert cfg.MODEL_CONFIG == {}
+
+    def test_write_back_preserves_content_idempotent_0600(self, tmp_path):
+        p = _write(tmp_path, "config.toml",
+                   'default_account = "alice"\n# keepme-comment\n\n[accounts.alice]\n'
+                   'display_name = "Alice"\nemail = "alice@example.com"\n'
+                   'user_id = "00000000-0000-4000-8000-0000000000aa"\n\n'
+                   '[bot_space]\nuuid = "u"\nslug = "s"\n')
+        cfg.write_models_section(p, self._SECTION)
+        cfg.write_models_section(p, self._SECTION)  # idempotent
+        txt = p.read_text(encoding="utf-8")
+        # user content + comment survive; single [models]; owner-only perms
+        # 用户内容+注释保留；单一 [models]；仅属主权限
+        assert "# keepme-comment" in txt
+        assert 'email = "alice@example.com"' in txt
+        assert txt.count("[models]") == 1
+        assert oct(p.stat().st_mode & 0o777) == "0o600"
+
+    def test_write_then_reload_populates_model_config(self, tmp_path):
+        p = _write(tmp_path, "config.toml", TOML_A)
+        cfg.write_models_section(p, self._SECTION)
+        cfg.configure(p)
+        assert cfg.MODEL_CONFIG["mode_defaults"] == {"search": "pplx_pro", "deep-research": "pplx_alpha"}
+        assert cfg.MODEL_CONFIG["council_defaults"] == ["a", "b"]
+        assert cfg.MODEL_CONFIG["catalog"]["pplx_pro"]["label"] == "Best"
