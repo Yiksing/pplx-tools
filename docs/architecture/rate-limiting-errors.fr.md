@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "en"
 translation_source_path: "docs/architecture/rate-limiting-errors.md"
-translation_source_sha256: "2f7be7898606995b419c6de2185ab87352f1469006180f11fff2d32ba7929597"
+translation_source_sha256: "91252ba3add326958d39759900774a7a4268b67820c65a36a4ae9e9b8eaa2ec3"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -60,9 +60,22 @@ flowchart TD
   `AuthTransportError`, 400 avec corps contenant ENTRY_EXPIRED → `EntryExpiredError`,
   5xx backoff-retry ; l'échec rapide d'authentification du lot et les états terminaux expirés s'appliquent également sous
   `--transport webbridge` ; les réponses non JSON du démon se réduisent en
-  TransportError (URLError/JSONDecodeError/OSError capturés uniformément) ; les autres non-200 vont directement à
+  TransportError (URLError/JSONDecodeError/OSError uniformément interceptés) ; les autres non-200 vont directement à
   TransportError.
 - **Throttle partagé** : le lot passe la même instance à CookieTransport (cli.py:280-282),
   unifiant les compteurs de backoff entre les couches de transport et de lot ; **les reconstructions après changement automatique de compte ne le perdent pas non plus**
-  (common.py:139 le passe aussi) ; les commandes uniques qui n'en passent pas une reçoivent une instance par défaut construite par CookieTransport
+  (common.py:139 le passe aussi) ; les commandes uniques qui n'en passent pas reçoivent une instance par défaut construite par CookieTransport
   (cookie_transport.py:49).
+- **Battements de cœur (verbosité par défaut).** Les trois longues attentes — un sommeil `Throttle.backoff`,
+  une requête en vol bloquée (`CookieTransport._open_read`), et un flux SSE `pplx-ask` inactif
+  (`ask_api.post_stream`) — émettent désormais des battements INFO "toujours en attente"
+  pour qu'une attente ne soit jamais confondue avec un blocage. Les backoff dorment par morceaux
+  (`Throttle._sleep_with_heartbeat`) dont la somme est égale au même total, donc le
+  rythme/budget anti-bannissement est inchangé — seulement rendu visible ; `-v` ajoute toujours la
+  trace DEBUG complète.
+- **`--skip-auth-check` + vérification différée.** La sonde de session d'attribution de compte au démarrage
+  (`common.py`, `make_transport`) peut être ignorée pour éviter une longue
+  attente au démarrage sur un réseau médiocre. Comme filet de sécurité, `batch` exécute un `report_account_status` unique
+  (`common.py`) une fois que les erreurs génériques s'accumulent
+  (`batch_cmd.py`), avertissant si le cookie est expiré, le compte
+  ne correspond pas, ou le compte est correct (donc les erreurs sont réseau / limite de débit).
