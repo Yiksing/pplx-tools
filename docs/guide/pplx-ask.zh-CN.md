@@ -111,7 +111,9 @@ flowchart TD
 2. **SSE 流式发问** —— `sse_ask`（`pplx_export/sites/perplexity/ask_api.py:153`）POST 到
    `https://www.perplexity.ai/rest/sse/perplexity_ask` 并逐事件消费，记录线程创建
    （`https://www.perplexity.ai/search/<uuid>`）、状态迁移与生成进度。流在
-   `final_sse_message` 时结束。
+   `final_sse_message` 时结束。流空闲超过一个间隔时（深研 / 联席可静默数分钟；
+   open 超时 600 s），`post_stream` 会在默认档打一条「仍在等待响应流」INFO 心跳，
+   避免把活跃运行误当卡死。
 3. **完成闸门** —— 只有最终状态为 `COMPLETED` 才执行后处理
    （`pplx_export/ask_cli.py:134`）。流异常结束时后续动作全部跳过（不移入、不发遥测、
    不导出），半成品状态绝不外泄进归档。

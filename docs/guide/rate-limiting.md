@@ -77,6 +77,18 @@ There is no pointless sleep after the final failed attempt, and
 `throttle.reset()` clears the counter on the first success
 (`throttle.py:52`).
 
+**Heartbeats (visible at default verbosity).** A backoff no longer waits in
+silence: it prints an upfront line and then a countdown tick every
+`Throttle.heartbeat_interval` (default 10 s), sleeping in chunks whose sum
+equals the same total — so pacing and the anti-risk-control budget are
+unchanged, only made visible (`pplx_export/core/throttle.py`,
+`Throttle._sleep_with_heartbeat`). The same idea covers two other long waits:
+every in-flight request emits a "still waiting for response" tick while it is
+stalled before responding (`CookieTransport._open_read`), and `pplx-ask`
+streams emit a "still waiting for the response stream" tick while a
+deep-research / council run is silent (`ask_api.post_stream`). None of these
+require `-v`.
+
 Why each rule exists:
 
 - **429 backoff** — the server explicitly asked to slow down; honor it
@@ -97,8 +109,12 @@ with a backoff sleep between them — up to 300 s each
 (`pplx_export/core/throttle.py:38-50`) — so while the network flaps, one
 request can legitimately occupy on the order of 10 minutes. `index` / `batch`
 also start with a session probe that follows the same rules
-(`pplx_export/commands/common.py:126`). A long silence means a backoff wait is
-in progress, not a hang.
+(`pplx_export/commands/common.py`, `make_transport`); pass `--skip-auth-check`
+to skip that probe and start work immediately (see
+[Configuration](configuration.md)).
+A long silence means a wait is in progress, not a hang — and that wait is now
+surfaced by INFO heartbeats at default verbosity (backoff countdown, in-flight
+request, and SSE stream).
 
 Three rules for agents, cron jobs, and CI wrappers:
 
@@ -107,8 +123,9 @@ Three rules for agents, cron jobs, and CI wrappers:
    hard timeout — the first account's backoff cascade eats the whole budget
    and the chained account never runs.
 2. **Budget ≥ 15 minutes, or detach.** Give wrappers a generous timeout, or
-   run in the background and watch the log (`-v` / `--log-file`) to tell
-   backoff waits from real hangs.
+   run in the background and watch the heartbeats (now at default verbosity;
+   `-v` / `--log-file` add the full trace) to tell backoff waits from real
+   hangs.
 3. **Interrupting is always safe.** State is written atomically; a re-run is
    idempotent and repairs whatever gap the interruption left (early-stop and
    resume semantics: [Incremental sync](incremental-sync.md)).

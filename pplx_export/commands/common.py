@@ -29,6 +29,22 @@ from ..core.models import Account
 log = get_logger("cli")
 
 
+def _session_email(sess) -> str:
+    """Logged-in email from a /api/auth/session response (tolerant of missing shape).
+
+    /api/auth/session 响应中的登录 email（对缺失结构容错）。
+    """
+    return ((sess or {}).get("user") or {}).get("email", "")
+
+
+def resolve_out_root(cli_out: Path | None) -> Path:
+    """Archive output root precedence: --out > user-config archive_root > default.
+
+    归档输出根优先级：--out > 用户配置 archive_root > 默认 ./web_archive。
+    """
+    return cli_out if cli_out is not None else (config.ARCHIVE_ROOT or DEFAULT_ARCHIVE_ROOT)
+
+
 def _account(username: str) -> Account:
     """Lenient assembly: build an Account from the username alone (display name looked
     up in the registry, falling back to the username itself when unregistered).
@@ -91,7 +107,7 @@ def resolve_cli_account(account_arg: str | None) -> Account:
 
 
 def make_transport(account: Account, cookies_from=None, cookies_file=None, transport_mode="cookie",
-                   throttle=None, out_root: Path | None = None):
+                   throttle=None, out_root: Path | None = None, skip_auth_check: bool = False):
     """Build the transport. Cookie-direct (browser/file) by default; WebBridge only
     when transport_mode=='webbridge'.
 
@@ -122,9 +138,14 @@ def make_transport(account: Account, cookies_from=None, cookies_file=None, trans
     # Verify the account (avoid "using account B's cookies as account A") and refresh the cache
     # 校验账户（避免「账户 B 当 A 用」），并刷新缓存
     cookie = CookieTransport(cdict, throttle=throttle)
+    if skip_auth_check:
+        log.info(f"[auth] 已跳过账户归属校验（--skip-auth-check）：信任来源 {source} 当前登录账户，"
+                 f"不发起会话探测——若提取中反复报错将自动回退校验并提示")
+        return cookie, source
     try:
+        log.info(f"[auth] 正在校验账户 cookie（来源 {source}）…")
         sess = cookie.get_json(SESSION_URL, timeout=20)
-        email = ((sess or {}).get("user") or {}).get("email", "")
+        email = _session_email(sess)
         log.info(f"[auth] cookie 来源 {source}，当前账户: {email or '(未知)'}")
         expected = config.ACCOUNT_EMAIL.get(account.username)
         if expected and email and email.lower() != expected.lower():
@@ -171,7 +192,7 @@ def _validate_bridge_account(bridge: WebBridgeTransport, account: Account) -> No
     expected = config.ACCOUNT_EMAIL.get(account.username)
     try:
         sess = bridge.get_json(SESSION_URL, timeout=20)
-        email = ((sess or {}).get("user") or {}).get("email", "")
+        email = _session_email(sess)
         log.info(f"[auth] webbridge 通路，浏览器当前账户: {email or '(未知)'}")
         if expected and email and email.lower() != expected.lower():
             raise SystemExit(
@@ -206,13 +227,43 @@ def _try_switch_account(cdict: dict, expected_email: str):
             new[ck.ACTIVE_SESSION_COOKIE] = token
             probe = CookieTransport(new)
             sess = probe.get_json(SESSION_URL, timeout=20)
-            email = ((sess or {}).get("user") or {}).get("email", "")
+            email = _session_email(sess)
             if email.lower() == expected_email.lower():
                 log.info(f"[auth] 自动切换: 从 browser:{browser} 取得账户 {email} 的会话令牌")
                 return new, email
         except Exception:
             continue
     return None
+
+
+def report_account_status(transport, account: Account) -> bool:
+    """Deferred account check for --skip-auth-check: after errors pile up during
+    extraction, probe the session once and tell the user the real state — cookie
+    expired, wrong account, or account fine (so the errors are likely network/rate
+    limit rather than auth). Returns True when a definite auth/account problem is found.
+
+    --skip-auth-check 的延迟校验：提取中报错累积后，探测一次会话并告知用户真实状态——
+    cookie 失效 / 账户不符 / 账户正常（说明报错多半源于网络或限流而非鉴权）。
+    检出确定的鉴权/账户问题时返回 True。
+    """
+    expected = config.ACCOUNT_EMAIL.get(account.username)
+    try:
+        sess = transport.get_json(SESSION_URL, timeout=20)
+    except Exception as e:
+        log.warning(f"[auth] 报错累积后回退校验：会话探测失败，cookie 很可能已失效——"
+                    f"请更新 cookie 后重试: {e}")
+        return True
+    email = _session_email(sess)
+    if not email:
+        log.warning("[auth] 报错累积后回退校验：读不到当前登录邮箱，cookie 可能已失效")
+        return True
+    if expected and email.lower() != expected.lower():
+        log.warning(f"[auth] 报错累积后回退校验：当前 cookie 属于 {email}，与目标账户 "
+                    f"{account.username}（{expected}）不符——很可能在用错账户导出，请核对/切换")
+        return True
+    log.warning(f"[auth] 报错累积后回退校验：账户正常（{email}）——报错多半源于网络/限流而非鉴权，"
+                f"继续按退避重试")
+    return False
 
 
 def resolve_log_file(log_file_arg, out_root: Path, cmd: str) -> Path | None:
@@ -246,11 +297,14 @@ def add_common_args(ap, *, with_site: bool = False, with_transport: bool = False
     ap.add_argument("--config", default=None, metavar="PATH",
                     help="用户级配置文件（账户注册表/BOT 空间）；优先级：--config > 环境变量 "
                          "PPLX_EXPORT_CONFIG > 默认 ~/.config/pplx-export/config.toml")
+    ap.add_argument("--skip-auth-check", action="store_true",
+                    help="跳过启动时的账户归属校验（会话探测），信任当前登录账户，避免网络差时"
+                         "开头长时间退避等待；提取中反复报错会自动回退校验并提示")
     if with_site:
         ap.add_argument("--site", default="perplexity",
                         help="站点适配器（默认 perplexity）")
-    ap.add_argument("--out", type=Path, default=DEFAULT_ARCHIVE_ROOT,
-                    help="归档输出根目录（默认 ./web_archive）")
+    ap.add_argument("--out", type=Path, default=None,
+                    help="归档输出根目录；优先级：--out > 用户配置 archive_root > 默认 ./web_archive")
     ap.add_argument("--cookies-from", default=None, metavar="BROWSER",
                     help="从指定浏览器导入 cookie（edge/chrome/chromium/firefox/safari/brave/opera/"
                          "vivaldi；自动探测 snap/flatpak 安装路径；Linux 上 keyring 在 D-Bus 层"

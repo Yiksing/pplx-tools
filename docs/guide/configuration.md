@@ -69,6 +69,7 @@ Placeholder style: `alice`/`bob` are made-up account usernames, emails use `exam
 | Field | Type | Meaning |
 |---|---|---|
 | `default_account` | string | Key of one `[accounts.<name>]` table, used when `--account` is not given (`pplx_export/commands/common.py:84-85`). Empty/missing = degraded mode. |
+| `archive_root` | string | Optional. Archive output root used as the `--out` fallback, so daily commands can omit `--out`. Precedence: `--out` > `archive_root` > `./web_archive` (`pplx_export/config.py`, loaded into `ARCHIVE_ROOT`; resolved in `cli.py` / `ask_cli.py`). `~` is expanded. |
 
 ### `[accounts.<name>]`
 
@@ -98,6 +99,7 @@ The TOML has no transport or cookie settings. Those are chosen per invocation:
 | Config file path | `--config PATH`, or `PPLX_EXPORT_CONFIG` |
 | Cookie source | `--cookies-from BROWSER` / `--cookies FILE` |
 | Transport | `--transport cookie\|webbridge` (`pplx-export` only; default `cookie`) |
+| Skip the startup account check | `--skip-auth-check` (both entries) — see [Multi-account cookie model](#multi-account-cookie-model) |
 
 See [pplx-export](pplx-export.md) for the full flag reference.
 
@@ -128,6 +130,32 @@ With several accounts signed into the same browser, the store holds one session 
 - An account with no registered `email` proceeds unchecked, with a warning asking you to confirm the browser login yourself (`pplx_export/commands/common.py:146-149`).
 
 For the full switching flow and the session-endpoint semantics, see [Ask and accounts](../architecture/ask-and-accounts.md) and [API authentication](../reference/api/api-authentication.md).
+
+**Skipping the check (`--skip-auth-check`).** The startup session probe above
+trades a few seconds — sometimes minutes on a poor network — for the "account B
+used as account A" ownership guard. When you know the browser is signed into the
+right account, `--skip-auth-check` (shared by `pplx-export` and `pplx-ask`) skips
+that probe entirely and goes straight to work (`pplx_export/commands/common.py`,
+`make_transport`):
+
+- No `GET /api/auth/session` at startup, so a flaky network no longer produces
+  a long silent wait (now heartbeated) before the first real request.
+- The tool trusts whichever account is currently logged in; the upfront
+  email-ownership check and the automatic multi-account switching above are not
+  run.
+- **Deferred safety net**: in `batch`, once generic export errors accumulate
+  (three failures), a one-time account check runs and warns you what it found —
+  the cookie is expired, the account mismatches the target, or the account is
+  fine (so the errors are network / rate-limit, not auth)
+  (`pplx_export/commands/common.py`, `report_account_status`;
+  `pplx_export/commands/batch_cmd.py`).
+- **Trade-off**: the deferred check catches an expired cookie, but it cannot
+  catch a *wrong-but-valid* account that exports without error — with
+  `--skip-auth-check` you take responsibility that the logged-in account is the
+  intended one.
+
+Use it for fast, unattended runs on a known-good login; omit it when you rely
+on the upfront ownership guard or automatic account switching.
 
 ## Cookie cache
 

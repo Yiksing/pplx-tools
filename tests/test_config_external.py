@@ -226,3 +226,28 @@ def test_pytest_collection_ignores_caller_config(
         timeout=120,
     )
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+class TestArchiveRoot:
+    """archive_root: optional --out fallback loaded into cfg.ARCHIVE_ROOT.
+
+    archive_root：可选的 --out 回退，载入 cfg.ARCHIVE_ROOT。"""
+
+    def test_absent_is_none(self, tmp_path):
+        # TOML_A has no archive_root → ARCHIVE_ROOT stays None (falls back to ./web_archive)
+        # TOML_A 无 archive_root → ARCHIVE_ROOT 为 None（回退 ./web_archive）
+        cfg.configure(_write(tmp_path, "a.toml", TOML_A))
+        assert cfg.ARCHIVE_ROOT is None
+
+    def test_loaded_and_expanded(self, tmp_path):
+        toml = 'archive_root = "~/pplx-archive/web_archive"\n' + TOML_A
+        cfg.configure(_write(tmp_path, "ar.toml", toml))
+        assert cfg.ARCHIVE_ROOT == (Path.home() / "pplx-archive" / "web_archive")
+
+    def test_rebound_to_none_on_reload_without_key(self, tmp_path):
+        cfg.configure(_write(tmp_path, "ar.toml", 'archive_root = "/data/wa"\n' + TOML_A))
+        assert cfg.ARCHIVE_ROOT == Path("/data/wa")
+        # Reload a config without the key → must rebind back to None (no stale leak)
+        # 重载不含该键的配置 → 必须重新绑定回 None（不留残值）
+        cfg.configure(_write(tmp_path, "b.toml", TOML_B))
+        assert cfg.ARCHIVE_ROOT is None

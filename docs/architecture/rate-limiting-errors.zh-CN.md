@@ -55,3 +55,12 @@ flowchart TD
   传输层与批量层的退避计数统一；**账户自动切换后重建也不丢**
   （common.py:139 同样传入）；单条命令不传时 CookieTransport 自建默认实例
   （cookie_transport.py:49）。
+- **心跳（默认档）**。三处长等待——`Throttle.backoff` 睡眠、卡住的在途请求
+  （`CookieTransport._open_read`）、空闲的 `pplx-ask` SSE 流（`ask_api.post_stream`）
+  ——现在都会打 INFO「仍在等待」心跳，避免把等待误当卡死。退避按分片睡眠
+  （`Throttle._sleep_with_heartbeat`），各片之和等于同一总时长，所以反风控
+  节奏 / 预算不变，只是变得可见；`-v` 仍附完整 DEBUG 追踪。
+- **`--skip-auth-check` + 延迟校验**。启动时的账户归属会话探测（`common.py`，
+  `make_transport`）可跳过，避免网络差时开头长时间等待。作为安全网，`batch`
+  在通用报错累积后会做一次性 `report_account_status`（`common.py`；`batch_cmd.py`），
+  告知 cookie 失效 / 账户不符 / 账户正常（即报错源于网络或限流）。

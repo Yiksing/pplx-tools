@@ -16,6 +16,7 @@ from __future__ import annotations
 import base64
 import io
 import json
+import logging
 import urllib.error
 
 import pytest
@@ -29,17 +30,30 @@ from pplx_export.core.errors import (
 )
 from pplx_export.core.http.bridge_transport import WebBridgeTransport
 from pplx_export.core.http.cookie_transport import CookieTransport
+from pplx_export.core.throttle import Throttle
 
 URL = "https://www.perplexity.ai/rest/thread/00000000-0000-0000-0000-000000000000"
 
 
 @pytest.fixture()
 def sleep_counter(monkeypatch):
-    """Intercept throttle's time.sleep and count calls: each backoff() sleeps exactly once.
+    """Count Throttle.backoff() invocations (one per logical retry wait) and neutralize
+    real sleeping. N-06's signal is that backoff() must NOT be called after the final
+    attempt; pre-heartbeat this was proxied by counting time.sleep, but backoff() now
+    sleeps in heartbeat chunks (many sleeps per backoff), so we count backoff() directly.
 
-    拦截 throttle 的 time.sleep 并计数：每次 backoff() 恰好睡一次。"""
+    统计 Throttle.backoff() 调用次数（每次逻辑重试等待一次），并让真实睡眠空转。
+    N-06 的判据是末次尝试后不得再调 backoff()；心跳化后一次 backoff() 会多次 sleep，
+    故改为直接计数 backoff()。"""
     calls: list[float] = []
-    monkeypatch.setattr("pplx_export.core.throttle.time.sleep", calls.append)
+    monkeypatch.setattr("pplx_export.core.throttle.time.sleep", lambda *_a, **_k: None)
+    orig = Throttle.backoff
+
+    def _spy(self, *a, **k):
+        calls.append(1.0)
+        return orig(self, *a, **k)
+
+    monkeypatch.setattr(Throttle, "backoff", _spy)
     return calls
 
 
@@ -321,3 +335,76 @@ class TestN05BridgeClassify:
         t, _ = _bridge_transport([{"status": 200, "b64": payload}])
         assert t.download(URL) == b"hello"
         assert sleep_counter == []
+
+
+# ---------- in-flight request heartbeat (CookieTransport._open_read) ----------
+# ---------- 在途请求心跳（CookieTransport._open_read）----------
+
+class TestInflightRequestHeartbeat:
+    def test_slow_request_emits_heartbeat(self, caplog):
+        import time as _t
+
+        from pplx_export.core.throttle import Throttle
+
+        class _SlowOpener:
+            def open(self, req, timeout=None):
+                _t.sleep(0.12)  # exceeds the tiny heartbeat interval below
+                return _FakeResp(b'{"ok": true}')
+
+        t = CookieTransport(cookies={}, throttle=Throttle(heartbeat_interval=0.03))
+        t._opener = _SlowOpener()
+        with caplog.at_level(logging.INFO, logger="pplx_export.transport"):
+            assert t.get_json(URL) == {"ok": True}
+        beats = [r for r in caplog.records if "仍在等待响应" in r.getMessage()]
+        assert beats, "在途慢请求应在默认档打出心跳"
+
+    def test_fast_request_no_heartbeat(self, caplog):
+        t = CookieTransport(cookies={})
+        t._opener = _ScriptedOpener([_FakeResp(b'{"ok": true}')])
+        with caplog.at_level(logging.INFO, logger="pplx_export.transport"):
+            assert t.get_json(URL) == {"ok": True}
+        beats = [r for r in caplog.records if "仍在等待响应" in r.getMessage()]
+        assert beats == [], "快速请求不应打心跳"
+
+
+# ---------- SSE idle heartbeat (ask_api.post_stream) ----------
+# ---------- SSE 空闲心跳（ask_api.post_stream）----------
+
+class TestSseIdleHeartbeat:
+    def test_idle_stream_emits_heartbeat(self, caplog):
+        import time as _t
+
+        from pplx_export.core.throttle import Throttle
+        from pplx_export.sites.perplexity.ask_api import post_stream
+
+        class _Resp:
+            def __init__(self):
+                self._n = 0
+
+            def read1(self, n):
+                self._n += 1
+                if self._n == 1:
+                    _t.sleep(0.12)  # idle gap > interval → heartbeat fires
+                    return b'data: {"a": 1}\n\n'
+                return b""
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                return False
+
+        class _Opener:
+            def open(self, req, timeout=None):
+                return _Resp()
+
+        class _T:
+            _cookie_header = ""
+            _opener = _Opener()
+            throttle = Throttle(heartbeat_interval=0.03)
+
+        with caplog.at_level(logging.INFO, logger="pplx_export.ask"):
+            evs = list(post_stream(_T(), "https://example.invalid/sse", {}))
+        assert evs == [{"a": 1}]
+        beats = [r for r in caplog.records if "仍在等待响应流" in r.getMessage()]
+        assert beats, "SSE 空闲应打出心跳"

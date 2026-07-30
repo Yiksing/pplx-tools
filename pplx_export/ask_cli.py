@@ -21,7 +21,7 @@ from pathlib import Path
 
 from . import config as _cfg
 from .commands.common import (add_common_args, make_transport,
-                              resolve_cli_account, resolve_log_file)
+                              resolve_cli_account, resolve_log_file, resolve_out_root)
 from .commands.export_cmd import cmd_export
 from .sites.perplexity.ask_api import (COUNCIL_DEFAULT_MODELS, MODE_MODEL,
                                        build_envelope, create_space, mark_read, move_threads,
@@ -279,11 +279,15 @@ def main():
     except _cfg.ConfigError as e:
         raise SystemExit(f"[config][ERROR] {e}")
 
+    # Resolve the archive root: --out > user-config archive_root > default ./web_archive
+    # 归档根解析：--out > 用户配置 archive_root > 默认 ./web_archive
+    args.out = resolve_out_root(args.out)
+
     setup_logging(args.verbose, resolve_log_file(args.log_file, args.out, f"pplx-ask-{args.cmd}"))
 
     account = resolve_cli_account(args.account)
     transport, _src = make_transport(account, args.cookies_from, args.cookies, "cookie",
-                                     out_root=args.out)
+                                     out_root=args.out, skip_auth_check=args.skip_auth_check)
     writer = FilesystemWriter(args.out)
 
     if args.cmd == "models":

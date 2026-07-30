@@ -119,6 +119,10 @@ flowchart TD
    `https://www.perplexity.ai/rest/sse/perplexity_ask` and consumes the event stream,
    logging thread creation (`https://www.perplexity.ai/search/<uuid>`), status
    transitions, and generation progress. The stream ends on `final_sse_message`.
+   When the stream goes idle for an interval (deep-research / council can be silent
+   for minutes; the open timeout is 600 s), `post_stream` emits a "still waiting for
+   the response stream" INFO heartbeat at default verbosity so a live run is never
+   mistaken for a hang.
 3. **Completion gate** — post-processing only runs when the final status is `COMPLETED`
    (`pplx_export/ask_cli.py:134`). On an abnormal stream end, everything after this
    point is skipped (no move, no telemetry, no export) so a half-finished state never

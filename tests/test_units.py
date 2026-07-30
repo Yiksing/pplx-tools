@@ -196,10 +196,16 @@ class TestThrottle:
     def test_backoff_cap_300(self, no_sleep, monkeypatch):
         th = Throttle(backoff_factor=3.0)
         monkeypatch.setattr("pplx_export.core.throttle.random.uniform", lambda a, b: b)
-        for _ in range(10):
-            d = th.backoff(base=100.0)
+        for _ in range(9):
+            th.backoff(base=100.0)
+        no_sleep.clear()  # isolate the final backoff's heartbeat chunks
+        d = th.backoff(base=100.0)
         assert d == 300.0, "退避应封顶 300s"
-        assert no_sleep[-1] == 300.0
+        # Heartbeat-chunked sleep: the chunks of this backoff sum to the capped 300s,
+        # and no single chunk exceeds the heartbeat interval — total wall-clock is unchanged.
+        # 心跳分片睡眠：本次退避各分片之和等于封顶的 300s，单片不超过心跳间隔——总时长不变。
+        assert abs(sum(no_sleep) - 300.0) < 1e-6, "分片之和应等于封顶 300s"
+        assert all(s <= th.heartbeat_interval + 1e-9 for s in no_sleep)
 
     def test_reset(self, no_sleep, monkeypatch):
         th = Throttle(backoff_factor=3.0)
@@ -652,3 +658,140 @@ class TestExternalReviewFixes:
         pat = re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
                          re.IGNORECASE)
         assert pat.findall("参见 00000000-0000-4000-8000-0000000000AB 线程")
+
+
+# ---------------------------------------------------------------- incremental index (B)
+# ------------------------------------------------- 增量 index（B）
+
+from pplx_export.commands.index_cmd import cmd_index, _STOP_RUN
+
+
+class _FakeIdxAdapter:
+    def __init__(self, rows):
+        self._rows = rows
+        self.consumed = 0
+
+    def list_threads(self, account):
+        for r in self._rows:
+            self.consumed += 1
+            yield r
+
+
+class _IdxAcct:
+    username = "u"
+
+
+def _irow(u: str, lu: str, **extra) -> dict:
+    return {"entryUUID": u, "lastUpdated": lu, "title": u, **extra}
+
+
+class TestIncrementalIndex:
+    def _write_lib(self, tmp_path, rows, **doc_extra):
+        idx = tmp_path / "index" / "library_u.json"
+        idx.parent.mkdir(parents=True, exist_ok=True)
+        doc = {"account": "u", "extracted_at": "2026-06-01T00:00:00Z",
+               "count": len(rows), "threads": rows, **doc_extra}
+        idx.write_text(json.dumps(doc), encoding="utf-8")
+        return idx
+
+    def test_incremental_stops_at_known_boundary_and_merges(self, tmp_path):
+        old = [_irow(f"o{i}", "2026-01-01T00:00:00Z") for i in range(30)]
+        old[0]["search_mode"] = "RESEARCH"  # enrichment must survive
+        idx = self._write_lib(tmp_path, old)
+        # NEWEST-first stream: 2 new rows, then the 30 old rows unchanged
+        # NEWEST 流：2 条新行，随后 30 条旧行未变
+        stream = [_irow("n0", "2026-07-01T00:00:00Z"),
+                  _irow("n1", "2026-07-01T00:00:00Z")] + [dict(r) for r in old]
+        adapter = _FakeIdxAdapter(stream)
+        cmd_index(adapter, _IdxAcct(), tmp_path, full=False)
+        # Early stop: 2 new + _STOP_RUN known-unchanged consumed, the rest not paged
+        # 早停：只消费 2 新 + _STOP_RUN 条已知未变，其余不翻页
+        assert adapter.consumed == 2 + _STOP_RUN
+        doc = json.loads(idx.read_text())
+        uuids = [t["entryUUID"] for t in doc["threads"]]
+        assert uuids[:2] == ["n0", "n1"]
+        # No loss: every old thread is still present (tail carried over)
+        # 不丢失：全部旧线程仍在（尾段沿用）
+        assert set(uuids) == {"n0", "n1"} | {f"o{i}" for i in range(30)}
+        assert doc["count"] == 32
+        assert doc["incremental_runs_since_full"] == 1
+        # last full reconciliation time is preserved from the prior document
+        # 上次全量对账时间沿用旧文档
+        assert doc["last_full_index_at"] == "2026-06-01T00:00:00Z"
+        # search_mode enrichment preserved on the re-fetched row
+        # 重抓行上的 search_mode 富化保留
+        assert next(t for t in doc["threads"] if t["entryUUID"] == "o0")["search_mode"] == "RESEARCH"
+
+    def test_incremental_runs_counter_increments(self, tmp_path):
+        old = [_irow(f"o{i}", "2026-01-01T00:00:00Z") for i in range(30)]
+        self._write_lib(tmp_path, old, incremental_runs_since_full=4,
+                        last_full_index_at="2026-05-01T00:00:00Z")
+        stream = [dict(r) for r in old]
+        cmd_index(_FakeIdxAdapter(stream), _IdxAcct(), tmp_path, full=False)
+        doc = json.loads((tmp_path / "index" / "library_u.json").read_text())
+        assert doc["incremental_runs_since_full"] == 5
+        assert doc["last_full_index_at"] == "2026-05-01T00:00:00Z"
+
+    def test_full_rewrites_and_resets_counter(self, tmp_path):
+        old = [_irow(f"o{i}", "2026-01-01T00:00:00Z") for i in range(30)]
+        self._write_lib(tmp_path, old, incremental_runs_since_full=9)
+        stream = [_irow("n0", "2026-07-01T00:00:00Z")] + [dict(r) for r in old[:5]]
+        adapter = _FakeIdxAdapter(stream)
+        cmd_index(adapter, _IdxAcct(), tmp_path, full=True)
+        # Full sweep consumes the whole stream (no early stop)
+        # 全量消费整个流（不早停）
+        assert adapter.consumed == len(stream)
+        doc = json.loads((tmp_path / "index" / "library_u.json").read_text())
+        # Full rewrite: only what was fetched, counter reset
+        # 全量重写：只保留本次抓取，计数归零
+        assert doc["count"] == len(stream)
+        assert doc["incremental_runs_since_full"] == 0
+        assert doc["last_full_index_at"] == doc["extracted_at"]
+
+    def test_first_run_without_existing_library_is_full(self, tmp_path):
+        # No existing library → incremental has nothing to stop against → full behavior
+        # 无既有库 → 增量无从早停 → 按全量行为
+        stream = [_irow(f"n{i}", "2026-07-01T00:00:00Z") for i in range(3)]
+        adapter = _FakeIdxAdapter(stream)
+        cmd_index(adapter, _IdxAcct(), tmp_path, full=False)
+        assert adapter.consumed == 3
+        doc = json.loads((tmp_path / "index" / "library_u.json").read_text())
+        assert doc["count"] == 3
+        assert doc["incremental_runs_since_full"] == 0
+
+
+def test_index_incremental_exhausted_counts_as_full(tmp_path):
+    """An incremental run that pages the whole library (no early stop) is a full
+    reconciliation: counter reset and last_full refreshed.
+
+    增量却翻到尽头（未早停）等同一次全量对账：计数归零、last_full 刷新。"""
+    old = [_irow(f"o{i}", "2026-01-01T00:00:00Z") for i in range(5)]
+    idx = tmp_path / "index" / "library_u.json"
+    idx.parent.mkdir(parents=True)
+    idx.write_text(json.dumps({"account": "u", "extracted_at": "2026-06-01T00:00:00Z",
+                               "count": 5, "threads": old,
+                               "incremental_runs_since_full": 4}), encoding="utf-8")
+    adapter = _FakeIdxAdapter([dict(r) for r in old])
+    cmd_index(adapter, _IdxAcct(), tmp_path, full=False)
+    assert adapter.consumed == 5  # exhausted, no early stop
+    doc = json.loads(idx.read_text())
+    assert doc["count"] == 5
+    assert doc["incremental_runs_since_full"] == 0
+    assert doc["last_full_index_at"] == doc["extracted_at"]
+
+
+def test_index_incremental_preserves_uuidless_old_rows(tmp_path):
+    """Incremental merge must carry over old rows lacking entryUUID (what --full keeps).
+
+    增量合并必须保留缺 entryUUID 的旧行（--full 会保留的行）。"""
+    uuidless = {"title": "legacy-no-uuid", "lastUpdated": "2026-01-01T00:00:00Z"}
+    old = [uuidless] + [_irow(f"o{i}", "2026-01-01T00:00:00Z") for i in range(30)]
+    idx = tmp_path / "index" / "library_u.json"
+    idx.parent.mkdir(parents=True)
+    idx.write_text(json.dumps({"account": "u", "extracted_at": "2026-06-01T00:00:00Z",
+                               "count": len(old), "threads": old}), encoding="utf-8")
+    adapter = _FakeIdxAdapter([_irow(f"o{i}", "2026-01-01T00:00:00Z") for i in range(30)])
+    cmd_index(adapter, _IdxAcct(), tmp_path, full=False)
+    assert adapter.consumed == _STOP_RUN  # early-stopped at the known boundary
+    doc = json.loads(idx.read_text())
+    assert "legacy-no-uuid" in [t.get("title") for t in doc["threads"]]

@@ -222,22 +222,36 @@ Manifest layout: [Archive layout](archive-layout.md).
 
 ## Command seems hung / long silences
 
-**Symptom**: `index` / `batch` / `export` prints nothing for several minutes;
-an outer task manager may kill it as "timed out".
+**Symptom**: `index` / `batch` / `export` appears to stall; an outer task
+manager may kill it as "timed out".
 
-**Cause**: almost always a backoff wait, not a hang. On 429 / 5xx / network
-errors the transport sleeps between attempts — up to 300 s per wait
-(`pplx_export/core/throttle.py:38-50`). At DEBUG level the wait is explicit:
+**Cause**: almost always a backoff or in-flight-request wait, not a hang. On
+429 / 5xx / network errors the transport sleeps between attempts — up to 300 s
+per wait (`pplx_export/core/throttle.py`, `Throttle.backoff`).
+
+**What you now see (default verbosity, no `-v` needed)**: the wait is
+surfaced by INFO heartbeats. A backoff prints an upfront line and then a
+countdown tick every ~10 s (`Throttle.heartbeat_interval`); a single request
+that stalls before responding prints a "still waiting for response" tick; and
+`pplx-ask` streams print a "still waiting for the response stream" tick while a
+deep-research / council run is silent:
 
 ```
-19:39:31 GET www.perplexity.ai/rest/thread/<uuid> 网络错误: Remote end closed connection without response
-19:39:31 退避 200.9s（连续失败 2 次）
+22:27:24 [auth] 正在校验账户 cookie（来源 cache）…
+22:27:40 退避 ~51s（连续失败 1 次，网络异常重试中）
+22:27:50 仍在等待重试，剩余 ~41s
+22:28:00 仍在等待重试，剩余 ~31s
 ```
 
-**How to tell**: run with `-v` (or `--log-file`) and look for the backoff
-lines; as long as the process is alive, no intervention is needed.
-Interrupting is safe at any point — state is written atomically and the next
-run repairs the gap.
+The total wait is unchanged — heartbeats only make it visible; interrupting is
+safe at any point (state is written atomically and the next run repairs the
+gap). `-v` / `--log-file` still add the full DEBUG request trace.
+
+**Skip the startup probe**: `index` / `batch` begin with a session probe that
+follows the same backoff rules, so on a bad network the very first wait can be
+this account-validation step. Pass `--skip-auth-check` to skip it and go
+straight to work, trusting the currently logged-in account — see
+[Configuration](configuration.md).
 
 **Anti-pattern**: wrapping the CLI in a task manager with a short hard
 timeout (agent background tasks, `timeout(1)`-style cron wrappers) *while*

@@ -69,6 +69,7 @@ slug = "bot-EXAMPLE"
 | 字段 | 类型 | 含义 |
 |---|---|---|
 | `default_account` | string | 某个 `[accounts.<name>]` 表的键，`--account` 未给出时取用（`pplx_export/commands/common.py:84-85`）。为空/缺失 = 降级模式。 |
+| `archive_root` | string | 可选。归档输出根，作为 `--out` 的回退，日常命令可省略 `--out`。优先级：`--out` > `archive_root` > `./web_archive`（`pplx_export/config.py`，载入 `ARCHIVE_ROOT`；在 `cli.py` / `ask_cli.py` 解析）。`~` 会展开。 |
 
 ### `[accounts.<name>]`
 
@@ -98,6 +99,7 @@ TOML 没有任何通路或 cookie 设置。这些按调用选择：
 | 配置文件路径 | `--config PATH`，或 `PPLX_EXPORT_CONFIG` |
 | cookie 来源 | `--cookies-from BROWSER` / `--cookies FILE` |
 | 数据通路 | `--transport cookie\|webbridge`（仅 `pplx-export`；默认 `cookie`） |
+| 跳过启动账户校验 | `--skip-auth-check`（两个入口）——见[多账户 cookie 模型](#多账户-cookie-模型) |
 
 完整标志参考见 [pplx-export](pplx-export.md)。
 
@@ -128,6 +130,24 @@ TOML 没有任何通路或 cookie 设置。这些按调用选择：
 - 未登记 `email` 的账户不做校验直接放行，并 warning 请你自行确认浏览器登录的是正确账户（`pplx_export/commands/common.py:146-149`）。
 
 完整切换流程与 session 端点语义见[提问与账户](../architecture/ask-and-accounts.md)与 [API 认证](../reference/api/api-authentication.md)。
+
+**跳过校验（`--skip-auth-check`）。** 上面的启动会话探测，用几秒（网络差时甚至
+数分钟）换来「账户 B 当 A 用」的归属保护。当你确定浏览器登录的就是目标账户时，
+`--skip-auth-check`（`pplx-export` 与 `pplx-ask` 共用）会完全跳过这次探测、直接
+开工（`pplx_export/commands/common.py`，`make_transport`）：
+
+- 启动时不发 `GET /api/auth/session`，网络抖动不再在首个真实请求前造成长时间
+  静默等待（现已有心跳）。
+- 工具信任当前登录的账户；上面的启动 email 归属校验与多账户自动切换都不执行。
+- **延迟安全网**：`batch` 中，通用导出错误累计（3 次失败）后，会做一次性账户
+  校验并告知结果——cookie 失效、账户与目标不符、或账户正常（说明报错源于
+  网络 / 限流而非鉴权）（`pplx_export/commands/common.py`，`report_account_status`；
+  `pplx_export/commands/batch_cmd.py`）。
+- **权衡**：延迟校验能抓到 cookie 失效，但抓不到**账户有效但用错**却能无错导出
+  的情况——用 `--skip-auth-check` 即由你自行确保登录的是目标账户。
+
+适合在已知登录正确时做快速、无人值守的运行；若你依赖启动归属保护或自动切换
+账户，则不要用它。
 
 ## cookie 缓存
 

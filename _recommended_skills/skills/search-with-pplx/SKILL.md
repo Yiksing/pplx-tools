@@ -81,9 +81,13 @@ syntax.
 Run:
 
 ```bash
-pplx-ask --out "$PPLX_ARCHIVE_ROOT" ask "$PPLX_SEARCH_PROMPT" \
+pplx-ask -v --out "$PPLX_ARCHIVE_ROOT" ask "$PPLX_SEARCH_PROMPT" \
   --mode search --no-telemetry
 ```
+
+Always run with the most verbose output: pass `-v` (and `--log-file` for
+unattended runs) so request traces and the "still waiting" heartbeats are
+visible and any failure is easy to locate.
 
 Keep automatic export enabled. Never use `--no-export`.
 
@@ -98,10 +102,12 @@ environment explicitly establishes a safe concurrency policy.
 
 Budget wall-clock time generously: the transport retries 429 / 5xx / network
 errors with backoff waits of up to 300 s each, so even a search-mode call that
-normally finishes in minutes can legitimately stay silent much longer — give
-any wrapping task a budget of at least 15 minutes rather than a short hard
-timeout, and treat silence as a backoff wait, not a hang (see [runtime budget
-for
+normally finishes in minutes can legitimately take much longer — give any
+wrapping task a budget of at least 15 minutes rather than a short hard timeout.
+At default verbosity these waits now print periodic INFO heartbeats (backoff
+countdown, in-flight request, and idle SSE stream), so a live call emits a
+"still waiting" line rather than going fully silent — treat it as a wait, not a
+hang (see [runtime budget for
 callers](https://pplx.iekseng.com/guide/rate-limiting/#runtime-budget-for-callers)).
 
 ## 5. Verify the archive

@@ -68,6 +68,14 @@ flowchart TD
 封顶 300 s。最后一次失败不再白睡；首次成功即 `throttle.reset()` 清零
 （`throttle.py:52`）。
 
+**心跳（默认档即可见）。** 退避不再静默等待：先打一条起始行，随后每
+`Throttle.heartbeat_interval`（默认 10 s）打一次倒计时，分片睡眠之和等于
+同一总时长——所以节奏与反风控预算不变，只是变得可见
+（`pplx_export/core/throttle.py`，`Throttle._sleep_with_heartbeat`）。同样的
+思路覆盖另外两处长等待：每个在途请求在响应前卡住时会打「仍在等待响应」
+（`CookieTransport._open_read`），`pplx-ask` 在深研 / 联席静默期间会打
+「仍在等待响应流」（`ask_api.post_stream`）。这些都无需 `-v`。
+
 每条规则的理由：
 
 - **429 退避** —— 服务器明确要求减速，指数式地照办。
@@ -84,8 +92,11 @@ flowchart TD
 单个请求最多 3 次尝试，尝试之间退避等待——单次封顶 300 s
 （`pplx_export/core/throttle.py:38-50`）——网络翻覆时一个请求合理地
 占用 10 分钟量级。`index` / `batch` 起步还有 session 探测，同样走这套
-规则（`pplx_export/commands/common.py:126`）。长时间静默是退避等待中，
-不是卡死。
+规则（`pplx_export/commands/common.py`，`make_transport`）；传
+`--skip-auth-check` 可跳过该探测、立即开工（见
+[配置](configuration.md)）。
+长时间静默是等待中、不是卡死——而且该等待现在已由默认档的 INFO 心跳
+呈现（退避倒计时、在途请求、SSE 流）。
 
 面向 agent、cron、CI 包装层的三条守则：
 
@@ -93,7 +104,8 @@ flowchart TD
    串联进带硬超时的外层任务——第一个账户的退避级联会吃光整个预算，
    后面的账户根本没机会跑。
 2. **超时预算 ≥ 15 分钟，否则脱离前台。** 给包装层留足超时，或后台运行 +
-   看日志（`-v` / `--log-file`）区分退避等待与真卡死。
+   看心跳（现已在默认档；`-v` / `--log-file` 附完整追踪）区分退避等待与
+   真卡死。
 3. **随时中断都安全。** 状态原子落盘；重跑幂等，中断留下的缺口自动修复
    （早停/续跑语义见[增量同步](incremental-sync.md)）。
 

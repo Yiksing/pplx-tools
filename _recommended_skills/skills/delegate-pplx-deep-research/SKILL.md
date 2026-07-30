@@ -90,20 +90,24 @@ The subagent must:
    as shell syntax.
 6. Use a private archive root outside any repository intended for publication.
 7. Run deep-research mode with agent telemetry disabled and automatic export
-   enabled:
+   enabled, and always with the most verbose output — pass `-v` (and
+   `--log-file` for unattended runs) so request traces and the "still waiting"
+   heartbeats are visible and any failure is easy to locate:
 
    ```bash
-   pplx-ask --out "$PPLX_ARCHIVE_ROOT" ask "$PPLX_RESEARCH_PROMPT" \
+   pplx-ask -v --out "$PPLX_ARCHIVE_ROOT" ask "$PPLX_RESEARCH_PROMPT" \
      --mode deep-research --no-telemetry
    ```
 
 8. Increase `--timeout` only when the expected run needs it.
 9. Budget wall-clock time for the whole run, not just `--timeout`: that flag
    only bounds the ask-side SSE stream, while the transport retries 429 / 5xx /
-   network errors with backoff waits of up to 300 s each, so a long silence
-   usually means a backoff wait, not a hang. Deep research alone can run tens
-   of minutes — never wrap the command in a task manager with a short hard
-   timeout (see [runtime budget for
+   network errors with backoff waits of up to 300 s each, so a long wait is
+   normal, not a hang. At default verbosity these waits now print periodic INFO
+   heartbeats (backoff countdown, in-flight request, and idle SSE stream), so a
+   live run emits a "still waiting" line rather than going fully silent. Deep
+   research alone can run tens of minutes — never wrap the command in a task
+   manager with a short hard timeout (see [runtime budget for
    callers](https://pplx.iekseng.com/guide/rate-limiting/#runtime-budget-for-callers)).
    If a run is killed mid-stream anyway, the tool deliberately skips the
    export; the platform-side thread survives and can be archived afterwards

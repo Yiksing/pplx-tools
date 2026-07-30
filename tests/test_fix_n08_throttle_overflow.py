@@ -43,3 +43,33 @@ def test_backoff_normal_path_unchanged():
     # 20×3^8×0.8 ≈ 105k >> 300; both paths yield the same capped value
     # 20×3^8×0.8 ≈ 105k >> 300，两路径同为封顶值
     assert d8 == 300.0 and d20 == 300.0
+
+
+def test_backoff_heartbeat_preserves_total_and_chunks():
+    """Heartbeat chunking must not change total wall-clock: the sum of chunk sleeps
+    equals the returned d exactly, split into ceil(d/interval) chunks.
+
+    心跳分片不得改变总时长：各分片之和严格等于返回的 d，分成 ceil(d/interval) 片。"""
+    import math
+
+    slept: list[float] = []
+    t = Throttle(heartbeat_interval=10.0)
+    with patch("pplx_export.core.throttle.time.sleep", slept.append):
+        t._consecutive_errors = 1  # base=20, n=2 → 20*9=180 before jitter/cap → long enough to chunk
+        d = t.backoff()
+    assert d <= 300.0
+    assert abs(sum(slept) - d) < 1e-6, "分片之和必须等于 d，总时长不变"
+    assert len(slept) == math.ceil(d / 10.0), "分片数应为 ceil(d/interval)"
+    assert all(s <= 10.0 + 1e-9 for s in slept), "每片不超过心跳间隔"
+
+
+def test_backoff_short_wait_single_sleep():
+    """A wait shorter than the heartbeat interval sleeps exactly once (no heartbeat spam).
+
+    短于心跳间隔的等待只睡一次（不刷心跳）。"""
+    slept: list[float] = []
+    t = Throttle(heartbeat_interval=10.0)
+    with patch("pplx_export.core.throttle.time.sleep", slept.append):
+        d = t.backoff(base=1.0)  # ~1*3=3s before jitter → < 10s interval
+    assert len(slept) == 1
+    assert abs(slept[0] - d) < 1e-6

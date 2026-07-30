@@ -14,6 +14,11 @@ Use the applicable prompts; omit irrelevant sections.
 - What calls what, and where is the value transformed or persisted?
 - Which public CLI, archive schema, API-shaped input, rendering, or navigation
   contract changes?
+- When CLI arguments, subcommands, defaults, or user-visible behavior change,
+  update the argparse help/usage text in the same change (shared flags in
+  `commands/common.py:add_common_args`; per-command parsers in `cli.py` /
+  `ask_cli.py`) and mirror it in the bilingual docs, so the `--help` menu never
+  drifts from the implemented CLI.
 - Can the change lose, duplicate, truncate, relocate, or delete archive data?
 - Must repeated or interrupted execution remain idempotent and resumable?
 

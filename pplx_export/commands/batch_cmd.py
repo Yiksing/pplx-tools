@@ -17,6 +17,7 @@ from ..hooks.incremental import plan_incremental
 from ..sites.perplexity import variant_log
 from ..sites.perplexity.fs_writer import FilesystemWriter
 from ..sites.perplexity.normalize import SEARCH_MODE_MAP
+from .common import report_account_status
 
 log = get_logger("cli")
 
@@ -75,7 +76,8 @@ def index_row_matches_mode(t: dict, mode_filter: str) -> bool:
 
 
 def cmd_batch(adapter, writer: FilesystemWriter, account, out_root: Path, limit, mode_filter, force,
-              delay_min, delay_max, full=False, throttle: Throttle | None = None):
+              delay_min, delay_max, full=False, throttle: Throttle | None = None,
+              verify_on_errors: bool = False):
     lib = out_root / "index" / f"library_{account.username}.json"
     if not lib.exists():
         raise SystemExit(f"[ERROR] 索引不存在，先运行 index: {lib}")
@@ -108,6 +110,11 @@ def cmd_batch(adapter, writer: FilesystemWriter, account, out_root: Path, limit,
     # 增量计划（与调度共用的纯函数）：默认早停截掉尾部终态连续段
     actions, n_stopped = plan_incremental(valid, state, full=full, force=force)
     ok = skip = fail = auth_fails = variant_threads = 0
+    # One-time deferred account check guard (only used when verify_on_errors is set by
+    # --skip-auth-check): run the check the first time generic errors accumulate.
+    # 一次性延迟账户校验标记（仅 --skip-auth-check 置 verify_on_errors 时用）：
+    # 通用错误首次累积到阈值时校验一次。
+    deferred_checked = False
     # total accounting (N-11): counts only the actually iterated actions plus the
     # early-stopped tail n_stopped (equal to len(valid)) — rows dropped for missing
     # entryUUID are excluded, so [batch i/total] matches the final ok+skip+fail
@@ -198,6 +205,18 @@ def cmd_batch(adapter, writer: FilesystemWriter, account, out_root: Path, limit,
                 fail += 1
                 log.warning(f"[batch] 失败: {str(e)[:120]}（退避）")
                 throttle.backoff()
+                if verify_on_errors and not deferred_checked and fail >= 3:
+                    # --skip-auth-check was used: after several generic failures, verify
+                    # the account once so the user learns whether it's auth vs network,
+                    # and abort if it's a confirmed auth/account problem (avoid 空转).
+                    # 用了 --skip-auth-check：多次通用失败后校验一次账户，区分鉴权还是网络；
+                    # 确认是鉴权/账户问题则中止（避免空转）。
+                    deferred_checked = True
+                    if report_account_status(adapter.transport, account):
+                        state.save()
+                        raise SystemExit(
+                            "[batch][ERROR] 回退校验确认鉴权/账户问题（cookie 失效或账户不符）——"
+                            "已中止批量以免空转。请更新 cookie / 切换账户后重试。")
         state.save()
         if i < len(actions):
             d = throttle.delay()

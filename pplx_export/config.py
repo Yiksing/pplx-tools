@@ -80,6 +80,12 @@ BOT_SPACE_SLUG = ""
 # Default account from the config (used when --account is not given; empty = degraded)
 # 配置中的默认账户（--account 未给时取用；空则降级）
 DEFAULT_ACCOUNT = ""
+# Optional user-configured archive root (top-level `archive_root` in the TOML).
+# Serves as the --out fallback: precedence is --out > config archive_root > DEFAULT_ARCHIVE_ROOT.
+# None when unset. Rebound on configure() reload (read via `from .. import config`).
+# 可选的用户配置归档根（TOML 顶层 `archive_root`）。作为 --out 的回退：
+# 优先级 --out > 配置 archive_root > DEFAULT_ARCHIVE_ROOT。未设为 None。configure() 重载会重新绑定。
+ARCHIVE_ROOT: Path | None = None
 # Path of the config file actually loaded (None = not loaded, degraded mode)
 # 实际加载的配置文件路径（None=未加载，降级模式）
 LOADED_CONFIG_PATH: Path | None = None
@@ -129,11 +135,12 @@ def configure(cli_path: str | os.PathLike | None = None,
     - 显式指定（--config/环境变量）但文件缺失：strict_explicit 时抛 ConfigError；
     - 文件存在但解析失败：一律抛 ConfigError（配置损坏不应静默降级）。
     """
-    global BOT_SPACE_UUID, BOT_SPACE_SLUG, DEFAULT_ACCOUNT, LOADED_CONFIG_PATH
+    global BOT_SPACE_UUID, BOT_SPACE_SLUG, DEFAULT_ACCOUNT, ARCHIVE_ROOT, LOADED_CONFIG_PATH
     ACCOUNT_DISPLAY_NAMES.clear()
     ACCOUNT_EMAIL.clear()
     ACCOUNT_UID.clear()
     BOT_SPACE_UUID = BOT_SPACE_SLUG = DEFAULT_ACCOUNT = ""
+    ARCHIVE_ROOT = None
     LOADED_CONFIG_PATH = None
 
     path, explicit = _candidate_path(cli_path)
@@ -167,6 +174,9 @@ def configure(cli_path: str | os.PathLike | None = None,
     BOT_SPACE_UUID = str(bot.get("uuid") or "")
     BOT_SPACE_SLUG = str(bot.get("slug") or "")
     DEFAULT_ACCOUNT = str(data.get("default_account") or "")
+    ar = data.get("archive_root")
+    if ar:
+        ARCHIVE_ROOT = Path(str(ar)).expanduser()
     LOADED_CONFIG_PATH = path
     return path
 

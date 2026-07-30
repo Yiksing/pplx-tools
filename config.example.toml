@@ -20,6 +20,12 @@
 # --account 未给出时使用的默认账户（对应下方 [accounts.<名>] 的键）
 default_account = "alice"
 
+# Optional archive output root, used as the --out fallback so daily commands can omit it.
+# Precedence: --out > archive_root > ./web_archive (relative to the current directory).
+# 可选的归档输出根，作为 --out 的回退，日常命令可省略 --out。
+# 优先级：--out > archive_root > ./web_archive（相对当前目录）。
+# archive_root = "~/perplexity-archive/web_archive"
+
 # Account registry: key = account username (the username in thread URLs / library)
 # 账户注册表：键 = 账户用户名（thread URL / library 中的 username）
 [accounts.alice]

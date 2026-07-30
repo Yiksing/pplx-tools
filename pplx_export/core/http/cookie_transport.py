@@ -13,6 +13,7 @@ cookie 由 CredentialProvider 提供；请求带限频；429/5xx/网络错误退
 from __future__ import annotations
 
 import json
+import threading
 import time
 import urllib.parse
 import urllib.request
@@ -67,6 +68,40 @@ class CookieTransport(Transport):
             return "; ".join(f"{c.name}={c.value}" for c in cookies)
         return "; ".join(f"{k}={v}" for k, v in cookies.items())
 
+    def _open_read(self, req: urllib.request.Request, timeout: int) -> tuple[int, bytes]:
+        """Open the request and read the full body, emitting an INFO heartbeat every
+        throttle.heartbeat_interval while the round-trip is in flight — so a stalled
+        request (slow network) is visible at default verbosity instead of a silent
+        terminal. The watchdog only logs; it never changes timing, and any HTTPError /
+        network error propagates out unchanged (the watchdog is always stopped).
+
+        打开请求并读满响应体；在途期间每隔 throttle.heartbeat_interval 打一条 INFO 心跳——
+        让卡住的请求（慢网络）在默认档可见而非静默终端。看门狗只打日志，不改时序，
+        任何 HTTPError/网络错误照常抛出（看门狗必被关闭）。
+        """
+        interval = getattr(self.throttle, "heartbeat_interval", 10.0)
+        if not interval or interval <= 0:
+            with self._opener.open(req, timeout=timeout) as r:
+                return r.status, r.read()
+        done = threading.Event()
+
+        def _beat():
+            waited = 0.0
+            while not done.wait(interval):
+                waited += interval
+                try:
+                    log.info(f"仍在等待响应 {_sanitize(req.full_url)}（已 {waited:.0f}s）")
+                except Exception:
+                    pass
+
+        beat = threading.Thread(target=_beat, daemon=True)
+        beat.start()
+        try:
+            with self._opener.open(req, timeout=timeout) as r:
+                return r.status, r.read()
+        finally:
+            done.set()
+
     def _request(self, req: urllib.request.Request, timeout: int) -> bytes:
         req.add_header("User-Agent", UA)
         if self._cookie_header:
@@ -77,14 +112,13 @@ class CookieTransport(Transport):
         t0 = time.monotonic()
         for attempt in range(self.max_retries):
             try:
-                with self._opener.open(req, timeout=timeout) as r:
-                    body = r.read()
-                    log.debug(f"{req.method} {_sanitize(req.full_url)} → {r.status} "
-                              f"{len(body)}B {time.monotonic() - t0:.1f}s")
-                    # Reset backoff counter on success, avoiding monotonic accumulation across requests
-                    # 成功清零退避计数，避免跨请求单调累积
-                    self.throttle.reset()
-                    return body
+                status, body = self._open_read(req, timeout)
+                log.debug(f"{req.method} {_sanitize(req.full_url)} → {status} "
+                          f"{len(body)}B {time.monotonic() - t0:.1f}s")
+                # Reset backoff counter on success, avoiding monotonic accumulation across requests
+                # 成功清零退避计数，避免跨请求单调累积
+                self.throttle.reset()
+                return body
             except urllib.error.HTTPError as e:
                 body = e.read()[:200]
                 log.debug(f"{req.method} {_sanitize(req.full_url)} → HTTP {e.code}")

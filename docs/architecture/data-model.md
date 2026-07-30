@@ -147,7 +147,7 @@ web_archive/
 
 | File | Writer | Semantics |
 |---|---|---|
-| `library_<account>.json` | `cmd_index` (index_cmd.py:17-43) | full account thread index (GraphQL); input for batch/scheduling/space indexes |
+| `library_<account>.json` | `cmd_index` (index_cmd.py) | account thread index (GraphQL); incremental-merged by default (`--full` rewrites); also carries `last_full_index_at` / `incremental_runs_since_full`; input for batch/scheduling/space indexes |
 | `batch_state.json` | `BatchState` (state.py) | checkpoint: uuid → status(ok/error/expired/deleted) + lastUpdated; atomic writes; corrupt files auto-backed up as `.corrupt-<ts>` |
 | `.cookies.json` | `CookieCache` (common.py:111, 150) | cookie cache (12h freshness), with source and account email; atomic write: temp file created with 0o600 then os.replace (cookies/cache.py:59-67 — session credentials readable only by the owner; within gitignore scope) |
 | `space_<slug>.json` | `cmd_space_index` (spaces_cmd.py:106-167) | per-space "all" thread list (incl. the context_uuid dual-ID mapping) |

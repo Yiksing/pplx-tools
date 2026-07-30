@@ -10,8 +10,9 @@
 |---|---|---|
 | `--account NAME` | 目标账户。cookie 归属 email 与登记 email 不符时，自动枚举浏览器中的各账户会话令牌完成切换 | 用户级配置的 `default_account` |
 | `--config PATH` | 用户级配置文件（账户注册表）。优先级：`--config` > 环境变量 `PPLX_EXPORT_CONFIG` > `~/.config/pplx-export/config.toml` | 默认查找链 |
+| `--skip-auth-check` | 跳过启动时的账户归属会话探测、信任当前登录，避免网络差时开头长时间等待；`batch` 在报错累积时会做延迟账户校验——见[配置](configuration.md) | 关闭 |
 | `--site NAME` | 站点适配器 | `perplexity` |
-| `--out DIR` | 归档输出根目录 | `./web_archive` |
+| `--out DIR` | 归档输出根目录 | `--out` > 配置 `archive_root` > `./web_archive` |
 | `--cookies-from BROWSER` | 从指定浏览器导入 cookie（`edge`/`chrome`/`firefox`/`safari`/`brave`…） | — |
 | `--cookies FILE` | Netscape cookie 文件或 JSON cookie 文件 | — |
 | `--transport MODE` | `cookie` = cookie 直连请求；`webbridge` = 在浏览器页面上下文内发 fetch | `cookie` |
@@ -50,19 +51,45 @@ pplx-export init --config /path/to/config.toml --force   # 自定义路径，允
 
 ## index
 
-拉取账户全量对话列表（GraphQL）并写入主索引 `index/library_<account>.json`——其他所有命令的比对基线。
+刷新账户对话列表主索引 `index/library_<account>.json`——其他所有命令的比对基线。
 
 | 参数 | 含义 | 默认值 |
 |---|---|---|
-| *（仅通用选项）* | | |
+| `--full` | 全量翻页并整体重写索引；复位增量计数 | 增量 |
 
 关键行为：
 
-- 保留 `search-mode-backfill` 写入的 `search_mode` 富化结果：索引行本身不携带该字段，刷新时按 `entryUUID` 从旧索引合并回来。
-- 在跑 `batch`、`sync-space`、`sync-deleted` 之前先跑它——这些命令的比对结果取决于索引的新鲜度。
+- **默认增量**：按最新翻页，遇到「连续一整页（`_STOP_RUN`）已知且未变」即停，把抓到的头部合并到既有索引上——更旧的行原样保留（不丢失）。首次运行或无既有索引时按全量。
+- **`--full`** 全量翻页并整体重写索引；作为定期对账的前置。
+- **增量路径的盲区**：旧线程的远端*删除*与*空间变更*不会出现在抓取的头部，因此看不到。删除权威仍是 `sync-deleted --online`。索引文档记录 `incremental_runs_since_full`；连续多次增量后会提醒你跑一次 `--full`（并配合 `sync-deleted --online`）。
+- 保留 `search-mode-backfill` 写入的 `search_mode` 富化，按 `entryUUID` 合并回来。
+- 在跑 `batch`、`sync-space`、`sync-deleted` 之前先跑它——它们的比对结果取决于索引的新鲜度。
 
 ```bash
-pplx-export index --account alice
+pplx-export index --account alice          # 增量刷新
+pplx-export index --account alice --full   # 全量对账前置
+```
+
+## sync
+
+高频同步便捷入口：**增量 `index` + 增量 `batch`**，只关注对话。
+
+| 参数 | 含义 | 默认值 |
+|---|---|---|
+| `--full` | 全量对账：全量 `index` + `batch` 全扫（并执行下方删除/空间步骤） | 关闭 |
+| `--check-deleted` | 附带 `sync-deleted --online`：核验并标记远端已删除线程 | 关闭 |
+| `--refresh-spaces` | 附带 `spaces --fetch-meta` 与 `sync-space` | 关闭 |
+| `--limit N` / `--mode X` / `--delay-min` / `--delay-max` | 透传给 `batch` 阶段 | — |
+
+关键行为：
+
+- 默认只抓新增/更新的对话，**跳过删除检测与空间刷新**——高频同步下最省。
+- 删除/空间对账为可选（`--check-deleted` / `--refresh-spaces`）或由 `--full` 一并完成。`index` 的计数（`incremental_runs_since_full`）是兜底：到期会提醒你做一次 `--full` 对账。
+
+```bash
+pplx-export sync --account alice                     # 只关注对话（快）
+pplx-export sync --account alice --full              # 定期全量对账
+pplx-export sync --account alice --check-deleted     # 顺带标记远端删除
 ```
 
 ## space-index

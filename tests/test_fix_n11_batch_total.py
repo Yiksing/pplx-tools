@@ -19,6 +19,8 @@ import logging
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
+
 from pplx_export.commands.batch_cmd import cmd_batch
 from pplx_export.core.state import BatchState
 from pplx_export.hooks.incremental import plan_incremental
@@ -167,3 +169,81 @@ def test_plan_invariant_actions_plus_stopped_equals_valid(tmp_path):
     # u-done + u-exp 终态尾段
     assert n_stopped == 2
     assert len(actions) + n_stopped == len(valid)
+
+
+class _AllFailAdapter:
+    """Every export raises a generic (non-auth) error → fail+backoff branch.
+
+    每次导出都抛一般（非鉴权）错误 → 走 fail+退避分支。"""
+
+    transport = object()
+
+    def get_thread(self, uuid, url=None, idx_thread=None):
+        raise RuntimeError("net boom")
+
+    def get_assets(self, conv, dest_dir=None):
+        return []
+
+
+def _write_pending_lib(out_root: Path, n: int):
+    idx = out_root / "index"
+    idx.mkdir(parents=True)
+    threads = [{"entryUUID": f"u{i}", "title": f"t{i}",
+                "lastUpdated": f"2026-07-{i + 1:02d}T00:00:00Z", "mode": "SEARCH"}
+               for i in range(n)]
+    (idx / "library_acct.json").write_text(json.dumps({"threads": threads}))
+
+
+def test_batch_deferred_check_aborts_on_auth_problem(tmp_path, monkeypatch):
+    """--skip-auth-check path: after 3 generic failures the deferred account check
+    runs once; a confirmed auth/account problem aborts the batch (no 空转).
+
+    --skip-auth-check 路径：3 次通用失败后回退校验一次；确认鉴权/账户问题即中止。"""
+    import pplx_export.commands.batch_cmd as bc
+
+    _write_pending_lib(tmp_path, 3)
+    calls: list[int] = []
+    monkeypatch.setattr(bc, "report_account_status", lambda t, a: (calls.append(1) or True))
+    account = SimpleNamespace(username="acct", folder="Acct")
+    with pytest.raises(SystemExit):
+        cmd_batch(_AllFailAdapter(), _FakeWriter(), account, tmp_path,
+                  limit=None, mode_filter=None, force=False,
+                  delay_min=0, delay_max=0, full=False, throttle=_NoopThrottle(),
+                  verify_on_errors=True)
+    assert calls == [1], "报错累积后应恰好回退校验一次"
+
+
+def test_batch_deferred_check_continues_when_account_ok(tmp_path, monkeypatch):
+    """When the deferred check says the account is fine (network/rate-limit), the
+    batch runs to completion instead of aborting.
+
+    回退校验判定账户正常（网络/限流）时，批量跑完而非中止。"""
+    import pplx_export.commands.batch_cmd as bc
+
+    _write_pending_lib(tmp_path, 4)
+    calls: list[int] = []
+    monkeypatch.setattr(bc, "report_account_status", lambda t, a: (calls.append(1) or False))
+    account = SimpleNamespace(username="acct", folder="Acct")
+    # Must not raise: a healthy account means the failures are transient.
+    # 不应抛出：账户健康说明失败是瞬态的。
+    cmd_batch(_AllFailAdapter(), _FakeWriter(), account, tmp_path,
+              limit=None, mode_filter=None, force=False,
+              delay_min=0, delay_max=0, full=False, throttle=_NoopThrottle(),
+              verify_on_errors=True)
+    assert calls == [1], "账户正常时也只回退校验一次，不重复"
+
+
+def test_batch_no_deferred_check_without_verify_flag(tmp_path, monkeypatch):
+    """Without verify_on_errors (no --skip-auth-check), the deferred check never runs.
+
+    未开 verify_on_errors（无 --skip-auth-check）时，绝不触发回退校验。"""
+    import pplx_export.commands.batch_cmd as bc
+
+    _write_pending_lib(tmp_path, 4)
+    calls: list[int] = []
+    monkeypatch.setattr(bc, "report_account_status", lambda t, a: (calls.append(1) or True))
+    account = SimpleNamespace(username="acct", folder="Acct")
+    cmd_batch(_AllFailAdapter(), _FakeWriter(), account, tmp_path,
+              limit=None, mode_filter=None, force=False,
+              delay_min=0, delay_max=0, full=False, throttle=_NoopThrottle())
+    assert calls == [], "未开 verify_on_errors 不应回退校验"

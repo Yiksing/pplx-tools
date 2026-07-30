@@ -126,28 +126,54 @@ def post_stream(transport: CookieTransport, url: str, payload: dict,
     if transport._cookie_header:
         req.add_header("Cookie", transport._cookie_header)
     import re as _re
+    import threading
     _BLANK = _re.compile(rb"\r?\n\r?\n")
-    with transport._opener.open(req, timeout=timeout) as r:
-        buf = b""
-        while True:
-            chunk = r.read1(8192) if hasattr(r, "read1") else r.read(8192)
-            if not chunk:
-                break
-            buf += chunk
+    # Idle heartbeat: deep-research/council streams can be silent for minutes (open
+    # timeout is 600s), so surface a still-waiting note at default verbosity when no
+    # chunk has arrived for an interval. The watchdog only logs; active streaming
+    # (frequent chunks) keeps idle low and stays quiet.
+    # 空闲心跳：深研/联席流可静默数分钟（open 超时 600s），无 chunk 到达超过一个间隔时
+    # 在默认档提示仍在等待。看门狗只打日志；活跃流（频繁 chunk）空闲低，保持安静。
+    interval = getattr(getattr(transport, "throttle", None), "heartbeat_interval", 10.0)
+    last = [time.monotonic()]
+    stop = threading.Event()
+
+    def _beat():
+        while not stop.wait(interval):
+            idle = time.monotonic() - last[0]
+            if idle >= interval:
+                try:
+                    log.info(f"[ask] 仍在等待响应流…（已空闲 {idle:.0f}s；深研/联席可能持续数分钟）")
+                except Exception:
+                    pass
+
+    if interval and interval > 0:
+        threading.Thread(target=_beat, daemon=True).start()
+    try:
+        with transport._opener.open(req, timeout=timeout) as r:
+            buf = b""
             while True:
-                # Blank line separating events (\r\n compatible).
-                # 事件分隔空行（兼容 \r\n）
-                m = _BLANK.search(buf)
-                if not m:
+                chunk = r.read1(8192) if hasattr(r, "read1") else r.read(8192)
+                last[0] = time.monotonic()
+                if not chunk:
                     break
-                raw, buf = buf[:m.start()], buf[m.end():]
-                ev = _parse_sse(raw)
+                buf += chunk
+                while True:
+                    # Blank line separating events (\r\n compatible).
+                    # 事件分隔空行（兼容 \r\n）
+                    m = _BLANK.search(buf)
+                    if not m:
+                        break
+                    raw, buf = buf[:m.start()], buf[m.end():]
+                    ev = _parse_sse(raw)
+                    if ev is not None:
+                        yield ev
+            if buf.strip():
+                ev = _parse_sse(buf)
                 if ev is not None:
                     yield ev
-        if buf.strip():
-            ev = _parse_sse(buf)
-            if ev is not None:
-                yield ev
+    finally:
+        stop.set()
 
 
 def sse_ask(transport: CookieTransport, envelope: dict,

@@ -147,7 +147,7 @@ web_archive/
 
 | 文件 | 写入方 | 语义 |
 |---|---|---|
-| `library_<account>.json` | `cmd_index`（index_cmd.py:17-43） | 账户全量线程索引（GraphQL），batch/调度/空间索引的输入 |
+| `library_<account>.json` | `cmd_index`（index_cmd.py） | 账户线程索引（GraphQL）；默认增量合并（`--full` 整体重写）；另带 `last_full_index_at` / `incremental_runs_since_full`；batch/调度/空间索引的输入 |
 | `batch_state.json` | `BatchState`（state.py） | 断点：uuid → status(ok/error/expired/deleted) + lastUpdated；原子写入；损坏自动备份 `.corrupt-<ts>` |
 | `.cookies.json` | `CookieCache`（common.py:111,150） | cookie 缓存（12h 新鲜期），含来源与账户 email；原子写入：临时文件以 0o600 创建后 os.replace（cookies/cache.py:59-67，会话凭证仅属主可读；gitignore 范围内） |
 | `space_<slug>.json` | `cmd_space_index`（spaces_cmd.py:106-167） | 单空间「全部」线程列表（含 context_uuid 双 ID 映射） |

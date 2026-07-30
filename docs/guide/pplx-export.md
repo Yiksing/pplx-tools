@@ -10,8 +10,9 @@ Every subcommand accepts these flags (defined once in `pplx_export/commands/comm
 |---|---|---|
 | `--account NAME` | Target account. When the cookie's email doesn't match the registered email, per-account browser session tokens are enumerated to switch automatically | `default_account` from the user-level config |
 | `--config PATH` | User-level config file (account registry). Priority: `--config` > env `PPLX_EXPORT_CONFIG` > `~/.config/pplx-export/config.toml` | default lookup chain |
+| `--skip-auth-check` | Skip the startup account-attribution session probe and trust the current login, avoiding a long startup wait on a poor network; `batch` runs a deferred account check if errors accumulate — see [Configuration](configuration.md) | off |
 | `--site NAME` | Site adapter | `perplexity` |
-| `--out DIR` | Archive output root | `./web_archive` |
+| `--out DIR` | Archive output root | `--out` > config `archive_root` > `./web_archive` |
 | `--cookies-from BROWSER` | Import cookies from a browser (`edge`/`chrome`/`firefox`/`safari`/`brave`…) | — |
 | `--cookies FILE` | Netscape cookie file or JSON cookie file | — |
 | `--transport MODE` | `cookie` = cookie-direct requests; `webbridge` = fetch inside the browser page context | `cookie` |
@@ -50,19 +51,45 @@ pplx-export init --config /path/to/config.toml --force   # custom path, overwrit
 
 ## index
 
-Fetch the account's full conversation list (GraphQL) and write the master index `index/library_<account>.json` — the baseline every other command diffs against.
+Refresh the account's conversation list index `index/library_<account>.json` — the baseline every other command diffs against.
 
 | Flag | Meaning | Default |
 |---|---|---|
-| *(common options only)* | | |
+| `--full` | Page the entire library and rewrite the index; resets the incremental counter | incremental |
 
 Key behaviors:
 
-- Preserves the `search_mode` enrichment written by `search-mode-backfill`: index rows don't carry it natively, so on refresh it is merged back from the old index by `entryUUID`.
+- **Incremental by default.** It pages newest-first and stops once a full page (`_STOP_RUN`) of consecutive rows is already known and unchanged, then merges the fetched head onto the existing index — older rows are carried over verbatim (no loss). The first run, or any run with no existing index, is a full sweep.
+- **`--full`** pages everything and rewrites the index; use it as the periodic reconciliation front-end.
+- **Blind spot of the incremental path:** remote *deletions* and *space changes* of older threads never appear in the fetched head, so they are not observed. Deletion authority stays with `sync-deleted --online`. The index document tracks `incremental_runs_since_full`; after enough incremental runs it warns you to run `--full` (and `sync-deleted --online`).
+- Preserves the `search_mode` enrichment written by `search-mode-backfill`, merged back by `entryUUID`.
 - Run it before `batch`, `sync-space` and `sync-deleted` — their diffs are only as fresh as this index.
 
 ```bash
-pplx-export index --account alice
+pplx-export index --account alice          # incremental refresh
+pplx-export index --account alice --full   # full sweep + reconciliation front-end
+```
+
+## sync
+
+High-frequency convenience entry: **incremental `index` + incremental `batch`**, focused on conversations only.
+
+| Flag | Meaning | Default |
+|---|---|---|
+| `--full` | Full reconciliation: full `index` + full `batch` sweep (and runs the deletion/space steps below) | off |
+| `--check-deleted` | Also run `sync-deleted --online` to verify and mark remotely-deleted threads | off |
+| `--refresh-spaces` | Also rebuild `spaces --fetch-meta` and run `sync-space` | off |
+| `--limit N` / `--mode X` / `--delay-min` / `--delay-max` | Passed through to the `batch` phase | — |
+
+Key behaviors:
+
+- Default run fetches only new/updated conversations and **skips deletion detection and space refresh** — the cheapest shape for frequent syncing.
+- Deletion/space reconciliation is opt-in (`--check-deleted` / `--refresh-spaces`) or bundled by `--full`. The `index` counter (`incremental_runs_since_full`) is the backstop: it reminds you when a `--full` reconciliation is overdue.
+
+```bash
+pplx-export sync --account alice                     # conversations only (fast)
+pplx-export sync --account alice --full              # periodic full reconciliation
+pplx-export sync --account alice --check-deleted     # also mark remote deletions
 ```
 
 ## space-index

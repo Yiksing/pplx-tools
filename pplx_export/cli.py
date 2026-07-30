@@ -30,7 +30,7 @@ from pathlib import Path
 
 from . import config as _cfg
 from .commands.common import (_account, add_common_args, make_transport,
-                              resolve_cli_account, resolve_log_file)
+                              resolve_cli_account, resolve_log_file, resolve_out_root)
 from .commands.index_cmd import cmd_index
 from .commands.export_cmd import cmd_export
 from .commands.batch_cmd import cmd_batch
@@ -73,7 +73,9 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description="pplx-export — Perplexity 对话导出与归档工具",
         epilog="""示例:
-  pplx-export index --account alice          提取账户对话列表索引
+  pplx-export sync --account alice           高频同步：增量 index + 增量 batch（只关注对话）
+  pplx-export sync --account alice --full    全量对账（含删除/空间的兜底前置：全量 index + batch 全扫）
+  pplx-export index --account alice          刷新对话列表索引（默认增量，--full 全量重写）
   pplx-export batch --account bob            增量批量导出（早停 + 断点续跑）
   pplx-export batch --account alice --full   全量扫描（定期兜底 / 怀疑档案有缺口）
   pplx-export export <线程URL>               导出单个线程
@@ -82,9 +84,10 @@ def main():
 
 多账户: cookie 归属与 --account 登记 email 不符时，自动枚举浏览器中的
 账户会话令牌完成切换，无需手动操作浏览器。
-运行时预算: 网络不稳时单命令可因退避持续数分钟（单次退避封顶 300s），
-静默≠卡死，-v 可见退避日志；多账户请逐账户依次调用，勿用 && 串联进
-带超时的外层任务；命令幂等，中断后直接重跑即可（增量早停跳过已完成部分）。
+运行时预算: 网络不稳时单命令可因退避持续数分钟（单次退避封顶 300s）；
+默认档即有「退避倒计时/仍在等待响应」心跳，等待≠卡死；多账户请逐账户
+依次调用，勿用 && 串联进带超时的外层任务；命令幂等，中断后直接重跑即可
+（增量早停跳过已完成部分）。
 子命令帮助: pplx-export <cmd> --help
 """)
     ap.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
@@ -102,9 +105,16 @@ def main():
     p_init.add_argument("--bot-title", default="BOT", metavar="TITLE",
                         help="BOT 空间标题：用于匹配既有空间，以及 --create-bot-space 创建时命名（默认 BOT）")
 
-    sub.add_parser("index", parents=[common],
-                   help="提取账户对话列表索引",
-                   description="提取账户对话列表索引 → index/library_<account>.json")
+    p_idx = sub.add_parser("index", parents=[common],
+                           help="刷新账户对话列表索引（默认增量，--full 全量）",
+                           description="刷新账户对话列表索引 → index/library_<account>.json。"
+                                       "默认增量：按最新翻页，遇到「连续一整页已知且未变」即停，"
+                                       "新增/更新行合并进既有库（旧行原样保留）。增量看不到旧线程"
+                                       "的远端删除与空间变更——删除以 sync-deleted --online 为准，"
+                                       "连续增量次数到阈值会提醒做一次 --full 全量对账。")
+    p_idx.add_argument("--full", action="store_true",
+                       help="全量翻页并整体重写库（复位增量计数；配合 sync-deleted --online "
+                            "可完成删除/空间对账）")
 
     p_si = sub.add_parser("space-index", parents=[common],
                           help="提取空间「全部」会话列表（默认 REST 直连，浏览器备用）",
@@ -145,6 +155,31 @@ def main():
                      help="线程间随机间隔下限（默认 10）")
     p_b.add_argument("--delay-max", type=float, default=20.0, metavar="SEC",
                      help="线程间随机间隔上限（默认 20）")
+
+    p_sync = sub.add_parser("sync", parents=[common],
+                            help="高频同步：增量 index + 增量 batch（只关注对话）",
+                            description="高频同步便捷入口：先增量刷新索引，再增量批量导出——"
+                                        "默认只关注对话，跳过删除检测与空间刷新（高频导出下最省）。"
+                                        "--full 做全量对账（全量 index + batch 全扫）；"
+                                        "--check-deleted 附带 sync-deleted --online 标记远端删除；"
+                                        "--refresh-spaces 附带 spaces --fetch-meta + sync-space。"
+                                        "增量默认下的删除/空间兜底：库文档记录距上次全量的增量次数，"
+                                        "到期提醒你跑一次 --full（或 --check-deleted）。")
+    p_sync.add_argument("--full", action="store_true",
+                        help="全量对账：全量 index + batch 全扫（未变跳过但不早停）")
+    p_sync.add_argument("--check-deleted", action="store_true",
+                        help="附带 sync-deleted --online：核验并标记远端已删除线程")
+    p_sync.add_argument("--refresh-spaces", action="store_true",
+                        help="附带 spaces --fetch-meta 与 sync-space：刷新空间归属/元数据")
+    p_sync.add_argument("--limit", type=int, default=None, metavar="N",
+                        help="batch 只处理列表前 N 条（从新到旧）")
+    p_sync.add_argument("--mode", default=None,
+                        choices=["search", "deep-research", "computer", "council", "study"],
+                        help="只导出指定模式（语义同 batch --mode）")
+    p_sync.add_argument("--delay-min", type=float, default=10.0, metavar="SEC",
+                        help="线程间随机间隔下限（默认 10）")
+    p_sync.add_argument("--delay-max", type=float, default=20.0, metavar="SEC",
+                        help="线程间随机间隔上限（默认 20）")
 
     p_smb = sub.add_parser("search-mode-backfill", parents=[common],
                            help="给 library 索引补 search_mode（本地 raw 优先，联网兜底，幂等）",
@@ -252,6 +287,10 @@ def main():
         except _cfg.ConfigError as e:
             raise SystemExit(f"[config][ERROR] {e}")
 
+    # Resolve the archive root: --out > user-config archive_root > default ./web_archive
+    # 归档根解析：--out > 用户配置 archive_root > 默认 ./web_archive
+    args.out = resolve_out_root(args.out)
+
     setup_logging(args.verbose, resolve_log_file(args.log_file, args.out, args.cmd))
 
     if args.cookies_from and args.transport == "webbridge":
@@ -293,7 +332,8 @@ def main():
         # 惰性适配器：本地全解时零网络（连 session 探测都不发）
         def _adapter_factory(throttle=None):
             t, _ = make_transport(account, args.cookies_from, args.cookies,
-                                  args.transport, throttle=throttle, out_root=args.out)
+                                  args.transport, throttle=throttle, out_root=args.out,
+                                  skip_auth_check=args.skip_auth_check)
             return get_adapter(args.site, transport=t)
         cmd_search_mode_backfill(_adapter_factory, account, args.out, limit=args.limit,
                                  delay_min=args.delay_min, delay_max=args.delay_max,
@@ -305,7 +345,8 @@ def main():
         def _adapter_factory(username=None, throttle=None):
             t, _ = make_transport(_account(username or account.username),
                                   args.cookies_from, args.cookies,
-                                  args.transport, throttle=throttle, out_root=args.out)
+                                  args.transport, throttle=throttle, out_root=args.out,
+                                  skip_auth_check=args.skip_auth_check)
             return get_adapter(args.site, transport=t)
         cmd_sync_deleted(_adapter_factory, account, args.out, limit=args.limit,
                          delay_min=args.delay_min, delay_max=args.delay_max,
@@ -314,27 +355,61 @@ def main():
 
     # batch: share one Throttle between the transport and batch layers so backoff counting stays unified (success resets it)
     # batch：共享 Throttle 给传输层与批量层，退避计数不分裂（成功会清零）
-    batch_throttle = Throttle(args.delay_min, args.delay_max) if args.cmd == "batch" else None
+    batch_throttle = Throttle(args.delay_min, args.delay_max) if args.cmd in ("batch", "sync") else None
     transport, source = make_transport(account, args.cookies_from, args.cookies, args.transport,
-                                       throttle=batch_throttle, out_root=args.out)
+                                       throttle=batch_throttle, out_root=args.out,
+                                       skip_auth_check=args.skip_auth_check)
     adapter = get_adapter(args.site, transport=transport)
     # debug-js depends on browser rendering; space-index uses the browser only with explicit --transport webbridge (default REST)
     # debug-js 依赖浏览器渲染；space-index 仅显式 --transport webbridge 时走浏览器（默认 REST）
     bridge = WebBridgeTransport() if args.cmd == "debug-js" or args.transport == "webbridge" else None
 
     if args.cmd == "index":
-        cmd_index(adapter, account, args.out)
+        cmd_index(adapter, account, args.out, full=args.full)
     elif args.cmd == "space-index":
         cmd_space_index(adapter, args.target, args.out, bridge=bridge)
     elif args.cmd == "export":
         cmd_export(adapter, writer, args.target, account, args.force, args.out)
     elif args.cmd == "batch":
         cmd_batch(adapter, writer, account, args.out, args.limit, args.mode, args.force,
-                  args.delay_min, args.delay_max, full=args.full, throttle=batch_throttle)
+                  args.delay_min, args.delay_max, full=args.full, throttle=batch_throttle,
+                  verify_on_errors=args.skip_auth_check)
+    elif args.cmd == "sync":
+        # High-frequency conversation sync: incremental index + incremental batch.
+        # Deletion detection and space refresh are skipped by default (opt in with
+        # --check-deleted / --refresh-spaces, or run --full for a reconciliation).
+        # 高频对话同步：增量 index + 增量 batch。默认跳过删除检测与空间刷新
+        # （--check-deleted / --refresh-spaces 显式开启，或 --full 做全量对账）。
+        cmd_index(adapter, account, args.out, full=args.full)
+        cmd_batch(adapter, writer, account, args.out, args.limit, args.mode, False,
+                  args.delay_min, args.delay_max, full=args.full, throttle=batch_throttle,
+                  verify_on_errors=args.skip_auth_check)
+        if args.check_deleted or args.full:
+            def _sync_adapter_factory(username=None, throttle=None):
+                t, _ = make_transport(_account(username or account.username),
+                                      args.cookies_from, args.cookies, args.transport,
+                                      throttle=throttle, out_root=args.out,
+                                      skip_auth_check=args.skip_auth_check)
+                return get_adapter(args.site, transport=t)
+            cmd_sync_deleted(_sync_adapter_factory, account, args.out, limit=None,
+                             delay_min=args.delay_min, delay_max=args.delay_max, online=True)
+        if args.refresh_spaces or args.full:
+            def _sync_spaces_adapter_for(acct_username):
+                t, _ = make_transport(_account(acct_username), args.cookies_from, args.cookies,
+                                      args.transport, out_root=args.out,
+                                      skip_auth_check=args.skip_auth_check)
+                return get_adapter(args.site, transport=t)
+            cmd_spaces(args.out, adapter=adapter, fetch_meta=True,
+                       adapter_for=_sync_spaces_adapter_for, current_account=account.username)
+            cmd_sync_space(args.out)
+        if not (args.check_deleted or args.refresh_spaces or args.full):
+            log.info("[sync] 已完成对话增量同步；本次跳过删除检测与空间刷新"
+                     "（用 --check-deleted / --refresh-spaces 开启，或 --full 做全量对账）")
     elif args.cmd == "spaces":
         def adapter_for(acct_username):
             t, _ = make_transport(_account(acct_username), args.cookies_from, args.cookies,
-                                  args.transport, out_root=args.out)
+                                  args.transport, out_root=args.out,
+                                  skip_auth_check=args.skip_auth_check)
             return get_adapter(args.site, transport=t)
         cmd_spaces(args.out, adapter=adapter, fetch_meta=args.fetch_meta,
                    adapter_for=adapter_for, current_account=account.username)
@@ -344,7 +419,8 @@ def main():
         def adapter_for_dir(folder):
             t, _ = make_transport(_account(folder2user.get(folder, folder)),
                                   args.cookies_from, args.cookies, args.transport,
-                                  out_root=args.out)
+                                  out_root=args.out,
+                                  skip_auth_check=args.skip_auth_check)
             return get_adapter(args.site, transport=t)
         cmd_assets_backfill(adapter, args.out, args.online, args.limit,
                             adapter_for=adapter_for_dir, fetch_blocks=args.fetch_blocks)
