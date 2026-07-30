@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/architecture/data-model.zh-CN.md"
-translation_source_sha256: "b598d455a6bf170a69bc2c7c878f1bd6249c16fdee4adb16851e84c9c58cdcea"
+translation_source_sha256: "0b0d5fee1a182938585eb9a4861d66b0055baf71a00f43201d1576eb64f76cda"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -100,7 +100,7 @@ classDiagram
     SubAgent "1" --> "*" Citation
 ```
 
-職責註釋（行號相對 `core/models.py`）：
+職責註解（行號相對 `core/models.py`）：
 
 - **`Turn.wf_block`**（models.py:127）：computer/council 的 schematized 工作流區塊，
   由 `parsers.attach_workflow_blocks` 按 entry uuid 掛載（parsers.py:231-256），
@@ -110,14 +110,14 @@ classDiagram
 - **`Turn.metadata`**（models.py:134）：`report_info`（RESEARCH_ANSWER 步驟，
   parsers.py:199-204）、`locked_reason`（parsers.py:205-208）、`wf_status`
   （parsers.py:256）三個鍵。
-- **`Conversation.unconsumed_bgs`**（models.py:165-170）：歸屬瀑布第三級備援資料源，
+- **`Conversation.unconsumed_bgs`**（models.py:165-170）：歸屬瀑布第三級備援資料來源，
   `[{wp, locked_reason, updated, bg_uuid}]`，渲染為 conversation.md 末尾附錄。
 - **`Conversation.answer_variants`**（models.py:171-177）：答案改寫變體登記
-  （thread.json.answer_variants 資料源），`parsers.collect_answer_variants`
-  （parsers.py:589）從 `entries[].side_by_side_metadata` 收窄判據提取——檢測鏈見 [§18](offline-operations.md)。
+  （thread.json.answer_variants 資料來源），`parsers.collect_answer_variants`
+  （parsers.py:589）從 `entries[].side_by_side_metadata` 收窄判據提取——偵測鏈見 [§18](offline-operations.md)。
 - **`Conversation.sub_agents`**（models.py:178-182）：會話級子代理執行列表，僅
-  `cmd_relations` 離線重建時由 `adapter.sub_agents` 填入；匯出管線不回填本欄位
-  （writer 用區域 sub_map 渲染，relations 讀這裡）——見 [§15](offline-operations.md)。
+  `cmd_relations` 離線重建時由 `adapter.sub_agents` 填充；匯出管線不回填本欄位
+  （writer 用局部 sub_map 渲染，relations 讀這裡）——見 [§15](offline-operations.md)。
 - **`Conversation._blocks/_plain`**（models.py:183-190）：原始回應保真，
   `fs_writer` 原樣落盤 raw_*.json（fs_writer.py:257-266）；`get_report/get_assets/
   sub_agents` 与离线 re-render 均从其取数。`PerplexityAdapter(None)` 可用
@@ -165,11 +165,22 @@ web_archive/
 | `batch_state.json` | `BatchState`（state.py） | 斷點：uuid → status(ok/error/expired/deleted) + lastUpdated；原子寫入；損壞自動備份 `.corrupt-<ts>` |
 | `.cookies.json` | `CookieCache`（common.py:111,150） | cookie 快取（12h 新鮮期），含來源與帳戶 email；原子寫入：暫存檔以 0o600 建立後 os.replace（cookies/cache.py:59-67，會話憑證僅擁有者可讀；gitignore 範圍內） |
 | `space_<slug>.json` | `cmd_space_index`（spaces_cmd.py:106-167） | 單空間「全部」執行緒列表（含 context_uuid 雙 ID 映射） |
-| `space_meta.json` | `cmd_spaces --fetch-meta`（spaces_cmd.py:299-330） | 空間擁有者/成員快取（重建索引時重複使用，避免重複抓取） |
+| `space_meta.json` | `cmd_spaces --fetch-meta`（spaces_cmd.py:299-330） | 空間擁有者/成員快取（重建索引時重用，避免重複擷取） |
 | `credit_usage_<account>.json` | `cmd_usage_backfill`（usage_backfill_cmd.py:17） | 逐執行緒積分用量（等冪可續跑，每 25 條落盤一次） |
 | `cron_snippet.txt` | `cmd_schedule`（scheduler.py:48-78） | cron 呼叫片段（絕對路徑） |
-| `answer_variants_log.jsonl` | `variant_log.append_registry`（variant_log.py:76） | 答案改寫變體集中登記（按 thread+entry 去重等冪；入庫檔案，非 logs/）——檢測鏈見 [§18](offline-operations.md) |
+| `answer_variants_log.jsonl` | `variant_log.append_registry`（variant_log.py:76） | 答案改寫變體集中登記（按 thread+entry 去重等冪；入庫檔案，非 logs/）——偵測鏈見 [§18](offline-operations.md) |
 | `logs/` | `--log-file`（common.py:218-229） | 全量 DEBUG 日誌（已 gitignore） |
+
+使用者級 `config.toml` 另帶一個機器託管的 `[models]` 表（模型目錄 + `last_refreshed`），
+由 `pplx-ask models --refresh` 寫入、`pplx-export init` 播種，經 `tomlkit` round-trip
+保留使用者其餘表與註解——結構見[設定](../guide/configuration.md)。
+
+**維護者須知——釘死的協定常數。** 與 parser/renderer 強耦合的 Perplexity wire 協定
+事實——API `version`、ask 信封的 `supported_block_use_cases`、`supported_features`、
+執行緒讀取的 `SCHEMATIZED_BLOCK_USE_CASES`——單一來源於
+`pplx_export/sites/perplexity/platform.py`，平台 API 變更時須與 `parsers.py` /
+`render.py` 一併更新（人工釘死、絕不自動重新整理；有測試禁止版本字面量散落）。而模型 id
+是解耦的伺服器端資料，存於上文可重新整理的 `[models]` 目錄。
 
 <a id="spaces-索引层仓库根工具生成" data-pplx-source-anchor="true"></a>
 ### spaces/ 索引層（倉庫根，工具產生）

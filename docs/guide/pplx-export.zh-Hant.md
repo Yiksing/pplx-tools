@@ -2,7 +2,7 @@
 translation_kind: "machine"
 translation_source_locale: "zh-CN"
 translation_source_path: "docs/guide/pplx-export.zh-CN.md"
-translation_source_sha256: "034e8bd756bb6d23543186e05d426b609a314dad13d0a0e288257175956f0753"
+translation_source_sha256: "48e7ccd6cb7514e52bc54477c307019dd6be3a45e253b325799860dcf064baaf"
 translation_model: "deepseek-v4-flash"
 translation_prompt_version: "v1"
 ---
@@ -50,7 +50,8 @@ translation_prompt_version: "v1"
 - 工作階段探測：每個令牌逐個請求 `GET /api/auth/session` 取得帳戶 email / 顯示名；失敗或未返回 email 的令牌 warning 跳過。
 - 註冊表裝配：帳戶鍵由 email 本地部分派生（撞名加 `-2`/`-3`… 後綴）；`default_account` 取當前活躍帳戶，否則取首個發現的帳戶。
 - BOT 空間：經 `list_user_collections` 按標題精確匹配（大小寫不敏感）；無匹配時 `--create-bot-space [标题]` 當場建立（顯式標題覆蓋 `--bot-title`，匹配與建立均用之），否則 `[bot_space]` 留空。
-- TOML 原子寫入（暫存檔案 + 改名），權限 0600；已存在的檔案不加 `--force` 絕不覆蓋。命令結尾列印一行彙總 JSON：配置路徑、帳戶鍵、預設帳戶、BOT 空間 uuid/slug。
+- TOML 原子寫入（暫存檔 + 改名），權限 0600；已存在的檔案不加 `--force` 絕不覆蓋。命令結尾列印一行彙總 JSON：配置路徑、帳戶鍵、預設帳戶、BOT 空間 uuid/slug。
+- 模型播種（best-effort）：寫完配置後，`init` 拉取 `models/config/v2` 播種機器託管的 `[models]` 表，讓新配置即帶當前模型預設/目錄；失敗則 warning 跳過（稍後用 `pplx-ask models --refresh` 重新整理）。見[配置](configuration.md)。
 - `--transport webbridge` 會被拒絕——頁面上下文通道無法列舉各帳戶令牌。
 
 ```bash
@@ -69,7 +70,7 @@ pplx-export init --config /path/to/config.toml --force   # 自定义路径，允
 
 關鍵行為：
 
-- **預設增量**：按最新翻頁，遇到「連續一整頁（`_STOP_RUN`）已知且未變」即停，把抓到的頭部合併到既有索引上——更舊的行原樣保留（不遺失）。首次執行或無既有索引時按全量。
+- **預設增量**：按最新翻頁，遇到「連續一整頁（`_STOP_RUN`）已知且未變」即停，把抓到的頭部合併到既有索引上——更舊的行原樣保留（不丟失）。首次執行或無既有索引時按全量。
 - **`--full`** 全量翻頁並整體重寫索引；作為定期對帳的前置。
 - **增量路徑的盲區**：舊執行緒的遠端*刪除*與*空間變更*不會出現在抓取的頭部，因此看不到。刪除權威仍是 `sync-deleted --online`。索引文件記錄 `incremental_runs_since_full`；連續多次增量後會提醒你跑一次 `--full`（並配合 `sync-deleted --online`）。
 - 保留 `search-mode-backfill` 寫入的 `search_mode` 富化，按 `entryUUID` 合併回來。
@@ -133,8 +134,8 @@ pplx-export space-index "https://www.perplexity.ai/spaces/<space-slug>" --accoun
 關鍵行為：
 
 - 歸檔副本已是最新時跳過、不寫任何檔案；`--force` 覆蓋該檢查。
-- 執行緒在本地 library 索引中有行時，`lastUpdated` 取索引值（與 `batch` 同語義同格式），否則回退平台真值。
-- 終態優雅登記，不拋 traceback：`ENTRY_DELETED` 在 `batch_state.json` 標記 `deleted`，`ENTRY_EXPIRED` 標記 `expired`——兩種情況下本地已有歸檔都保持原樣。
+- 執行緒在本機 library 索引中有行時，`lastUpdated` 取索引值（與 `batch` 同語義同格式），否則回退平台真值。
+- 終態優雅登記，不拋 traceback：`ENTRY_DELETED` 在 `batch_state.json` 標記 `deleted`，`ENTRY_EXPIRED` 標記 `expired`——兩種情況下本機已有歸檔都保持原樣。
 - 匯出成功會把 `ok` 寫進 `index/batch_state.json`，增量計劃據此把該執行緒計為「已匯出且未變」。
 - 執行緒目錄內的檔案構成見 [archive-layout.zh-CN.md](archive-layout.md)；匯出管線本身見 [../architecture/export-pipeline.zh-CN.md](../architecture/export-pipeline.md)。
 
@@ -171,7 +172,7 @@ pplx-export batch --account bob --mode deep-research --limit 50
 
 ## spaces
 
-從本地 library 索引重建空間檢視索引——每空間一個 Markdown 頁面，外加 `spaces.json` 註冊表。
+從本機 library 索引重建空間檢視索引——每空間一個 Markdown 頁面，外加 `spaces.json` 註冊表。
 
 | 參數 | 含義 | 預設值 |
 |---|---|---|
@@ -179,7 +180,7 @@ pplx-export batch --account bob --mode deep-research --limit 50
 
 關鍵行為：
 
-- 不帶 `--fetch-meta` 時純本地（零網路）：跨所有 `library_*.json` 按空間 slug 聚合執行緒，含參與帳戶統計與指向已匯出執行緒目錄的反鏈。
+- 不帶 `--fetch-meta` 時純本機（零網路）：跨所有 `library_*.json` 按空間 slug 聚合執行緒，含參與帳戶統計與指向已匯出執行緒目錄的反鏈。
 - 輸出落到當前工作目錄的 `./spaces/`——請在包含 `web_archive/` 的目錄下執行，空間頁裡的反鏈才能正確解析。
 - `--fetch-meta` 先經 `get_collection` 重新整理各空間擁有者/成員快取（每空間 1 次請求，間隔 3s）到 `index/space_meta.json`；當前帳戶無權檢視的空間，自動換可見帳戶重試（cookie 自動切換）。
 
@@ -189,7 +190,7 @@ pplx-export spaces --fetch-meta --account alice
 
 ## sync-space
 
-把已歸檔 `thread.json` 的 `space` 欄位與當前索引對齊——純本地，零網路。
+把已歸檔 `thread.json` 的 `space` 欄位與當前索引對齊——純本機，零網路。
 
 | 參數 | 含義 | 預設值 |
 |---|---|---|
@@ -207,7 +208,7 @@ pplx-export index --account alice && pplx-export sync-space
 
 ## schedule
 
-計算本輪增量匯出計畫，並生成可被系統 cron 直接呼叫的命令片段。
+計算本輪增量匯出計劃，並生成可被系統 cron 直接呼叫的命令片段。
 
 | 參數 | 含義 | 預設值 |
 |---|---|---|
@@ -215,7 +216,7 @@ pplx-export index --account alice && pplx-export sync-space
 
 關鍵行為：
 
-- 拉取即時索引，按總數/新增/更新報告計畫，用的是與 `batch` 相同的早停純函式（`plan_incremental`）——見 [incremental-sync.zh-CN.md](incremental-sync.md)。
+- 拉取即時索引，按總數/新增/更新報告計劃，用的是與 `batch` 相同的早停純函數（`plan_incremental`）——見 [incremental-sync.zh-CN.md](incremental-sync.md)。
 - 寫 `<out>/index/cron_snippet.txt`，內容為一條 `17 3 * * *` 行，形如 `cd '<archive-parent>' && '<abs-path-to-pplx-export>' batch --account '<account>' --out '<abs-archive-root>'`——路徑用絕對路徑並加引號，因為 cron 的 cwd 與 PATH 不可預測。可執行檔路徑經 `shutil.which` 解析，解析失敗時回退為裸命令名 `pplx-export`。
 - 定時跑批按設計只跑增量；`batch --full` 作為定期兜底手動執行。
 
