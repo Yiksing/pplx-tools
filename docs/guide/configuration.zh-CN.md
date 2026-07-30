@@ -18,7 +18,7 @@ TOML 只承载身份数据。cookie 来源与数据通路选择是每次调用�
 | 2 | 环境变量 `PPLX_EXPORT_CONFIG` | 是 |
 | 3 | `~/.config/pplx-export/config.toml`（默认路径） | 否 |
 
-「显式」影响文件缺失时的报错行为——见 [配置缺失：降级模式](#配置缺失降级模式)。两个 CLI 入口都会在参数解析后以 strict 模式重新加载（`pplx_export/cli.py:223`、`pplx_export/ask_cli.py:278`）；import 期加载（`pplx_export/config.py:174-179`）是容错的，因此仅 import 包不会因文件缺失而失败。
+「显式」影响文件缺失时的报错行为——见 [配置缺失：降级模式](#配置缺失降级模式)。两个 CLI 入口都会在参数解析后以 strict 模式重新加载（`pplx_export/cli.py:222`、`pplx_export/ask_cli.py:277`）；import 期加载（`pplx_export/config.py:174-179`）是容错的，因此仅 import 包不会因文件缺失而失败。
 
 ## 创建你的配置
 
@@ -89,7 +89,7 @@ BOT 空间是 `pplx-ask` 发问完成后线程的集中收纳处（`pplx_export/
 
 | 字段 | 类型 | 含义 |
 |---|---|---|
-| `uuid` | string | 空间 UUID。`pplx-ask` 把完成的线程移入此处（`pplx_export/ask_cli.py:156-158`）；为空则跳过移动步骤。 |
+| `uuid` | string | 空间 UUID。`pplx-ask` 把完成的线程移入此处（`pplx_export/ask_cli.py:155-157`）；为空则跳过移动步骤。 |
 | `slug` | string | 空间的 URL slug。加载进 `BOT_SPACE_SLUG`（`pplx_export/config.py:79`）；运行时 CLI 不读取它——fixture 维护工具消费它，据其构建身份替换对（`tests/scrub_fixtures.py:446-447`）。 |
 
 ### CLI 标志而非配置字段

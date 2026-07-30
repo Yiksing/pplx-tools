@@ -151,7 +151,7 @@ groups — use `len(files)` for that.
 | `space_<slug>.json` | `pplx-export space-index` (`spaces_cmd.py:106-167`) | per-space thread list, incl. the `context_uuid` dual-ID mapping |
 | `space_meta.json` | `pplx-export spaces --fetch-meta` (`spaces_cmd.py:299-330`) | space owner/member cache reused on rebuilds |
 | `credit_usage_<account>.json` | `pplx-export usage-backfill` (`usage_backfill_cmd.py:17`) | per-thread credit usage (idempotent, resumable, flushed every 25 entries) |
-| `cron_snippet.txt` | `pplx-export schedule` (`scheduler.py:48-78`) | cron invocation snippet (absolute paths) |
+| `cron_snippet.txt` | `pplx-export schedule` (`scheduler.py:47-77`) | cron invocation snippet (absolute paths) |
 | `answer_variants_log.jsonl` | `variant_log.append_registry` (`variant_log.py:76`) | central answer-rewrite variant registry, deduped by (thread, entry), idempotent |
 | `logs/` | `--log-file` (`common.py:218-229`) | full DEBUG logs |
 

@@ -20,8 +20,9 @@ transport call sites.
 from __future__ import annotations
 
 import json
-import time
+from http.cookiejar import CookieJar
 from pathlib import Path
+from typing import Protocol, runtime_checkable
 
 from .errors import AuthError
 from .http.bridge_transport import WebBridgeTransport
@@ -100,9 +101,6 @@ class CredentialProvider:
 
 # ── Credential seam: what a Transport can bind to ──
 # ── 凭证接缝：Transport 可绑定的凭证 ──
-
-from http.cookiejar import CookieJar
-from typing import Protocol, runtime_checkable
 
 
 @runtime_checkable

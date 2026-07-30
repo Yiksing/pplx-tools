@@ -40,7 +40,6 @@ import json
 import logging
 from pathlib import Path
 
-import pytest
 
 from pplx_export.commands.batch_cmd import index_row_matches_mode
 from pplx_export.commands.index_cmd import cmd_index

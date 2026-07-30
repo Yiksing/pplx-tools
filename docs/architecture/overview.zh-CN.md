@@ -10,8 +10,8 @@
 ```mermaid
 flowchart TD
     subgraph CLI["CLI 层（入口）"]
-        CL1["cli.py — pplx-export<br/>argparse 定义 + 分发（cli.py:57）"]
-        CL2["ask_cli.py — pplx-ask<br/>交互查询入口（ask_cli.py:221）"]
+        CL1["cli.py — pplx-export<br/>argparse 定义 + 分发（cli.py:54）"]
+        CL2["ask_cli.py — pplx-ask<br/>交互查询入口（ask_cli.py:220）"]
     end
 
     subgraph CMD["commands/ 命令层（双入口共用）"]
@@ -26,7 +26,7 @@ flowchart TD
         subgraph PPLX["sites/perplexity/"]
             AD["adapter.py<br/>PerplexityAdapter 组装（adapter.py:24）"]
             GQ["graphql.py<br/>APQ 列表分页（graphql.py:43）"]
-            RS["rest.py<br/>ThreadFetcher 线程抓取（rest.py:38）"]
+            RS["rest.py<br/>ThreadFetcher 线程抓取（rest.py:37）"]
             PA["parsers.py<br/>schema 解析单点（parsers.py）"]
             NM["normalize.py<br/>模式判别 / 公式规范化（normalize.py:66,240）"]
             RD["render.py<br/>markdown 渲染（render.py）"]

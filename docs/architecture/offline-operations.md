@@ -17,7 +17,7 @@ batch `cmd_rerender` rerender_cmd.py:193-212).
 flowchart TD
     IN[("&lt;out&gt;/*/*/*/raw_entries.json<br/>glob all thread directories (rerender_cmd.py:199)")] --> CHK{"raw_entries.json exists?"}
     CHK -->|"no"| SKIP["skip (counted as skipped)"]
-    CHK -->|"yes"| P1["parse_turn per entry (parsers.py:173)<br/>sort by created_us, re-number index<br/>(rerender_cmd.py:57-60)"]
+    CHK -->|"yes"| P1["parse_turn per entry (parsers.py:172)<br/>sort by created_us, re-number index<br/>(rerender_cmd.py:57-60)"]
     P1 --> P2["Conversation rebuilt<br/>metadata = thread_metadata (rerender_cmd.py:65-70)<br/>conv._plain = doc"]
     P2 --> P3{"raw_blocks.json exists?"}
     P3 -->|"yes"| P4["conv._blocks loaded (rerender_cmd.py:91)<br/>PerplexityAdapter(None).sub_agents builds sub_map<br/>(None-transport pure data assembly, rerender_cmd.py:84-88, 138)"]
@@ -67,7 +67,7 @@ flowchart LR
     SUB --> BE["build_edges (relations.py:200)"]
     FB --> BE
     BE --> SS["same_space: same space<br/>dst = space:&lt;slug&gt;"]
-    BE --> SP["same_prompt: first-query normalized equality<br/>(normalize_query, relations.py:111)<br/>in-cluster chaining by created_us (not cliques)<br/>query_source distinguishes scheduled-task reruns<br/>from manual resends (parsers.py:209-215)"]
+    BE --> SP["same_prompt: first-query normalized equality<br/>(normalize_query, relations.py:111)<br/>in-cluster chaining by created_us (not cliques)<br/>query_source distinguishes scheduled-task reruns<br/>from manual resends (parsers.py:208-214)"]
     BE --> RF["references: answer text / citation URLs<br/>referencing other archived threads (incl. bare uuids)"]
     BE --> SA["subagent_of: main thread → subagent run<br/>dst = toolu_X run id (not a thread uuid)<br/>archived subagent threads recorded in evidence"]
     SS --> OUT[("web_archive/relations/<br/>edges.jsonl + graph.md")]
@@ -142,7 +142,7 @@ and traceable:
 
 ```mermaid
 flowchart LR
-    E["entries[].side_by_side_metadata<br/>narrowed criteria"] --> CAV["parsers.collect_answer_variants<br/>(parsers.py:589)"]
+    E["entries[].side_by_side_metadata<br/>narrowed criteria"] --> CAV["parsers.collect_answer_variants<br/>(parsers.py:588)"]
     CAV --> AD["adapter.get_thread warns on online hits<br/>(adapter.py:141-147)"]
     CAV --> RR["re-render offline rebuild<br/>warns only on additions/changes (rerender_cmd.py:163-166)"]
     AD --> LOG["variant_log.warn_detections (variant_log.py:65)<br/>single WARNING line ANSWER_VARIANT_DETECTED (variant_log.py:45)<br/>full locating fields + handling guidance, grep-able"]

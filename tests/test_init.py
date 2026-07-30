@@ -10,7 +10,6 @@ tmp_path 下的配置文件。
 """
 
 import json
-import os
 import stat
 import tomllib
 from types import SimpleNamespace
@@ -57,7 +56,10 @@ def _patch_common(monkeypatch, tokens, sessions, collections):
     monkeypatch.setattr(ck, "resolve", lambda **kw: (
         {ck.ACTIVE_SESSION_COOKIE: "tok-a"}, "test"))
     monkeypatch.setattr(init_cmd, "_enumerate_tokens", lambda *a: tokens)
-    factory = lambda cdict: _FakeTransport(cdict, sessions, collections)
+
+    def factory(cdict):
+        return _FakeTransport(cdict, sessions, collections)
+
     return factory
 
 

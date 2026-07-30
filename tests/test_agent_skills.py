@@ -14,6 +14,8 @@ import yaml
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 SKILLS_ROOT = REPOSITORY_ROOT / ".agents" / "skills"
 AGENT_POLICY = REPOSITORY_ROOT / "AGENTS.md"
+PACKAGE_POLICY = REPOSITORY_ROOT / "pplx_export" / "AGENTS.md"
+CORE_POLICY = REPOSITORY_ROOT / "pplx_export" / "core" / "AGENTS.md"
 EXPECTED_SKILLS = {
     "audit-docs",
     "design-pplx-change",
@@ -138,6 +140,40 @@ def test_repository_agent_policy_enforces_progressive_disclosure() -> None:
     assert "sequential phases" in policy
     assert "git rev-parse --show-toplevel" in policy
     assert "workdir" in policy
+
+
+def test_production_package_agent_policy_declares_archive_boundary() -> None:
+    policy = PACKAGE_POLICY.read_text(encoding="utf-8")
+    required_terms = {
+        "production export",
+        "raw_entries.json",
+        "raw_blocks.json",
+        "offline re-rendering",
+        "without network access",
+        "real cookies",
+        "user configuration",
+        "privacy release gate",
+    }
+    missing = sorted(term for term in required_terms if term not in policy)
+    assert not missing, "Missing package policy terms: " + ", ".join(missing)
+
+
+def test_core_agent_policy_declares_sensitive_credential_boundary() -> None:
+    policy = CORE_POLICY.read_text(encoding="utf-8")
+    required_terms = {
+        "Sensitive core boundary",
+        "auth",
+        "cookies",
+        "HTTP transports",
+        "session tokens",
+        "CSRF",
+        "login emails",
+        "0o600",
+        "atomic",
+        "targeted offline tests",
+    }
+    missing = sorted(term for term in required_terms if term not in policy)
+    assert not missing, "Missing core policy terms: " + ", ".join(missing)
 
 
 def test_skill_bodies_do_not_cascade_to_other_repository_skills() -> None:

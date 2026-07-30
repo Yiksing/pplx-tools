@@ -38,7 +38,6 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
-import pytest
 
 from pplx_export.commands.spaces_cmd import _best_thread_dir
 from pplx_export.core.cookies import CookieCache

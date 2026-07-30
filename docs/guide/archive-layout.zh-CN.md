@@ -142,7 +142,7 @@ API 响应在任何解析**之前**原样落盘（`fs_writer.py:257-266`）：
 | `space_<slug>.json` | `pplx-export space-index`（`spaces_cmd.py:106-167`） | 单空间线程列表，含 `context_uuid` 双重 ID 映射 |
 | `space_meta.json` | `pplx-export spaces --fetch-meta`（`spaces_cmd.py:299-330`） | 空间 owner/member 缓存，重建时复用 |
 | `credit_usage_<account>.json` | `pplx-export usage-backfill`（`usage_backfill_cmd.py:17`） | 逐线程额度用量（幂等、可续传，每 25 条落盘一次） |
-| `cron_snippet.txt` | `pplx-export schedule`（`scheduler.py:48-78`） | cron 调用片段（绝对路径） |
+| `cron_snippet.txt` | `pplx-export schedule`（`scheduler.py:47-77`） | cron 调用片段（绝对路径） |
 | `answer_variants_log.jsonl` | `variant_log.append_registry`（`variant_log.py:76`） | 答案重写变体集中登记处，按（线程, entry）去重，幂等 |
 | `logs/` | `--log-file`（`common.py:218-229`） | 完整 DEBUG 日志 |
 

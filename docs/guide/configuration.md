@@ -18,7 +18,7 @@ The TOML carries identity data only. Cookie sourcing and transport selection are
 | 2 | `PPLX_EXPORT_CONFIG` environment variable | yes |
 | 3 | `~/.config/pplx-export/config.toml` (default path) | no |
 
-"Explicit" matters for error behavior when the file is missing — see [degraded mode](#missing-config-degraded-mode). Both CLI entries reload the config in strict mode after argument parsing (`pplx_export/cli.py:223`, `pplx_export/ask_cli.py:278`); the import-time load (`pplx_export/config.py:174-179`) is fault-tolerant, so importing the package never fails on a missing file.
+"Explicit" matters for error behavior when the file is missing — see [degraded mode](#missing-config-degraded-mode). Both CLI entries reload the config in strict mode after argument parsing (`pplx_export/cli.py:222`, `pplx_export/ask_cli.py:277`); the import-time load (`pplx_export/config.py:174-179`) is fault-tolerant, so importing the package never fails on a missing file.
 
 ## Creating your config
 
@@ -89,7 +89,7 @@ The BOT space is the collection point for threads created by `pplx-ask` after th
 
 | Field | Type | Meaning |
 |---|---|---|
-| `uuid` | string | Space UUID. `pplx-ask` moves finished threads here (`pplx_export/ask_cli.py:156-158`); when empty, the move step is skipped. |
+| `uuid` | string | Space UUID. `pplx-ask` moves finished threads here (`pplx_export/ask_cli.py:155-157`); when empty, the move step is skipped. |
 | `slug` | string | The space's URL slug. Loaded into `BOT_SPACE_SLUG` (`pplx_export/config.py:79`); the runtime CLI does not read it — the fixture-maintenance tool consumes it, building an identity-replacement pair from it (`tests/scrub_fixtures.py:446-447`). |
 
 ### CLI flags, not config fields

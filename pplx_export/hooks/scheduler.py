@@ -11,7 +11,6 @@ avoiding full re-fetches.
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 from ..core.models import Account

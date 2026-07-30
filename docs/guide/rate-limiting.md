@@ -10,16 +10,16 @@ with no concurrency. This is an explicit anti-risk-control requirement
 
 | where | pacing | code |
 |---|---|---|
-| `batch`: between threads | random uniform 10–20 s (`--delay-min` / `--delay-max`) | `pplx_export/cli.py:126-129`, `pplx_export/core/throttle.py:33-36` |
-| `sync-deleted --online`: between candidates | random uniform 10–20 s | `pplx_export/cli.py:164-167`, `pplx_export/commands/sync_deleted_cmd.py:368-369` |
-| `search-mode-backfill`: online fallback | random uniform 10–20 s | `pplx_export/cli.py:144-147` |
-| pagination inside a thread / space listing | ≥3 s between pages | `pplx_export/sites/perplexity/rest.py:39,56`, `pplx_export/sites/perplexity/adapter.py:285-309` |
+| `batch`: between threads | random uniform 10–20 s (`--delay-min` / `--delay-max`) | `pplx_export/cli.py:125-128`, `pplx_export/core/throttle.py:33-36` |
+| `sync-deleted --online`: between candidates | random uniform 10–20 s | `pplx_export/cli.py:163-166`, `pplx_export/commands/sync_deleted_cmd.py:368-369` |
+| `search-mode-backfill`: online fallback | random uniform 10–20 s | `pplx_export/cli.py:143-146` |
+| pagination inside a thread / space listing | ≥3 s between pages | `pplx_export/sites/perplexity/rest.py:38,55`, `pplx_export/sites/perplexity/adapter.py:288-312` |
 | schematized-block backfill (computer / deep-research / council / study) | ≥4 s wait before the second fetch | `pplx_export/sites/perplexity/adapter.py:27-32,88` |
 | `spaces --fetch-meta` | 3 s per space | `pplx_export/commands/spaces_cmd.py:328` |
 | `usage-backfill` | 3 s per thread | `pplx_export/commands/usage_backfill_cmd.py:77` |
-| `assets-backfill` online phases | 3 s per thread | `pplx_export/commands/assets_backfill_cmd.py:215,456` |
+| `assets-backfill` online phases | 3 s per thread | `pplx_export/commands/assets_backfill_cmd.py:215,455` |
 | asset downloads within a thread | 0.5 s | `pplx_export/sites/perplexity/assets.py:28,103` |
-| `assets-backfill` CDN phase | 6 parallel downloads, no delay | `pplx_export/commands/assets_backfill_cmd.py:460-475` |
+| `assets-backfill` CDN phase | 6 parallel downloads, no delay | `pplx_export/commands/assets_backfill_cmd.py:459-474` |
 | API concurrency | none — ever | — |
 
 ## Why these numbers
@@ -143,7 +143,7 @@ wasted. `sync-deleted` applies the same discipline
 refresh the cookie and re-run; everything already exported is skipped.
 
 `batch` and the transport share one `Throttle` instance
-(`pplx_export/cli.py:280-282`, `batch_cmd.py:101-105`), so backoff counting
+(`pplx_export/cli.py:279-281`, `batch_cmd.py:101-105`), so backoff counting
 never splits between layers — and the shared instance survives automatic
 account switching.
 

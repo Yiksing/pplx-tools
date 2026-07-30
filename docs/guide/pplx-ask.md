@@ -38,7 +38,7 @@ selectable in search mode, and the special modes (`research` / `study` /
 
 ### `ask`
 
-Asks a question (`pplx_export/ask_cli.py:86`). SSE-streams progress to the console,
+Asks a question (`pplx_export/ask_cli.py:85`). SSE-streams progress to the console,
 runs the post-processing pipeline (see [The ask flow](#the-ask-flow)), and prints a
 machine-readable JSON object on stdout at the end.
 
@@ -60,13 +60,13 @@ network). When `[models]` is missing or older than 7 days
 (`platform.MODELS_REFRESH_TTL_DAYS`), `ask` warns you to run `pplx-ask models --refresh`
 (default) — or refreshes automatically when the `[models].auto_refresh` flag is `true`.
 
-HTTP error hints emitted by `ask` (`pplx_export/ask_cli.py:124`): `401`/`403` = the
+HTTP error hints emitted by `ask` (`pplx_export/ask_cli.py:123`): `401`/`403` = the
 cookie is expired or risk-controlled (update the cookie), `429` = rate limited (retry
 later), `5xx` = server error (retry later). See [Troubleshooting](troubleshooting.md).
 
 ### `mark-read`
 
-Sends a read receipt for an existing thread (`pplx_export/ask_cli.py:201`): accepts a
+Sends a read receipt for an existing thread (`pplx_export/ask_cli.py:200`): accepts a
 thread URL or a bare UUID, resolves the thread's `context_uuid` via
 `GET /rest/thread/<uuid>`, then calls `POST /rest/thread/mark_viewed` with
 `{"context_uuids": [ctx]}` (`pplx_export/sites/perplexity/ask_api.py:190`). The unread
@@ -136,7 +136,7 @@ flowchart TD
    the response stream" INFO heartbeat at default verbosity so a live run is never
    mistaken for a hang.
 3. **Completion gate** — post-processing only runs when the final status is `COMPLETED`
-   (`pplx_export/ask_cli.py:134`). On an abnormal stream end, everything after this
+   (`pplx_export/ask_cli.py:133`). On an abnormal stream end, everything after this
    point is skipped (no move, no telemetry, no export) so a half-finished state never
    leaks into the archive.
 4. **Move into the BOT space** (best-effort) — `batch_move_threads` with the thread's
@@ -155,7 +155,7 @@ flowchart TD
    [Archive layout](archive-layout.md) and [Export pipeline](../architecture/export-pipeline.md).
    Unlike the best-effort steps, an archiving failure propagates and fails the command.
 
-**Failure isolation**: steps 4–6 are isolated as best-effort (`pplx_export/ask_cli.py:36`):
+**Failure isolation**: steps 4–6 are isolated as best-effort (`pplx_export/ask_cli.py:35`):
 a failure logs a warning, sets the step's JSON key to `false`, records the detail under
 `step_errors`, and never blocks archiving. Archiving (step 7) is the core step and its
 failures are never swallowed.
@@ -194,7 +194,7 @@ contract.
   stderr — ask-stage failures abort via `SystemExit` with an `[ask][ERROR]` message,
   while archiving failures propagate as-is (see step 7).
 
-Result JSON shape (`pplx_export/ask_cli.py:194`):
+Result JSON shape (`pplx_export/ask_cli.py:193`):
 
 | Key | Type | Meaning |
 |---|---|---|

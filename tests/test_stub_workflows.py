@@ -19,7 +19,7 @@ match_stub_workflows 的匹配语义（f517734c 实测标定）：
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime
 
 from pplx_export.sites.perplexity import parsers
 from pplx_export.sites.perplexity.render import render_wf_item

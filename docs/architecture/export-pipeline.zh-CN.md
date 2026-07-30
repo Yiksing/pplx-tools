@@ -25,21 +25,21 @@ flowchart TD
 
     subgraph S3["③ 抓取（adapter.get_thread）"]
         GT["PerplexityAdapter.get_thread<br/>（adapter.py:58）"]
-        GT --> PLAIN["ThreadFetcher.get_thread<br/>plain 响应（rest.py:59）<br/>GET /rest/thread/uuid<br/>entries + background_entries<br/>cursor 翻页 ≤20 页，页间 3s（rest.py:43-57）"]
+        GT --> PLAIN["ThreadFetcher.get_thread<br/>plain 响应（rest.py:58）<br/>GET /rest/thread/uuid<br/>entries + background_entries<br/>cursor 翻页 ≤20 页，页间 3s（rest.py:42-56）"]
         DM{"detect_mode<br/>（normalize.py:66）<br/>parse_turn 后判别模式，见 §4"}
-        DM -->|"computer / deep-research / council / study"| BLK["ThreadFetcher.get_thread_blocks<br/>schematized 响应（rest.py:67）<br/>SCHEMATIZED_USE_CASES 8 项（rest.py:26）<br/>抓前 sleep blocks_delay=4s（adapter.py:28,88）"]
+        DM -->|"computer / deep-research / council / study"| BLK["ThreadFetcher.get_thread_blocks<br/>schematized 响应（rest.py:66）<br/>SCHEMATIZED_USE_CASES 8 项（rest.py:25）<br/>抓前 sleep blocks_delay=4s（adapter.py:28,88）"]
         DM -->|"search（信号齐全）"| NOBLK["不抓 blocks<br/>（search 为简单 query+answer）"]
         DM -->|"信号全灭兜底（adapter.py:84-87）<br/>mode=search 且全部 entry 无 display_model"| BLK
-        BLK --> ANOM["scan_wf_anomalies<br/>非 COMPLETED 工作流即 log.warning<br/>（parsers.py:646；调用点 adapter.py:131-134）"]
+        BLK --> ANOM["scan_wf_anomalies<br/>非 COMPLETED 工作流即 log.warning<br/>（parsers.py:645；调用点 adapter.py:131-134）"]
     end
 
     subgraph S4["④ 内存解析与组装（发生在写盘之前）"]
-        PT["parse_turn × N（parsers.py:173）<br/>steps / 引文三路归集<br/>（entry.sources + FINAL.web_results<br/>+ WORKFLOW_ITEM_SOURCES）<br/>report_info / locked_reason 入 metadata"]
-        EA["extract_answer（parsers.py:80）<br/>FINAL.answer JSON → plan.goals 兜底"]
+        PT["parse_turn × N（parsers.py:172）<br/>steps / 引文三路归集<br/>（entry.sources + FINAL.web_results<br/>+ WORKFLOW_ITEM_SOURCES）<br/>report_info / locked_reason 入 metadata"]
+        EA["extract_answer（parsers.py:79）<br/>FINAL.answer JSON → plan.goals 兜底"]
         BASE["内存中组装基础 Conversation<br/>原始响应保留在 conv._plain / conv._blocks"]
-        ATT["attach_workflow_blocks（parsers.py:231）<br/>wf_block 按 entry uuid 挂轮<br/>wf_status 入 turn.metadata"]
-        STUB["attach_stub_workflows（parsers.py:470）<br/>桩轮 10s 时间窗关联"]
-        UNC["collect_unconsumed_background<br/>（parsers.py:491）归属瀑布③"]
+        ATT["attach_workflow_blocks（parsers.py:230）<br/>wf_block 按 entry uuid 挂轮<br/>wf_status 入 turn.metadata"]
+        STUB["attach_stub_workflows（parsers.py:469）<br/>桩轮 10s 时间窗关联"]
+        UNC["collect_unconsumed_background<br/>（parsers.py:490）归属瀑布③"]
         READY["Conversation 可供导出<br/>（adapter.py:91-157）"]
         BASE -->|"其他模式"| READY
         BASE -->|"仅 computer/council<br/>（adapter.py:150-157）"| ATT
@@ -49,12 +49,12 @@ flowchart TD
     end
 
     subgraph S5["⑤ 资产准备（writer 之前）"]
-        ADL["adapter.get_assets（adapter.py:196）<br/>collect_downloadable_assets（parsers.py:696）<br/>同名多版本按 created_at 编号 v1..vN"]
+        ADL["adapter.get_assets（adapter.py:199）<br/>collect_downloadable_assets（parsers.py:695）<br/>同名多版本按 created_at 编号 v1..vN"]
         CDN["CloudFront 签名 URL 直连下载<br/>AssetDownloader.download_all（assets.py:80）<br/>resolve_ext 三源定扩展名（assets.py:122）"]
     end
 
     subgraph S6["⑥ 落盘（fs_writer.write_thread）"]
-        WJ[("thread.json（fs_writer.py:224-253）<br/>+ interruptions 登记 collect_interruptions（parsers.py:535）<br/>+ answer_variants 登记 collect_answer_variants（parsers.py:589）")]
+        WJ[("thread.json（fs_writer.py:224-253）<br/>+ interruptions 登记 collect_interruptions（parsers.py:534）<br/>+ answer_variants 登记 collect_answer_variants（parsers.py:588）")]
         RAW1[("raw_entries.json<br/>保留的 plain 响应（fs_writer.py:257-261）")]
         RAW2[("raw_blocks.json<br/>保留的 schematized 响应（fs_writer.py:262-266）<br/>未抓 blocks 时无此文件")]
         WM[("conversation.md 简版<br/>render_conversation（render.py:641）")]
@@ -94,8 +94,8 @@ flowchart TD
 2. **plain 必抓，blocks 按模式判别**：search 不抓 blocks（省一次请求）；
    判别信号全灭时**兜底也抓**（adapter.py:74-85 注释与判定：宁可多抓，避免平台改字段后
    `raw_blocks.json` 静默不落盘）。
-3. **解析单点**：所有字段提取集中在 `parsers.py`（`_g` 多级安全取值 parsers.py:23、
-   `_loads` 容错 parsers.py:33、`to_int` 宽松排序键 parsers.py:44），站点改版只改一处。
+3. **解析单点**：所有字段提取集中在 `parsers.py`（`_g` 多级安全取值 parsers.py:22、
+   `_loads` 容错 parsers.py:32、`to_int` 宽松排序键 parsers.py:43），站点改版只改一处。
 4. **writer 只读**：`wf_block`/`stub_wfs`/`unconsumed_bgs` 的挂载在
    `adapter.get_thread`（adapter.py:150-157）完成，`FilesystemWriter` 不挂载、只消费
    （fs_writer.py:217 注释）。

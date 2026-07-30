@@ -42,7 +42,8 @@ patch 别名不影响子模块内部引用。
 
 from .cache import CACHE_MAX_AGE_S, CookieCache
 from .loaders import (ACCOUNT_SESSION_PREFIX, ACTIVE_SESSION_COOKIE,
-                      AUTO_DETECT_ORDER, _bc3_loader, _domain_match,
+                      AUTO_DETECT_ORDER, _bc3_loader as _bc3_loader,
+                      _domain_match as _domain_match,
                       from_browser, from_browser_raw, from_file,
                       from_webbridge, list_account_tokens, resolve)
 from .profiles import (BrowserProfile, PROFILE_REGISTRY,

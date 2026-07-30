@@ -92,18 +92,18 @@ classDiagram
 职责注释（行号相对 `core/models.py`）：
 
 - **`Turn.wf_block`**（models.py:127）：computer/council 的 schematized 工作流块，
-  由 `parsers.attach_workflow_blocks` 按 entry uuid 挂载（parsers.py:231-256），
+  由 `parsers.attach_workflow_blocks` 按 entry uuid 挂载（parsers.py:230-255），
   渲染与答案兜底（`_turn_answer`，render.py:489）依赖；writer 只读。
 - **`Turn.stub_wfs`**（models.py:131）：subagent_result 桩轮经 10s 窗关联到的后台
   负载（parsers.match_stub_workflows 挂载）。
 - **`Turn.metadata`**（models.py:134）：`report_info`（RESEARCH_ANSWER 步骤，
-  parsers.py:199-204）、`locked_reason`（parsers.py:205-208）、`wf_status`
-  （parsers.py:256）三个键。
+  parsers.py:198-203）、`locked_reason`（parsers.py:204-207）、`wf_status`
+  （parsers.py:255）三个键。
 - **`Conversation.unconsumed_bgs`**（models.py:165-170）：归属瀑布第三级兜底数据源，
   `[{wp, locked_reason, updated, bg_uuid}]`，渲染为 conversation.md 末尾附录。
 - **`Conversation.answer_variants`**（models.py:171-177）：答案重写变体登记
   （thread.json.answer_variants 数据源），`parsers.collect_answer_variants`
-  （parsers.py:589）从 `entries[].side_by_side_metadata` 收窄判据提取——检测链见 [§18](offline-operations.md)。
+  （parsers.py:588）从 `entries[].side_by_side_metadata` 收窄判据提取——检测链见 [§18](offline-operations.md)。
 - **`Conversation.sub_agents`**（models.py:178-182）：会话级子代理运行列表，仅
   `cmd_relations` 离线重建时由 `adapter.sub_agents` 填充；导出管线不回填本字段
   （writer 用局部 sub_map 渲染，relations 读这里）——见 [§15](offline-operations.md)。
@@ -153,7 +153,7 @@ web_archive/
 | `space_<slug>.json` | `cmd_space_index`（spaces_cmd.py:106-167） | 单空间「全部」线程列表（含 context_uuid 双 ID 映射） |
 | `space_meta.json` | `cmd_spaces --fetch-meta`（spaces_cmd.py:299-330） | 空间所有者/成员缓存（重建索引时复用，避免重复抓取） |
 | `credit_usage_<account>.json` | `cmd_usage_backfill`（usage_backfill_cmd.py:17） | 逐线程积分用量（幂等可续跑，每 25 条落盘一次） |
-| `cron_snippet.txt` | `cmd_schedule`（scheduler.py:48-78） | cron 调用片段（绝对路径） |
+| `cron_snippet.txt` | `cmd_schedule`（scheduler.py:47-77） | cron 调用片段（绝对路径） |
 | `answer_variants_log.jsonl` | `variant_log.append_registry`（variant_log.py:76） | 答案重写变体集中登记（按 thread+entry 去重幂等；入库文件，非 logs/）——检测链见 [§18](offline-operations.md) |
 | `logs/` | `--log-file`（common.py:218-229） | 全量 DEBUG 日志（已 gitignore） |
 

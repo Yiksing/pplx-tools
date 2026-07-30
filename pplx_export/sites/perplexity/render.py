@@ -431,7 +431,7 @@ def render_wf_step(idx: int, step: dict, sub_map: dict, locked_reason: str | Non
             n_q = sum(len(st.content.get("queries") or []) for st in sub.steps
                       if st.step_type == "COUNCIL_ROUND")
             head = f"**{wp.get('headline') or model}**（检索 {n_q} 词 · 来源 {len(sub.sources)} · 答案 {len(sub.answer)} 字符）"
-            block = [f"<details>", f"<summary>{head}</summary>", ""]
+            block = ["<details>", f"<summary>{head}</summary>", ""]
             for st in sub.steps:
                 if st.step_type != "COUNCIL_ROUND":
                     continue

@@ -246,7 +246,6 @@ def cmd_assets_backfill(adapter, out_root: Path, online: bool, limit, adapter_fo
     thread_dirs = sorted({p.parent for p in out_root.glob("*/*/*/raw_blocks.json")})
     if limit:
         thread_dirs = thread_dirs[:limit]
-    downloader = AssetDownloader(adapter.transport if adapter else None) if online else None
     # (Asset, version record, files_dir, manifest, manifest_path)
     # (Asset, version记录, files_dir, manifest, manifest_path)
     jobs: list = []

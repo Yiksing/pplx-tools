@@ -18,7 +18,7 @@ import time
 import urllib.parse
 import urllib.request
 from http.cookiejar import CookieJar
-from typing import Any, Optional, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..auth import Credential

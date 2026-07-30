@@ -72,7 +72,7 @@ computer/council 运行会产生后台子代理工作流。每个后台 `workflo
 ## 中断：非 COMPLETED 工作流
 
 未完成的工作流在其渲染处内联标注——工作过程标题、子代理标题与嵌套 `<details>`
-摘要。三种标注（`parsers.classify_wf_status`，`parsers.py:263-284`）：
+摘要。三种标注（`parsers.classify_wf_status`，`parsers.py:262-283`）：
 
 | 标注 | 条件 | 含义 |
 |---|---|---|
@@ -84,7 +84,7 @@ computer/council 运行会产生后台子代理工作流。每个后台 `workflo
 - 每个被标注的情形同时登记进 `thread.json.interruptions`，形如
   `{location, kind, headline, status}`——location 形如 `turn_0007`、
   `turn_0011/subagent`、`turn_0024/subagent_stub`、`background_unassigned`
-  （`parsers.py:535-583`；健康线程不出现该键）。
+  （`parsers.py:534-582`；健康线程不出现该键）。
 - **续接无需特例**：在平台上继续被中断的线程后，其 `lastUpdated` 变化，下一次增量导出
   重新抓取，工作流完成后标注自然消失。见[增量同步](incremental-sync.zh-CN.md)。
 

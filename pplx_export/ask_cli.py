@@ -23,8 +23,7 @@ from . import config as _cfg
 from .commands.common import (add_common_args, make_transport,
                               resolve_cli_account, resolve_log_file, resolve_out_root)
 from .commands.export_cmd import cmd_export
-from .sites.perplexity.ask_api import (API_VERSION, COUNCIL_DEFAULT_MODELS, MODE_MODEL,
-                                       MODELS_CONFIG_URL, build_envelope, create_space,
+from .sites.perplexity.ask_api import (API_VERSION, build_envelope, create_space,
                                        fetch_models_config, mark_read, move_threads,
                                        refresh_models, send_view_telemetry, sse_ask)
 from .sites.perplexity import platform as _plat

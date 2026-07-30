@@ -14,8 +14,7 @@ Perplexity 原始 JSON → 领域模型的 schema 版本化解析。
 from __future__ import annotations
 
 import json
-import re
-from typing import Any, Optional
+from typing import Optional
 
 from ...core.models import Asset, Citation, Step, SubAgent, Turn
 

@@ -85,6 +85,8 @@ jobs:
               echo "Green status covers only the executed classes; identity and content replacement sources are unavailable in CI."
             } >> "${GITHUB_STEP_SUMMARY}"
           fi
+      - name: Lint with ruff
+        run: uv run ruff check .
       - name: Run tests
         run: uv run pytest -q
       - name: Build all configured documentation locales strictly

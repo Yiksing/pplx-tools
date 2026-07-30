@@ -80,7 +80,7 @@ Matching rules, data structures, and the single-consumption guarantees:
 
 Workflows that did not complete are annotated inline wherever they render — in work-process
 headings, sub-agent headings, and nested `<details>` summaries. The three annotations
-(`parsers.classify_wf_status`, `parsers.py:263-284`):
+(`parsers.classify_wf_status`, `parsers.py:262-283`):
 
 | Annotation | Condition | Meaning |
 |---|---|---|
@@ -93,7 +93,7 @@ headings, sub-agent headings, and nested `<details>` summaries. The three annota
 - Every annotated case is also registered in `thread.json.interruptions` as
   `{location, kind, headline, status}` — locations look like `turn_0007`,
   `turn_0011/subagent`, `turn_0024/subagent_stub`, `background_unassigned`
-  (`parsers.py:535-583`; key absent on healthy threads).
+  (`parsers.py:534-582`; key absent on healthy threads).
 - **Resumption needs no special case**: when you continue an interrupted thread on the
   platform, its `lastUpdated` changes, the next incremental export re-fetches it, and the
   annotations simply disappear once the workflow completes. See

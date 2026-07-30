@@ -112,7 +112,7 @@ class TestAutoMigration:
         mtime 新 ≠ 内容新（re-render 会刷新全部目录 md 的 mtime 而内容仍来自旧 raw），
         consolidate 路径无后续覆写，绝不允许旧内容靠新 mtime 覆盖 keeper；独有文件并集保留。"""
         w = FilesystemWriter(tmp_path)
-        d1 = w.write_thread(_conv("2026-07-13T05:44:22Z", 2))
+        w.write_thread(_conv("2026-07-13T05:44:22Z", 2))
         d2 = w.write_thread(_conv("2026-07-20T20:48:00Z", 3))
         # The previous step auto-migrated; recreate the dual-directory scenario:
         # 上一步已自动迁移，重建双目录场景：

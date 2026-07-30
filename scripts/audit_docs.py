@@ -1023,7 +1023,7 @@ def _changed_pair_findings(
         if path.suffix != ".md":
             continue
         try:
-            docs_path = path.relative_to(docs_relative)
+            path.relative_to(docs_relative)
         except ValueError:
             continue
         absolute = root / path

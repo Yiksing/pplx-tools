@@ -9,16 +9,16 @@
 
 | 位置 | 节奏 | 代码 |
 |---|---|---|
-| `batch`：线程之间 | 10–20 s 随机均匀间隔（`--delay-min` / `--delay-max`） | `pplx_export/cli.py:126-129`，`pplx_export/core/throttle.py:33-36` |
-| `sync-deleted --online`：候选之间 | 10–20 s 随机均匀间隔 | `pplx_export/cli.py:164-167`，`pplx_export/commands/sync_deleted_cmd.py:368-369` |
-| `search-mode-backfill`：联网兜底 | 10–20 s 随机均匀间隔 | `pplx_export/cli.py:144-147` |
-| 线程内翻页 / 空间列表翻页 | 每页 ≥3 s | `pplx_export/sites/perplexity/rest.py:39,56`，`pplx_export/sites/perplexity/adapter.py:285-309` |
+| `batch`：线程之间 | 10–20 s 随机均匀间隔（`--delay-min` / `--delay-max`） | `pplx_export/cli.py:125-128`，`pplx_export/core/throttle.py:33-36` |
+| `sync-deleted --online`：候选之间 | 10–20 s 随机均匀间隔 | `pplx_export/cli.py:163-166`，`pplx_export/commands/sync_deleted_cmd.py:368-369` |
+| `search-mode-backfill`：联网兜底 | 10–20 s 随机均匀间隔 | `pplx_export/cli.py:143-146` |
+| 线程内翻页 / 空间列表翻页 | 每页 ≥3 s | `pplx_export/sites/perplexity/rest.py:38,55`，`pplx_export/sites/perplexity/adapter.py:288-312` |
 | schematized 块补抓（computer / deep-research / council / study） | 第二次抓取前等 ≥4 s | `pplx_export/sites/perplexity/adapter.py:27-32,88` |
 | `spaces --fetch-meta` | 每空间 3 s | `pplx_export/commands/spaces_cmd.py:328` |
 | `usage-backfill` | 每线程 3 s | `pplx_export/commands/usage_backfill_cmd.py:77` |
-| `assets-backfill` 在线阶段 | 每线程 3 s | `pplx_export/commands/assets_backfill_cmd.py:215,456` |
+| `assets-backfill` 在线阶段 | 每线程 3 s | `pplx_export/commands/assets_backfill_cmd.py:215,455` |
 | 线程内资产下载 | 0.5 s | `pplx_export/sites/perplexity/assets.py:28,103` |
-| `assets-backfill` CDN 阶段 | 6 路并行下载，无间隔 | `pplx_export/commands/assets_backfill_cmd.py:460-475` |
+| `assets-backfill` CDN 阶段 | 6 路并行下载，无间隔 | `pplx_export/commands/assets_backfill_cmd.py:459-474` |
 | API 并发 | 无——任何时候都没有 | — |
 
 ## 为什么是这个数
@@ -120,7 +120,7 @@ batch 层对连续鉴权失败计数（`_AUTH_FAIL_FAST = 3`，
 （`pplx_export/commands/sync_deleted_cmd.py:111,333-337`）。处理办法：更新
 cookie 后重跑，已导出的部分全部跳过。
 
-`batch` 与传输层共享同一个 `Throttle` 实例（`pplx_export/cli.py:280-282`，
+`batch` 与传输层共享同一个 `Throttle` 实例（`pplx_export/cli.py:279-281`，
 `batch_cmd.py:101-105`），退避计数不在层间分裂——且该共享实例在账户自动
 切换后依然保留。
 

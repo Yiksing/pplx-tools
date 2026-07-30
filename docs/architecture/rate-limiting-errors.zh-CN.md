@@ -21,7 +21,7 @@ flowchart TD
     NET --> REQ
 
     subgraph THR["Throttle（throttle.py:15-53）"]
-        D1["delay：uniform(delay_min, delay_max)<br/>batch 默认 10–20s（cli.py:126-129）"]
+        D1["delay：uniform(delay_min, delay_max)<br/>batch 默认 10–20s（cli.py:125-128）"]
         D2["backoff：delay_max × 3^N<br/>±20% jitter 防同步，封顶 300s<br/>N = 连续失败计数（throttle.py:38-50）"]
         D3["reset：成功清零（throttle.py:52）"]
     end
@@ -39,8 +39,8 @@ flowchart TD
 
     subgraph LIM["限频纪律（用户明确要求的防封号红线）"]
         L1["线程间随机 10–20s，无并发"]
-        L2["翻页 ≥3s（rest.py:39）<br/>blocks 补抓前 ≥4s（adapter.py:28,88）<br/>空间元数据 ≥3s（spaces_cmd.py:328）<br/>usage / backfill 元数据 ≥3s"]
-        L3["资产下载间隔 0.5s（assets.py:28,103）<br/>backfill 在线阶段 CDN 下载并发 6 线程<br/>（CDN 非 API，assets_backfill_cmd.py:460-475）"]
+        L2["翻页 ≥3s（rest.py:38）<br/>blocks 补抓前 ≥4s（adapter.py:28,88）<br/>空间元数据 ≥3s（spaces_cmd.py:328）<br/>usage / backfill 元数据 ≥3s"]
+        L3["资产下载间隔 0.5s（assets.py:28,103）<br/>backfill 在线阶段 CDN 下载并发 6 线程<br/>（CDN 非 API，assets_backfill_cmd.py:459-474）"]
     end
 ```
 
@@ -51,7 +51,7 @@ flowchart TD
   `--transport webbridge` 下同样生效；daemon 非 JSON 响应收敛为
   TransportError（URLError/JSONDecodeError/OSError 统一捕获）；其余非 200 直接
   TransportError。
-- **共享 Throttle**：batch 把同一实例传给 CookieTransport（cli.py:280-282），
+- **共享 Throttle**：batch 把同一实例传给 CookieTransport（cli.py:279-281），
   传输层与批量层的退避计数统一；**账户自动切换后重建也不丢**
   （common.py:139 同样传入）；单条命令不传时 CookieTransport 自建默认实例
   （cookie_transport.py:49）。

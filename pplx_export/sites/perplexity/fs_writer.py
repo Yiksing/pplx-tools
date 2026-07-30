@@ -165,7 +165,7 @@ class FilesystemWriter(Writer):
             # 冲突逐文件可见：目标方胜出是启发式（语义更新），内容更旧被保留的理论
             # 场景须让用户可察觉；冲突极多时只列前 20 个并给出总数
             shown = conflicts[:20]
-            more = f"（仅列前 20 个）" if len(conflicts) > 20 else ""
+            more = "（仅列前 20 个）" if len(conflicts) > 20 else ""
             log.warning(f"[migrate] {old.name} → {new.name}：{len(conflicts)} 个同名文件冲突，"
                         f"已保留目标方（new/keeper）：{', '.join(shown)}{more}")
         # Copy verification: deleting the old directory is allowed only when everything matches.

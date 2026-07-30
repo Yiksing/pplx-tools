@@ -4,7 +4,7 @@
 
 ## pplx-ask 时序详图
 
-`cmd_ask`（ask_cli.py:86-198）的完整时序：envelope 构造 → SSE 流 → 终态检查 →
+`cmd_ask`（ask_cli.py:85-197）的完整时序：envelope 构造 → SSE 流 → 终态检查 →
 BOT 空间 → 已读回执 → 人性化遥测 → 复用导出管线归档。
 
 ```mermaid
@@ -16,7 +16,7 @@ sequenceDiagram
     participant EX as cmd_export（复用导出管线）
 
     U->>A: pplx-ask ask "prompt" --mode M [--models ...] [--space S]
-    A->>A: --space 非 home 时先解析空间 uuid<br/>_resolve_space_uuid（ask_cli.py:74-83）
+    A->>A: --space 非 home 时先解析空间 uuid<br/>_resolve_space_uuid（ask_cli.py:73-82）
     A->>AK: build_envelope(prompt, mode, models, target_uuid)（ask_api.py:71）
     Note over AK: mode → model_preference 映射（MODE_MODEL，ask_api.py:36-41）：<br/>search→pplx_pro / deep-research→pplx_alpha /<br/>council→pplx_agentic_research / study→pplx_study；<br/>mode 恒为 "copilot"；council 槽位校验 2–3 个模型<br/>（ask_api.py:85-90），缺省 COUNCIL_DEFAULT_MODELS
     AK-->>A: {"params": {模板参数}, "query_str": prompt}
@@ -24,10 +24,10 @@ sequenceDiagram
     AK->>P: POST /rest/sse/perplexity_ask（ASK_URL，ask_api.py:28）<br/>Accept: text/event-stream；复用 CookieTransport 内部 opener/cookie（ask_api.py:114-130）
     loop SSE 事件流（空行分隔，_parse_sse，ask_api.py:101-111）
         P-->>AK: data: {...backend_uuid / status / text 增量...}
-        AK-->>A: on_event：首见 backend_uuid 记线程创建<br/>status 变化打印；text 每 +200 字符报进度（ask_cli.py:106-119）
+        AK-->>A: on_event：首见 backend_uuid 记线程创建<br/>status 变化打印；text 每 +200 字符报进度（ask_cli.py:105-118）
     end
     AK-->>A: final_sse_message 终止，返回最终事件（ask_api.py:164-165）
-    A->>A: 终态检查：final_status != COMPLETED → SystemExit<br/>不移空间/不遥测/不导出（ask_cli.py:134-140）
+    A->>A: 终态检查：final_status != COMPLETED → SystemExit<br/>不移空间/不遥测/不导出（ask_cli.py:133-139）
     A->>AK: move_threads([context_uuid], BOT_SPACE_UUID)（ask_api.py:169）
     AK->>P: POST /rest/collections/batch_move_threads<br/>（用 context_uuid 不是 entryUUID；BOT 空间取自用户级配置 bot_space.uuid）
     opt --mark-read
@@ -39,7 +39,7 @@ sequenceDiagram
         AK->>P: POST /rest/event/analytics ×4：<br/>ask context pane viewed → thread viewed<br/>→ ask context pane viewed → thread entry exited<br/>（设备池随机 + 事件间 0.6–2.4s 随机停顿<br/>+ timeOnEntryMs 12–45s，ask_api.py:266-278）
     end
     opt 默认开启（--no-export 关闭）
-        A->>EX: cmd_export(adapter, writer, backend_uuid, force=True)（ask_cli.py:192）
+        A->>EX: cmd_export(adapter, writer, backend_uuid, force=True)（ask_cli.py:191）
         EX->>P: 走完整导出管线（export-pipeline.md §3）
         EX-->>A: web_archive 落盘
     end
@@ -107,7 +107,7 @@ flowchart TD
 - **缓存跟随 `--out`**：`<out_root>/index/.cookies.json`（common.py:111），
   含 fetched_at/source/account_email，成功校验后总是刷新（common.py:150）。
 - **webbridge 与 cookie 互斥**：`--cookies/--cookies-from` 与 `--transport webbridge`
-  同给即报错（cli.py:229-233；common.py:112-116）。
+  同给即报错（cli.py:228-232；common.py:112-116）。
 - `core/auth.py:CredentialProvider`（WebBridge 提取 cookie：CDP Storage.getCookies
-  优先、document.cookie 兜底，auth.py:41-67）属**预留降级链**，当前唯一调用方是
+  优先、document.cookie 兜底，auth.py:42-68）属**预留降级链**，当前唯一调用方是
   `cookies.from_webbridge`（cookies/loaders.py:252-267）。

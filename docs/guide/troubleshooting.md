@@ -207,7 +207,7 @@ URL form) have no API download channel: `GET /rest/assets/<asset_uuid>/data` ret
 404 `ASSET_NOT_FOUND` for them, and `file-repository/download` rejects `file:repo/...`
 handles (400). This is a **known archive-completeness boundary**, not a bug in the
 export. `pplx-export assets-backfill` marks these versions `no_download_channel` and
-skips them (`pplx_export/commands/assets_backfill_cmd.py:356`).
+skips them (`pplx_export/commands/assets_backfill_cmd.py:355`).
 
 **Fix**:
 

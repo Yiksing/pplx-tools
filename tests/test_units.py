@@ -616,7 +616,8 @@ class TestExternalReviewFixes:
         assert long_val in out, "表格单元格不得按 80 字符截断（保真）"
 
     def test_f06_cookie_cache_chmod_600(self, tmp_path):
-        import os, stat
+        import os
+        import stat
         from pplx_export.core.cookies import CookieCache
         cc = CookieCache(tmp_path / ".cookies.json")
         cc.save({"k": "v"}, source="test", account_email="a@b.c")
@@ -663,7 +664,7 @@ class TestExternalReviewFixes:
 # ---------------------------------------------------------------- incremental index (B)
 # ------------------------------------------------- 增量 index（B）
 
-from pplx_export.commands.index_cmd import cmd_index, _STOP_RUN
+from pplx_export.commands.index_cmd import cmd_index, _STOP_RUN  # noqa: E402
 
 
 class _FakeIdxAdapter:

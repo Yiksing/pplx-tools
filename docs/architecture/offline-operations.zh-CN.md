@@ -15,7 +15,7 @@
 flowchart TD
     IN[("&lt;out&gt;/*/*/*/raw_entries.json<br/>glob 全部线程目录（rerender_cmd.py:199）")] --> CHK{"raw_entries.json 存在？"}
     CHK -->|"否"| SKIP["跳过（计 skipped）"]
-    CHK -->|"是"| P1["parse_turn 逐 entry（parsers.py:173）<br/>按 created_us 排序、重编 index<br/>（rerender_cmd.py:57-60）"]
+    CHK -->|"是"| P1["parse_turn 逐 entry（parsers.py:172）<br/>按 created_us 排序、重编 index<br/>（rerender_cmd.py:57-60）"]
     P1 --> P2["Conversation 重建<br/>metadata = thread_metadata（rerender_cmd.py:65-70）<br/>conv._plain = doc"]
     P2 --> P3{"raw_blocks.json 存在？"}
     P3 -->|"是"| P4["conv._blocks 载入（rerender_cmd.py:91）<br/>PerplexityAdapter(None).sub_agents 建 sub_map<br/>（None-transport 纯数据组装，rerender_cmd.py:84-88,138）"]
@@ -63,7 +63,7 @@ flowchart LR
     SUB --> BE["build_edges（relations.py:200）"]
     FB --> BE
     BE --> SS["same_space：同一空间<br/>dst = space:&lt;slug&gt;"]
-    BE --> SP["same_prompt：首问归一化全等<br/>（normalize_query，relations.py:111）<br/>簇内按 created_us 链式连边（非团簇）<br/>query_source 区分定时任务重跑 vs 人工重发<br/>（parsers.py:209-215）"]
+    BE --> SP["same_prompt：首问归一化全等<br/>（normalize_query，relations.py:111）<br/>簇内按 created_us 链式连边（非团簇）<br/>query_source 区分定时任务重跑 vs 人工重发<br/>（parsers.py:208-214）"]
     BE --> RF["references：答案文本 / 引文 URL<br/>引用库内其他线程（含裸 uuid）"]
     BE --> SA["subagent_of：主线程 → 子代理运行<br/>dst = toolu_X 运行 id（非线程 uuid）<br/>已归档子代理线程记入 evidence"]
     SS --> OUT[("web_archive/relations/<br/>edges.jsonl + graph.md")]
@@ -132,7 +132,7 @@ ENTRY_DELETED 的判定先于 ENTRY_EXPIRED，cookie_transport.py:93-98）；bat
 
 ```mermaid
 flowchart LR
-    E["entries[].side_by_side_metadata<br/>收窄判据"] --> CAV["parsers.collect_answer_variants<br/>（parsers.py:589）"]
+    E["entries[].side_by_side_metadata<br/>收窄判据"] --> CAV["parsers.collect_answer_variants<br/>（parsers.py:588）"]
     CAV --> AD["adapter.get_thread 在线命中即告警<br/>（adapter.py:141-147）"]
     CAV --> RR["re-render 离线重建<br/>仅新增/变化才告警（rerender_cmd.py:163-166）"]
     AD --> LOG["variant_log.warn_detections（variant_log.py:65）<br/>WARNING 单行 ANSWER_VARIANT_DETECTED（variant_log.py:45）<br/>全量定位字段 + 处置指引，可 grep"]

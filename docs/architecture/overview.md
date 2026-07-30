@@ -10,8 +10,8 @@ exact line counts per `wc -l`):
 ```mermaid
 flowchart TD
     subgraph CLI["CLI layer (entry points)"]
-        CL1["cli.py — pplx-export<br/>argparse definitions + dispatch (cli.py:57)"]
-        CL2["ask_cli.py — pplx-ask<br/>interactive query entry (ask_cli.py:221)"]
+        CL1["cli.py — pplx-export<br/>argparse definitions + dispatch (cli.py:54)"]
+        CL2["ask_cli.py — pplx-ask<br/>interactive query entry (ask_cli.py:220)"]
     end
 
     subgraph CMD["commands/ command layer (shared by both entries)"]
@@ -26,7 +26,7 @@ flowchart TD
         subgraph PPLX["sites/perplexity/"]
             AD["adapter.py<br/>PerplexityAdapter assembly (adapter.py:24)"]
             GQ["graphql.py<br/>APQ list pagination (graphql.py:43)"]
-            RS["rest.py<br/>ThreadFetcher thread fetching (rest.py:38)"]
+            RS["rest.py<br/>ThreadFetcher thread fetching (rest.py:37)"]
             PA["parsers.py<br/>single point of schema parsing (parsers.py)"]
             NM["normalize.py<br/>mode detection / math normalization (normalize.py:66,240)"]
             RD["render.py<br/>markdown rendering (render.py)"]

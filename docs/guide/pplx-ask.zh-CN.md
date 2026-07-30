@@ -34,7 +34,7 @@ pplx-ask space-create "My Space"                 # 创建空间
 
 ### `ask`
 
-发问（`pplx_export/ask_cli.py:86`）。SSE 流式显示进度，完成后执行后处理管线
+发问（`pplx_export/ask_cli.py:85`）。SSE 流式显示进度，完成后执行后处理管线
 （见[发问流程](#发问流程)），并在 stdout 末尾输出一个机器可读 JSON 对象。
 
 | 选项 | 默认值 | 说明 |
@@ -53,13 +53,13 @@ pplx-ask space-create "My Space"                 # 创建空间
 当 `[models]` 缺失或超过 7 天（`platform.MODELS_REFRESH_TTL_DAYS`）时，`ask` 会提醒你运行
 `pplx-ask models --refresh`（默认）——或在 `[models].auto_refresh = true` 时自动刷新。
 
-`ask` 输出的 HTTP 错误提示（`pplx_export/ask_cli.py:124`）：`401`/`403` = cookie
+`ask` 输出的 HTTP 错误提示（`pplx_export/ask_cli.py:123`）：`401`/`403` = cookie
 失效或被风控（请更新 cookie），`429` = 触发限流（稍后重试），`5xx` = 服务端错误
 （稍后重试）。见[故障排查](troubleshooting.md)。
 
 ### `mark-read`
 
-给既有线程发已读回执（`pplx_export/ask_cli.py:201`）：接受线程 URL 或裸 UUID，先经
+给既有线程发已读回执（`pplx_export/ask_cli.py:200`）：接受线程 URL 或裸 UUID，先经
 `GET /rest/thread/<uuid>` 解析出线程的 `context_uuid`，再以
 `{"context_uuids": [ctx]}` 调用 `POST /rest/thread/mark_viewed`
 （`pplx_export/sites/perplexity/ask_api.py:190`）。unread 立即翻转。输出 JSON
@@ -125,7 +125,7 @@ flowchart TD
    open 超时 600 s），`post_stream` 会在默认档打一条「仍在等待响应流」INFO 心跳，
    避免把活跃运行误当卡死。
 3. **完成闸门** —— 只有最终状态为 `COMPLETED` 才执行后处理
-   （`pplx_export/ask_cli.py:134`）。流异常结束时后续动作全部跳过（不移入、不发遥测、
+   （`pplx_export/ask_cli.py:133`）。流异常结束时后续动作全部跳过（不移入、不发遥测、
    不导出），半成品状态绝不外泄进归档。
 4. **移入 BOT 空间**（best-effort）—— 以线程的 `context_uuid` 调
    `batch_move_threads` 移入配置的 `[bot_space]` uuid。未配置 BOT 空间、或线程本就
@@ -143,7 +143,7 @@ flowchart TD
    与[导出管线](../architecture/export-pipeline.md)。与 best-effort 步骤不同，归档失败会
    如实上抛并使命令失败。
 
-**失败隔离**：第 4–6 步逐项隔离为 best-effort（`pplx_export/ask_cli.py:36`）：任一
+**失败隔离**：第 4–6 步逐项隔离为 best-effort（`pplx_export/ask_cli.py:35`）：任一
 失败只记 warning、把该步骤的 JSON 键置为 `false`、详情记入 `step_errors`，绝不阻断
 归档。归档（第 7 步）是核心步骤，失败从不被吞掉。
 
@@ -177,7 +177,7 @@ flowchart TD
 - **退出码**：成功为 `0`；失败以非零退出并在 stderr 给出错误消息——发问阶段失败经
   `SystemExit` 中止并带 `[ask][ERROR]` 消息，归档失败则原样上抛（见第 7 步）。
 
-结果 JSON 结构（`pplx_export/ask_cli.py:194`）：
+结果 JSON 结构（`pplx_export/ask_cli.py:193`）：
 
 | 键 | 类型 | 含义 |
 |---|---|---|

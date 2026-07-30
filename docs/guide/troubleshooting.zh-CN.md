@@ -183,7 +183,7 @@ CODE_FILE / UNKNOWN）没有 API 下载通道：`GET /rest/assets/<asset_uuid>/d
 `ASSET_NOT_FOUND`，`file-repository/download` 拒绝 `file:repo/...` 句柄（400）。
 这是**已知的归档完整性边界**，不是导出缺陷。`pplx-export assets-backfill` 会把这些
 版本标记为 `no_download_channel` 并跳过
-（`pplx_export/commands/assets_backfill_cmd.py:356`）。
+（`pplx_export/commands/assets_backfill_cmd.py:355`）。
 
 **修复**：
 

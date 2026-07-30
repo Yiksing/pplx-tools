@@ -17,7 +17,7 @@ Perplexity GraphQL 查询集（持久化查询 APQ）与 cursor 分页。
 
 from __future__ import annotations
 
-from typing import Any, Iterator
+from typing import Iterator
 
 from ...core.http.transport import Transport
 

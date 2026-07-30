@@ -21,7 +21,7 @@ flowchart TD
     NET --> REQ
 
     subgraph THR["Throttle (throttle.py:15-53)"]
-        D1["delay: uniform(delay_min, delay_max)<br/>batch default 10–20s (cli.py:126-129)"]
+        D1["delay: uniform(delay_min, delay_max)<br/>batch default 10–20s (cli.py:125-128)"]
         D2["backoff: delay_max × 3^N<br/>±20% jitter anti-sync, capped at 300s<br/>N = consecutive failure count (throttle.py:38-50)"]
         D3["reset: cleared on success (throttle.py:52)"]
     end
@@ -39,8 +39,8 @@ flowchart TD
 
     subgraph LIM["rate-limit discipline (anti-ban red line, explicit user requirement)"]
         L1["random 10–20s between threads, no concurrency"]
-        L2["pagination ≥3s (rest.py:39)<br/>≥4s before blocks re-fetch (adapter.py:28,88)<br/>space metadata ≥3s (spaces_cmd.py:328)<br/>usage / backfill metadata ≥3s"]
-        L3["0.5s between asset downloads (assets.py:28,103)<br/>backfill online phase: CDN downloads at 6 threads<br/>(CDN is not the API, assets_backfill_cmd.py:460-475)"]
+        L2["pagination ≥3s (rest.py:38)<br/>≥4s before blocks re-fetch (adapter.py:28,88)<br/>space metadata ≥3s (spaces_cmd.py:328)<br/>usage / backfill metadata ≥3s"]
+        L3["0.5s between asset downloads (assets.py:28,103)<br/>backfill online phase: CDN downloads at 6 threads<br/>(CDN is not the API, assets_backfill_cmd.py:459-474)"]
     end
 ```
 
@@ -51,7 +51,7 @@ flowchart TD
   `--transport webbridge`; daemon non-JSON responses collapse into
   TransportError (URLError/JSONDecodeError/OSError uniformly caught); other non-200s go straight to
   TransportError.
-- **Shared Throttle**: batch passes the same instance to CookieTransport (cli.py:280-282),
+- **Shared Throttle**: batch passes the same instance to CookieTransport (cli.py:279-281),
   unifying backoff counts between transport and batch layers; **rebuilds after account auto-switching don't lose it either**
   (common.py:139 passes it too); single-shot commands that don't pass one get a default instance built by CookieTransport
   (cookie_transport.py:49).

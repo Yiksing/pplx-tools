@@ -22,7 +22,7 @@ Scenario fixtures:
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime
 
 from pplx_export.core.models import Conversation, SubAgent, Turn
 from pplx_export.sites.perplexity import parsers

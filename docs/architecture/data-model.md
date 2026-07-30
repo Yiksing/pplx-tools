@@ -92,18 +92,18 @@ classDiagram
 Responsibility notes (line numbers relative to `core/models.py`):
 
 - **`Turn.wf_block`** (models.py:127): the schematized workflow block of computer/council,
-  mounted by `parsers.attach_workflow_blocks` by entry uuid (parsers.py:231-256);
+  mounted by `parsers.attach_workflow_blocks` by entry uuid (parsers.py:230-255);
   rendering and answer fallback (`_turn_answer`, render.py:489) depend on it; writer is read-only.
 - **`Turn.stub_wfs`** (models.py:131): background payloads associated to subagent_result stub turns via the 10s window
   (mounted by parsers.match_stub_workflows).
 - **`Turn.metadata`** (models.py:134): three keys — `report_info` (RESEARCH_ANSWER step,
-  parsers.py:199-204), `locked_reason` (parsers.py:205-208), `wf_status`
-  (parsers.py:256).
+  parsers.py:198-203), `locked_reason` (parsers.py:204-207), `wf_status`
+  (parsers.py:255).
 - **`Conversation.unconsumed_bgs`** (models.py:165-170): the data source of the attribution waterfall's third-level fallback,
   `[{wp, locked_reason, updated, bg_uuid}]`, rendered as the appendix at the end of conversation.md.
 - **`Conversation.answer_variants`** (models.py:171-177): answer-rewrite variant registration
   (data source of thread.json.answer_variants); `parsers.collect_answer_variants`
-  (parsers.py:589) extracts from `entries[].side_by_side_metadata` with narrowing criteria — detection chain in [§18](offline-operations.md).
+  (parsers.py:588) extracts from `entries[].side_by_side_metadata` with narrowing criteria — detection chain in [§18](offline-operations.md).
 - **`Conversation.sub_agents`** (models.py:178-182): conversation-level subagent run list, filled by
   `adapter.sub_agents` only during `cmd_relations` offline rebuild; the export pipeline doesn't backfill this field
   (writer renders with a local sub_map; relations reads here) — see [§15](offline-operations.md).
@@ -153,7 +153,7 @@ web_archive/
 | `space_<slug>.json` | `cmd_space_index` (spaces_cmd.py:106-167) | per-space "all" thread list (incl. the context_uuid dual-ID mapping) |
 | `space_meta.json` | `cmd_spaces --fetch-meta` (spaces_cmd.py:299-330) | space owner/member cache (reused when rebuilding indexes, avoiding refetch) |
 | `credit_usage_<account>.json` | `cmd_usage_backfill` (usage_backfill_cmd.py:17) | per-thread credit usage (idempotent and resumable, flushed every 25 entries) |
-| `cron_snippet.txt` | `cmd_schedule` (scheduler.py:48-78) | cron invocation snippet (absolute paths) |
+| `cron_snippet.txt` | `cmd_schedule` (scheduler.py:47-77) | cron invocation snippet (absolute paths) |
 | `answer_variants_log.jsonl` | `variant_log.append_registry` (variant_log.py:76) | central answer-rewrite variant registry (dedup by thread+entry, idempotent; a checked-in file, not logs/) — detection chain in [§18](offline-operations.md) |
 | `logs/` | `--log-file` (common.py:218-229) | full DEBUG logs (gitignored) |
 

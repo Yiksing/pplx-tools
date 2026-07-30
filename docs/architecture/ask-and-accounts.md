@@ -4,7 +4,7 @@
 
 ## pplx-ask sequence in detail
 
-The complete sequence of `cmd_ask` (ask_cli.py:86-198): envelope construction → SSE stream → final-status check →
+The complete sequence of `cmd_ask` (ask_cli.py:85-197): envelope construction → SSE stream → final-status check →
 BOT space → read receipt → humanized telemetry → archiving via the export pipeline.
 
 ```mermaid
@@ -16,7 +16,7 @@ sequenceDiagram
     participant EX as cmd_export (export pipeline reused)
 
     U->>A: pplx-ask ask "prompt" --mode M [--models ...] [--space S]
-    A->>A: when --space is not home, resolve the space uuid first<br/>_resolve_space_uuid (ask_cli.py:74-83)
+    A->>A: when --space is not home, resolve the space uuid first<br/>_resolve_space_uuid (ask_cli.py:73-82)
     A->>AK: build_envelope(prompt, mode, models, target_uuid) (ask_api.py:71)
     Note over AK: mode → model_preference mapping (MODE_MODEL, ask_api.py:36-41):<br/>search→pplx_pro / deep-research→pplx_alpha /<br/>council→pplx_agentic_research / study→pplx_study;<br/>mode always "copilot"; council slot validation 2–3 models<br/>(ask_api.py:85-90), default COUNCIL_DEFAULT_MODELS
     AK-->>A: {"params": {template params}, "query_str": prompt}
@@ -24,10 +24,10 @@ sequenceDiagram
     AK->>P: POST /rest/sse/perplexity_ask (ASK_URL, ask_api.py:28)<br/>Accept: text/event-stream; reuses CookieTransport's internal opener/cookie (ask_api.py:114-130)
     loop SSE event stream (blank-line delimited, _parse_sse, ask_api.py:101-111)
         P-->>AK: data: {...backend_uuid / status / text deltas...}
-        AK-->>A: on_event: first backend_uuid records thread creation<br/>status changes printed; progress every +200 text chars (ask_cli.py:106-119)
+        AK-->>A: on_event: first backend_uuid records thread creation<br/>status changes printed; progress every +200 text chars (ask_cli.py:105-118)
     end
     AK-->>A: final_sse_message terminates; return the final event (ask_api.py:164-165)
-    A->>A: final-status check: final_status != COMPLETED → SystemExit<br/>no space move / no telemetry / no export (ask_cli.py:134-140)
+    A->>A: final-status check: final_status != COMPLETED → SystemExit<br/>no space move / no telemetry / no export (ask_cli.py:133-139)
     A->>AK: move_threads([context_uuid], BOT_SPACE_UUID) (ask_api.py:169)
     AK->>P: POST /rest/collections/batch_move_threads<br/>(use context_uuid, not entryUUID; BOT space from user-level config bot_space.uuid)
     opt --mark-read
@@ -39,7 +39,7 @@ sequenceDiagram
         AK->>P: POST /rest/event/analytics ×4:<br/>ask context pane viewed → thread viewed<br/>→ ask context pane viewed → thread entry exited<br/>(random device pool + random 0.6–2.4s pauses between events<br/>+ timeOnEntryMs 12–45s, ask_api.py:266-278)
     end
     opt on by default (disabled by --no-export)
-        A->>EX: cmd_export(adapter, writer, backend_uuid, force=True) (ask_cli.py:192)
+        A->>EX: cmd_export(adapter, writer, backend_uuid, force=True) (ask_cli.py:191)
         EX->>P: runs the full export pipeline (export-pipeline.md §3)
         EX-->>A: web_archive persisted
     end
@@ -107,7 +107,7 @@ Essentials:
 - **Cache follows `--out`**: `<out_root>/index/.cookies.json` (common.py:111),
   with fetched_at/source/account_email; always refreshed after successful validation (common.py:150).
 - **webbridge and cookie are mutually exclusive**: passing `--cookies/--cookies-from` together with `--transport webbridge`
-  errors out (cli.py:229-233; common.py:112-116).
+  errors out (cli.py:228-232; common.py:112-116).
 - `core/auth.py:CredentialProvider` (cookie extraction via WebBridge: CDP Storage.getCookies
-  preferred, document.cookie fallback, auth.py:41-67) belongs to the **reserved fallback chain**; its only caller today is
+  preferred, document.cookie fallback, auth.py:42-68) belongs to the **reserved fallback chain**; its only caller today is
   `cookies.from_webbridge` (cookies/loaders.py:252-267).

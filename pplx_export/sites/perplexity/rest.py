@@ -19,7 +19,6 @@ from __future__ import annotations
 
 import time
 import urllib.parse
-from typing import Any
 
 from ...core.http.transport import Transport
 from . import platform as _plat

@@ -25,21 +25,21 @@ flowchart TD
 
     subgraph S3["③ fetching (adapter.get_thread)"]
         GT["PerplexityAdapter.get_thread<br/>(adapter.py:58)"]
-        GT --> PLAIN["ThreadFetcher.get_thread<br/>plain response (rest.py:59)<br/>GET /rest/thread/uuid<br/>entries + background_entries<br/>cursor pagination ≤20 pages, 3s between pages (rest.py:43-57)"]
+        GT --> PLAIN["ThreadFetcher.get_thread<br/>plain response (rest.py:58)<br/>GET /rest/thread/uuid<br/>entries + background_entries<br/>cursor pagination ≤20 pages, 3s between pages (rest.py:42-56)"]
         DM{"detect_mode<br/>(normalize.py:66)<br/>mode detection after parse_turn, see §4"}
-        DM -->|"computer / deep-research / council / study"| BLK["ThreadFetcher.get_thread_blocks<br/>schematized response (rest.py:67)<br/>8 SCHEMATIZED_USE_CASES (rest.py:26)<br/>sleep blocks_delay=4s before fetching (adapter.py:28,88)"]
+        DM -->|"computer / deep-research / council / study"| BLK["ThreadFetcher.get_thread_blocks<br/>schematized response (rest.py:66)<br/>8 SCHEMATIZED_USE_CASES (rest.py:25)<br/>sleep blocks_delay=4s before fetching (adapter.py:28,88)"]
         DM -->|"search (all signals present)"| NOBLK["skip blocks<br/>(search is simple query+answer)"]
         DM -->|"all-signals-missing fallback (adapter.py:84-87)<br/>mode=search and no entry has display_model"| BLK
-        BLK --> ANOM["scan_wf_anomalies<br/>log.warning on any non-COMPLETED workflow<br/>(parsers.py:646; call site adapter.py:131-134)"]
+        BLK --> ANOM["scan_wf_anomalies<br/>log.warning on any non-COMPLETED workflow<br/>(parsers.py:645; call site adapter.py:131-134)"]
     end
 
     subgraph S4["④ in-memory parsing and assembly (before persistence)"]
-        PT["parse_turn × N (parsers.py:173)<br/>steps / three-channel citation collection<br/>(entry.sources + FINAL.web_results<br/>+ WORKFLOW_ITEM_SOURCES)<br/>report_info / locked_reason into metadata"]
-        EA["extract_answer (parsers.py:80)<br/>FINAL.answer JSON → plan.goals fallback"]
+        PT["parse_turn × N (parsers.py:172)<br/>steps / three-channel citation collection<br/>(entry.sources + FINAL.web_results<br/>+ WORKFLOW_ITEM_SOURCES)<br/>report_info / locked_reason into metadata"]
+        EA["extract_answer (parsers.py:79)<br/>FINAL.answer JSON → plan.goals fallback"]
         BASE["Base Conversation assembled in memory<br/>raw responses retained on conv._plain / conv._blocks"]
-        ATT["attach_workflow_blocks (parsers.py:231)<br/>wf_block attached to turns by entry uuid<br/>wf_status into turn.metadata"]
-        STUB["attach_stub_workflows (parsers.py:470)<br/>stub-turn 10s time-window matching"]
-        UNC["collect_unconsumed_background<br/>(parsers.py:491) attribution waterfall ③"]
+        ATT["attach_workflow_blocks (parsers.py:230)<br/>wf_block attached to turns by entry uuid<br/>wf_status into turn.metadata"]
+        STUB["attach_stub_workflows (parsers.py:469)<br/>stub-turn 10s time-window matching"]
+        UNC["collect_unconsumed_background<br/>(parsers.py:490) attribution waterfall ③"]
         READY["Conversation ready for export<br/>(adapter.py:91-157)"]
         BASE -->|"other modes"| READY
         BASE -->|"computer/council only<br/>(adapter.py:150-157)"| ATT
@@ -49,12 +49,12 @@ flowchart TD
     end
 
     subgraph S5["⑤ asset preparation (before writer)"]
-        ADL["adapter.get_assets (adapter.py:196)<br/>collect_downloadable_assets (parsers.py:696)<br/>same-name multi-version numbered v1..vN by created_at"]
+        ADL["adapter.get_assets (adapter.py:199)<br/>collect_downloadable_assets (parsers.py:695)<br/>same-name multi-version numbered v1..vN by created_at"]
         CDN["CloudFront signed-URL direct download<br/>AssetDownloader.download_all (assets.py:80)<br/>resolve_ext three-source extension resolution (assets.py:122)"]
     end
 
     subgraph S6["⑥ persistence (fs_writer.write_thread)"]
-        WJ[("thread.json (fs_writer.py:224-253)<br/>+ interruptions registration collect_interruptions (parsers.py:535)<br/>+ answer_variants registration collect_answer_variants (parsers.py:589)")]
+        WJ[("thread.json (fs_writer.py:224-253)<br/>+ interruptions registration collect_interruptions (parsers.py:534)<br/>+ answer_variants registration collect_answer_variants (parsers.py:588)")]
         RAW1[("raw_entries.json<br/>retained plain response (fs_writer.py:257-261)")]
         RAW2[("raw_blocks.json<br/>retained schematized response (fs_writer.py:262-266)<br/>absent when blocks were not fetched")]
         WM[("conversation.md compact version<br/>render_conversation (render.py:641)")]
@@ -96,8 +96,8 @@ Key designs:
 2. **Plain always fetched; blocks by mode detection**: search skips blocks (saves one request);
    when all detection signals fail, **the fallback also fetches** (adapter.py:74-85 comment and decision: better over-fetch than let
    `raw_blocks.json` silently go missing after a platform field change).
-3. **Single parsing point**: all field extraction is centralized in `parsers.py` (`_g` multi-level safe access parsers.py:23,
-   `_loads` fault tolerance parsers.py:33, `to_int` lenient sort key parsers.py:44) — site revamps only need one place changed.
+3. **Single parsing point**: all field extraction is centralized in `parsers.py` (`_g` multi-level safe access parsers.py:22,
+   `_loads` fault tolerance parsers.py:32, `to_int` lenient sort key parsers.py:43) — site revamps only need one place changed.
 4. **Writer is read-only**: the mounting of `wf_block`/`stub_wfs`/`unconsumed_bgs` happens in
    `adapter.get_thread` (adapter.py:150-157); `FilesystemWriter` doesn't mount, only consumes
    (fs_writer.py:217 comment).

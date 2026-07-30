@@ -9,13 +9,13 @@ import time
 from typing import Iterator, Optional
 
 from ...core.logging import get_logger
-from ...core.models import Account, Conversation, RelationEdge, Report, Space, SubAgent, Turn
+from ...core.models import Account, Conversation, RelationEdge, Report, Space, SubAgent
 from ...core.http.transport import Transport
 from ..base import SiteAdapter
 from . import parsers, platform as _plat, variant_log
 from .assets import AssetDownloader
 from .graphql import GraphQLClient
-from .normalize import detect_mode, normalize_math_delims, ts_us_to_iso, ts_us_to_iso_full
+from .normalize import detect_mode, normalize_math_delims, ts_us_to_iso_full
 from .rest import ThreadFetcher
 
 log = get_logger("adapter")
@@ -172,7 +172,10 @@ class PerplexityAdapter(SiteAdapter):
         # 旧版按 created_at 升序取第一个命中，曾拿到 0 字节过程稿/残篇
         exact = [a for a in assets if fname and a.filename == fname]
         rest = [a for a in assets if a.asset_type == "RESEARCH_REPORT" and a not in exact]
-        key = lambda a: parsers.to_int(a.created_at)
+
+        def key(a):
+            return parsers.to_int(a.created_at)
+
         for a in sorted(exact, key=key, reverse=True) + sorted(rest, key=key, reverse=True):
             try:
                 data = self.transport.download(a.url, timeout=120)

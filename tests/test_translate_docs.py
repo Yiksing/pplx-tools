@@ -1116,6 +1116,17 @@ def test_quality_workflow_always_supplies_an_exact_changed_base() -> None:
     assert 'if [[ -n "${PR_BASE_SHA}" ]]' not in quality
 
 
+def test_quality_workflow_lints_before_tests() -> None:
+    root = Path(__file__).resolve().parents[1]
+    quality = (root / ".github/workflows/quality.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "run: uv run ruff check ." in quality
+    assert quality.index("run: uv run ruff check .") < quality.index(
+        "run: uv run pytest -q"
+    )
+
+
 def test_translation_workflow_binds_validation_and_checkpoints_before_main() -> None:
     root = Path(__file__).resolve().parents[1]
     translation = (
