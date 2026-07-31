@@ -695,10 +695,21 @@ class TestIncrementalIndex:
         idx.write_text(json.dumps(doc), encoding="utf-8")
         return idx
 
+    def _seed_state(self, **kw):
+        from pplx_export import config as cfg
+        cfg.INDEX_STATE["u"] = {"extracted_at": "2026-06-01T00:00:00Z",
+                                "last_full_index_at": "", "incremental_runs_since_full": 0, **kw}
+
+    def _state(self):
+        from pplx_export import config as cfg
+        return cfg.INDEX_STATE.get("u") or {}
+
     def test_incremental_stops_at_known_boundary_and_merges(self, tmp_path):
+        from pplx_export import config as cfg
         old = [_irow(f"o{i}", "2026-01-01T00:00:00Z") for i in range(30)]
         old[0]["search_mode"] = "RESEARCH"  # enrichment must survive
         idx = self._write_lib(tmp_path, old)
+        self._seed_state()
         # NEWEST-first stream: 2 new rows, then the 30 old rows unchanged
         # NEWEST 流：2 条新行，随后 30 条旧行未变
         stream = [_irow("n0", "2026-07-01T00:00:00Z"),
@@ -715,27 +726,35 @@ class TestIncrementalIndex:
         # 不丢失：全部旧线程仍在（尾段沿用）
         assert set(uuids) == {"n0", "n1"} | {f"o{i}" for i in range(30)}
         assert doc["count"] == 32
-        assert doc["incremental_runs_since_full"] == 1
-        # last full reconciliation time is preserved from the prior document
-        # 上次全量对账时间沿用旧文档
-        assert doc["last_full_index_at"] == "2026-06-01T00:00:00Z"
+        # Volatile metadata moved to config [index_state]; doc carries only stable fields
+        # 易变元数据已迁至 config [index_state]；doc 只保留稳定字段
+        assert "extracted_at" not in doc
+        assert "incremental_runs_since_full" not in doc
+        assert self._state()["incremental_runs_since_full"] == 1
+        # last full reconciliation time is preserved in config state
+        # 上次全量对账时间保留在 config 状态
+        assert self._state()["last_full_index_at"] == "2026-06-01T00:00:00Z"
         # search_mode enrichment preserved on the re-fetched row
         # 重抓行上的 search_mode 富化保留
         assert next(t for t in doc["threads"] if t["entryUUID"] == "o0")["search_mode"] == "RESEARCH"
+        cfg.INDEX_STATE.clear()
 
     def test_incremental_runs_counter_increments(self, tmp_path):
+        from pplx_export import config as cfg
         old = [_irow(f"o{i}", "2026-01-01T00:00:00Z") for i in range(30)]
         self._write_lib(tmp_path, old, incremental_runs_since_full=4,
                         last_full_index_at="2026-05-01T00:00:00Z")
         stream = [dict(r) for r in old]
         cmd_index(_FakeIdxAdapter(stream), _IdxAcct(), tmp_path, full=False)
-        doc = json.loads((tmp_path / "index" / "library_u.json").read_text())
-        assert doc["incremental_runs_since_full"] == 5
-        assert doc["last_full_index_at"] == "2026-05-01T00:00:00Z"
+        assert self._state()["incremental_runs_since_full"] == 5
+        assert self._state()["last_full_index_at"] == "2026-05-01T00:00:00Z"
+        cfg.INDEX_STATE.clear()
 
     def test_full_rewrites_and_resets_counter(self, tmp_path):
+        from pplx_export import config as cfg
         old = [_irow(f"o{i}", "2026-01-01T00:00:00Z") for i in range(30)]
         self._write_lib(tmp_path, old, incremental_runs_since_full=9)
+        self._seed_state(incremental_runs_since_full=9)
         stream = [_irow("n0", "2026-07-01T00:00:00Z")] + [dict(r) for r in old[:5]]
         adapter = _FakeIdxAdapter(stream)
         cmd_index(adapter, _IdxAcct(), tmp_path, full=True)
@@ -746,10 +765,12 @@ class TestIncrementalIndex:
         # Full rewrite: only what was fetched, counter reset
         # 全量重写：只保留本次抓取，计数归零
         assert doc["count"] == len(stream)
-        assert doc["incremental_runs_since_full"] == 0
-        assert doc["last_full_index_at"] == doc["extracted_at"]
+        assert self._state()["incremental_runs_since_full"] == 0
+        assert self._state()["last_full_index_at"] == self._state()["extracted_at"]
+        cfg.INDEX_STATE.clear()
 
     def test_first_run_without_existing_library_is_full(self, tmp_path):
+        from pplx_export import config as cfg
         # No existing library → incremental has nothing to stop against → full behavior
         # 无既有库 → 增量无从早停 → 按全量行为
         stream = [_irow(f"n{i}", "2026-07-01T00:00:00Z") for i in range(3)]
@@ -758,7 +779,8 @@ class TestIncrementalIndex:
         assert adapter.consumed == 3
         doc = json.loads((tmp_path / "index" / "library_u.json").read_text())
         assert doc["count"] == 3
-        assert doc["incremental_runs_since_full"] == 0
+        assert self._state()["incremental_runs_since_full"] == 0
+        cfg.INDEX_STATE.clear()
 
 
 def test_index_incremental_exhausted_counts_as_full(tmp_path):
@@ -766,6 +788,7 @@ def test_index_incremental_exhausted_counts_as_full(tmp_path):
     reconciliation: counter reset and last_full refreshed.
 
     增量却翻到尽头（未早停）等同一次全量对账：计数归零、last_full 刷新。"""
+    from pplx_export import config as cfg
     old = [_irow(f"o{i}", "2026-01-01T00:00:00Z") for i in range(5)]
     idx = tmp_path / "index" / "library_u.json"
     idx.parent.mkdir(parents=True)
@@ -777,8 +800,10 @@ def test_index_incremental_exhausted_counts_as_full(tmp_path):
     assert adapter.consumed == 5  # exhausted, no early stop
     doc = json.loads(idx.read_text())
     assert doc["count"] == 5
-    assert doc["incremental_runs_since_full"] == 0
-    assert doc["last_full_index_at"] == doc["extracted_at"]
+    st = cfg.INDEX_STATE["u"]
+    assert st["incremental_runs_since_full"] == 0
+    assert st["last_full_index_at"] == st["extracted_at"]
+    cfg.INDEX_STATE.clear()
 
 
 def test_index_incremental_preserves_uuidless_old_rows(tmp_path):
@@ -913,3 +938,137 @@ def test_maybe_refresh_models_ttl(monkeypatch, tmp_path, caplog):
         assert any("模型表" in r.getMessage() for r in caplog.records)
     finally:
         cfg.MODEL_CONFIG.clear()
+
+
+def test_find_git_root(tmp_path):
+    """_find_git_root walks up to the first ancestor containing .git.
+
+    _find_git_root 向上找到第一个含 .git 的祖先目录。"""
+    from pplx_export.commands.common import _find_git_root
+    repo = tmp_path / "repo"
+    (repo / ".git").mkdir(parents=True)
+    archive = repo / "web_archive" / "Alice Example"
+    archive.mkdir(parents=True)
+    assert _find_git_root(archive) == repo.resolve()
+    # No git repo anywhere up the tree → None
+    # 树中无 git 仓库 → None
+    assert _find_git_root(tmp_path / "elsewhere" / "x") is None
+
+
+def test_maybe_auto_commit(tmp_path, monkeypatch):
+    """maybe_auto_commit: commits the archive subtree; unrelated dirty files are
+    left untouched; no changes → no commit; no enclosing repo → skip.
+
+    maybe_auto_commit：提交归档子树；仓库内无关脏文件不动；无变更不提交；
+    无上层仓库则跳过。"""
+    import subprocess
+    from pplx_export import config as cfg
+    from pplx_export.commands import common
+
+    monkeypatch.setattr(cfg, "AUTO_COMMIT", True)
+    monkeypatch.setattr(cfg, "AUTO_PUSH", False)
+
+    # Build a real git repo with unrelated dirty file + archive subtree
+    # 建真实 git 仓库，含无关脏文件 + 归档子树
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    subprocess.run(["git", "init", "-q", str(repo)], check=True)
+    subprocess.run(["git", "-C", str(repo), "config", "user.email", "t@t"], check=True)
+    subprocess.run(["git", "-C", str(repo), "config", "user.name", "t"], check=True)
+    (repo / "unrelated.txt").write_text("keep me")
+    subprocess.run(["git", "-C", str(repo), "add", "-A"], check=True)
+    subprocess.run(["git", "-C", str(repo), "commit", "-qm", "init"], check=True)
+    archive = repo / "web_archive"
+    archive.mkdir()
+    (archive / "new_thread.txt").write_text("data")
+    # Modify an unrelated tracked file AFTER init: it must stay unstaged.
+    # init 后修改一个无关的已跟踪文件：它必须保持未暂存。
+    (repo / "unrelated.txt").write_text("modified but not mine")
+
+    common.maybe_auto_commit(archive)
+
+    # Archive committed; unrelated.txt left unstaged
+    # 归档已提交；unrelated.txt 未被暂存
+    out = subprocess.run(["git", "-C", str(repo), "log", "--oneline", "-1"],
+                         capture_output=True, text=True).stdout
+    assert "archive: incremental snapshot" in out
+    status = subprocess.run(["git", "-C", str(repo), "status", "--short"],
+                            capture_output=True, text=True).stdout
+    assert "unrelated.txt" in status  # still dirty, untouched
+    assert "new_thread.txt" not in status  # committed
+
+    # No changes → no new commit
+    # 无变更 → 不产生新提交
+    before = subprocess.run(["git", "-C", str(repo), "rev-parse", "HEAD"],
+                            capture_output=True, text=True).stdout
+    common.maybe_auto_commit(archive)
+    after = subprocess.run(["git", "-C", str(repo), "rev-parse", "HEAD"],
+                           capture_output=True, text=True).stdout
+    assert before == after
+
+    # No enclosing repo → skip without error
+    # 无上层仓库 → 跳过不报错
+    common.maybe_auto_commit(tmp_path / "nowhere")
+
+    # auto_commit=false → skip
+    # auto_commit=false → 跳过
+    monkeypatch.setattr(cfg, "AUTO_COMMIT", False)
+    (archive / "other.txt").write_text("x")
+    common.maybe_auto_commit(archive)
+    status = subprocess.run(["git", "-C", str(repo), "status", "--short"],
+                            capture_output=True, text=True).stdout
+    assert "other.txt" in status  # untouched
+    monkeypatch.setattr(cfg, "AUTO_COMMIT", True)
+
+
+def test_maybe_auto_commit_push_conflict_hard_error(tmp_path, monkeypatch):
+    """A rejected push (non-fast-forward / conflict) must raise SystemExit —
+    visible at any verbosity; a missing upstream is only a warning.
+
+    push 被拒（non-fast-forward/冲突）必须 SystemExit——任何日志级别可见；
+    无上游分支仅 warning。"""
+    import subprocess
+    import pytest
+    from pplx_export import config as cfg
+    from pplx_export.commands import common
+
+    monkeypatch.setattr(cfg, "AUTO_COMMIT", True)
+    monkeypatch.setattr(cfg, "AUTO_PUSH", True)
+
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    subprocess.run(["git", "init", "-q", str(repo)], check=True)
+    subprocess.run(["git", "-C", str(repo), "config", "user.email", "t@t"], check=True)
+    subprocess.run(["git", "-C", str(repo), "config", "user.name", "t"], check=True)
+    archive = repo / "web_archive"
+    archive.mkdir()
+
+    # Simulate a rejected push (real repo, real commit; only push is mocked)
+    # 模拟 push 被拒（真实仓库、真实 commit；仅 mock push 一次）
+    real_push = common._git
+
+    def fake_push(root, *args):
+        if args and args[0] == "push":
+            class R:
+                returncode = 1
+                stderr = "! [rejected] main -> main (fetch first)\n"
+                stdout = ""
+            return R()
+        return real_push(root, *args)
+
+    monkeypatch.setattr(common, "_git", fake_push)
+    (archive / "x.txt").write_text("new")
+    with pytest.raises(SystemExit):
+        common.maybe_auto_commit(archive)
+    # commit still happened before the hard exit
+    # commit 在硬退出前已发生
+    out = subprocess.run(["git", "-C", str(repo), "log", "--oneline", "-1"],
+                         capture_output=True, text=True).stdout
+    assert "archive: incremental snapshot" in out
+
+    # Missing upstream → warning only, no SystemExit
+    # 无上游分支 → 仅 warning，不 SystemExit
+    monkeypatch.setattr(common, "_git", real_push)
+    (archive / "y.txt").write_text("y")
+    common.maybe_auto_commit(archive)  # must not raise
+    monkeypatch.setattr(cfg, "AUTO_PUSH", False)

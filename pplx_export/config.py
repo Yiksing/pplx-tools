@@ -107,6 +107,21 @@ MODEL_CONFIG: dict = {}
 # 上次成功导出的时间戳（TOML 顶层 `last_export`，ISO 8601 UTC）。未导出时为空。
 # configure() 重载会重新绑定。
 LAST_EXPORT = ""
+# Auto git commit after each successful export: when the archive root has an
+# enclosing git repository, commit the archive subtree. Default on.
+# 每次成功导出后自动 git commit：归档根的上层存在 git 仓库时提交归档子树。默认开。
+AUTO_COMMIT = True
+# Auto git push after a successful auto-commit (default off — pushing can
+# overwrite remote state; enable only for dedicated archive remotes).
+# 自动 commit 后自动 push（默认关——push 可能覆盖远端状态；仅对专用归档远端开启）。
+AUTO_PUSH = False
+# Per-account index refresh state (top-level `[index_state]` table, machine-managed
+# like `[models]`): account username -> {extracted_at, last_full_index_at,
+# incremental_runs_since_full}. Updated IN PLACE on reload.
+# 各账户索引刷新状态（顶层 `[index_state]` 表，机器托管，同 `[models]`）：
+# 账户用户名 -> {extracted_at, last_full_index_at, incremental_runs_since_full}。
+# 重载就地更新。
+INDEX_STATE: dict = {}
 
 
 class ConfigError(Exception):
@@ -153,12 +168,16 @@ def configure(cli_path: str | os.PathLike | None = None,
     - 显式指定（--config/环境变量）但文件缺失：strict_explicit 时抛 ConfigError；
     - 文件存在但解析失败：一律抛 ConfigError（配置损坏不应静默降级）。
     """
-    global BOT_SPACE_UUID, BOT_SPACE_SLUG, DEFAULT_ACCOUNT, ARCHIVE_ROOT, LOADED_CONFIG_PATH, LAST_EXPORT
+    global BOT_SPACE_UUID, BOT_SPACE_SLUG, DEFAULT_ACCOUNT, ARCHIVE_ROOT, LOADED_CONFIG_PATH
+    global LAST_EXPORT, AUTO_COMMIT, AUTO_PUSH, INDEX_STATE
     ACCOUNT_DISPLAY_NAMES.clear()
     ACCOUNT_EMAIL.clear()
     ACCOUNT_UID.clear()
     MODEL_CONFIG.clear()
+    INDEX_STATE.clear()
     BOT_SPACE_UUID = BOT_SPACE_SLUG = DEFAULT_ACCOUNT = LAST_EXPORT = ""
+    AUTO_COMMIT = True
+    AUTO_PUSH = False
     ARCHIVE_ROOT = None
     LOADED_CONFIG_PATH = None
 
@@ -199,6 +218,17 @@ def configure(cli_path: str | os.PathLike | None = None,
     le = data.get("last_export")
     if le:
         LAST_EXPORT = str(le)
+    ac = data.get("auto_commit")
+    if isinstance(ac, bool):
+        AUTO_COMMIT = ac
+    ap = data.get("auto_push")
+    if isinstance(ap, bool):
+        AUTO_PUSH = ap
+    ist = data.get("index_state")
+    if isinstance(ist, dict):
+        for k, v in ist.items():
+            if isinstance(v, dict):
+                INDEX_STATE[str(k)] = v
     models_tbl = data.get("models")
     if isinstance(models_tbl, dict):
         MODEL_CONFIG.update(models_tbl)
@@ -316,6 +346,40 @@ def write_last_export(config_path: str | os.PathLike, timestamp: str) -> None:
     text = path.read_text(encoding="utf-8") if path.is_file() else ""
     doc = tomlkit.parse(text)
     doc["last_export"] = timestamp
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix=".config-", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(tomlkit.dumps(doc))
+        os.chmod(tmp, 0o600)
+        os.replace(tmp, path)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
+
+
+def write_index_state(config_path: str | os.PathLike | None, index_state: dict) -> None:
+    """Replace/insert the top-level `[index_state]` table in config.toml, preserving
+    all other tables, keys, and comments (tomlkit round-trip); atomic 0600 write.
+    No-op when config_path is None (degraded mode without a config file).
+
+    替换/插入 config.toml 的顶层 `[index_state]` 表，其余表/键/注释原样保留
+    （tomlkit round-trip）；原子 0600 写入。config_path 为 None（无配置文件
+    的降级模式）时为空操作。
+    """
+    if config_path is None:
+        return
+    import tempfile
+
+    import tomlkit
+
+    path = Path(config_path)
+    text = path.read_text(encoding="utf-8") if path.is_file() else ""
+    doc = tomlkit.parse(text)
+    doc["index_state"] = index_state
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix=".config-", suffix=".tmp")
     try:

@@ -15,6 +15,7 @@ cli.py 与 ask_cli.py 共用本模块，避免双入口重复同一套启动代�
 
 from __future__ import annotations
 
+import subprocess
 import time
 from pathlib import Path
 
@@ -338,3 +339,101 @@ def update_last_export() -> None:
         _cfg.write_last_export(path, ts)
     except Exception:
         pass
+
+
+def _find_git_root(start: Path) -> Path | None:
+    """Walk up from `start` to the first directory containing `.git` (a directory
+    or a file, the latter covering linked worktrees). None when no ancestor is a
+    git repository.
+
+    从 `start` 逐级向上找第一个包含 `.git`（目录或文件，兼容 linked worktree）
+    的目录；无上级 git 仓库时返回 None。
+    """
+    p = start.resolve()
+    while True:
+        if (p / ".git").exists():
+            return p
+        if p.parent == p:
+            return None
+        p = p.parent
+
+
+def _git(root: Path, *args: str) -> subprocess.CompletedProcess:
+    """Run a git command inside the archive repository; returns the CompletedProcess.
+
+    在归档仓库内执行 git 命令；返回 CompletedProcess。"""
+    return subprocess.run(["git", "-C", str(root), *args],
+                          capture_output=True, text=True)
+
+
+def maybe_auto_commit(out_root: Path, account: str = "") -> None:
+    """After a successful export, auto-commit the archive subtree into the
+    enclosing git repository (found by walking up from out_root), then optionally
+    push when config auto_push is enabled.
+
+    - No enclosing git repo → info, skip.
+    - auto_commit=false → skip.
+    - No staged changes under the archive subtree → skip (no empty commit).
+    - Commit failure → warning (best-effort).
+    - Push rejected / conflict → raise SystemExit (always visible via stderr,
+      non-zero exit); a missing upstream or remote is a warning, not an error.
+
+    导出成功后自动把归档子树 commit 进上层 git 仓库（从 out_root 向上探测），
+    配置 auto_push=true 时再 push。
+
+    - 无上层 git 仓库 → info 跳过；auto_commit=false → 跳过；
+    - 归档子树无变更 → 跳过（不建空 commit）；commit 失败 → warning（best-effort）；
+    - push 被拒/冲突 → SystemExit（任何日志级别均可见 + 非零退出）；
+      无上游分支/无远端 → warning 跳过。
+    """
+    import time as _time
+
+    from .. import config as _cfg
+
+    if not _cfg.AUTO_COMMIT:
+        return
+    root = _find_git_root(out_root)
+    if root is None:
+        log.info(f"[git] {out_root} 上层未发现 git 仓库，跳过自动 commit")
+        return
+    try:
+        rel = out_root.resolve().relative_to(root.resolve())
+    except ValueError:
+        log.warning(f"[git] 归档根 {out_root} 不在仓库 {root} 内，跳过自动 commit")
+        return
+    rel = str(rel)
+
+    # Stage only the archive subtree; never touch unrelated dirty files.
+    # 只暂存归档子树；不碰仓库内无关的脏文件。
+    r = _git(root, "add", "-A", "--", rel)
+    if r.returncode != 0:
+        log.warning(f"[git] add 失败（跳过自动 commit）: {r.stderr.strip()[:200]}")
+        return
+    # Nothing staged → nothing to commit.
+    # 无暂存变更 → 无需提交。
+    r = _git(root, "diff", "--cached", "--quiet", "--", rel)
+    if r.returncode == 0:
+        log.info("[git] 归档子树无变更，跳过自动 commit")
+        return
+    ts = _time.strftime("%Y%m%d-%H%M")
+    msg = f"archive: incremental snapshot @{ts}"
+    if account:
+        msg += f" ({account})"
+    r = _git(root, "commit", "-m", msg)
+    if r.returncode != 0:
+        log.warning(f"[git] commit 失败（跳过）: {r.stderr.strip()[:200]}")
+        return
+    log.info(f"[git] 已自动 commit: {msg}")
+    if not _cfg.AUTO_PUSH:
+        return
+    r = _git(root, "push")
+    if r.returncode == 0:
+        log.info("[git] 已自动 push")
+        return
+    err = (r.stderr or r.stdout).strip()
+    if "no upstream branch" in err or "does not have any commits yet" in err or "fatal: no remote" in err or "remote repository not found" in err or "No configured push destination" in err or "upstream" in err and "no such branch" in err:
+        log.warning(f"[git] push 跳过（无上游/远端）: {err[:200]}")
+        return
+    # Conflict / rejected / auth failure → hard error, always visible.
+    # 冲突/被拒/认证失败 → 硬错误，任何日志级别可见。
+    raise SystemExit(f"[git][ERROR] 自动 push 失败（远端冲突或拒绝）——请人工处理 {root}:\n  {err[:500]}")

@@ -31,6 +31,33 @@ default_account = "alice"
 # 上次成功导出的时间戳（ISO 8601 UTC；机器托管——每次成功导出后自动更新）。
 # last_export = "2026-07-30T00:00:00Z"
 
+# Auto git commit after each successful export: when an ancestor of the archive
+# root is a git repository, commit the archive subtree (default true).
+# 每次成功导出后自动 git commit：归档根的上层存在 git 仓库时提交归档子树（默认开）。
+# auto_commit = true
+
+# Auto git push after a successful auto-commit (default false — pushing can
+# overwrite remote state; enable only for a dedicated archive remote. A rejected
+# push is a hard error and aborts the command).
+# 自动 commit 后自动 push（默认关——push 可能覆盖远端状态；仅对专用归档远端开启。
+# push 被拒会硬错误中止命令）。
+# auto_push = false
+
+# ── [index_state] — auto-managed per-account index refresh state (DO NOT hand-edit) ──
+# Written by `pplx-export index` / `sync` after every refresh; tracks
+# extracted_at, last_full_index_at and the incremental-runs counter that trigger
+# the full-reconciliation reminder. The library_<account>.json files carry only
+# stable fields (account/count/threads), so a no-change refresh is a git no-op.
+# ── [index_state] —— 机器托管的各账户索引刷新状态（勿手改）──────────────
+# 由 `pplx-export index` / `sync` 每次刷新后写入；记录 extracted_at、
+# last_full_index_at 与触发全量对账提醒的增量计数。library_<account>.json
+# 只保留稳定字段（account/count/threads），无变更的刷新在 git 中是无操作。
+# [index_state]
+# [index_state.alice]
+# extracted_at = "2026-07-30T00:00:00Z"
+# last_full_index_at = "2026-07-28T00:00:00Z"
+# incremental_runs_since_full = 3
+
 # Account registry: key = account username (the username in thread URLs / library)
 # 账户注册表：键 = 账户用户名（thread URL / library 中的 username）
 [accounts.alice]

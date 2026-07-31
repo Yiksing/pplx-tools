@@ -7,8 +7,10 @@ verbatim). `--full` restores the complete sweep that rewrites the library.
 
 The incremental path cannot observe remote deletions or space changes of
 older threads (they never appear in the fetched head). Deletion authority
-stays with `sync-deleted --online`; the library document counts incremental
-runs since the last full sweep and warns when a full reconciliation is due.
+stays with `sync-deleted --online`; the per-account refresh state
+(extracted_at / last_full_index_at / incremental_runs_since_full) lives in
+the user-level config's `[index_state]` table and warns when a full
+reconciliation is due.
 
 cmd：index —— 提取账户对话列表索引。
 
@@ -16,8 +18,9 @@ cmd：index —— 提取账户对话列表索引。
 头部合并到既有库上（更旧的行原样保留）。`--full` 恢复全量翻页并整体重写。
 
 增量路径看不到旧线程的远端删除与空间变更（它们不会出现在抓取的头部）。
-删除权威仍是 `sync-deleted --online`；库文档记录距上次全量的增量次数，
-到期提醒做一次全量对账。
+删除权威仍是 `sync-deleted --online`；各账户刷新状态（extracted_at /
+last_full_index_at / incremental_runs_since_full）存于用户级配置的
+`[index_state]` 表，到期提醒做一次全量对账。
 """
 
 from __future__ import annotations
@@ -98,6 +101,18 @@ def cmd_index(adapter, account, out_root: Path, full: bool = False):
     # that exhausted pagination paged the whole library and is a full reconciliation.
     # 只有真正早停才是部分刷新；增量却翻到尽头意味着已全量翻页，等同一次全量对账。
     partial = incremental and stopped_early
+    # Per-account index state now lives in config.toml [index_state] (machine-managed);
+    # on the first run after the migration, seed it from the legacy document fields.
+    # 各账户索引状态现在存于 config.toml [index_state]（机器托管）；
+    # 迁移后首次运行时，从旧文档字段播种。
+    from .. import config as _cfg
+    state = dict(_cfg.INDEX_STATE.get(account.username) or {})
+    if not state.get("extracted_at") and not state.get("last_full_index_at"):
+        legacy = (old_doc.get("last_full_index_at") or old_doc.get("extracted_at") or "")
+        legacy_runs = int(old_doc.get("incremental_runs_since_full") or 0)
+        if legacy or legacy_runs:
+            state = {"extracted_at": old_doc.get("extracted_at") or "",
+                     "last_full_index_at": legacy, "incremental_runs_since_full": legacy_runs}
     if partial:
         seen = {u for u in (t.get("entryUUID") for t in fetched) if u}
         # Carry over old rows not in the fetched head; keep uuid-less rows (dedup only
@@ -106,22 +121,26 @@ def cmd_index(adapter, account, out_root: Path, full: bool = False):
         # 使增量不会丢弃 --full 会保留的行。
         tail = [t for t in old_rows if (not t.get("entryUUID")) or t["entryUUID"] not in seen]
         rows = fetched + tail
-        # Legacy docs (pre-incremental) were always full sweeps: their extracted_at
-        # is the last full reconciliation.
-        # 旧文档（增量之前）都是全量：其 extracted_at 即上次全量对账时间。
-        last_full = old_doc.get("last_full_index_at") or old_doc.get("extracted_at") or ""
-        runs_since = int(old_doc.get("incremental_runs_since_full") or 0) + 1
+        # The last full reconciliation time carried in config state (or legacy doc).
+        # 上次全量对账时间取自 config 状态（或旧文档）。
+        last_full = state.get("last_full_index_at") or state.get("extracted_at") or ""
+        runs_since = int(state.get("incremental_runs_since_full") or 0) + 1
     else:
         rows = fetched
         tail = []
         last_full = now
         runs_since = 0
 
-    doc = {"account": account.username, "extracted_at": now,
-           "count": len(rows), "threads": rows,
-           "last_full_index_at": last_full,
-           "incremental_runs_since_full": runs_since}
+    # Volatile refresh metadata moved to config.toml [index_state]; the library
+    # document keeps only stable fields so a no-change refresh is a no-op in git.
+    # 易变的刷新元数据已迁至 config.toml [index_state]；库文档只保留稳定字段，
+    # 无变更的刷新在 git 中成为无操作。
+    doc = {"account": account.username, "count": len(rows), "threads": rows}
     atomic_write_text(p, json.dumps(doc, ensure_ascii=False, indent=1))
+    _cfg.INDEX_STATE[account.username] = {
+        "extracted_at": now, "last_full_index_at": last_full,
+        "incremental_runs_since_full": runs_since}
+    _cfg.write_index_state(_cfg.LOADED_CONFIG_PATH, _cfg.INDEX_STATE)
     if partial:
         log.info(f"[index] 增量：抓取 {len(fetched)} 行（新增/更新 {changed} 条，到已知边界早停），"
                  f"沿用旧库 {len(tail)} 条 → 共 {len(rows)} 条 → {p}")

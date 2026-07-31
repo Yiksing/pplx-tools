@@ -72,6 +72,9 @@ slug = "bot-EXAMPLE"
 | `archive_root` | string | 可选。归档输出根，作为 `--out` 的回退，日常命令可省略 `--out`。优先级：`--out` > `archive_root` > `./web_archive`（`pplx_export/config.py`，载入 `ARCHIVE_ROOT`；在 `cli.py` / `ask_cli.py` 解析）。`~` 会展开。 |
 | `[models]`（表） | table | **机器托管，非手写。** 仅元数据表，由 `pplx-ask models --refresh` 更新、`pplx-export init` 播种：`last_refreshed`（UTC）、`source_version`、`auto_refresh`（bool）。完整模型目录（113 原始模型、前端 `search_config` / `computer_config`、模式默认值）独立存储在配置文件旁的 `models_cache.json`，每次刷新时原子写入。请求读取它（以 `platform.py` 兜底）；7 天 TTL 打刷新提醒，或 `auto_refresh = true` 时自动刷新。回写保留你的其余表与注释，保持 `0600`。 |
 | `last_export` | string | 可选。上次成功导出（`pplx-export export` 或 `pplx-export batch`）的 ISO 8601 UTC 时间戳。CLI 自动更新（`pplx_export/commands/common.py:update_last_export`）；best-effort，不阻断导出。 |
+| `auto_commit` | bool | 可选（默认 `true`）。归档根的上层存在 git 仓库时，每次成功导出后自动提交归档子树（`pplx_export/commands/common.py:maybe_auto_commit`）。只暂存归档根内的路径；同一仓库中无关的脏文件不受影响。 |
+| `auto_push` | bool | 可选（默认 `false`）。自动 commit 成功后 push。push 被拒/冲突为硬错误：命令以非零码中止，错误信息始终经 stderr 可见。 |
+| `[index_state]`（表） | table | **机器托管，非手写。** 各账户索引刷新状态，由 `pplx-export index` / `sync` 写入：账户用户名 → `{extracted_at, last_full_index_at, incremental_runs_since_full}`。计数器驱动全量对账提醒。`library_<account>.json` 只保留稳定字段（`account` / `count` / `threads`），无变更的刷新在归档 git 仓库中是无操作。 |
 
 ### `[accounts.<name>]`
 
