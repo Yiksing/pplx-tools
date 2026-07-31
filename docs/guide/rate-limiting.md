@@ -40,6 +40,12 @@ with no concurrency. This is an explicit anti-risk-control requirement
   before a heavy page loads its full payload.
 - **0.5 s asset downloads.** Small static files, far cheaper than API calls —
   but still paced.
+- **The request identity matches your browser.** The `User-Agent` is built
+  from the running OS and the cookie-source browser family (version probed
+  from the installed browser, static fallback on failure), and Chromium-family
+  sources also send `sec-ch-ua` client hints — requests look like the browser
+  the cookies came from, not a generic script. An explicit `user_agent` in the
+  config overrides this verbatim; see [Configuration](configuration.md).
 - **The CDN phase is the only relaxation.** Signed-URL downloads hit the
   content delivery network, not the Perplexity API, so 6 parallel connections
   are acceptable there and only there.

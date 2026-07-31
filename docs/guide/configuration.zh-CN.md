@@ -74,6 +74,7 @@ slug = "bot-EXAMPLE"
 | `last_export` | string | 可选。上次成功导出（`pplx-export export` 或 `pplx-export batch`）的 ISO 8601 UTC 时间戳。CLI 自动更新（`pplx_export/commands/common.py:update_last_export`）；best-effort，不阻断导出。 |
 | `auto_commit` | bool | 可选（默认 `true`）。归档根的上层存在 git 仓库时，每次成功导出后自动提交归档子树（`pplx_export/commands/common.py:maybe_auto_commit`）。只暂存归档根内的路径；同一仓库中无关的脏文件不受影响。 |
 | `auto_push` | bool | 可选（默认 `false`）。自动 commit 成功后 push。push 被拒/冲突为硬错误：命令以非零码中止，错误信息始终经 stderr 可见。 |
+| `user_agent` | string | 可选。`User-Agent` 覆盖，原样发送到每个 cookie 直连请求，不自动附加 client hints。缺省时按运行 OS 与 cookie 来源浏览器族动态构建——版本探测自已安装浏览器（best-effort、短超时、绝不致命），失败回退每族静态表——Chromium 系来源还会附带 `sec-ch-ua` / `sec-ch-ua-mobile` / `sec-ch-ua-platform` client hints（`pplx_export/core/http/user_agent.py`）。缓存命中仍保留来源浏览器的 UA：cookie 缓存会保存来源标签并由 `resolve()` 返回。 |
 | `[index_state]`（表） | table | **机器托管，非手写。** 各账户索引刷新状态，由 `pplx-export index` / `sync` 写入：账户用户名 → `{extracted_at, last_full_index_at, incremental_runs_since_full}`。计数器驱动全量对账提醒。`library_<account>.json` 只保留稳定字段（`account` / `count` / `threads`），无变更的刷新在归档 git 仓库中是无操作。 |
 
 ### `[accounts.<name>]`

@@ -34,6 +34,11 @@
 - **块补抓前 ≥4 s。** 否则 schematized 重抓会与 plain 抓取背靠背打到 API；
   这段停顿模拟重页面加载完整负载前的延迟。
 - **资产下载 0.5 s。** 静态小文件，开销远低于 API 调用——但仍然有节奏。
+- **请求身份与你的浏览器一致。** `User-Agent` 按运行 OS 与 cookie 来源
+  浏览器族构建（版本探测自已安装浏览器，失败回退静态表），Chromium 系
+  来源还会附带 `sec-ch-ua` client hints——请求看起来来自 cookie 所属的
+  那个浏览器，而非通用脚本。配置里的显式 `user_agent` 会原样覆盖；
+  见[配置](configuration.md)。
 - **CDN 阶段是唯一的放宽。** 签名 URL 下载打到的是内容分发网络而非
   Perplexity API，因此仅在此处允许 6 路并行。
 

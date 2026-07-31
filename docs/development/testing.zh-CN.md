@@ -47,7 +47,7 @@ pytest 是已声明的开发依赖。测试套件保证：
 | 渲染快照 | `test_render_snapshots.py` | 重渲全部模拟的完整模式与精简场景 fixtures，并与已提交产物逐字节比对 |
 | 核心与共享工具 | `test_units.py` | 状态、节流、规划、规范化、资产命名、模式判定、安全路径及跨领域回归 |
 | 文档契约、skill 与本地化 | `test_agent_skills.py`<br/>`test_audit_docs.py`<br/>`test_translate_docs.py` | 仓库本地 skill 契约，以及针对只读文档审计器和机器翻译管线的隔离微型仓库测试 |
-| 配置、认证与初始化 | `test_config_external.py`<br/>`test_cookie_profiles.py`<br/>`test_credential.py`<br/>`test_init.py` | 外置配置隔离、cookie 来源配置、凭证选择与初始化 |
+| 配置、认证与初始化 | `test_config_external.py`<br/>`test_cookie_profiles.py`<br/>`test_credential.py`<br/>`test_init.py`<br/>`test_user_agent.py` | 外置配置隔离、cookie 来源配置、凭证选择、动态 User-Agent 构建与初始化 |
 | 渲染与工作流语义 | `test_interruptions.py`<br/>`test_stub_workflows.py`<br/>`test_answer_variants.py`<br/>`test_answer_variant_logging.py`<br/>`test_relations.py` | 工作流归属、中断状态、答案变体、审计日志与关系边 |
 | 离线归档与索引维护 | `test_search_mode_backfill.py`<br/>`test_sync_deleted.py`<br/>`test_status.py` | 富化、续跑/幂等行为、跨账户删除判定、终态，以及离线状态账/变更报告的分层输出 |
 | 评审回归 | 下表所列 17 个 `test_fix_*.py` 模块 | 源自评审发现的修复；模块名保留评审 lineage |
