@@ -62,7 +62,7 @@ pplx-export init --config /path/to/config.toml --force   # 自定义路径，允
 
 - **默认增量**：按最新翻页，遇到「连续一整页（`_STOP_RUN`）已知且未变」即停，把抓到的头部合并到既有索引上——更旧的行原样保留（不丢失）。首次运行或无既有索引时按全量。
 - **`--full`** 全量翻页并整体重写索引；作为定期对账的前置。
-- **增量路径的盲区**：旧线程的远端*删除*与*空间变更*不会出现在抓取的头部，因此看不到。删除权威仍是 `sync-deleted --online`。索引文档记录 `incremental_runs_since_full`；连续多次增量后会提醒你跑一次 `--full`（并配合 `sync-deleted --online`）。
+- **增量路径的盲区**：旧线程的远端*删除*与*空间变更*不会出现在抓取的头部，因此看不到。删除权威仍是 `sync-deleted --online`。各账户刷新状态（`extracted_at` / `last_full_index_at` / `incremental_runs_since_full`）存于用户级配置的机器托管 `[index_state]` 表（见 [configuration.zh-CN.md](configuration.zh-CN.md)）；索引文档只保留稳定字段，无变更的刷新在 git 中是无操作。连续多次增量后会提醒你跑一次 `--full`（并配合 `sync-deleted --online`）。
 - 保留 `search-mode-backfill` 写入的 `search_mode` 富化，按 `entryUUID` 合并回来。
 - 在跑 `batch`、`sync-space`、`sync-deleted` 之前先跑它——它们的比对结果取决于索引的新鲜度。
 
@@ -85,7 +85,7 @@ pplx-export index --account alice --full   # 全量对账前置
 关键行为：
 
 - 默认只抓新增/更新的对话，**跳过删除检测与空间刷新**——高频同步下最省。
-- 删除/空间对账为可选（`--check-deleted` / `--refresh-spaces`）或由 `--full` 一并完成。`index` 的计数（`incremental_runs_since_full`）是兜底：到期会提醒你做一次 `--full` 对账。
+- 删除/空间对账为可选（`--check-deleted` / `--refresh-spaces`）或由 `--full` 一并完成。配置 `[index_state]` 表中的 `incremental_runs_since_full` 计数是兜底：到期会提醒你做一次 `--full` 对账。
 
 ```bash
 pplx-export sync --account alice                     # 只关注对话（快）
@@ -127,6 +127,7 @@ pplx-export space-index "https://www.perplexity.ai/spaces/<space-slug>" --accoun
 - 线程在本地 library 索引中有行时，`lastUpdated` 取索引值（与 `batch` 同语义同格式），否则回退平台真值。
 - 终态优雅登记，不抛 traceback：`ENTRY_DELETED` 在 `batch_state.json` 标记 `deleted`，`ENTRY_EXPIRED` 标记 `expired`——两种情况下本地已有归档都保持原样。
 - 导出成功会把 `ok` 写进 `index/batch_state.json`，增量计划据此把该线程计为「已导出且未变」。
+- 归档根的上层存在 git 仓库时，导出成功后自动提交归档子树（配置 `auto_commit`，默认开），可选自动 push（`auto_push`，默认关；push 被拒/冲突以非零码中止）——见 [configuration.zh-CN.md](configuration.zh-CN.md)。
 - 线程目录内的文件构成见 [archive-layout.zh-CN.md](archive-layout.zh-CN.md)；导出管线本身见 [../architecture/export-pipeline.zh-CN.md](../architecture/export-pipeline.zh-CN.md)。
 
 ```bash
@@ -155,6 +156,7 @@ pplx-export export "https://www.perplexity.ai/search/<thread-uuid>" --account al
 - 鉴权快速失败：连续 3 次 401/403 即中止（cookie 失效时退避无法自愈，空转只会让数百线程各失败一遍）。
 - 节奏：线程间随机间隔 `--delay-min`–`--delay-max`；429/5xx 由传输层退避。详见 [rate-limiting.zh-CN.md](rate-limiting.zh-CN.md)。
 - 命中重写答案变体的线程会登记进 `index/answer_variants_log.jsonl` 并告警，需尽快人工处置（见 [../reference/api/api-responses-errors.zh-CN.md](../reference/api/api-responses-errors.zh-CN.md)）。
+- 运行结束后，归档位于 git 仓库内时无条件自动提交归档子树——即使 `ok=0` 也会留下值得提交的索引刷新元数据；无变更则为无操作。由配置 `auto_commit` / `auto_push` 控制——见 [configuration.zh-CN.md](configuration.zh-CN.md)。
 
 ```bash
 pplx-export batch --account bob --mode deep-research --limit 50

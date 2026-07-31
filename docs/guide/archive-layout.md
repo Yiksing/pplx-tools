@@ -145,15 +145,15 @@ groups — use `len(files)` for that.
 
 | File | Written by | Semantics |
 |---|---|---|
-| `library_<account>.json` | `pplx-export index` (`index_cmd.py:17-43`) | full account thread index (GraphQL); input for batch / scheduling / space indexes |
+| `library_<account>.json` | `pplx-export index` (`index_cmd.py:47`) | account thread index (GraphQL); incremental-merged by default, `--full` rewrites; stable fields only (`account` / `count` / `threads`) — refresh state lives in the config's `[index_state]` table; input for batch / scheduling / space indexes |
 | `batch_state.json` | `BatchState` (`state.py`) | resumable checkpoint: uuid → status (ok/error/expired/deleted) + lastUpdated; atomic writes; corrupt files auto-backed up as `.corrupt-<ts>` |
-| `.cookies.json` | cookie cache (`common.py:111`, `common.py:150`) | 12h-freshness cookie cache with source and account email; written `0o600` then atomically replaced (session credentials, owner-readable only) |
+| `.cookies.json` | cookie cache (`common.py:172`) | 12h-freshness cookie cache with source and account email; written `0o600` then atomically replaced (session credentials, owner-readable only) |
 | `space_<slug>.json` | `pplx-export space-index` (`spaces_cmd.py:106-167`) | per-space thread list, incl. the `context_uuid` dual-ID mapping |
 | `space_meta.json` | `pplx-export spaces --fetch-meta` (`spaces_cmd.py:299-330`) | space owner/member cache reused on rebuilds |
 | `credit_usage_<account>.json` | `pplx-export usage-backfill` (`usage_backfill_cmd.py:17`) | per-thread credit usage (idempotent, resumable, flushed every 25 entries) |
 | `cron_snippet.txt` | `pplx-export schedule` (`scheduler.py:47-77`) | cron invocation snippet (absolute paths) |
 | `answer_variants_log.jsonl` | `variant_log.append_registry` (`variant_log.py:76`) | central answer-rewrite variant registry, deduped by (thread, entry), idempotent |
-| `logs/` | `--log-file` (`common.py:218-229`) | full DEBUG logs |
+| `logs/` | `--log-file` (`common.py:270-281`) | full DEBUG logs |
 
 ## The spaces/ layer
 

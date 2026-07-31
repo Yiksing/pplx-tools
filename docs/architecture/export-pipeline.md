@@ -4,8 +4,8 @@
 
 ## Export pipeline in detail
 
-The complete single-thread export pipeline (`cmd_export`, export_cmd.py:42-86; the batch path `cmd_batch`
-reuses the same pipeline, batch_cmd.py:117-204). Key functions and line numbers in brackets:
+The complete single-thread export pipeline (`cmd_export`, export_cmd.py:43-89; the batch path `cmd_batch`
+reuses the same pipeline, batch_cmd.py:124-231). Key functions and line numbers in brackets:
 
 ```mermaid
 flowchart TD
@@ -13,7 +13,7 @@ flowchart TD
 
     subgraph S1["① indexing (pre-step of index / batch)"]
         IDX["GraphQLClient.list_threads<br/>(graphql.py:51)<br/>LibraryThreadsRelayQuery first page 25 items<br/>LibraryRecentThreadsPaginationQuery pagination<br/>stop when endCursor is empty (graphql.py:81-85)"]
-        IDX --> IDXO[("index/library_&lt;account&gt;.json<br/>cmd_index (index_cmd.py:17)")]
+        IDX --> IDXO[("index/library_&lt;account&gt;.json<br/>cmd_index (index_cmd.py:47)")]
     end
 
     subgraph S2["② incremental planning (batch only)"]

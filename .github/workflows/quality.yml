@@ -87,6 +87,64 @@ jobs:
           fi
       - name: Lint with ruff
         run: uv run ruff check .
+      - name: Run sensitive core boundary targeted tests
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BASE_SHA: ${{ github.event.before }}
+          MANUAL_BASE_SHA: ${{ inputs.changed_base }}
+        run: |
+          set -euo pipefail
+          # Mechanized mapping of the sensitive boundary declared in
+          # pplx_export/core/AGENTS.md: any change under pplx_export/core/**
+          # (auth, cookies, HTTP transports, credential caching, transport
+          # construction) must run the targeted offline sensitive-path tests
+          # before the full suite. This never replaces the full gate below.
+          boundary="pplx_export/core/AGENTS.md"
+          case "${EVENT_NAME}" in
+            pull_request) changed_base="${PR_BASE_SHA}" ;;
+            push) changed_base="${PUSH_BASE_SHA}" ;;
+            workflow_dispatch) changed_base="${MANUAL_BASE_SHA}" ;;
+            *)
+              echo "::error title=Unsupported quality event::${EVENT_NAME}"
+              exit 2
+              ;;
+          esac
+          if [[ ! "${changed_base}" =~ ^[0-9a-fA-F]{40}$ ]] ||
+             ! git cat-file -e "${changed_base}^{commit}" ||
+             ! git merge-base --is-ancestor "${changed_base}" HEAD; then
+            echo "::error title=Unusable changed base::The base must be an available ancestor of HEAD"
+            exit 2
+          fi
+          mapfile -t core_changes < <(
+            git diff --name-only "${changed_base}" HEAD -- 'pplx_export/core/' || true
+          )
+          if [[ "${#core_changes[@]}" -eq 0 ]]; then
+            echo "::notice title=Sensitive core boundary::No pplx_export/core/** changes in this diff; targeted sensitive-path tests not required (mechanized mapping of ${boundary})."
+            {
+              echo "## Sensitive core boundary (${boundary})"
+              echo ""
+              echo "No \`pplx_export/core/**\` changes in this diff; the targeted sensitive-path gate is not triggered."
+            } >> "${GITHUB_STEP_SUMMARY}"
+            exit 0
+          fi
+          echo "::notice title=Sensitive core boundary::pplx_export/core/** changed; running the targeted auth/cookies/http tests as the mechanized mapping of ${boundary}."
+          targeted_tests=(
+            tests/test_credential.py
+            tests/test_cookie_profiles.py
+            tests/test_fix_n04_cookies.py
+            tests/test_fix_n05_n06_n09.py
+          )
+          {
+            echo "## Sensitive core boundary (${boundary})"
+            echo ""
+            echo "Detected \`pplx_export/core/**\` changes; running the targeted auth/cookies/http tests declared by the boundary before the full suite:"
+            echo ""
+            printf -- '- %s\n' "${core_changes[@]}"
+            echo ""
+            printf 'Targeted tests: \`%s\`\n' "${targeted_tests[*]}"
+          } >> "${GITHUB_STEP_SUMMARY}"
+          uv run pytest -q "${targeted_tests[@]}"
       - name: Run tests
         run: uv run pytest -q
       - name: Build all configured documentation locales strictly

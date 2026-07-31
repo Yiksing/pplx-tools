@@ -147,26 +147,28 @@ web_archive/
 
 | 文件 | 写入方 | 语义 |
 |---|---|---|
-| `library_<account>.json` | `cmd_index`（index_cmd.py） | 账户线程索引（GraphQL）；默认增量合并（`--full` 整体重写）；另带 `last_full_index_at` / `incremental_runs_since_full`；batch/调度/空间索引的输入 |
+| `library_<account>.json` | `cmd_index`（index_cmd.py） | 账户线程索引（GraphQL）；默认增量合并（`--full` 整体重写）；只保留稳定字段（`account` / `count` / `threads`）——易变的刷新状态（`extracted_at` / `last_full_index_at` / `incremental_runs_since_full`）存于用户配置的机器托管 `[index_state]` 表，无变更的刷新在 git 中是无操作；batch/调度/空间索引的输入 |
 | `batch_state.json` | `BatchState`（state.py） | 断点：uuid → status(ok/error/expired/deleted) + lastUpdated；原子写入；损坏自动备份 `.corrupt-<ts>` |
-| `.cookies.json` | `CookieCache`（common.py:111,150） | cookie 缓存（12h 新鲜期），含来源与账户 email；原子写入：临时文件以 0o600 创建后 os.replace（cookies/cache.py:59-67，会话凭证仅属主可读；gitignore 范围内） |
+| `.cookies.json` | `CookieCache`（common.py:172） | cookie 缓存（12h 新鲜期），含来源与账户 email；原子写入：临时文件以 0o600 创建后 os.replace（cookies/cache.py:59-67，会话凭证仅属主可读；gitignore 范围内） |
 | `space_<slug>.json` | `cmd_space_index`（spaces_cmd.py:106-167） | 单空间「全部」线程列表（含 context_uuid 双 ID 映射） |
 | `space_meta.json` | `cmd_spaces --fetch-meta`（spaces_cmd.py:299-330） | 空间所有者/成员缓存（重建索引时复用，避免重复抓取） |
 | `credit_usage_<account>.json` | `cmd_usage_backfill`（usage_backfill_cmd.py:17） | 逐线程积分用量（幂等可续跑，每 25 条落盘一次） |
 | `cron_snippet.txt` | `cmd_schedule`（scheduler.py:47-77） | cron 调用片段（绝对路径） |
 | `answer_variants_log.jsonl` | `variant_log.append_registry`（variant_log.py:76） | 答案重写变体集中登记（按 thread+entry 去重幂等；入库文件，非 logs/）——检测链见 [§18](offline-operations.md) |
-| `logs/` | `--log-file`（common.py:218-229） | 全量 DEBUG 日志（已 gitignore） |
+| `logs/` | `--log-file`（common.py:270-281） | 全量 DEBUG 日志（已 gitignore） |
 
-用户级 `config.toml` 另带一个机器托管的 `[models]` 表（模型目录 + `last_refreshed`），
-由 `pplx-ask models --refresh` 写入、`pplx-export init` 播种，经 `tomlkit` round-trip
-保留用户其余表与注释——结构见[配置](../guide/configuration.md)。
+用户级 `config.toml` 另带机器托管的表：`[models]`（模型目录元数据 + `last_refreshed`，
+由 `pplx-ask models --refresh` 写入、`pplx-export init` 播种）与 `[index_state]`
+（各账户索引刷新状态，由 `pplx-export index` / `sync` 写入）——均经 `tomlkit`
+round-trip 保留用户其余表与注释——结构见[配置](../guide/configuration.md)。
 
 **维护者须知——钉死的协议常量。** 与 parser/renderer 强耦合的 Perplexity wire 协议
 事实——API `version`、ask 信封的 `supported_block_use_cases`、`supported_features`、
 线程读取的 `SCHEMATIZED_BLOCK_USE_CASES`——单一来源于
 `pplx_export/sites/perplexity/platform.py`，平台 API 变更时须与 `parsers.py` /
 `render.py` 一并更新（人工钉死、绝不自动刷新；有测试禁止版本字面量散落）。而模型 id
-是解耦的服务端数据，存于上文可刷新的 `[models]` 目录。
+是解耦的服务端数据，存于配置文件旁可刷新的 `models_cache.json` 目录，配合上文的
+`[models]` 元数据表。
 
 ### spaces/ 索引层（仓库根，工具生成）
 

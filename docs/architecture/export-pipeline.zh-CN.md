@@ -4,8 +4,8 @@
 
 ## 导出管线详图
 
-单线程导出的完整管线（`cmd_export`，export_cmd.py:42-86；批量路径 `cmd_batch`
-复用同一管线，batch_cmd.py:117-204）。方括号内为关键函数与行号：
+单线程导出的完整管线（`cmd_export`，export_cmd.py:43-89；批量路径 `cmd_batch`
+复用同一管线，batch_cmd.py:124-231）。方括号内为关键函数与行号：
 
 ```mermaid
 flowchart TD
@@ -13,7 +13,7 @@ flowchart TD
 
     subgraph S1["① 索引（index / batch 前置）"]
         IDX["GraphQLClient.list_threads<br/>（graphql.py:51）<br/>LibraryThreadsRelayQuery 首页 25 条<br/>LibraryRecentThreadsPaginationQuery 翻页<br/>endCursor 为空即止（graphql.py:81-85）"]
-        IDX --> IDXO[("index/library_&lt;account&gt;.json<br/>cmd_index（index_cmd.py:17）")]
+        IDX --> IDXO[("index/library_&lt;account&gt;.json<br/>cmd_index（index_cmd.py:47）")]
     end
 
     subgraph S2["② 增量计划（batch 专用）"]

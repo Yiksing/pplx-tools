@@ -1127,6 +1127,37 @@ def test_quality_workflow_lints_before_tests() -> None:
     )
 
 
+def test_quality_workflow_gates_sensitive_core_boundary() -> None:
+    root = Path(__file__).resolve().parents[1]
+    quality = (root / ".github/workflows/quality.yml").read_text(
+        encoding="utf-8"
+    )
+    # The targeted gate is the mechanized mapping of the boundary declared in
+    # pplx_export/core/AGENTS.md and must reference it in its output.
+    # 靶向门禁是 pplx_export/core/AGENTS.md 声明边界的机械化映射，
+    # 其输出必须引用该边界文件。
+    assert (root / "pplx_export/core/AGENTS.md").is_file()
+    assert quality.count("pplx_export/core/AGENTS.md") >= 1
+    assert (
+        "git diff --name-only \"${changed_base}\" HEAD "
+        "-- 'pplx_export/core/'"
+    ) in quality
+    for targeted in (
+        "tests/test_credential.py",
+        "tests/test_cookie_profiles.py",
+        "tests/test_fix_n04_cookies.py",
+        "tests/test_fix_n05_n06_n09.py",
+    ):
+        assert targeted in quality
+    # The sensitive-path gate runs before the full suite and never replaces it.
+    # 敏感路径门禁在全量套件之前运行，且绝不替代全量门禁。
+    assert "- name: Run sensitive core boundary targeted tests" in quality
+    assert "run: uv run pytest -q" in quality
+    assert quality.index(
+        "- name: Run sensitive core boundary targeted tests"
+    ) < quality.index("- name: Run tests")
+
+
 def test_translation_workflow_binds_validation_and_checkpoints_before_main() -> None:
     root = Path(__file__).resolve().parents[1]
     translation = (

@@ -147,20 +147,22 @@ web_archive/
 
 | File | Writer | Semantics |
 |---|---|---|
-| `library_<account>.json` | `cmd_index` (index_cmd.py) | account thread index (GraphQL); incremental-merged by default (`--full` rewrites); also carries `last_full_index_at` / `incremental_runs_since_full`; input for batch/scheduling/space indexes |
+| `library_<account>.json` | `cmd_index` (index_cmd.py) | account thread index (GraphQL); incremental-merged by default (`--full` rewrites); carries only stable fields (`account` / `count` / `threads`) — the volatile refresh state (`extracted_at` / `last_full_index_at` / `incremental_runs_since_full`) lives in the user config's machine-managed `[index_state]` table, so a no-change refresh is a git no-op; input for batch/scheduling/space indexes |
 | `batch_state.json` | `BatchState` (state.py) | checkpoint: uuid → status(ok/error/expired/deleted) + lastUpdated; atomic writes; corrupt files auto-backed up as `.corrupt-<ts>` |
-| `.cookies.json` | `CookieCache` (common.py:111, 150) | cookie cache (12h freshness), with source and account email; atomic write: temp file created with 0o600 then os.replace (cookies/cache.py:59-67 — session credentials readable only by the owner; within gitignore scope) |
+| `.cookies.json` | `CookieCache` (common.py:172) | cookie cache (12h freshness), with source and account email; atomic write: temp file created with 0o600 then os.replace (cookies/cache.py:59-67 — session credentials readable only by the owner; within gitignore scope) |
 | `space_<slug>.json` | `cmd_space_index` (spaces_cmd.py:106-167) | per-space "all" thread list (incl. the context_uuid dual-ID mapping) |
 | `space_meta.json` | `cmd_spaces --fetch-meta` (spaces_cmd.py:299-330) | space owner/member cache (reused when rebuilding indexes, avoiding refetch) |
 | `credit_usage_<account>.json` | `cmd_usage_backfill` (usage_backfill_cmd.py:17) | per-thread credit usage (idempotent and resumable, flushed every 25 entries) |
 | `cron_snippet.txt` | `cmd_schedule` (scheduler.py:47-77) | cron invocation snippet (absolute paths) |
 | `answer_variants_log.jsonl` | `variant_log.append_registry` (variant_log.py:76) | central answer-rewrite variant registry (dedup by thread+entry, idempotent; a checked-in file, not logs/) — detection chain in [§18](offline-operations.md) |
-| `logs/` | `--log-file` (common.py:218-229) | full DEBUG logs (gitignored) |
+| `logs/` | `--log-file` (common.py:270-281) | full DEBUG logs (gitignored) |
 
-The user-level `config.toml` additionally carries a machine-managed `[models]` table
-(the model catalog plus `last_refreshed`), written by `pplx-ask models --refresh` and
-seeded by `pplx-export init` through a `tomlkit` round-trip that preserves the user's
-other tables and comments — schema in [Configuration](../guide/configuration.md).
+The user-level `config.toml` additionally carries machine-managed tables: `[models]`
+(the model catalog metadata plus `last_refreshed`), written by `pplx-ask models --refresh`
+and seeded by `pplx-export init`, and `[index_state]` (per-account index refresh state,
+written by `pplx-export index` / `sync`) — both through a `tomlkit` round-trip that
+preserves the user's other tables and comments — schema in
+[Configuration](../guide/configuration.md).
 
 **Maintainer note — pinned protocol constants.** Perplexity wire-protocol facts that
 are coupled to the parser/renderer — the API `version`, the ask-envelope
@@ -169,8 +171,8 @@ are coupled to the parser/renderer — the API `version`, the ask-envelope
 `pplx_export/sites/perplexity/platform.py` and must be updated in lockstep with
 `parsers.py` / `render.py` when the platform API changes (human-pinned, never
 auto-refreshed; a test forbids stray copies of the version literal). Model ids, by
-contrast, are decoupled server-side data and live in the refreshable `[models]`
-catalog above.
+contrast, are decoupled server-side data and live in the refreshable `models_cache.json`
+catalog next to the config file, with the `[models]` metadata table above.
 
 ### The spaces/ index layer (repository root, tool-generated)
 

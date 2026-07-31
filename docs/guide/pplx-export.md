@@ -62,7 +62,7 @@ Key behaviors:
 
 - **Incremental by default.** It pages newest-first and stops once a full page (`_STOP_RUN`) of consecutive rows is already known and unchanged, then merges the fetched head onto the existing index — older rows are carried over verbatim (no loss). The first run, or any run with no existing index, is a full sweep.
 - **`--full`** pages everything and rewrites the index; use it as the periodic reconciliation front-end.
-- **Blind spot of the incremental path:** remote *deletions* and *space changes* of older threads never appear in the fetched head, so they are not observed. Deletion authority stays with `sync-deleted --online`. The index document tracks `incremental_runs_since_full`; after enough incremental runs it warns you to run `--full` (and `sync-deleted --online`).
+- **Blind spot of the incremental path:** remote *deletions* and *space changes* of older threads never appear in the fetched head, so they are not observed. Deletion authority stays with `sync-deleted --online`. The per-account refresh state (`extracted_at` / `last_full_index_at` / `incremental_runs_since_full`) lives in the machine-managed `[index_state]` table of the user-level config (see [configuration.md](configuration.md)); the index document keeps only stable fields, so a no-change refresh is a git no-op. After enough incremental runs it warns you to run `--full` (and `sync-deleted --online`).
 - Preserves the `search_mode` enrichment written by `search-mode-backfill`, merged back by `entryUUID`.
 - Run it before `batch`, `sync-space` and `sync-deleted` — their diffs are only as fresh as this index.
 
@@ -85,7 +85,7 @@ High-frequency convenience entry: **incremental `index` + incremental `batch`**,
 Key behaviors:
 
 - Default run fetches only new/updated conversations and **skips deletion detection and space refresh** — the cheapest shape for frequent syncing.
-- Deletion/space reconciliation is opt-in (`--check-deleted` / `--refresh-spaces`) or bundled by `--full`. The `index` counter (`incremental_runs_since_full`) is the backstop: it reminds you when a `--full` reconciliation is overdue.
+- Deletion/space reconciliation is opt-in (`--check-deleted` / `--refresh-spaces`) or bundled by `--full`. The `incremental_runs_since_full` counter in the config's `[index_state]` table is the backstop: it reminds you when a `--full` reconciliation is overdue.
 
 ```bash
 pplx-export sync --account alice                     # conversations only (fast)
@@ -127,6 +127,7 @@ Key behaviors:
 - `lastUpdated` is taken from the local library index when the thread is listed there (same semantics and format as `batch`), falling back to the platform value otherwise.
 - Terminal states are registered gracefully, without a traceback: `ENTRY_DELETED` marks `deleted` in `batch_state.json`, `ENTRY_EXPIRED` marks `expired` — the existing local archive is kept untouched either way.
 - A successful export writes `ok` into `index/batch_state.json`, so the incremental plan counts the thread as "exported and unchanged".
+- When an ancestor of the archive root is a git repository, a successful export auto-commits the archive subtree (config `auto_commit`, default on) and optionally pushes (`auto_push`, default off; a rejected/conflicting push aborts with a non-zero exit) — see [configuration.md](configuration.md).
 - What lands in the thread directory: [archive-layout.md](archive-layout.md); the export pipeline itself: [../architecture/export-pipeline.md](../architecture/export-pipeline.md).
 
 ```bash
@@ -155,6 +156,7 @@ Key behaviors:
 - Auth fail-fast: 3 consecutive 401/403 responses abort the run (an expired cookie cannot self-heal, and spinning on would fail hundreds of threads one by one).
 - Pacing: a random `--delay-min`–`--delay-max` pause between threads; 429/5xx are backed off by the transport layer. Details: [rate-limiting.md](rate-limiting.md).
 - Threads hitting rewritten-answer variants are registered in `index/answer_variants_log.jsonl` with a warning to handle them manually as soon as possible (see [../reference/api/api-responses-errors.md](../reference/api/api-responses-errors.md)).
+- After the run, the archive subtree is auto-committed unconditionally when the archive lives inside a git repository — even an `ok=0` run leaves index refresh metadata worth committing; with no changes it is a no-op. Controlled by config `auto_commit` / `auto_push` — see [configuration.md](configuration.md).
 
 ```bash
 pplx-export batch --account bob --mode deep-research --limit 50

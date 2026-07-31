@@ -136,15 +136,15 @@ API 响应在任何解析**之前**原样落盘（`fs_writer.py:257-266`）：
 
 | 文件 | 写入方 | 语义 |
 |---|---|---|
-| `library_<account>.json` | `pplx-export index`（`index_cmd.py:17-43`） | 账户全量线程索引（GraphQL）；batch / 调度 / 空间索引的输入 |
+| `library_<account>.json` | `pplx-export index`（`index_cmd.py:47`） | 账户线程索引（GraphQL）；默认增量合并，`--full` 整体重写；只含稳定字段（`account` / `count` / `threads`）——刷新状态存于配置的 `[index_state]` 表；batch / 调度 / 空间索引的输入 |
 | `batch_state.json` | `BatchState`（`state.py`） | 可续传检查点：uuid → 状态（ok/error/expired/deleted）+ lastUpdated；原子写；损坏文件自动备份为 `.corrupt-<ts>` |
-| `.cookies.json` | cookie 缓存（`common.py:111`、`common.py:150`） | 12 小时新鲜度的 cookie 缓存，含来源与账户邮箱；先以 `0o600` 写临时文件再原子替换（会话凭据仅所有者可读） |
+| `.cookies.json` | cookie 缓存（`common.py:172`） | 12 小时新鲜度的 cookie 缓存，含来源与账户邮箱；先以 `0o600` 写临时文件再原子替换（会话凭据仅所有者可读） |
 | `space_<slug>.json` | `pplx-export space-index`（`spaces_cmd.py:106-167`） | 单空间线程列表，含 `context_uuid` 双重 ID 映射 |
 | `space_meta.json` | `pplx-export spaces --fetch-meta`（`spaces_cmd.py:299-330`） | 空间 owner/member 缓存，重建时复用 |
 | `credit_usage_<account>.json` | `pplx-export usage-backfill`（`usage_backfill_cmd.py:17`） | 逐线程额度用量（幂等、可续传，每 25 条落盘一次） |
 | `cron_snippet.txt` | `pplx-export schedule`（`scheduler.py:47-77`） | cron 调用片段（绝对路径） |
 | `answer_variants_log.jsonl` | `variant_log.append_registry`（`variant_log.py:76`） | 答案重写变体集中登记处，按（线程, entry）去重，幂等 |
-| `logs/` | `--log-file`（`common.py:218-229`） | 完整 DEBUG 日志 |
+| `logs/` | `--log-file`（`common.py:270-281`） | 完整 DEBUG 日志 |
 
 ## spaces/ 层
 
