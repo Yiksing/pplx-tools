@@ -43,6 +43,16 @@ default_account = "alice"
 # push 被拒会硬错误中止命令）。
 # auto_push = false
 
+# Optional User-Agent override: sent verbatim on every cookie-direct request, with no
+# automatic client hints. When unset (default), the UA is built dynamically from the
+# running OS and the cookie-source browser family (version probed from the installed
+# browser, static fallback on failure), and Chromium-family sources also send
+# sec-ch-ua client hints.
+# 可选的 User-Agent 覆盖：原样发送到每个 cookie 直连请求，不自动附加 client hints。
+# 缺省（未设置）时按运行 OS 与 cookie 来源浏览器族动态构建（版本探测自已安装浏览器，
+# 失败回退静态表），Chromium 系来源还会附带 sec-ch-ua client hints。
+# user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+
 # ── [index_state] — auto-managed per-account index refresh state (DO NOT hand-edit) ──
 # Written by `pplx-export index` / `sync` after every refresh; tracks
 # extracted_at, last_full_index_at and the incremental-runs counter that trigger

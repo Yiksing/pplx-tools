@@ -285,10 +285,17 @@ def resolve(*, cookies_from: str | None = None, cookies_file: str | None = None,
         log.debug(f"cookie 来源: file:{cookies_file}")
         return from_file(cookies_file), f"file:{cookies_file}"
     if cache_path:
-        cached = CookieCache(cache_path).load()
-        if cached:
-            log.debug("cookie 来源: cache（12h 新鲜期内）")
-            return cached, "cache"
+        hit = CookieCache(cache_path).load_with_source()
+        if hit:
+            cached, origin = hit
+            # Source fidelity on cache hits: return the origin label (e.g.
+            # `browser:chrome`) so downstream UA derivation still sees the real
+            # browser family; the log line still marks the cache as the channel
+            # 缓存命中的来源保真：返回原始来源标签（如 `browser:chrome`），让下游
+            # UA 推导仍能看到真实浏览器族；日志仍标注本次来自缓存
+            label = origin if origin and origin != "cache" else "cache"
+            log.debug(f"cookie 来源: cache（12h 新鲜期内，原始来源 {origin or '未知'}）")
+            return cached, label
     last_err: Exception | None = None
     for name in AUTO_DETECT_ORDER:
         try:

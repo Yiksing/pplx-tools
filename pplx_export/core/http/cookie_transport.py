@@ -27,11 +27,16 @@ from ..errors import AuthTransportError, RateLimitError, TransportError
 from ..logging import get_logger
 from ..throttle import Throttle
 from .transport import Transport
+from .user_agent import build_client_hints, build_ua
 
 log = get_logger("transport")
 
-UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-      "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
+# Static fallback UA for an empty source (dynamic: current-OS generic Chrome, or the
+# config user_agent override); kept importable for backward compatibility. Requests
+# actually use the per-instance self._ua built from the cookie source.
+# source="" 的静态回退 UA（动态：当前 OS 通用 Chrome，或配置 user_agent 覆盖）；
+# 保留可导入以兼容旧引用。实际请求使用按 cookie 来源构建的实例级 self._ua。
+UA = build_ua("")
 
 
 def _sanitize(url: str) -> str:
@@ -50,13 +55,19 @@ class CookieTransport(Transport):
 
     def __init__(self, cookies: dict[str, str] | CookieJar | None = None,
                  throttle: Throttle | None = None, max_retries: int = 3,
-                 credential: "Credential | None" = None):
+                 credential: "Credential | None" = None, source: str = ""):
         self.throttle = throttle or Throttle()
         self.max_retries = max_retries
         # Credential seam (core/auth.py): extra auth headers merged into every request
         # 凭证接缝（core/auth.py）：并入每个请求的额外表头
         self._auth_headers = dict(credential.auth_headers()) if credential is not None else {}
         self._cookie_header = self._build_cookie_header(cookies)
+        # UA + Chromium client hints derived from the cookie source label (see
+        # core/http/user_agent.py); empty hints for non-Chromium/file/override
+        # 按 cookie 来源标签派生 UA 与 Chromium client hints（见
+        # core/http/user_agent.py）；非 Chromium/file/覆盖时 hints 为空
+        self._ua = build_ua(source)
+        self._client_hints = build_client_hints(source)
         self._opener = urllib.request.build_opener(
             urllib.request.HTTPCookieProcessor(CookieJar()))
 
@@ -103,7 +114,9 @@ class CookieTransport(Transport):
             done.set()
 
     def _request(self, req: urllib.request.Request, timeout: int) -> bytes:
-        req.add_header("User-Agent", UA)
+        req.add_header("User-Agent", self._ua)
+        for k, v in self._client_hints.items():
+            req.add_header(k, v)
         if self._cookie_header:
             req.add_header("Cookie", self._cookie_header)
         for k, v in self._auth_headers.items():

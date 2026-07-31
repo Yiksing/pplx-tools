@@ -91,6 +91,15 @@ DEFAULT_ACCOUNT = ""
 # 可选的用户配置归档根（TOML 顶层 `archive_root`）。作为 --out 的回退：
 # 优先级 --out > 配置 archive_root > DEFAULT_ARCHIVE_ROOT。未设为 None。configure() 重载会重新绑定。
 ARCHIVE_ROOT: Path | None = None
+# Optional User-Agent override (top-level `user_agent` in the TOML). When set it is
+# sent verbatim on every cookie-direct request and no client hints are attached; when
+# unset the UA is built dynamically from the running OS and the cookie-source browser
+# family (core/http/user_agent.py). Rebound on configure() reload (read via
+# `from .. import config`).
+# 可选的 User-Agent 覆盖（TOML 顶层 `user_agent`）。设置后原样发送到每个 cookie 直连
+# 请求且不附加 client hints；未设置时按运行 OS 与 cookie 来源浏览器族动态构建
+# （core/http/user_agent.py）。configure() 重载会重新绑定（经 `from .. import config` 读取）。
+USER_AGENT: str | None = None
 # Path of the config file actually loaded (None = not loaded, degraded mode)
 # 实际加载的配置文件路径（None=未加载，降级模式）
 LOADED_CONFIG_PATH: Path | None = None
@@ -169,7 +178,7 @@ def configure(cli_path: str | os.PathLike | None = None,
     - 文件存在但解析失败：一律抛 ConfigError（配置损坏不应静默降级）。
     """
     global BOT_SPACE_UUID, BOT_SPACE_SLUG, DEFAULT_ACCOUNT, ARCHIVE_ROOT, LOADED_CONFIG_PATH
-    global LAST_EXPORT, AUTO_COMMIT, AUTO_PUSH, INDEX_STATE
+    global LAST_EXPORT, AUTO_COMMIT, AUTO_PUSH, INDEX_STATE, USER_AGENT
     ACCOUNT_DISPLAY_NAMES.clear()
     ACCOUNT_EMAIL.clear()
     ACCOUNT_UID.clear()
@@ -179,6 +188,7 @@ def configure(cli_path: str | os.PathLike | None = None,
     AUTO_COMMIT = True
     AUTO_PUSH = False
     ARCHIVE_ROOT = None
+    USER_AGENT = None
     LOADED_CONFIG_PATH = None
 
     path, explicit = _candidate_path(cli_path)
@@ -224,6 +234,9 @@ def configure(cli_path: str | os.PathLike | None = None,
     ap = data.get("auto_push")
     if isinstance(ap, bool):
         AUTO_PUSH = ap
+    ua = data.get("user_agent")
+    if ua:
+        USER_AGENT = str(ua)
     ist = data.get("index_state")
     if isinstance(ist, dict):
         for k, v in ist.items():

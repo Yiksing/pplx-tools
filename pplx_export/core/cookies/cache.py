@@ -31,6 +31,19 @@ class CookieCache:
         self.path = Path(path)
 
     def load(self, max_age_s: int = CACHE_MAX_AGE_S) -> dict[str, str] | None:
+        hit = self.load_with_source(max_age_s)
+        return hit[0] if hit else None
+
+    def load_with_source(self, max_age_s: int = CACHE_MAX_AGE_S) -> tuple[dict[str, str], str] | None:
+        """Fresh cache as (cookies, origin source label); None when absent/stale/corrupt.
+
+        The origin label (e.g. `browser:chrome`, written by save()) lets callers keep
+        source fidelity on cache hits — e.g. deriving the right User-Agent family.
+
+        新鲜缓存返回 (cookies, 原始来源标签)；缺失/过期/损坏返回 None。
+
+        来源标签（save() 写入，如 `browser:chrome`）让调用方在缓存命中时仍保有
+        来源保真——例如推导正确的 User-Agent 浏览器族。"""
         if not self.path.exists():
             return None
         try:
@@ -44,7 +57,11 @@ class CookieCache:
             return None
         if time.time() - ts > max_age_s:
             return None
-        return doc.get("cookies")
+        cookies = doc.get("cookies")
+        if not isinstance(cookies, dict):
+            return None
+        source = doc.get("source")
+        return cookies, source if isinstance(source, str) else ""
 
     def save(self, cookies: dict[str, str], source: str, account_email: str = ""):
         """Atomic write (V5-06, aligned with BatchState.save): the temp file is

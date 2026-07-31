@@ -199,7 +199,13 @@ def post_stream(transport: CookieTransport, url: str, payload: dict,
     req = urllib.request.Request(url, data=body, method="POST")
     req.add_header("Content-Type", "application/json")
     req.add_header("Accept", "text/event-stream")
-    req.add_header("User-Agent", UA)
+    # Duck-typed transports (test fakes) may lack the new attributes: fall back to
+    # the generic module UA and no hints, mirroring the getattr throttle pattern below
+    # 鸭型 transport（测试伪对象）可能缺新属性：回退通用模块 UA、无 hints，
+    # 与下方 throttle 的 getattr 容错风格一致
+    req.add_header("User-Agent", getattr(transport, "_ua", None) or UA)
+    for k, v in getattr(transport, "_client_hints", {}).items():
+        req.add_header(k, v)
     if transport._cookie_header:
         req.add_header("Cookie", transport._cookie_header)
     import re as _re

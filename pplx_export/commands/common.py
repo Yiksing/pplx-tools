@@ -138,7 +138,7 @@ def make_transport(account: Account, cookies_from=None, cookies_file=None, trans
                                cache_path=cache)
     # Verify the account (avoid "using account B's cookies as account A") and refresh the cache
     # 校验账户（避免「账户 B 当 A 用」），并刷新缓存
-    cookie = CookieTransport(cdict, throttle=throttle)
+    cookie = CookieTransport(cdict, throttle=throttle, source=source)
     if skip_auth_check:
         log.info(f"[auth] 已跳过账户归属校验（--skip-auth-check）：信任来源 {source} 当前登录账户，"
                  f"不发起会话探测——若提取中反复报错将自动回退校验并提示")
@@ -153,12 +153,12 @@ def make_transport(account: Account, cookies_from=None, cookies_file=None, trans
             # With multiple accounts logged in at once, no manual switch is needed:
             # enumerate the per-account session tokens in the browser and try each until one matches
             # 多账户同登时无需手动切换：枚举浏览器里的账户会话令牌，逐个试到匹配
-            switched = _try_switch_account(cdict, expected)
+            switched = _try_switch_account(cdict, expected, source)
             if switched:
                 cdict, email = switched
                 # Switching must not drop the shared backoff counters (F-02)
                 # 切换不丢共享退避计数（F-02）
-                cookie = CookieTransport(cdict, throttle=throttle)
+                cookie = CookieTransport(cdict, throttle=throttle, source=source)
                 log.info(f"[auth] 已自动切换到目标账户: {email}")
             else:
                 raise SystemExit(
@@ -209,14 +209,15 @@ def _validate_bridge_account(bridge: WebBridgeTransport, account: Account) -> No
         log.warning(f"[auth] webbridge 账户校验失败（bridge 不可达？），跳过校验继续: {e}")
 
 
-def _try_switch_account(cdict: dict, expected_email: str):
+def _try_switch_account(cdict: dict, expected_email: str, source: str = ""):
     """On email mismatch, try switching automatically: enumerate each account's
     session token in the browser, replace __Secure-next-auth.session-token one at a
     time and validate the session. Returns (new cdict, email) on success, None on
-    failure.
+    failure. `source` keeps the probe's UA consistent with the resolved cookie source.
 
     email 不匹配时尝试自动切换：枚举浏览器中各账户的会话令牌，逐个替换
     __Secure-next-auth.session-token 并验证 session。成功返回 (新 cdict, email)，失败 None。
+    `source` 让探测请求的 UA 与已解析的 cookie 来源保持一致。
     """
     try:
         tokens = ck.list_account_tokens()
@@ -226,7 +227,7 @@ def _try_switch_account(cdict: dict, expected_email: str):
         try:
             new = dict(cdict)
             new[ck.ACTIVE_SESSION_COOKIE] = token
-            probe = CookieTransport(new)
+            probe = CookieTransport(new, source=source)
             sess = probe.get_json(SESSION_URL, timeout=20)
             email = _session_email(sess)
             if email.lower() == expected_email.lower():

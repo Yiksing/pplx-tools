@@ -179,7 +179,11 @@ def cmd_init(args, *, transport_factory=None, create_space_fn=None):
     if getattr(args, "transport", "cookie") == "webbridge":
         raise SystemExit("[init][ERROR] init 只走 cookie 通路（webbridge 页面上下文无法枚举账户令牌）")
     out_path = Path(args.config).expanduser() if args.config else DEFAULT_CONFIG_PATH
-    tf = transport_factory or (lambda cdict: CookieTransport(cdict))
+    # The default factory binds `source` lazily (assigned by ck.resolve below, before
+    # the first probe) so init probes carry the same source-derived UA
+    # 默认工厂惰性绑定 `source`（由下方 ck.resolve 赋值，首次探测前已就绪），
+    # 让 init 探测携带同样的来源派生 UA
+    tf = transport_factory or (lambda cdict: CookieTransport(cdict, source=source))
 
     # 1. Cookies
     # 1. cookie 获取
