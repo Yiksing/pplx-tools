@@ -955,6 +955,47 @@ def test_find_git_root(tmp_path):
     assert _find_git_root(tmp_path / "elsewhere" / "x") is None
 
 
+def test_git_pins_c_locale(tmp_path, monkeypatch):
+    """_git must run the child git with LC_ALL=C so diagnostics stay the
+    canonical English strings that maybe_auto_commit's push classifier
+    matches. Under a localized git (zh_CN.UTF-8 on this host) a plain
+    "未配置推送目标" matches no English pattern, so a missing push
+    destination would be misclassified as a hard conflict. Everything else
+    in the environment must be inherited unchanged.
+
+    _git 必须以 LC_ALL=C 运行子 git，保证报错恒为 maybe_auto_commit 的 push
+    分类所匹配的规范英文串：本机（zh_CN.UTF-8）本地化 git 输出的
+    “未配置推送目标”无英文模式可匹配，会把“无推送目标”误判为冲突硬错误。
+    其余环境变量须原样继承。"""
+    import os
+    from pplx_export.commands import common
+
+    seen: dict = {}
+
+    class R:
+        returncode = 0
+        stderr = ""
+        stdout = ""
+
+    def fake_run(cmd, *args, **kwargs):
+        seen["env"] = kwargs.get("env")
+        return R()
+
+    monkeypatch.setattr(common.subprocess, "run", fake_run)
+    monkeypatch.setenv("PPLX_TEST_INHERIT_MARKER", "keep")
+    common._git(tmp_path, "status")
+
+    env = seen["env"]
+    assert env is not None
+    assert env["LC_ALL"] == "C"
+    assert env["LANG"] == "C"
+    assert env["LANGUAGE"] == ""
+    # PATH / HOME / git-config discovery inherited unchanged.
+    # PATH / HOME / git 配置发现原样继承。
+    assert env["PPLX_TEST_INHERIT_MARKER"] == "keep"
+    assert env["PATH"] == os.environ["PATH"]
+
+
 def test_maybe_auto_commit(tmp_path, monkeypatch):
     """maybe_auto_commit: commits the archive subtree; unrelated dirty files are
     left untouched; no changes → no commit; no enclosing repo → skip.
@@ -1025,8 +1066,15 @@ def test_maybe_auto_commit_push_conflict_hard_error(tmp_path, monkeypatch):
     """A rejected push (non-fast-forward / conflict) must raise SystemExit —
     visible at any verbosity; a missing upstream is only a warning.
 
+    Also the regression guard for the locale bug: with a localized git
+    (zh_CN.UTF-8) the "no push destination" message is Chinese, and the
+    English-only classifier would misread it as a conflict — _git pins
+    LC_ALL=C so this stays a warning.
+
     push 被拒（non-fast-forward/冲突）必须 SystemExit——任何日志级别可见；
-    无上游分支仅 warning。"""
+    无上游分支仅 warning。本测试同时守护 locale 缺陷：本地化 git（中文）下
+    “未配置推送目标”为中文串，纯英文分类会误读为冲突——_git 固定 LC_ALL=C
+    使其仍仅记 warning。"""
     import subprocess
     import pytest
     from pplx_export import config as cfg

@@ -15,6 +15,7 @@ cli.py 与 ask_cli.py 共用本模块，避免双入口重复同一套启动代�
 
 from __future__ import annotations
 
+import os
 import subprocess
 import time
 from pathlib import Path
@@ -362,9 +363,21 @@ def _find_git_root(start: Path) -> Path | None:
 def _git(root: Path, *args: str) -> subprocess.CompletedProcess:
     """Run a git command inside the archive repository; returns the CompletedProcess.
 
-    在归档仓库内执行 git 命令；返回 CompletedProcess。"""
+    The child git is pinned to LC_ALL=C (LANG=C, LANGUAGE cleared) so its
+    diagnostics are always the canonical English strings: push-failure
+    classification in maybe_auto_commit matches those strings, and a localized
+    git (e.g. zh_CN.UTF-8) would misreport a plain "no push destination" as a
+    hard conflict. The rest of the environment (PATH, HOME, git config) is
+    inherited unchanged.
+
+    在归档仓库内执行 git 命令；返回 CompletedProcess。
+    子进程 git 固定 LC_ALL=C（LANG=C、清空 LANGUAGE），保证报错恒为规范英文串：
+    maybe_auto_commit 的 push 失败分类依赖匹配这些串，而本地化 git（如中文环境）
+    会把“未配置推送目标”误判为冲突硬错误。其余环境变量（PATH、HOME、git 配置）
+    原样继承。"""
+    env = dict(os.environ, LC_ALL="C", LANG="C", LANGUAGE="")
     return subprocess.run(["git", "-C", str(root), *args],
-                          capture_output=True, text=True)
+                          capture_output=True, text=True, env=env)
 
 
 def maybe_auto_commit(out_root: Path, account: str = "") -> None:
